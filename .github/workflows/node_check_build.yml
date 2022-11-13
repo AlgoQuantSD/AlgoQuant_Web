@@ -5,14 +5,14 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+#     branches: [ "main" ]
   pull_request:
 #     branches: [ "main" ]
-    types: [opened, edited]
+#     types: [opened, edited]
 
 defaults:
   run:
-    working-directory: './algoquant-web'
+    working-directory: algoquant-web
 
 jobs:
   build:
