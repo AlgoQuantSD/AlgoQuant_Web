@@ -9,13 +9,13 @@ on:
   pull_request:
     branches: [ "main" ]
 
+defaults:
+  run:
+    working-directory: './algoquant-web'
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: './algoquant-web'
 
     strategy:
       matrix:
