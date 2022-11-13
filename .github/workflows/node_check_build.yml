@@ -10,14 +10,14 @@ on:
     branches: [ "main" ]
     types: [opened, edited]
 
+defaults:
+  run:
+    working-directory: './algoquant-web'
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: './algoquant-web'
 
     strategy:
       matrix:
