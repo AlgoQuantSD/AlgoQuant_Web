@@ -1,6 +1,6 @@
 # AlgoQuant Web Application
 
-![alt text](./algoquantweb/src/assets/images/aqLogo.png)
+![alt text](./src/assets/images/aqLogo.png)
 ## What is AlgoQuant?
 AlgoQuant is a project centered around the creation, customization, and implementation of algorithmic trading bots.  From technical analysis indicators to a neural network service, AlgoQuant aims to provide retail investors with the tools, strategies, and education commonly found in institutional algorithmic trading.
 
