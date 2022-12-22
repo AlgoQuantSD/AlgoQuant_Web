@@ -1,10 +1,10 @@
 import React from "react";
-import { Authenticator, Button, Heading } from "@aws-amplify/ui-react";
+import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 
-const AuthenticationPage = () => {
+const SignUpPage = () => {
   return (
-    <Authenticator>
+    <Authenticator initialState="signUp" variation="modal">
       {({ signOut, user }) => (
         <main>
           <h1>Hello {user.username}</h1>
@@ -15,4 +15,4 @@ const AuthenticationPage = () => {
   );
 };
 
-export default AuthenticationPage;
+export default SignUpPage;
