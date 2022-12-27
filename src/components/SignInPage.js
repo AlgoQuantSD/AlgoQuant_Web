@@ -8,9 +8,11 @@ import {
   Text,
   Button,
   Heading,
+  ThemeProvider,
+  Theme,
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import AgLogo from "/Users/timyang/Desktop/AlgoQuant_Web/src/assets/images/aqLogo.png";
+import AgLogo from "../assets/images/aqLogo.png";
 
 const components = {
   Header() {
@@ -179,11 +181,7 @@ const components = {
 };
 
 const formFields = {
-  signIn: {
-    email: {
-      placeholder: "Enter your email",
-    },
-  },
+  signIn: {},
   signUp: {
     email: {
       label: "Email:",
@@ -239,19 +237,72 @@ const formFields = {
 };
 
 const SignInPage = () => {
+  const { tokens } = useTheme();
+  const theme = {
+    name: "Auth Theme",
+    tokens: {
+      colors: {
+        background: {
+          // primary: {
+          //   value: tokens.colors.neutral["90"].value,
+          // },
+          // secondary: {
+          //   value: tokens.colors.neutral["100"].value,
+          // },
+        },
+        font: {
+          interactive: {
+            value: tokens.colors.green.value,
+          },
+        },
+        brand: {
+          primary: {
+            10: tokens.colors.green["100"],
+            80: tokens.colors.green["40"],
+            90: tokens.colors.green["20"],
+            100: tokens.colors.green["10"],
+          },
+        },
+      },
+      components: {
+        tabs: {
+          item: {
+            _focus: {
+              color: {
+                value: tokens.colors.green["60"].value,
+              },
+            },
+            _hover: {
+              color: {
+                value: tokens.colors.black.value,
+              },
+            },
+            _active: {
+              color: {
+                value: tokens.colors.green["60"].value,
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+
   return (
-    <Authenticator
-      formFields={formFields}
-      components={components}
-      variation="modal"
-    >
-      {({ signOut, user }) => (
-        <main>
-          <h1>Hello {user.username}</h1>
-          <button onClick={signOut}>Sign out</button>
-        </main>
-      )}
-    </Authenticator>
+    <ThemeProvider theme={theme}>
+      <Authenticator
+        formFields={formFields}
+        components={components}
+        variation="modal"
+      >
+        {({ signOut, user }) => (
+          <main>
+            <h1>Hello {user.username}</h1>
+            <button onClick={signOut}>Sign out</button>
+          </main>
+        )}
+      </Authenticator>
+    </ThemeProvider>
   );
 };
 
