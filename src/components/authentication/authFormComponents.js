@@ -3,24 +3,15 @@
 import {
   useAuthenticator,
   useTheme,
-  Image,
   View,
   Text,
   Button,
   Heading,
 } from "@aws-amplify/ui-react";
-import AgLogo from "../../assets/images/aqLogoWithName.png";
 import "@aws-amplify/ui-react/styles.css";
 
 const components = {
-  Header() {
-    const { tokens } = useTheme();
-    return (
-      <View textAlign="center" padding={tokens.space.large}>
-        <Image height="100%" width="100%" alt="AlgoQuant Logo" src={AgLogo} />
-      </View>
-    );
-  },
+  Header() {},
 
   Footer() {
     const { tokens } = useTheme();
