@@ -1,14 +1,14 @@
 import NavBar from "./components/NavBar";
 import HomePage from "./components/HomePage";
-import SignInPage from "./components/SignInPage";
-import SignupPage from "./components/SignUpPage";
-import ResetPwdPage from "./components/ResetPwdPage";
+import SignInPage from "./components/authentication/SignInPage";
+import SignUpPage from "./components/authentication/SignUpPage";
+import ResetPwdPage from "./components/authentication/ResetPwdPage";
 import "./App.css";
 
 function App() {
   return (
     <>
-      <SignInPage />
+      <ResetPwdPage />
       <NavBar />
       <HomePage />
     </>

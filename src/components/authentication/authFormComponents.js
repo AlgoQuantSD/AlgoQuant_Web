@@ -1,6 +1,4 @@
-import React from "react";
 import {
-  Authenticator,
   useAuthenticator,
   useTheme,
   Image,
@@ -8,19 +6,16 @@ import {
   Text,
   Button,
   Heading,
-  ThemeProvider,
-  Theme,
 } from "@aws-amplify/ui-react";
+import AgLogo from "../../assets/images/aqLogoWithName.png";
 import "@aws-amplify/ui-react/styles.css";
-import AgLogo from "../assets/images/aqLogo.png";
 
 const components = {
   Header() {
     const { tokens } = useTheme();
-
     return (
       <View textAlign="center" padding={tokens.space.large}>
-        <Image alt="AlgoQuant Logo" src={AgLogo} />
+        <Image height="100%" width="100%" alt="AlgoQuant Logo" src={AgLogo} />
       </View>
     );
   },
@@ -180,130 +175,4 @@ const components = {
   },
 };
 
-const formFields = {
-  signIn: {},
-  signUp: {
-    email: {
-      label: "Email:",
-      placeholder: "Enter your Email:",
-      isRequired: true,
-      order: 1,
-    },
-    given_name: {
-      label: "First Name:",
-      placeholder: "Enter your First Name:",
-      isRequired: true,
-      order: 2,
-    },
-    family_name: {
-      label: "Last Name:",
-      placeholder: "Enter your Last Name:",
-      isRequired: true,
-      order: 3,
-    },
-    phone_number: {
-      label: "Phone Number:",
-      placeholder: "Enter your Phone Number:",
-      isRequired: true,
-      order: 4,
-    },
-    password: {
-      label: "Password:",
-      placeholder: "Enter your Password:",
-      isRequired: true,
-      order: 5,
-    },
-    confirm_password: {
-      label: "Confirm Password:",
-      isRequired: true,
-      order: 6,
-    },
-  },
-  resetPassword: {
-    username: {
-      placeholder: "Enter your email:",
-    },
-  },
-  confirmResetPassword: {
-    confirmation_code: {
-      placeholder: "Enter your Confirmation Code:",
-      label: "New Label",
-      isRequired: false,
-    },
-    confirm_password: {
-      placeholder: "Enter your Password Please:",
-    },
-  },
-};
-
-const SignInPage = () => {
-  const { tokens } = useTheme();
-  const theme = {
-    name: "Auth Theme",
-    tokens: {
-      colors: {
-        background: {
-          // primary: {
-          //   value: tokens.colors.neutral["90"].value,
-          // },
-          // secondary: {
-          //   value: tokens.colors.neutral["100"].value,
-          // },
-        },
-        font: {
-          interactive: {
-            value: tokens.colors.green.value,
-          },
-        },
-        brand: {
-          primary: {
-            10: tokens.colors.green["100"],
-            80: tokens.colors.green["40"],
-            90: tokens.colors.green["20"],
-            100: tokens.colors.green["10"],
-          },
-        },
-      },
-      components: {
-        tabs: {
-          item: {
-            _focus: {
-              color: {
-                value: tokens.colors.green["60"].value,
-              },
-            },
-            _hover: {
-              color: {
-                value: tokens.colors.black.value,
-              },
-            },
-            _active: {
-              color: {
-                value: tokens.colors.green["60"].value,
-              },
-            },
-          },
-        },
-      },
-    },
-  };
-
-  return (
-    <ThemeProvider theme={theme}>
-      <Authenticator
-        formFields={formFields}
-        components={components}
-        variation="modal"
-      >
-        {({ signOut, user }) => (
-          <main>
-            <h1>Hello {user.username}</h1>
-            <button onClick={signOut}>Sign out</button>
-          </main>
-        )}
-      </Authenticator>
-    </ThemeProvider>
-  );
-};
-
-export default SignInPage;
+export default components;
