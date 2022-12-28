@@ -1,4 +1,5 @@
-import React from "react";
+// Using Amplify Libaries, Styling is done through themes. AuthForm Style returns a JSON object containing the styling of the authentication forms. Used as a prop on Amplify's Theme Provider component.
+
 import { useTheme } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 

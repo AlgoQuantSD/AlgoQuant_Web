@@ -1,3 +1,5 @@
+// Authentication: Login, Logout, and Reset password all done through AWS amplify. Structure of the login, logout, and reset form/page is done here using Amplify UI components. The [components] object is used as a prop in amplify's Authenticator connected component.
+
 import {
   useAuthenticator,
   useTheme,
@@ -94,22 +96,6 @@ const components = {
     },
   },
   ConfirmSignUp: {
-    Header() {
-      const { tokens } = useTheme();
-      return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
-          Enter Information:
-        </Heading>
-      );
-    },
-    Footer() {
-      return <Text>Footer Information</Text>;
-    },
-  },
-  SetupTOTP: {
     Header() {
       const { tokens } = useTheme();
       return (
