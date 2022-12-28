@@ -21,9 +21,9 @@ const AuthFormStyle = () => {
         brand: {
           primary: {
             10: tokens.colors.green["100"],
-            80: tokens.colors.green["40"],
-            90: tokens.colors.green["20"],
-            100: tokens.colors.green["10"],
+            80: tokens.colors.green["60"],
+            90: tokens.colors.green["80"],
+            100: tokens.colors.green["40"],
           },
         },
       },
