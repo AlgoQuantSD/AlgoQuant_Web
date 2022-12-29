@@ -3,7 +3,7 @@
 import { useTheme } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 
-const AuthFormStyle = () => {
+const CustomAuthTheme = () => {
   const { tokens } = useTheme();
   const theme = {
     name: "Auth Theme",
@@ -53,4 +53,4 @@ const AuthFormStyle = () => {
   return theme;
 };
 
-export default AuthFormStyle;
+export default CustomAuthTheme;
