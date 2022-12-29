@@ -1,7 +1,7 @@
 import React from "react";
 import { Authenticator, ThemeProvider } from "@aws-amplify/ui-react";
-import AuthFormStyle from "./AuthFormStyle";
-import formFields from "./authFormStructure";
+import AuthFormStyle from "./authFormStyle";
+import formFields from "./signUpConfig";
 import components from "./authFormComponents";
 
 const SignUpPage = () => {

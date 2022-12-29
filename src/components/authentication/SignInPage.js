@@ -1,14 +1,14 @@
 import React from "react";
 import { Authenticator, ThemeProvider } from "@aws-amplify/ui-react";
 import AuthFormStyle from "./AuthFormStyle";
-import formFields from "./authFormStructure";
+import signUpConfig from "./signUpConfig";
 import components from "./authFormComponents";
 
 const SignInPage = () => {
   return (
     <ThemeProvider theme={AuthFormStyle()}>
       <Authenticator
-        formFields={formFields}
+        formFields={signUpConfig}
         components={components}
         variation="modal"
       >
