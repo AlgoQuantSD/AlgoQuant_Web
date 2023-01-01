@@ -48,7 +48,7 @@ const signUpConfig = {
   confirmResetPassword: {
     confirmation_code: {
       placeholder: "Enter your Confirmation Code:",
-      label: "New Label",
+      label: "Confirmation Code",
       isRequired: false,
     },
     confirm_password: {

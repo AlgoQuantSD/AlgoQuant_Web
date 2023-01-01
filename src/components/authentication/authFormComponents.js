@@ -126,7 +126,7 @@ const components = {
           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
           level={3}
         >
-          Enter Information:
+        Enter Information:
         </Heading>
       );
     },
