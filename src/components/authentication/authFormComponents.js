@@ -34,7 +34,7 @@ const components = {
           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
           level={3}
         >
-          Sign in to your account
+        Sign In to Your Account:
         </Heading>
       );
     },
@@ -65,7 +65,7 @@ const components = {
           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
           level={3}
         >
-          Create a new account
+        Create a New account
         </Heading>
       );
     },
@@ -80,7 +80,7 @@ const components = {
             size="small"
             variation="link"
           >
-            Back to Sign In
+          Back to Sign In
           </Button>
         </View>
       );
