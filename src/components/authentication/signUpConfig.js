@@ -40,21 +40,8 @@ const signUpConfig = {
       order: 6,
     },
   },
-  resetPassword: {
-    username: {
-      placeholder: "Enter your email:",
-    },
-  },
-  confirmResetPassword: {
-    confirmation_code: {
-      placeholder: "Enter your Confirmation Code:",
-      label: "Confirmation Code",
-      isRequired: false,
-    },
-    confirm_password: {
-      placeholder: "Enter your Password Please:",
-    },
-  },
+  resetPassword: {},
+  confirmResetPassword: {},
 };
 
 export default signUpConfig;

@@ -34,7 +34,7 @@ const components = {
           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
           level={3}
         >
-        Sign In to Your Account:
+          Sign In to Your Account:
         </Heading>
       );
     },
@@ -65,7 +65,7 @@ const components = {
           padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
           level={3}
         >
-        Create a New account
+          Create a New account
         </Heading>
       );
     },
@@ -80,7 +80,7 @@ const components = {
             size="small"
             variation="link"
           >
-          Back to Sign In
+            Back to Sign In
           </Button>
         </View>
       );
@@ -90,26 +90,20 @@ const components = {
     Header() {
       const { tokens } = useTheme();
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
-          Enter Information:
+        <Heading padding={`${tokens.space.xl} 0 0`} level={3}>
+          Enter Your Email:
         </Heading>
       );
     },
     Footer() {
-      return <Text>Footer Information</Text>;
+      return <Text>Check spam folder for the code or resend code.</Text>;
     },
   },
   ConfirmSignIn: {
     Header() {
       const { tokens } = useTheme();
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
+        <Heading padding={`${tokens.space.xl} 0 0`} level={3}>
           Enter Information:
         </Heading>
       );
@@ -122,11 +116,8 @@ const components = {
     Header() {
       const { tokens } = useTheme();
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
-        Enter Information:
+        <Heading padding={`${tokens.space.xl} 0 0`} level={3}>
+          Reset Password:
         </Heading>
       );
     },
@@ -138,10 +129,7 @@ const components = {
     Header() {
       const { tokens } = useTheme();
       return (
-        <Heading
-          padding={`${tokens.space.xl} 0 0 ${tokens.space.xl}`}
-          level={3}
-        >
+        <Heading padding={`${tokens.space.xl} 0 0`} level={3}>
           Enter Information:
         </Heading>
       );
