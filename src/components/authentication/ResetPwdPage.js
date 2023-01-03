@@ -13,8 +13,7 @@ const ResetPwdPage = () => {
         components={components}
         initialState="resetPassword"
         variation="modal"
-      >
-      </Authenticator>
+      ></Authenticator>
     </ThemeProvider>
   );
 };
