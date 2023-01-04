@@ -3,6 +3,7 @@ import { Authenticator, ThemeProvider } from "@aws-amplify/ui-react";
 import CustomAuthTheme from "./CustomAuthTheme";
 import signUpConfig from "./signUpConfig";
 import components from "./authFormComponents";
+import HomePage from "../../pages/HomePage";
 
 const SignInPage = () => {
   return (
@@ -11,7 +12,15 @@ const SignInPage = () => {
         formFields={signUpConfig}
         components={components}
         variation="modal"
-      ></Authenticator>
+      >
+        {({ signOut, user }) => (
+          <main>
+            <h1>Hello!! {user.username}</h1>
+            <button onClick={signOut}>Sign out</button>
+          </main>
+        )}
+        <HomePage />
+      </Authenticator>
     </ThemeProvider>
   );
 };

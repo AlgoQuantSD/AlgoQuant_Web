@@ -1,12 +1,27 @@
 import React from "react";
 import aqLogo from "../assets/images/aqLogo.png";
 import { Link } from "react-router-dom";
+// import { Auth } from aws-amplify;
+import { Authenticator } from "@aws-amplify/ui-react";
+import { Auth } from "aws-amplify";
 
 const Navbar = () => {
+  // function signOut1({ signOut, user }) {
+  //   return <button onClick={signOut}>Sign out</button>;
+  // }
+
+  async function signOut() {
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      console.log("error signing out: ", error);
+    }
+  }
+
   return (
     <nav className="fixed top-0 w-full z-50 px-4 py-2 bg-dark-gray border-gray-300 shadow">
       <div class="container flex flex-wrap justify-between items-center mx-auto">
-        <a href="https://www.google.com/" class="flex items-center">
+        <a href="http://localhost:3000/" class="flex items-center">
           <img src={aqLogo} class="mr-3 h-6 sm:h-9" alt="AlgoQuant Logo" />
         </a>
         <button
@@ -41,9 +56,20 @@ const Navbar = () => {
                 My Account
               </Link>
             </li>
+            <li>
+              {/* TODO: move signOut function from SignInPage to the Navbar */}
+              <button
+                className="block py-2 pr-4 pl-3 text-red rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent"
+                onClick={signOut}
+              >
+                Sign Out
+              </button>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
   );
 };
+
+export default Navbar;

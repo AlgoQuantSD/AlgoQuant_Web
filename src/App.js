@@ -2,22 +2,23 @@
 // import SignUpPage from "./components/authentication/SignUpPage";
 // import ResetPwdPage from "./components/authentication/ResetPwdPage";
 
-import NavBar from "./components/NavBar";
-import SideBar from "./components/SideBar";
-import HomePage from "./components/HomePage";
+import NavBar from "./pages/NavBar";
+import SideBar from "./pages/SideBar";
 import SignInPage from "./components/authentication/SignInPage";
-import WelcomePage from "./components/WelcomePage";
-import HomePage from "./components/HomePage";
-import BacktestingPage from "./components/BacktestingPage";
-import BacktestingResultsPage from "./components/BacktestingResultsPage";
-import CreateBacktestPage from "./components/CreateBacktestPage";
-import CreateInvestorPage from "./components/CreateInvestorPage";
-import StockTickerPage from "./components/StockTickerPage";
-import TransactionHistoryPage from "./components/TransactionHistoryPage";
-import AccountPage from "./components/AccountPage";
+import SignUpPage from "./components/authentication/SignUpPage";
+import WelcomePage from "./pages/WelcomePage";
+import HomePage from "./pages/HomePage";
+import BacktestingPage from "./pages/BacktestingPage";
+import BacktestingResultsPage from "./pages/BacktestingResultsPage";
+// import CreateBacktestPage from "./components/pages/CreateBacktestPage";
+// import CreateInvestorPage from "./components/pages/CreateInvestorPage";
+// import StockTickerPage from "./components/pages/StockTickerPage";
+// import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
+// import AccountPage from "./components/pages/AccountPage";
 import "./App.css";
 import { Auth } from "aws-amplify";
 import { useEffect, useMemo, useState } from "react";
+// import { UserContext } from "./src/constants/UserContext";
 
 function App() {
   const [userInfo, setUserInfo] = useState(null);
@@ -45,18 +46,19 @@ function App() {
 
   return (
     <>
-      <SignInPage />
-      <NavBar />
-      <SideBar />
+      {/* <SignInPage /> */}
+      {/* <SignUpPage /> */}
+      {/* <NavBar /> */}
+      {/* <SideBar /> */}
       <WelcomePage />
-      <HomePage />
-      <BacktestingPage />
-      <BacktestingResultsPage />
-      <CreateBacktestPage />
+      {/* <HomePage /> */}
+      {/* <BacktestingPage /> */}
+      {/* <BacktestingResultsPage /> */}
+      {/* <CreateBacktestPage />
       <CreateInvestorPage />
       <StockTickerPage />
       <TransactionHistoryPage />
-      <AccountPage />
+      <AccountPage /> */}
     </>
   );
 }
