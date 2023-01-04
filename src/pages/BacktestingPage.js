@@ -1,4 +1,6 @@
 import React from "react";
+import NavBar from "./NavBar";
+import Sidebar from "./SideBar";
 
 const HomePage = () => {
   return (
