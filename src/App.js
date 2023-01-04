@@ -1,24 +1,14 @@
 // TO-DO: Imports are commented out until routing is implemented
 // import SignUpPage from "./components/authentication/SignUpPage";
 // import ResetPwdPage from "./components/authentication/ResetPwdPage";
-
-import NavBar from "./pages/NavBar";
-import SideBar from "./pages/SideBar";
-import SignInPage from "./components/authentication/SignInPage";
-import SignUpPage from "./components/authentication/SignUpPage";
-import WelcomePage from "./pages/WelcomePage";
-import HomePage from "./pages/HomePage";
-import BacktestingPage from "./pages/BacktestingPage";
-import BacktestingResultsPage from "./pages/BacktestingResultsPage";
-// import CreateBacktestPage from "./components/pages/CreateBacktestPage";
-// import CreateInvestorPage from "./components/pages/CreateInvestorPage";
-// import StockTickerPage from "./components/pages/StockTickerPage";
-// import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
-// import AccountPage from "./components/pages/AccountPage";
 import "./App.css";
-import { Auth } from "aws-amplify";
+import { Amplify, Auth } from "aws-amplify";
 import { useEffect, useMemo, useState } from "react";
-// import { UserContext } from "./src/constants/UserContext";
+import { UserContext } from "./constants/UserContext";
+import authConfig from "./components/authentication/aws-export";
+import { PageRouter, UnauthenticatedPageRouter } from "./PageRouter";
+
+Amplify.configure({ ...authConfig, Analytics: { disabled: true } });
 
 function App() {
   const [userInfo, setUserInfo] = useState(null);
@@ -45,21 +35,11 @@ function App() {
   }, []);
 
   return (
-    <>
-      {/* <SignInPage /> */}
-      {/* <SignUpPage /> */}
-      {/* <NavBar /> */}
-      {/* <SideBar /> */}
-      <WelcomePage />
-      {/* <HomePage /> */}
-      {/* <BacktestingPage /> */}
-      {/* <BacktestingResultsPage /> */}
-      {/* <CreateBacktestPage />
-      <CreateInvestorPage />
-      <StockTickerPage />
-      <TransactionHistoryPage />
-      <AccountPage /> */}
-    </>
+    <UserContext.Provider value={value}>
+      {console.log("Before userInfo" + userInfo)}
+      {userInfo ? <PageRouter /> : <UnauthenticatedPageRouter />}
+      {console.log("after userInfo" + userInfo)}
+    </UserContext.Provider>
   );
 }
 

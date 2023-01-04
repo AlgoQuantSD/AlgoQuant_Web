@@ -1,18 +1,18 @@
-import React from "react";
+import { React, useContext } from "react";
 import aqLogo from "../assets/images/aqLogo.png";
-import { Link } from "react-router-dom";
-// import { Auth } from aws-amplify;
-import { Authenticator } from "@aws-amplify/ui-react";
+import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
+import { UserContext } from "../constants/UserContext";
 
 const Navbar = () => {
-  // function signOut1({ signOut, user }) {
-  //   return <button onClick={signOut}>Sign out</button>;
-  // }
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const navigate = useNavigate();
 
   async function signOut() {
     try {
       await Auth.signOut();
+      setUserInfo({});
+      navigate("/");
     } catch (error) {
       console.log("error signing out: ", error);
     }
@@ -57,7 +57,6 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              {/* TODO: move signOut function from SignInPage to the Navbar */}
               <button
                 className="block py-2 pr-4 pl-3 text-red rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent"
                 onClick={signOut}

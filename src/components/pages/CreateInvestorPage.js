@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "./NavBar";
-import Sidebar from "./SideBar";
+import Navbar from "../NavBar";
+import Sidebar from "../SideBar";
 
 const CreateInvestorPage = () => {
   return (
