@@ -5,7 +5,7 @@ import { Auth } from "aws-amplify";
 import { UserContext } from "../constants/UserContext";
 
 const Navbar = () => {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
 
   async function signOut() {

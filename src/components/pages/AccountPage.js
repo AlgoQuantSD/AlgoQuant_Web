@@ -4,7 +4,7 @@ import Sidebar from "../SideBar";
 import { UserContext } from "../../constants/UserContext";
 
 const AccountPage = () => {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
 
   return (
     <div className="w-full h-screen bg-dark-gray">

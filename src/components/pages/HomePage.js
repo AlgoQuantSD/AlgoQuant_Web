@@ -4,7 +4,7 @@ import Sidebar from "../SideBar";
 import { UserContext } from "../../constants/UserContext";
 
 const HomePage = () => {
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 
   // Reload the component when the user info is fetched
@@ -12,6 +12,10 @@ const HomePage = () => {
     console.log("User info updated");
     setLoading(false);
   }, [userInfo]);
+
+  if (loading) {
+    return <div className="text-white text-center">Loading...</div>;
+  }
 
   return (
     <div className="w-gull h-screen bg-dark-gray">
