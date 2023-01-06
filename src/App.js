@@ -1,6 +1,3 @@
-// TO-DO: Imports are commented out until routing is implemented
-// import SignUpPage from "./components/authentication/SignUpPage";
-// import ResetPwdPage from "./components/authentication/ResetPwdPage";
 import "./App.css";
 import { Amplify, Auth } from "aws-amplify";
 import { useEffect, useMemo, useState } from "react";

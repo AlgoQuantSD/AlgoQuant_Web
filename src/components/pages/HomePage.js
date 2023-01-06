@@ -24,9 +24,6 @@ const HomePage = () => {
       <h1 className="font-semibold text-5xl text-white text-center pt-32">
         HomePage
       </h1>
-      {/* <button className="self-center pt-2 px-4 py-2 bg-green text-white rounded items-center justify-center">
-        Create an Investor
-      </button> */}
       <p className="text-white text-center">
         {userInfo?.attributes?.given_name +
           " " +

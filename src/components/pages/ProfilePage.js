@@ -3,7 +3,7 @@ import Navbar from "../NavBar";
 import Sidebar from "../SideBar";
 import { UserContext } from "../../constants/UserContext";
 
-const AccountPage = () => {
+const ProfilePage = () => {
   const { userInfo } = useContext(UserContext);
 
   return (
@@ -11,7 +11,7 @@ const AccountPage = () => {
       <Navbar />
       <Sidebar />
       <h1 className="font-semibold text-5xl text-white text-center pt-32">
-        Account Page
+        Profile Page
       </h1>
       <p className="text-white text-center">
         {userInfo?.attributes?.given_name +
@@ -22,4 +22,4 @@ const AccountPage = () => {
   );
 };
 
-export default AccountPage;
+export default ProfilePage;

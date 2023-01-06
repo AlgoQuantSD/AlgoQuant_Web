@@ -42,10 +42,10 @@ const Sidebar = () => {
         </li>
         <li className="py-2 mt-4 pt-6 bg-darker-gray">
           <Link
-            to="/account"
+            to="/profile"
             className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4"
           >
-            My Account
+            My Profile
           </Link>
         </li>
       </ul>

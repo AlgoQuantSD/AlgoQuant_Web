@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../NavBar";
 import Sidebar from "../SideBar";
 
-const HomePage = () => {
+const BacktestingPage = () => {
   return (
     <div className="w-gull h-screen bg-dark-gray">
       <Navbar />
@@ -14,4 +14,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default BacktestingPage;
