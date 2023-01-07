@@ -14,6 +14,7 @@ export function PageRouter() {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/home" element={<HomePage />} />
+        {/* <Route default component={<WelcomePage />} /> */}
         <Route path="/createinvestor" element={<CreateInvestorPage />} />
         <Route path="/backtesting" element={<BacktestingPage />} />
         <Route path="/history" element={<TransactionHistoryPage />} />
@@ -29,6 +30,7 @@ export function UnauthenticatedPageRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
+        {/* <Route default component={<WelcomePage />} /> */}
         <Route path="/login" element={<SignInPage />} />
       </Routes>
     </BrowserRouter>

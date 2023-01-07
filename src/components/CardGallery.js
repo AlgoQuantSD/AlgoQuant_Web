@@ -1,38 +1,82 @@
-import React, { useState } from 'react';
+import React from "react";
+import Card from "./Card";
+import { useState } from "react";
 
-function CardGallery(props) {
-  const { cards } = props;
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+const CardGallery = () => {
+  const [selectedIndicator, setSelectedIndicator] = useState("MACD");
 
-  const handlePreviousClick = () => {
-    setCurrentCardIndex((currentCardIndex + cards.length - 1) % cards.length);
+  const handleChange = (event) => {
+    setSelectedIndicator(event.target.value);
   };
 
-  const handleNextClick = () => {
-    setCurrentCardIndex((currentCardIndex + 1) % cards.length);
-  };
+  const indicators = [
+    {
+      name: "MACD",
+      description:
+        "Moving average convergence divergence (MACD, or MAC-D) is a trend-following momentum indicator that shows the relationship between two exponential moving averages (EMA's) of a security’s price. The MACD is calculated by subtracting the 26-period exponential moving average (EMA) from the 12-period EMA.",
+      img: null,
+      infolink: null,
+    },
+    {
+      name: "ADL",
+      description: "The ADL is a...",
+      img: null,
+      infolink: null,
+    },
+    {
+      name: "OBV",
+      description: "The OBV is a...",
+      img: null,
+      infolink: null,
+    },
+    {
+      name: "RSI",
+      description: "The RSI is a...",
+      img: null,
+      infolink: null,
+    },
+    {
+      name: "SO",
+      description: "The SO is a...",
+      img: null,
+      infolink: null,
+    },
+    {
+      name: "BB",
+      description: "The BB is a...",
+      img: null,
+      infolink: null,
+    },
+  ];
+
+  const selectedIndicatorObject = indicators.find(
+    (indicator) => indicator.name === selectedIndicator
+  );
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-64 h-64 rounded-full bg-gray-400 overflow-hidden">
-        {cards[currentCardIndex]}
-      </div>
-      <div className="mt-4 flex">
-        <button
-          onClick={handlePreviousClick}
-          className="px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNextClick}
-          className="px-4 py-2 rounded-full bg-green-500 text-white hover:bg-green-600 ml-4"
-        >
-          Next
-        </button>
+    <div className="card-gallery">
+      <Card
+        name={selectedIndicatorObject.name}
+        img={selectedIndicatorObject.img}
+        description={selectedIndicatorObject.description}
+      />
+      <div className="radio-buttons">
+        {indicators.map((indicator) => (
+          <div key={indicator.name} className="inline-flex items-center pr-4">
+            <input
+              type="radio"
+              name="selected-indicator"
+              value={indicator.name}
+              checked={indicator.name === selectedIndicator}
+              onChange={handleChange}
+              className="w-8 h-8"
+            />
+            <label className="ml-4 text-xl">{indicator.name}</label>
+          </div>
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default CardGallery;
