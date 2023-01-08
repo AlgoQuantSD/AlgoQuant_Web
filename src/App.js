@@ -7,29 +7,53 @@ import SignInPage from "./components/authentication/SignInPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Page1 from "./components/Page1";
+import {
+  Authenticator,
+  useAuthenticator,
+  ThemeProvider,
+} from "@aws-amplify/ui-react";
+import CustomAuthTheme from "./components/authentication/CustomAuthTheme";
+import signUpConfig from "./components/authentication/signUpConfig";
+import components from "./components/authentication/authFormComponents";
 
 function App() {
+  // Use the value of route to decide which page to render
+  const { route } = useAuthenticator((context) => [context.route]);
+  // const { authStatus } = useAuthenticator((context) => [context.authStatus]);
+
   return (
     <>
-      <SignInPage />
+      {route === "authenticated" ? (
+        <Page1 />
+      ) : (
+        <ThemeProvider theme={CustomAuthTheme()}>
+          <Authenticator
+            formFields={signUpConfig}
+            components={components}
+            variation="modal"
+          ></Authenticator>
+        </ThemeProvider>
+      )}
+      {/* {authStatus === "configuring" && "Loading..."}
+      {authStatus !== "authenticated" ? <Authenticator /> : <HomePage />} */}
 
-      <BrowserRouter>
+      {/* <BrowserRouter>
         {/* <Routes>
           <Route exact path="/signin">
             <SignInPage />
           </Route>
         </Routes> */}
-        <Routes>
-          <Route exact path="/homepage">
+      {/* <Routes>
+          <Route path="/homepage">
             <HomePage />
           </Route>
         </Routes>
         <Routes>
-          <Route exact path="/Page1">
+          <Route path="/Page1">
             <Page1 />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter>  */}
     </>
   );
 }

@@ -1,13 +1,22 @@
 import React from "react";
 import aqLogo from "../assets/images/aqLogoWithName.png";
+import { Auth } from "aws-amplify";
 
 const Navbar = () => {
+  async function signOut() {
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      console.log("error signing out: ", error);
+    }
+  }
   return (
     <nav class="bg-dark-gray border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
       <div class="container flex flex-wrap justify-between items-center mx-auto">
         <a href="https://www.google.com/" class="flex items-center">
           <img src={aqLogo} class="mr-3 h-6 sm:h-9" alt="AlgoQuant Logo" />
         </a>
+        <button onClick={signOut}>sign out pls</button>
         <button
           data-collapse-toggle="navbar-default"
           type="button"
