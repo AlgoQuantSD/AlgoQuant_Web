@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { UserContext } from "./constants/UserContext";
 import authConfig from "./components/authentication/aws-export";
 import { PageRouter, UnauthenticatedPageRouter } from "./PageRouter";
-import { withAuthenticator } from "@aws-amplify/ui-react";
+// import { withAuthenticator } from "@aws-amplify/ui-react";
 
 Amplify.configure({ ...authConfig, Analytics: { disabled: true } });
 
@@ -50,4 +50,5 @@ function App() {
   );
 }
 
-export default withAuthenticator(App);
+export default App;
+// export default withAuthenticator(App);

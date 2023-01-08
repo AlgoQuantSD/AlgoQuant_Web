@@ -31,7 +31,7 @@ const WelcomePage = () => {
           simplified.
         </div>
         <Link
-          to="/home"
+          to="/login"
           className="bg-dark-gray rounded-full text-white p-4 font-light w-32"
         >
           <p className="ml-1">Get Started</p>

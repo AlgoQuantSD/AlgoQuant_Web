@@ -19,31 +19,36 @@ const CardGallery = () => {
     },
     {
       name: "ADL",
-      description: "The ADL is a...",
+      description:
+        "The Accumulation/Distribution indicator (ADL) is a cumulative indicator that uses volume and price to assess whether a stock, forex or crypto currency is being accumulated or distributed. Accumulation/Distribution indicator (or ADL) is one of the top Technical Analysis Indicator.",
       img: null,
       infolink: null,
     },
     {
       name: "OBV",
-      description: "The OBV is a...",
+      description:
+        "On-balance volume (OBV) is a technical indicator of momentum, using volume changes to make price predictions. OBV shows crowd sentiment that can predict a bullish or bearish outcome.",
       img: null,
       infolink: null,
     },
     {
       name: "RSI",
-      description: "The RSI is a...",
+      description:
+        "The relative strength index (RSI) is a momentum indicator used in technical analysis. RSI measures the speed and magnitude of a security's recent price changes to evaluate overvalued or undervalued conditions in the price of that security.",
       img: null,
       infolink: null,
     },
     {
       name: "SO",
-      description: "The SO is a...",
+      description:
+        "A stochastic oscillator is a popular technical indicator for generating overbought and oversold signals. It is a popular momentum indicator, first developed in the 1950s. Stochastic oscillators tend to vary around some mean price level since they rely on an asset's price history.",
       img: null,
       infolink: null,
     },
     {
       name: "BB",
-      description: "The BB is a...",
+      description:
+        "Bollinger Bands (BB) is a popular technical indicator created by John Bollinger that helps determine whether prices are high or low on a relative basis. Bollinger Bands (BB) were created in the early 1980s by trader, analyst, and teacher John Bollinger. The indicator filled a need to visualize changes in volatility.",
       img: null,
       infolink: null,
     },
