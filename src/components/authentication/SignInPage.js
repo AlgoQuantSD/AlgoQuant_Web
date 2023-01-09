@@ -1,5 +1,9 @@
 import { React, useContext, useEffect, useCallback } from "react";
-import { Authenticator, ThemeProvider } from "@aws-amplify/ui-react";
+import {
+  Authenticator,
+  useAuthenticator,
+  ThemeProvider,
+} from "@aws-amplify/ui-react";
 import { useNavigate } from "react-router-dom";
 import CustomAuthTheme from "./CustomAuthTheme";
 import signUpConfig from "./signUpConfig";
@@ -8,10 +12,13 @@ import HomePage from "../pages/HomePage";
 import { UserContext } from "../../constants/UserContext";
 import Navbar from "../NavBar";
 import Sidebar from "../SideBar";
-// import { Auth } from "aws-amplify";
+import { Auth } from "aws-amplify";
 
 const SignInPage = () => {
   const navigate = useNavigate();
+  const { userInfo } = useContext(UserContext);
+  // const { route } = useAuthenticator((context) => [context.route]);
+
   const handleAuthStateChange = useCallback(
     (state) => {
       if (state === "signedIn") {
@@ -20,7 +27,6 @@ const SignInPage = () => {
     },
     [navigate]
   );
-  const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
     console.log("User info updated");
@@ -44,7 +50,7 @@ const SignInPage = () => {
             {JSON.stringify(userInfo?.attributes?.given_name)}
           </p>
         </div>
-        {/* <HomePage /> */}
+        <HomePage />
       </Authenticator>
     </ThemeProvider>
   );
