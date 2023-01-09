@@ -1,10 +1,13 @@
 import { React, useContext } from "react";
 import Navbar from "../NavBar";
 import Sidebar from "../SideBar";
-import { UserContext } from "../../constants/UserContext";
+import {
+  useAuthenticator,
+} from "@aws-amplify/ui-react";
 
 const ProfilePage = () => {
-  const { userInfo } = useContext(UserContext);
+
+  const { user } = useAuthenticator((context) => [context.user]);
 
   return (
     <div className="w-full h-screen bg-dark-gray">
@@ -14,9 +17,9 @@ const ProfilePage = () => {
         Profile Page
       </h1>
       <p className="text-white text-center">
-        {userInfo?.attributes?.given_name +
+        {user?.attributes?.given_name +
           " " +
-          userInfo?.attributes?.family_name}
+          user?.attributes?.family_name}
       </p>
     </div>
   );

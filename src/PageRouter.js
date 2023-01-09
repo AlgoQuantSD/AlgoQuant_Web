@@ -67,6 +67,14 @@ export function PageRouter() {
         </RequireAuth>
         }/>
 
+   <Route 
+        path="/profile" 
+        element={
+       <RequireAuth>
+        <ProfilePage />
+        </RequireAuth>
+        }/>
+
     <Route 
         path="/login" 
         element={
