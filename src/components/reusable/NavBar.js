@@ -1,20 +1,10 @@
-import { React, useContext } from "react";
-import aqLogo from "../assets/images/aqLogo.png";
-import { Link, useNavigate } from "react-router-dom";
-import { Auth } from "aws-amplify";
-import { UserContext } from "../constants/UserContext";
-import {
-  Authenticator,
-  useAuthenticator,
-  ThemeProvider,
-} from "@aws-amplify/ui-react";
-
+import { React } from "react";
+import aqLogo from "../../assets/images/aq-logo.png";
+import { Link } from "react-router-dom";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const {  signOut } = useAuthenticator((context) => [context.user]);
-
-
+  const { signOut } = useAuthenticator((context) => [context.user]);
 
   return (
     <nav className="fixed top-0 w-full z-50 px-4 py-2 bg-dark-gray border-gray-300 shadow">

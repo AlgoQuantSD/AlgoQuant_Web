@@ -1,23 +1,22 @@
 import { React } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import HomePage from "./components/pages/HomePage";
 import WelcomePage from "./components/pages/WelcomePage";
 import CreateInvestorPage from "./components/pages/CreateInvestorPage";
 import BacktestingPage from "./components/pages/BacktestingPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
-import SignUpPage from "./components/authentication/SignInPage";
-import {
-  Authenticator,
-  useAuthenticator,
-  ThemeProvider,
-} from "@aws-amplify/ui-react";
-import { Navigate } from "react-router-dom";
+import SignInPage from "./components/pages/SignInPage";
 
 function RequireAuth({ children }) {
   const { route } = useAuthenticator((context) => [context.route]);
-  console.log(route)
-  return route === "authenticated" || route === "idle" ? children : <Navigate to="/" replace />;
+  console.log(route);
+  return route === "authenticated" || route === "idle" ? (
+    children
+  ) : (
+    <Navigate to="/" replace />
+  );
 }
 
 function CheckLoggedIn({ children }) {
@@ -28,63 +27,63 @@ function CheckLoggedIn({ children }) {
 export function PageRouter() {
   return (
     <BrowserRouter>
-      <Routes>     
-      <Route 
-        path="/" 
-        element={
-        <WelcomePage />
-        }/>
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
 
-        <Route 
-        path="/home" 
-        element={
-       <RequireAuth>
-        <HomePage />
-        </RequireAuth>
-        }/>
+        <Route
+          path="/home"
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
 
-      <Route 
-        path="/createinvestor" 
-        element={
-       <RequireAuth>
-        <CreateInvestorPage />
-        </RequireAuth>
-        }/>
+        <Route
+          path="/createinvestor"
+          element={
+            <RequireAuth>
+              <CreateInvestorPage />
+            </RequireAuth>
+          }
+        />
 
-      <Route 
-        path="/backtesting" 
-        element={
-       <RequireAuth>
-        <BacktestingPage />
-        </RequireAuth>
-        }/>
+        <Route
+          path="/backtesting"
+          element={
+            <RequireAuth>
+              <BacktestingPage />
+            </RequireAuth>
+          }
+        />
 
-    <Route 
-        path="/history" 
-        element={
-       <RequireAuth>
-        <TransactionHistoryPage />
-        </RequireAuth>
-        }/>
+        <Route
+          path="/history"
+          element={
+            <RequireAuth>
+              <TransactionHistoryPage />
+            </RequireAuth>
+          }
+        />
 
-   <Route 
-        path="/profile" 
-        element={
-       <RequireAuth>
-        <ProfilePage />
-        </RequireAuth>
-        }/>
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }
+        />
 
-    <Route 
-        path="/login" 
-        element={
-          <CheckLoggedIn>
-          <SignUpPage/>
-          </CheckLoggedIn>
-
-        }/> 
+        <Route
+          path="/login"
+          element={
+            <CheckLoggedIn>
+              <SignInPage />
+            </CheckLoggedIn>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
 }
-

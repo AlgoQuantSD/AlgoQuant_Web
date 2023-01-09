@@ -1,7 +1,7 @@
 // The components object is used as a prop in amplify's Authenticator connected component.
 // FormFields is an object that dictates the order of the inputs on the authentication forms.
 
-const signUpConfig = {
+const SignUpConfig = {
   signIn: {},
   signUp: {
     email: {
@@ -44,4 +44,4 @@ const signUpConfig = {
   confirmResetPassword: {},
 };
 
-export default signUpConfig;
+export default SignUpConfig;

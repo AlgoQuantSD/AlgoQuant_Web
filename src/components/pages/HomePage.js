@@ -1,14 +1,10 @@
 import { React } from "react";
-import Navbar from "../NavBar";
-import Sidebar from "../SideBar";
-import {
-  useAuthenticator,
-} from "@aws-amplify/ui-react";
+import Navbar from "../reusable/NavBar";
+import Sidebar from "../reusable/SideBar";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const HomePage = () => {
-
   const { user } = useAuthenticator((context) => [context.user]);
-
 
   return (
     <div className="w-full h-screen bg-dark-gray">
@@ -18,7 +14,7 @@ const HomePage = () => {
         HomePage
       </h1>
       <p className="text-white text-center">
-        Welcome {user?.attributes?.given_name}!!!!!!!!!
+        Welcome {user?.attributes?.given_name}
       </p>
     </div>
   );

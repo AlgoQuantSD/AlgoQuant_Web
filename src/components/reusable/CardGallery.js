@@ -1,6 +1,5 @@
-import React from "react";
+import { React, useState } from "react";
 import Card from "./Card";
-import { useState } from "react";
 
 const CardGallery = () => {
   const [selectedIndicator, setSelectedIndicator] = useState("MACD");
@@ -59,13 +58,13 @@ const CardGallery = () => {
   );
 
   return (
-    <div className="card-gallery">
+    <div className="h-400 w-600 flex flex-col">
       <Card
         name={selectedIndicatorObject.name}
         img={selectedIndicatorObject.img}
         description={selectedIndicatorObject.description}
       />
-      <div className="radio-buttons">
+      <div className="pt-36">
         {indicators.map((indicator) => (
           <div key={indicator.name} className="inline-flex items-center pr-4">
             <input
@@ -76,7 +75,7 @@ const CardGallery = () => {
               onChange={handleChange}
               className="w-8 h-8"
             />
-            <label className="ml-4 text-xl">{indicator.name}</label>
+            <label className="ml-3 text-xl">{indicator.name}</label>
           </div>
         ))}
       </div>
