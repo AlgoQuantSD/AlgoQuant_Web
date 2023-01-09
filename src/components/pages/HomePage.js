@@ -4,11 +4,6 @@ import Sidebar from "../SideBar";
 import { UserContext } from "../../constants/UserContext";
 
 const HomePage = () => {
-  const { userInfo } = useContext(UserContext);
-
-  useEffect(() => {
-    console.log("User info updated");
-  }, [userInfo]);
 
   return (
     <div className="w-full h-screen bg-dark-gray">
@@ -18,7 +13,6 @@ const HomePage = () => {
         HomePage
       </h1>
       <p className="text-white text-center">
-        {JSON.stringify(userInfo?.attributes?.given_name)}
       </p>
     </div>
   );

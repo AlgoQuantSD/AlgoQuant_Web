@@ -3,20 +3,18 @@ import aqLogo from "../assets/images/aqLogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { UserContext } from "../constants/UserContext";
+import {
+  Authenticator,
+  useAuthenticator,
+  ThemeProvider,
+} from "@aws-amplify/ui-react";
+
 
 const Navbar = () => {
-  const { setUserInfo } = useContext(UserContext);
   const navigate = useNavigate();
+  const {  signOut } = useAuthenticator((context) => [context.user]);
 
-  async function signOut() {
-    try {
-      await Auth.signOut();
-      setUserInfo({});
-      navigate("/");
-    } catch (error) {
-      console.log("error signing out: ", error);
-    }
-  }
+
 
   return (
     <nav className="fixed top-0 w-full z-50 px-4 py-2 bg-dark-gray border-gray-300 shadow">
