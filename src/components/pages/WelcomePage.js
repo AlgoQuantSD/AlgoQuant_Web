@@ -8,13 +8,13 @@ const WelcomePage = () => {
     <div className="flex bg-green h-screen w-screen">
       <nav className="fixed top-0 w-full z-50 px-4 py-2 bg-dark-gray border-gray-300 shadow">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
-          <a href="http://localhost:3000/" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img
               src={aqLogoWithName}
               className="mr-3 h-6 sm:h-9"
               alt="AlgoQuant Logo"
             />
-          </a>
+          </Link>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
@@ -44,7 +44,7 @@ const WelcomePage = () => {
         </div>
         <Link
           to="/login"
-          className="bg-dark-gray rounded-full text-green p-4 font-semibold w-32 flex items-center justify-center"
+          className="bg-dark-gray rounded-full text-white p-4 font-normal w-32 flex items-center justify-center"
         >
           Get Started
         </Link>

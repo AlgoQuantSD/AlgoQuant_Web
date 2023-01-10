@@ -1,49 +1,46 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-import Navbar from "../components/NavBar";
 import { MemoryRouter } from "react-router-dom";
-import { UserContext } from "../constants/UserContext";
-import { Auth } from "aws-amplify";
+import Navbar from "../components/reusable/NavBar";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
-jest.mock("aws-amplify", () => ({
-  Auth: {
+jest.mock("@aws-amplify/ui-react", () => ({
+  useAuthenticator: jest.fn(() => ({
     signOut: jest.fn(),
-  },
+  })),
 }));
 
 describe("Navbar", () => {
-  it('navigates to the profile page when the "My Profile" link is clicked', () => {
+  it("renders correctly", () => {
+    const { container } = render(
+      <MemoryRouter>
+        <Navbar />
+      </MemoryRouter>
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it("calls the signOut function when the Sign Out button is clicked", () => {
     const { getByText } = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <UserContext.Provider value={{ setUserInfo: jest.fn() }}>
-          <Navbar />
-        </UserContext.Provider>
+      <MemoryRouter>
+        <Navbar />
+      </MemoryRouter>
+    );
+    const signOutButton = getByText("Sign Out");
+    fireEvent.click(signOutButton);
+
+    expect(useAuthenticator).toHaveBeenCalled();
+    expect(useAuthenticator().signOut).toHaveBeenCalled();
+  });
+
+  it("renders My Profile link correctly", () => {
+    const { getByText } = render(
+      <MemoryRouter>
+        <Navbar />
       </MemoryRouter>
     );
     const profileLink = getByText("My Profile");
-    fireEvent.click(profileLink);
+    expect(profileLink).toBeInTheDocument();
     expect(profileLink.getAttribute("href")).toBe("/profile");
-  });
-
-  it('should sign out when the "Sign Out" button is clicked', () => {
-    const mockSignOut = jest.fn();
-    const { getByText } = render(<Navbar signOut={mockSignOut} />);
-    const signOutButton = getByText("Sign Out");
-
-    fireEvent.click(signOutButton);
-
-    expect(mockSignOut).toHaveBeenCalled();
-  });
-  it('signs out and navigates to the home page when the "Sign Out" button is clicked', () => {
-    const { getByText } = render(
-      <MemoryRouter initialEntries={["/"]}>
-        <UserContext.Provider value={{ setUserInfo: jest.fn() }}>
-          <Navbar />
-        </UserContext.Provider>
-      </MemoryRouter>
-    );
-    const signOutButton = getByText("Sign Out");
-    fireEvent.click(signOutButton);
-    expect(Auth.signOut).toHaveBeenCalled();
   });
 });

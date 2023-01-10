@@ -1,43 +1,30 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
-import Sidebar from "../components/SideBar";
-import { MemoryRouter } from "react-router-dom";
+import { render } from "@testing-library/react";
+import Sidebar from "./Sidebar";
 
 describe("Sidebar", () => {
-  it("renders all links correctly", () => {
-    const { getByText } = render(
-      <MemoryRouter>
-        <Sidebar />
-      </MemoryRouter>
-    );
-    const homeLink = getByText("Home");
-    expect(homeLink).toBeInTheDocument();
-    const createInvestorLink = getByText("Create Investor");
-    expect(createInvestorLink).toBeInTheDocument();
-    const backtestingLink = getByText("Back Testing");
-    expect(backtestingLink).toBeInTheDocument();
-    const historyLink = getByText("Transaction History");
-    expect(historyLink).toBeInTheDocument();
-    const profileLink = getByText("My Profile");
-    expect(profileLink).toBeInTheDocument();
+  it("should render correctly", () => {
+    const { container } = render(<Sidebar />);
+    expect(container).toMatchSnapshot();
   });
-  it("navigates to the correct pages when links are clicked", () => {
-    const { getByText } = render(
-      <MemoryRouter initialEntries={["/home"]}>
-        <Sidebar />
-      </MemoryRouter>
+
+  it("should have a list of 5 links", () => {
+    const { container } = render(<Sidebar />);
+    const links = container.querySelectorAll("a");
+    expect(links.length).toBe(5);
+  });
+
+  it("should contain the correct link destinations", () => {
+    const { container } = render(<Sidebar />);
+    const linkDestinations = Array.from(container.querySelectorAll("a")).map(
+      (link) => link.getAttribute("href")
     );
-    const createInvestorLink = getByText("Create Investor");
-    fireEvent.click(createInvestorLink);
-    expect(createInvestorLink.getAttribute("href")).toBe("/createInvestor");
-    const backtestingLink = getByText("Back Testing");
-    fireEvent.click(backtestingLink);
-    expect(backtestingLink.getAttribute("href")).toBe("/backtesting");
-    const historyLink = getByText("Transaction History");
-    fireEvent.click(historyLink);
-    expect(historyLink.getAttribute("href")).toBe("/history");
-    const profileLink = getByText("My Profile");
-    fireEvent.click(profileLink);
-    expect(profileLink.getAttribute("href")).toBe("/profile");
+    expect(linkDestinations).toEqual([
+      "/home",
+      "/createInvestor",
+      "/backtesting",
+      "/history",
+      "/profile",
+    ]);
   });
 });
