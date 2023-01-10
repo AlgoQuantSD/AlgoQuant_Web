@@ -20,7 +20,7 @@ const WelcomePage = () => {
               <li>
                 <Link
                   to="/login"
-                  className="block py-2 pr-4 pl-3 text-green rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent"
+                  className="bg-green text-dark-gray font-semibold py-2 px-4 rounded-full hover:bg-green-600"
                 >
                   Log in / Sign up
                 </Link>
@@ -44,9 +44,9 @@ const WelcomePage = () => {
         </div>
         <Link
           to="/login"
-          className="bg-dark-gray rounded-full text-white p-4 font-light w-32"
+          className="bg-dark-gray rounded-full text-green p-4 font-semibold w-32 flex items-center justify-center"
         >
-          <p className="ml-1">Get Started</p>
+          Get Started
         </Link>
       </div>
     </div>
