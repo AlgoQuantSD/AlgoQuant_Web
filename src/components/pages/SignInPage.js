@@ -1,8 +1,8 @@
 import React from "react";
 import { Authenticator, ThemeProvider } from "@aws-amplify/ui-react";
 import CustomAuthTheme from "../authentication/CustomAuthTheme";
-import SignUpConfig from "../authentication/SignUpConfig";
-import components from "../authentication/AuthFormComponents";
+import SignUpConfig from "../authentication/signUpConfig";
+import components from "../authentication/authFormComponents";
 
 const SignInPage = () => {
   return (
