@@ -6,9 +6,16 @@ module.exports = {
   theme: {
     colors: {
       'white': '#ffffff',
+      'faded-white': 'FFFFFFE6',
+      'black': '#000000',
       'green': '#3f9f30',
+      'faded-green': '#3F9F3059',
+      'red': '#B11818',
       'dark-gray': '#323232',
-      'light-gray': '#404040',
+      'faded-dark-gray': '#323232F2',
+      'medium-gray': '#747272',
+      'light-gray': '#C7C7C7',
+      'darker-gray': '#2F2F2F',
     }
   },
   plugins: [],

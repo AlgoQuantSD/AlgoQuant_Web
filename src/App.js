@@ -1,19 +1,16 @@
-import NavBar from "./components/NavBar";
-import HomePage from "./components/HomePage";
-import SignInPage from "./components/authentication/SignInPage";
-// TO-DO: Imports are commented out until routing is implemented
-// import SignUpPage from "./components/authentication/SignUpPage";
-// import ResetPwdPage from "./components/authentication/ResetPwdPage";
+import React from "react";
+import { PageRouter } from "./PageRouter";
+import { Authenticator } from "@aws-amplify/ui-react";
+import { Amplify } from "aws-amplify";
+import authConfig from "./components/authentication/aws-export";
 import "./App.css";
 
-function App() {
+Amplify.configure({ ...authConfig, Analytics: { disabled: true } });
+
+export default function App() {
   return (
-    <>
-      <SignInPage />
-      <NavBar />
-      <HomePage />
-    </>
+    <Authenticator.Provider>
+      <PageRouter />
+    </Authenticator.Provider>
   );
 }
-
-export default App;
