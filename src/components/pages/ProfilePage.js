@@ -40,7 +40,7 @@ const ProfilePage = () => {
             </li>
             <li>
               <input
-                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md"
+                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.given_name}
                 onChange={handleNameChange}
@@ -51,7 +51,7 @@ const ProfilePage = () => {
             </li>
             <li>
               <input
-                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md"
+                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.family_name}
                 onChange={handleNameChange}
@@ -62,7 +62,7 @@ const ProfilePage = () => {
             </li>
             <li>
               <input
-                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md"
+                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.email}
                 onChange={handleNameChange}
@@ -73,7 +73,7 @@ const ProfilePage = () => {
             </li>
             <li>
               <input
-                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md"
+                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.phone_number}
                 onChange={handleNameChange}
