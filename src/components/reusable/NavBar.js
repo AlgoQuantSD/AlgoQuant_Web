@@ -2,6 +2,7 @@ import { React } from "react";
 import aqLogo from "../../assets/images/aq-logo.png";
 import { Link } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import TestApi from "../api/GetUser";
 
 const Navbar = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
@@ -28,6 +29,14 @@ const Navbar = () => {
                 onClick={signOut}
               >
                 Sign Out
+              </button>
+            </li>
+            <li>
+              <button
+                className="block py-2 pr-4 pl-3 text-red rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent"
+                onClick={TestApi}
+              >
+                Test API
               </button>
             </li>
           </ul>
