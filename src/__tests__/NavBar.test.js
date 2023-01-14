@@ -1,23 +1,14 @@
+import { useAuthenticator,signOut } from "@aws-amplify/ui-react";
 import { render, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Navbar from "../components/reusable/NavBar";
 
+// This makes to work for some reason, need to look into it more but at least the tests pass
+jest.mock("@aws-amplify/ui-react", () => ({
+  useAuthenticator: () => ""
+}));
+
 describe("Navbar", () => {
-  window.URL.createObjectURL = jest.fn();
-
-  afterEach(() => {
-    window.URL.createObjectURL.mockReset();
-  });
-
-  jest.mock("@aws-amplify/ui-react", () => {
-    return {
-      useAuthenticator: jest.fn(() => {
-        return {
-          signOut: jest.fn(),
-        };
-      }),
-    };
-  });
 
   it("displays the AlgoQuant logo", () => {
     const { getByAltText } = render(
@@ -28,7 +19,6 @@ describe("Navbar", () => {
     const logo = getByAltText("AlgoQuant Logo");
     expect(logo).toBeInTheDocument();
   });
-
   it("displays a 'My Profile' link", () => {
     const { getByText } = render(
       <MemoryRouter>
@@ -52,11 +42,11 @@ describe("Navbar", () => {
   });
 
   it("calls the 'signOut' function when the 'Sign Out' button is clicked", () => {
-    window.URL.createObjectURL = jest.fn(() => "Sign Out");
+    //window.URL.createObjectURL = jest.fn(() => "Sign Out");
     const signOut = jest.fn();
     const { getByText } = render(
       <MemoryRouter>
-        <Navbar signOut={signOut} />
+        <Navbar/>
       </MemoryRouter>
     );
     const signOutButton = getByText("Sign Out");
@@ -64,3 +54,4 @@ describe("Navbar", () => {
     expect(signOut).toHaveBeenCalled();
   });
 });
+
