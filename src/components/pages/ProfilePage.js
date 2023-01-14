@@ -80,26 +80,28 @@ const ProfilePage = () => {
                 placeholder={user?.attributes?.phone_number}
               />
             </li>
-            <div className="grid grid-cols-1 gap-6 mt-5">
-              <li>
-                <button className="text-white font-semibold underline">
-                  Change password
-                </button>
-                <FaArrowRight className="inline mb-1 ml-1 text-white" />
-              </li>
-              <li>
-                <button className="text-white font-semibold underline">
-                  Update Alpaca Key
-                </button>
-                <FaArrowRight className="inline mb-1 ml-1 text-white" />
-              </li>
-              <li>
-                <button className="text-red font-semibold underline">
-                  Delete Account
-                </button>
-                <FaArrowRight className="inline mb-1 ml-1 text-red" />
-              </li>
-            </div>
+            <li>
+              <div className="grid grid-cols-1 gap-6 mt-5">
+                <li>
+                  <button className="text-white font-semibold underline">
+                    Change password
+                  </button>
+                  <FaArrowRight className="inline mb-1 ml-1 text-white" />
+                </li>
+                <li>
+                  <button className="text-white font-semibold underline">
+                    Update Alpaca Key
+                  </button>
+                  <FaArrowRight className="inline mb-1 ml-1 text-white" />
+                </li>
+                <li>
+                  <button className="text-red font-semibold underline">
+                    Delete Account
+                  </button>
+                  <FaArrowRight className="inline mb-1 ml-1 text-red" />
+                </li>
+              </div>
+            </li>
             <li>
               <button className="text-white font-medium rounded-lg bg-green py-2 px-6">
                 Save Changes
