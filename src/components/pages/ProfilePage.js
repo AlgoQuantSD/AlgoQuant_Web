@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
@@ -6,15 +6,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 const ProfilePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
-  const [showModal, setShowModal] = useState(false);
-
-  const handleNameChange = (event) => {
-    // setName(event.target.value);
-  };
-
-  const handlePasswordChange = () => {
-    setShowModal(true);
-  };
+  const { signOut } = useAuthenticator((context) => [context.user]);
 
   return (
     <div className="w-full h-screen bg-dark-gray">
@@ -28,63 +20,69 @@ const ProfilePage = () => {
               Reset Balance
             </button>
           </div>
-          <div className="my-6 rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center inset-0">
-            <p className="text-white text-center font-light text-6xl flex">
-              {user?.attributes?.given_name?.charAt(0)}
-              {user?.attributes?.family_name?.charAt(0)}
+          <div className="m-10">
+            <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
+              <p className="text-white text-center font-light text-6xl flex">
+                {user?.attributes?.given_name?.charAt(0)}
+                {user?.attributes?.family_name?.charAt(0)}
+              </p>
+            </div>
+            <p className="text-center text-white font-thin text-md">
+              {user?.attributes?.given_name +
+                " " +
+                user?.attributes?.family_name}
+            </p>
+            <p className="text-2xl font-light text-center text-white mt-3">
+              Buying Power
+            </p>
+            <p className="text-2xl font-bold text-center text-white">
+              $57,901.34
             </p>
           </div>
-          <ul className="grid gap-8 grid-cols-2 mt-6">
-            <li>
-              <p className="text-white font-semibold">First name</p>
-            </li>
-            <li>
+          <ul className="grid gap-8 grid-cols-1 mt-10">
+            <li className="flex">
+              <p className="text-white font-semibold inline py-2 w-1/6">
+                First name
+              </p>
               <input
-                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.given_name}
-                onChange={handleNameChange}
               />
             </li>
-            <li>
-              <p className="text-white font-semibold">Last name</p>
-            </li>
-            <li>
+            <li className="flex">
+              <p className="text-white font-semibold inline py-2 w-1/6">
+                Last name
+              </p>
               <input
-                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.family_name}
-                onChange={handleNameChange}
               />
             </li>
-            <li>
-              <p className="text-white font-semibold">Email Address</p>
-            </li>
-            <li>
+            <li className="flex">
+              <p className="text-white font-semibold inline py-2 w-1/6">
+                Email Address
+              </p>
               <input
-                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.email}
-                onChange={handleNameChange}
               />
             </li>
-            <li>
-              <p className="text-white font-semibold">Phone Number</p>
-            </li>
-            <li>
+            <li className="flex">
+              <p className="text-white font-semibold inline py-2 w-1/6">
+                Phone Number
+              </p>
               <input
-                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.phone_number}
-                onChange={handleNameChange}
               />
             </li>
-            <div className="grid grid-cols-1 gap-6 mt-7">
+            <div className="grid grid-cols-1 gap-6 mt-5">
               <li>
-                <button
-                  className="text-white font-semibold underline"
-                  onClick={handlePasswordChange}
-                >
+                <button className="text-white font-semibold underline">
                   Change password
                 </button>
                 <FaArrowRight className="inline mb-1 ml-1 text-white" />
@@ -102,10 +100,19 @@ const ProfilePage = () => {
                 <FaArrowRight className="inline mb-1 ml-1 text-red" />
               </li>
             </div>
+            <li>
+              <button className="text-white font-medium rounded-lg bg-green py-2 px-6">
+                Save Changes
+              </button>
+              <button
+                className="text-white font-medium rounded-lg bg-red py-2 px-6 float-right"
+                onClick={signOut}
+              >
+                {/* absolute bottom-0 right-0 mr-6 mb-6 */}
+                Sign Out
+              </button>
+            </li>
           </ul>
-          <button className="text-white font-medium rounded-lg bg-green py-2 px-6 mt-24 ml-auto">
-            Save Changes
-          </button>
         </div>
       </div>
     </div>
