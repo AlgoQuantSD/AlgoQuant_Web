@@ -2,9 +2,19 @@ import { React } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { Auth } from "aws-amplify";
 
 const HomePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
+  Auth.currentAuthenticatedUser()
+    .then((user) => {
+      console.log(user);
+      const jwt = user.signInUserSession.idToken.jwtToken;
+      console.log(jwt);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   return (
     <div className="w-full h-screen bg-dark-gray">

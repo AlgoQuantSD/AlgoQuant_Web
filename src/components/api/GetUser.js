@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { Auth } from "aws-amplify";
 
 const API_URL =
   "https://55vb89e0gb.execute-api.us-east-1.amazonaws.com/Development";
@@ -40,15 +41,29 @@ const API_URL =
 // //     return <ul>{this.state.data}</ul>;
 // //   }
 // }
-const TestApi = () => {
-  axios.get(`${API_URL}/test-auth`).then(
-    (response) => {
-      var result = response.data;
-      console.log(result);
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+const getJwtToken = async () => {
+  const user = await Auth.currentAuthenticatedUser();
+  const token = user.signInUserSession.accessToken.jwtToken;
+  return token;
+};
+
+// do we need async?
+const TestApi = async () => {
+  const token = await getJwtToken();
+  axios
+    .get(`${API_URL}/test-auth`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(
+      (response) => {
+        var result = response.data;
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
 };
 export default TestApi;
