@@ -7,3 +7,21 @@ import '@testing-library/jest-dom';
 if (typeof window.URL.createObjectURL === 'undefined') {
     window.URL.createObjectURL = jest.fn();
   }
+
+/*
+This will create a mock when the useAuthenticator method is referenced throughout the code. Since useAuthenicator
+will be used very often through the applicaction it makes sense to have it as part of setup. Here we can configure a mock user
+that will be available in the context of the tests. 
+*/
+jest.mock("@aws-amplify/ui-react", () => ({
+    useAuthenticator: () => {
+      return {
+        user: {
+          attributes: {
+            given_name: "John",
+            family_name: "Doe",
+          }},
+          signOut: jest.fn()
+      }
+    }
+  }));

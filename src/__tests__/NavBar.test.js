@@ -3,11 +3,6 @@ import { render, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Navbar from "../components/reusable/NavBar";
 
-// This makes to work for some reason, need to look into it more but at least the tests pass
-jest.mock("@aws-amplify/ui-react", () => ({
-  useAuthenticator: () => ""
-}));
-
 describe("Navbar", () => {
 
   it("displays the AlgoQuant logo", () => {
