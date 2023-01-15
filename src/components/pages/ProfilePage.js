@@ -1,23 +1,23 @@
 import { React } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { FaArrowRight } from "react-icons/fa";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import { FaArrowRight } from "react-icons/fa";
 
 const ProfilePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { signOut } = useAuthenticator((context) => [context.user]);
 
   return (
-    <div className="w-full h-screen bg-dark-gray">
+    <div className="w-full h-screen bg-dark-gray overflow-hidden .md:bg-clip-padding">
       <Navbar />
       <Sidebar />
       <div className="flex justify-center items-center">
-        <div className="w-7/12">
+        <div className="w-8/12">
           <div className="ml-3 flex">
             <h1 className="text-green font-bold text-5xl pt-24">My Account</h1>
             <button className="text-white font-medium rounded-lg bg-another-gray px-6 mt-24 ml-auto">
-              Reset Balance
+              Reset balance
             </button>
           </div>
           <div className="m-10">
@@ -81,7 +81,7 @@ const ProfilePage = () => {
               />
             </li>
             <li>
-              <div className="grid grid-cols-1 gap-6 mt-5">
+              <ul className="grid grid-cols-1 gap-6 mt-5">
                 <li>
                   <button className="text-white font-semibold underline">
                     Change password
@@ -96,22 +96,22 @@ const ProfilePage = () => {
                 </li>
                 <li>
                   <button className="text-red font-semibold underline">
-                    Delete Account
+                    Delete account
                   </button>
                   <FaArrowRight className="inline mb-1 ml-1 text-red" />
                 </li>
-              </div>
+              </ul>
             </li>
             <li>
               <button className="text-white font-medium rounded-lg bg-green py-2 px-6">
-                Save Changes
+                Save changes
               </button>
               <button
                 className="text-white font-medium rounded-lg bg-red py-2 px-6 float-right"
                 onClick={signOut}
               >
                 {/* absolute bottom-0 right-0 mr-6 mb-6 */}
-                Sign Out
+                Sign out
               </button>
             </li>
           </ul>

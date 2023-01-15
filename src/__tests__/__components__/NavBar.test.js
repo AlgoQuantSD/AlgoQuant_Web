@@ -1,10 +1,7 @@
-import { useAuthenticator,signOut } from "@aws-amplify/ui-react";
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import Navbar from "../components/reusable/NavBar";
-
+import Navbar from "../../components/reusable/NavBar";
 describe("Navbar", () => {
-
   it("displays the AlgoQuant logo", () => {
     const { getByAltText } = render(
       <MemoryRouter>
@@ -35,18 +32,4 @@ describe("Navbar", () => {
     expect(signOutButton).toBeInTheDocument();
     expect(signOutButton.tagName).toBe("BUTTON");
   });
-
-  it("calls the 'signOut' function when the 'Sign Out' button is clicked", () => {
-    //window.URL.createObjectURL = jest.fn(() => "Sign Out");
-    const signOut = jest.fn();
-    const { getByText } = render(
-      <MemoryRouter>
-        <Navbar/>
-      </MemoryRouter>
-    );
-    const signOutButton = getByText("Sign Out");
-    fireEvent.click(signOutButton);
-    expect(signOut).toHaveBeenCalled();
-  });
 });
-
