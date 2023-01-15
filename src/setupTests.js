@@ -21,6 +21,8 @@ jest.mock("@aws-amplify/ui-react", () => ({
           given_name: "John",
           family_name: "Doe",
           email: "johndoe@example.com",
+          phone_number: "+14071234567",
+          total_balance: 57901.34,
         },
       },
       signOut: jest.fn(),

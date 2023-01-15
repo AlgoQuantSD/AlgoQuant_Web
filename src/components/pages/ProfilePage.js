@@ -22,12 +22,18 @@ const ProfilePage = () => {
           </div>
           <div className="m-10">
             <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
-              <p className="text-white text-center font-light text-6xl flex">
+              <p
+                className="text-white text-center font-light text-6xl flex"
+                data-testid="user-initials"
+              >
                 {user?.attributes?.given_name?.charAt(0)}
                 {user?.attributes?.family_name?.charAt(0)}
               </p>
             </div>
-            <p className="text-center text-white font-thin text-md">
+            <p
+              className="text-center text-white font-thin text-md"
+              data-testid="user-name"
+            >
               {user?.attributes?.given_name +
                 " " +
                 user?.attributes?.family_name}
@@ -35,7 +41,10 @@ const ProfilePage = () => {
             <p className="text-2xl font-light text-center text-white mt-3">
               Buying Power
             </p>
-            <p className="text-2xl font-bold text-center text-white">
+            <p
+              className="text-2xl font-bold text-center text-white"
+              data-testid="total-balance"
+            >
               $57,901.34
             </p>
           </div>
