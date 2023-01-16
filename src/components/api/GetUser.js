@@ -2,8 +2,7 @@ import axios from "axios";
 import React from "react";
 import { Auth } from "aws-amplify";
 
-const API_URL =
-  "https://55vb89e0gb.execute-api.us-east-1.amazonaws.com/Development";
+const API_URL = "https://55vb89e0gb.execute-api.us-east-1.amazonaws.com/Test";
 
 // class GetUser extends React.Component {
 //   state = {
@@ -41,21 +40,24 @@ const API_URL =
 // //     return <ul>{this.state.data}</ul>;
 // //   }
 // }
-const getJwtToken = async () => {
-  const user = await Auth.currentAuthenticatedUser();
-  const token = user.signInUserSession.accessToken.jwtToken;
-  return token;
-};
-
-// do we need async?
-const TestApi = async () => {
-  const token = await getJwtToken();
+// const getJwtToken = async () => {
+//   const user = await Auth.currentAuthenticatedUser();
+//   const token = user.signInUserSession.accessToken.jwtToken;
+//   return token;
+// };
+// const token = getJwtToken();
+// // do we need async?
+const TestApi = async (token) => {
+  // const token = await getJwtToken();
   axios
-    .get(`${API_URL}/test-auth`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    .get(
+      `https://55vb89e0gb.execute-api.us-east-1.amazonaws.com/Development/get-job-list`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
     .then(
       (response) => {
         var result = response.data;
