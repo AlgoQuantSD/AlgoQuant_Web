@@ -38,30 +38,25 @@ describe("Sidebar", () => {
       expect(screen.getByRole("link", { name: link })).toBeInTheDocument();
     });
   });
-  it("routes the user to the correct corresponding link", () => {
+  it("routes the user to the correct page", () => {
     const { getByRole } = render(
       <BrowserRouter initialEntries={["/"]}>
         <Sidebar />
       </BrowserRouter>
     );
-    const homeLink = getByRole("link", { name: "Home" });
-    fireEvent.click(homeLink);
-    expect(window.location.pathname).toBe("/home");
 
-    const createInvestorLink = getByRole("link", { name: "Create Investor" });
-    fireEvent.click(createInvestorLink);
-    expect(window.location.pathname).toBe("/createInvestor");
+    const links = [
+      { name: "Home", path: "/home" },
+      { name: "Create Investor", path: "/createInvestor" },
+      { name: "Back Testing", path: "/backtesting" },
+      { name: "Transaction History", path: "/history" },
+      { name: "My Profile", path: "/profile" },
+    ];
 
-    const backTestingLink = getByRole("link", { name: "Back Testing" });
-    fireEvent.click(backTestingLink);
-    expect(window.location.pathname).toBe("/backtesting");
-
-    const historyLink = getByRole("link", { name: "Transaction History" });
-    fireEvent.click(historyLink);
-    expect(window.location.pathname).toBe("/history");
-
-    const profileLink = getByRole("link", { name: "My Profile" });
-    fireEvent.click(profileLink);
-    expect(window.location.pathname).toBe("/profile");
+    links.forEach(({ name, path }) => {
+      const link = getByRole("link", { name });
+      fireEvent.click(link);
+      expect(window.location.pathname).toBe(path);
+    });
   });
 });
