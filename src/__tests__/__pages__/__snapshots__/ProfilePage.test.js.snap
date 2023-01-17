@@ -1,0 +1,392 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfilePage should render 1`] = `
+<div>
+  <div
+    class="w-full h-screen bg-dark-gray overflow-hidden .md:bg-clip-padding"
+  >
+    <nav
+      class="fixed top-0 w-full z-50 px-4 py-2 bg-dark-gray border-gray-300 shadow"
+    >
+      <div
+        class="container flex flex-wrap justify-between items-center mx-auto"
+      >
+        <a
+          class="flex items-center"
+          href="/"
+        >
+          <img
+            alt="AlgoQuant Logo"
+            class="mr-3 h-6 sm:h-9"
+            src="aq-logo.png"
+          />
+        </a>
+        <div
+          class="hidden w-full md:block md:w-auto"
+          id="navbar-default"
+        >
+          <ul
+            class="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+          >
+            <li>
+              <a
+                class="block py-2 pr-4 pl-3 text-green rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent"
+                href="/profile"
+              >
+                My Profile
+              </a>
+            </li>
+            <li>
+              <button
+                class="block py-2 pr-4 pl-3 text-red rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-black md:dark:hover:bg-transparent"
+              >
+                Sign Out
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="absolute bg-dark-gray w-64 h-screen pl-5 shadow-md pr-5"
+    >
+      <ul
+        class="list-none p-0 mt-28"
+      >
+        <li>
+          <p
+            class="text-light-gray font-light"
+          >
+            PAGES
+          </p>
+        </li>
+        <li>
+          <a
+            class="block py-3 mt-4 pt-3 bg-darker-gray"
+            href="/home"
+          >
+            <svg
+              class="text-2xl inline mr-3 mb-1 ml-2 text-light-gray"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 576 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"
+              />
+            </svg>
+            <p
+              class="text-l inline text-light-gray"
+            >
+              Home
+            </p>
+          </a>
+        </li>
+        <li>
+          <a
+            class="block py-3 mt-4 pt-3 bg-darker-gray"
+            href="/createInvestor"
+          >
+            <svg
+              class="text-2xl inline mr-3 mb-1 ml-2 text-light-gray"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 576 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M208 0c-29.9 0-54.7 20.5-61.8 48.2-.8 0-1.4-.2-2.2-.2-35.3 0-64 28.7-64 64 0 4.8.6 9.5 1.7 14C52.5 138 32 166.6 32 200c0 12.6 3.2 24.3 8.3 34.9C16.3 248.7 0 274.3 0 304c0 33.3 20.4 61.9 49.4 73.9-.9 4.6-1.4 9.3-1.4 14.1 0 39.8 32.2 72 72 72 4.1 0 8.1-.5 12-1.2 9.6 28.5 36.2 49.2 68 49.2 39.8 0 72-32.2 72-72V64c0-35.3-28.7-64-64-64zm368 304c0-29.7-16.3-55.3-40.3-69.1 5.2-10.6 8.3-22.3 8.3-34.9 0-33.4-20.5-62-49.7-74 1-4.5 1.7-9.2 1.7-14 0-35.3-28.7-64-64-64-.8 0-1.5.2-2.2.2C422.7 20.5 397.9 0 368 0c-35.3 0-64 28.6-64 64v376c0 39.8 32.2 72 72 72 31.8 0 58.4-20.7 68-49.2 3.9.7 7.9 1.2 12 1.2 39.8 0 72-32.2 72-72 0-4.8-.5-9.5-1.4-14.1 29-12 49.4-40.6 49.4-73.9z"
+              />
+            </svg>
+            <p
+              class="text-l inline text-light-gray"
+            >
+              Create Investor
+            </p>
+          </a>
+        </li>
+        <li>
+          <a
+            class="block py-3 mt-4 pt-3 bg-darker-gray"
+            href="/backtesting"
+          >
+            <svg
+              class="text-2xl inline mr-3 mb-1 ml-2 text-light-gray"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 384 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M336 64h-80c0-35.3-28.7-64-64-64s-64 28.7-64 64H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48zM96 424c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm0-96c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm0-96c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm96-192c13.3 0 24 10.7 24 24s-10.7 24-24 24-24-10.7-24-24 10.7-24 24-24zm128 368c0 4.4-3.6 8-8 8H168c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16zm0-96c0 4.4-3.6 8-8 8H168c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16zm0-96c0 4.4-3.6 8-8 8H168c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16z"
+              />
+            </svg>
+            <p
+              class="text-l inline text-light-gray"
+            >
+              Back Testing
+            </p>
+          </a>
+        </li>
+        <li>
+          <a
+            class="block py-3 mt-4 pt-3 bg-darker-gray"
+            href="/history"
+          >
+            <svg
+              class="text-2xl inline mr-3 mb-1 ml-2 text-light-gray"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 640 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M608 64H32C14.33 64 0 78.33 0 96v320c0 17.67 14.33 32 32 32h576c17.67 0 32-14.33 32-32V96c0-17.67-14.33-32-32-32zM48 400v-64c35.35 0 64 28.65 64 64H48zm0-224v-64h64c0 35.35-28.65 64-64 64zm272 176c-44.19 0-80-42.99-80-96 0-53.02 35.82-96 80-96s80 42.98 80 96c0 53.03-35.83 96-80 96zm272 48h-64c0-35.35 28.65-64 64-64v64zm0-224c-35.35 0-64-28.65-64-64h64v64z"
+              />
+            </svg>
+            <p
+              class="text-l inline text-light-gray"
+            >
+              Transaction History
+            </p>
+          </a>
+        </li>
+        <li>
+          <a
+            class="block py-3 mt-4 pt-3 bg-darker-gray"
+            href="/profile"
+          >
+            <svg
+              class="text-2xl inline mr-3 mb-1 ml-2 text-light-gray"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
+              viewBox="0 0 512 512"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z"
+              />
+            </svg>
+            <p
+              class="text-l inline text-light-gray"
+            >
+              My Profile
+            </p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div
+      class="flex justify-center items-center"
+    >
+      <div
+        class="w-8/12"
+      >
+        <div
+          class="ml-3 flex"
+        >
+          <h1
+            class="text-green font-bold text-5xl pt-24"
+          >
+            My Account
+          </h1>
+          <button
+            class="text-white font-medium rounded-lg bg-another-gray px-6 mt-24 ml-auto"
+          >
+            Reset balance
+          </button>
+        </div>
+        <div
+          class="m-10"
+        >
+          <div
+            class="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto"
+          >
+            <p
+              class="text-white text-center font-light text-6xl flex"
+              data-testid="user-initials"
+            >
+              J
+              D
+            </p>
+          </div>
+          <p
+            class="text-center text-white font-thin text-md"
+            data-testid="user-name"
+          >
+            John Doe
+          </p>
+          <p
+            class="text-2xl font-light text-center text-white mt-3"
+          >
+            Buying Power
+          </p>
+          <p
+            class="text-2xl font-bold text-center text-white"
+            data-testid="total-balance"
+          >
+            $57,901.34
+          </p>
+        </div>
+        <ul
+          class="grid gap-8 grid-cols-1 mt-10"
+        >
+          <li
+            class="flex"
+          >
+            <p
+              class="text-white font-semibold inline py-2 w-1/6"
+            >
+              First name
+            </p>
+            <input
+              class="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
+              placeholder="John"
+              type="text"
+            />
+          </li>
+          <li
+            class="flex"
+          >
+            <p
+              class="text-white font-semibold inline py-2 w-1/6"
+            >
+              Last name
+            </p>
+            <input
+              class="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
+              placeholder="Doe"
+              type="text"
+            />
+          </li>
+          <li
+            class="flex"
+          >
+            <p
+              class="text-white font-semibold inline py-2 w-1/6"
+            >
+              Email Address
+            </p>
+            <input
+              class="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
+              placeholder="johndoe@example.com"
+              type="text"
+            />
+          </li>
+          <li
+            class="flex"
+          >
+            <p
+              class="text-white font-semibold inline py-2 w-1/6"
+            >
+              Phone Number
+            </p>
+            <input
+              class="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
+              placeholder="+14071234567"
+              type="text"
+            />
+          </li>
+          <li>
+            <ul
+              class="grid grid-cols-1 gap-6 mt-5"
+            >
+              <li>
+                <button
+                  class="text-white font-semibold underline"
+                >
+                  Change password
+                </button>
+                <svg
+                  class="inline mb-1 ml-1 text-white"
+                  fill="currentColor"
+                  height="1em"
+                  stroke="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 448 512"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"
+                  />
+                </svg>
+              </li>
+              <li>
+                <button
+                  class="text-white font-semibold underline"
+                >
+                  Update Alpaca Key
+                </button>
+                <svg
+                  class="inline mb-1 ml-1 text-white"
+                  fill="currentColor"
+                  height="1em"
+                  stroke="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 448 512"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"
+                  />
+                </svg>
+              </li>
+              <li>
+                <button
+                  class="text-red font-semibold underline"
+                >
+                  Delete account
+                </button>
+                <svg
+                  class="inline mb-1 ml-1 text-red"
+                  fill="currentColor"
+                  height="1em"
+                  stroke="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 448 512"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"
+                  />
+                </svg>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button
+              class="text-white font-medium rounded-lg bg-green py-2 px-6"
+            >
+              Save changes
+            </button>
+            <button
+              class="text-white font-medium rounded-lg bg-red py-2 px-6 float-right"
+            >
+              Sign out
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
