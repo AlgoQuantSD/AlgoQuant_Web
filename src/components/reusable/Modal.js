@@ -1,16 +1,19 @@
-import React from "react";
+import { React } from "react";
 
-const Modal = ({ isOpen, toggleModal, children }) => {
+const Modal = ({ isVisible, onClose, children }) => {
+  if (!isVisible) return null;
+
+  const handleClose = (e) => {
+    if (e.target.id === "wrapper") onClose();
+  };
+
   return (
-    <div>
-      {isOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            {children}
-            <button onClick={toggleModal}>Close</button>
-          </div>
-        </div>
-      )}
+    <div
+      className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
+      id="wrapper"
+      onClick={handleClose}
+    >
+      <div className="w-[600px] flex flex-col">{children}</div>
     </div>
   );
 };
