@@ -10,7 +10,7 @@ import {
 
 const Sidebar = () => {
   return (
-    <div className="absolute bg-dark-gray w-64 h-screen left-7 shadow-md pr-7">
+    <div className="absolute bg-dark-gray w-64 h-screen pl-5 shadow-md pr-5">
       <ul className="list-none p-0 mt-28">
         <li>
           <p className="text-light-gray font-light">PAGES</p>
