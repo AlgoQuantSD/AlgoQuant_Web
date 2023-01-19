@@ -48,13 +48,14 @@ const API_URL = "https://55vb89e0gb.execute-api.us-east-1.amazonaws.com/Test";
 // const token = getJwtToken();
 // // do we need async?
 const TestApi = async (token) => {
-  // const token = await getJwtToken();
+  // const token = await getJwtToken();\
   axios
     .get(
-      `https://55vb89e0gb.execute-api.us-east-1.amazonaws.com/Development/get-job-list`,
+      `https://55vb89e0gb.execute-api.us-east-1.amazonaws.com/Development/get-user`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          // "Content-Type": "application/json",
         },
       }
     )
