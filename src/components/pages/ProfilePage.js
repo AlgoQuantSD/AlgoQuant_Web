@@ -3,8 +3,14 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import Modal from "../reusable/Modal";
-import { Auth, Hub } from "aws-amplify";
+// import ModalHelper from "../reusable/ModalHelper";
+// import Modal from "../singular/Modal";
+import EmailModal from "../singular/Modals/EmailModal";
+import PasswordModal from "../singular/Modals/PasswordModal";
+import AlpacaModal from "../singular/Modals/AlpacaModal";
+import DeleteModal from "../singular/Modals/DeleteModal";
+import ResetModal from "../singular/Modals/ResetModal";
+import { Auth } from "aws-amplify";
 
 const ProfilePage = () => {
   // const { user } = useAuthenticator((context) => [context.user]);
@@ -20,6 +26,7 @@ const ProfilePage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+
   const [code, setCode] = useState("");
   const [user, setUser] = useState({});
 
@@ -79,6 +86,7 @@ const ProfilePage = () => {
               Reset balance
             </button>
           </div>
+          <ResetModal setResetModal={setResetModal} resetModal={resetModal} />
           <div className="m-10">
             <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
               <p
@@ -141,6 +149,7 @@ const ProfilePage = () => {
                 onChange={handleEmail}
               />
             </li>
+            <EmailModal setEmailModal={setEmailModal} emailModal={emailModal} />
             <li className="flex">
               <p className="text-white font-semibold inline py-2 w-1/6">
                 Phone Number
@@ -162,6 +171,10 @@ const ProfilePage = () => {
                   </button>
                   <FaArrowRight className="inline mb-1 ml-1 text-white" />
                 </li>
+                <PasswordModal
+                  setPasswordModal={setPasswordModal}
+                  passwordModal={passwordModal}
+                />
                 <li>
                   <button
                     className="text-white font-semibold underline"
@@ -171,6 +184,10 @@ const ProfilePage = () => {
                   </button>
                   <FaArrowRight className="inline mb-1 ml-1 text-white" />
                 </li>
+                <AlpacaModal
+                  setAlpacaModal={setAlpacaModal}
+                  alpacaModal={alpacaModal}
+                />
                 <li>
                   <button
                     className="text-red font-semibold underline"
@@ -180,210 +197,12 @@ const ProfilePage = () => {
                   </button>
                   <FaArrowRight className="inline mb-1 ml-1 text-red" />
                 </li>
+                <DeleteModal
+                  setDeleteModal={setDeleteModal}
+                  deleteModal={deleteModal}
+                />
               </ul>
             </li>
-
-            <Modal isVisible={emailModal} onClose={() => setEmailModal(false)}>
-              <div className="bg-dark-gray p-2 rounded border border-light-gray">
-                <div className="p-6">
-                  <h3 className="text-3xl font-bold text-light-gray mb-5">
-                    Verify Email Address
-                  </h3>
-                  <p className="text-light-gray font-light mb-5 text-xl">
-                    Please enter the code sent to your new email address
-                  </p>
-                  <input
-                    className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-                    type="text"
-                    placeholder="Verification Code"
-                    onChange={handleCode}
-                  />
-                </div>
-                <div className="p-6 flex justify-between">
-                  <button
-                    className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-                    onClick={() => setEmailModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="text-white bg-green py-2 px-6 rounded shadow-md"
-                    onClick={async () => {
-                      var verificationCode = code.value;
-                      // console.log(verificationCode);
-                      const result =
-                        await Auth.verifyCurrentUserAttributeSubmit(
-                          "email",
-                          verificationCode
-                        ).then(() => {
-                          setEmailModal(false);
-                        });
-                      console.log(result);
-                    }}
-                  >
-                    Verify
-                  </button>
-                </div>
-              </div>
-            </Modal>
-
-            <Modal
-              isVisible={passwordModal}
-              onClose={() => setPasswordModal(false)}
-            >
-              <div className="bg-dark-gray p-2 rounded border border-light-gray">
-                <div className="p-6">
-                  <h3 className="text-3xl font-bold text-light-gray mb-5">
-                    Change Password
-                  </h3>
-                  <p className="text-light-gray font-medium mb-5 text-xl">
-                    Please enter your old password
-                  </p>
-                  <input
-                    className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-                    type="text"
-                    placeholder="Old Password"
-                  />
-                  <p className="text-light-gray font-medium mb-5 text-xl">
-                    Please enter your new password
-                  </p>
-                  <input
-                    className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-                    type="text"
-                    placeholder="New Password"
-                  />
-                  <p className="text-light-gray font-medium mb-5 text-xl">
-                    Confirm your new password
-                  </p>
-                  <input
-                    className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-                    type="text"
-                    placeholder="Confirm Password"
-                  />
-                </div>
-                <div className="p-6 flex justify-between">
-                  <button
-                    className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-                    onClick={() => setPasswordModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button className="text-white bg-green py-2 px-6 rounded shadow-md">
-                    Save Changes
-                  </button>
-                </div>
-              </div>
-            </Modal>
-
-            <Modal
-              isVisible={alpacaModal}
-              onClose={() => setAlpacaModal(false)}
-            >
-              <div className="bg-dark-gray p-2 rounded border border-light-gray">
-                <div className="p-6">
-                  <h3 className="text-3xl font-bold text-light-gray mb-5">
-                    Connect to PaperTrade
-                  </h3>
-                  <p className="text-light-gray font-medium mb-5 text-xl">
-                    Please enter your Alpaca Key
-                  </p>
-                  <input
-                    className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-                    type="text"
-                    placeholder="Alpaca Key"
-                  />
-                  <p className="text-faded-dark-gray">
-                    NOTE: Updating the Alpaca Key will reset your paper trading
-                  </p>
-                </div>
-                <div className="p-6 flex justify-between">
-                  <button
-                    className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-                    onClick={() => setAlpacaModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button className="text-white bg-green py-2 px-6 rounded shadow-md">
-                    Continue
-                  </button>
-                </div>
-              </div>
-            </Modal>
-
-            <Modal
-              isVisible={deleteModal}
-              onClose={() => setDeleteModal(false)}
-            >
-              <div className="bg-dark-gray p-2 rounded border border-red">
-                <div className="p-6">
-                  <h3 className="text-3xl font-bold text-red mb-5">
-                    Delete Account
-                  </h3>
-                  <p className="text-light-gray font-medium mb-5 text-xl">
-                    Are you sure you want to delete your account?
-                  </p>
-                  <p className="text-light-gray font-light mb-5">
-                    Please enter your password to confirm.
-                  </p>
-                  <input
-                    className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-                    type="text"
-                    placeholder="Password"
-                  />
-                  <p className="text-faded-dark-gray">
-                    NOTE: You will not be able to recover your account upon
-                    deletion.
-                  </p>
-                </div>
-                <div className="p-6 flex justify-between">
-                  <button
-                    className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-                    onClick={() => setDeleteModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button className="text-white bg-red py-2 px-6 rounded shadow-md">
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </Modal>
-
-            <Modal isVisible={resetModal} onClose={() => setResetModal(false)}>
-              <div className="bg-dark-gray p-2 rounded border border-light-gray">
-                <div className="p-6">
-                  <h3 className="text-3xl font-bold text-light-gray mb-5">
-                    Reset Balance
-                  </h3>
-                  <p className="text-light-gray font-medium mb-5 text-xl">
-                    Are you sure you want to reset your balance?
-                  </p>
-                  <p className="text-light-gray font-light mb-5">
-                    Please enter your Alpaca Key to confirm.
-                  </p>
-                  <input
-                    className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-                    type="text"
-                    placeholder="Alpaca Key"
-                  />
-                  <p className="text-faded-dark-gray">
-                    NOTE: Your balance will be reset to $100,000 and all active
-                    jobs will be terminated.
-                  </p>
-                </div>
-                <div className="p-6 flex justify-between">
-                  <button
-                    className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-                    onClick={() => setResetModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button className="text-white bg-green py-2 px-6 rounded shadow-md">
-                    Continue
-                  </button>
-                </div>
-              </div>
-            </Modal>
 
             <li>
               <button

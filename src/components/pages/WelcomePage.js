@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import aqLogoWithName from "../../assets/images/aq-logo-with-name.png";
-import CardGallery from "../reusable/CardGallery";
+import CardGallery from "../singular/CardGallery";
 
 const WelcomePage = () => {
   return (

@@ -7,7 +7,7 @@ const Navbar = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
 
   return (
-    <nav className="fixed top-0 w-full z-50 px-4 py-2 bg-dark-gray border-gray-300 shadow">
+    <nav className="fixed top-0 w-full z-10 px-4 py-2 bg-dark-gray border-gray-300 shadow">
       <div className="container flex flex-wrap justify-between items-center mx-auto">
         <Link to="/" className="flex items-center">
           <img src={aqLogo} className="mr-3 h-6 sm:h-9" alt="AlgoQuant Logo" />
