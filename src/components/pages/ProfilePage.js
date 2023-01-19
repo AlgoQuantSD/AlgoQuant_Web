@@ -1,16 +1,16 @@
 import { React, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { Auth } from "aws-amplify";
 import { FaArrowRight } from "react-icons/fa";
+
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-// import ModalHelper from "../reusable/ModalHelper";
-// import Modal from "../singular/Modal";
 import EmailModal from "../singular/Modals/EmailModal";
+import PhoneModal from "../singular/Modals/PhoneModal";
 import PasswordModal from "../singular/Modals/PasswordModal";
 import AlpacaModal from "../singular/Modals/AlpacaModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
 import ResetModal from "../singular/Modals/ResetModal";
-import { Auth } from "aws-amplify";
 
 const ProfilePage = () => {
   // const { user } = useAuthenticator((context) => [context.user]);
@@ -22,10 +22,12 @@ const ProfilePage = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [resetModal, setResetModal] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
+  const [phoneModal, setPhoneModal] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const [code, setCode] = useState("");
   const [user, setUser] = useState({});
@@ -49,6 +51,15 @@ const ProfilePage = () => {
       });
       console.log(result);
     }
+
+    if (phone !== "") {
+      console.log("Phone not empty");
+      setPhoneModal(true);
+      const result = await Auth.updateUserAttributes(user, {
+        phone: phone.value,
+      });
+      console.log(result);
+    }
   };
 
   const handleFirstName = (event) => {
@@ -64,6 +75,11 @@ const ProfilePage = () => {
   const handleEmail = (event) => {
     console.log(event.target.value);
     setEmail({ value: event.target.value });
+  };
+
+  const handlePhone = (event) => {
+    console.log(event.target.value);
+    setPhone({ value: event.target.value });
   };
 
   const handleCode = (event) => {
@@ -158,8 +174,10 @@ const ProfilePage = () => {
                 className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.phone_number}
+                onChange={handlePhone}
               />
             </li>
+            <PhoneModal setPhoneModal={setPhoneModal} phoneModal={phoneModal} />
             <li>
               <ul className="grid grid-cols-1 gap-6 mt-5">
                 <li>
