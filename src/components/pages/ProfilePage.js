@@ -1,23 +1,32 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import AlgoquantApiContext from "../../ApiContext";
+import LoadSpinner from "../reusable/LoadSpinner";
 
 const ProfilePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { signOut } = useAuthenticator((context) => [context.user]);
   const algoquantApi = useContext(AlgoquantApiContext);
 
-  const [balance, setBalance] = useState(0);
-  console.log(user?.signInUserSession?.accessToken?.jwtToken);
-  algoquantApi
-    .getUser(user?.signInUserSession?.accessToken?.jwtToken)
-    .then((resp) => {
-      console.log(resp);
-      setBalance(resp.data.buying_power);
-    });
+  const [balance, setBalance] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    algoquantApi
+      .getUser(user?.signInUserSession?.accessToken?.jwtToken)
+      .then((resp) => {
+        console.log(resp);
+        setBalance(resp.data.buying_power);
+        setIsLoading(false);
+      });
+  });
+
+  if (isLoading) {
+    return <LoadSpinner />;
+  }
 
   return (
     <div className="w-full h-screen bg-dark-gray overflow-hidden .md:bg-clip-padding">
@@ -56,7 +65,7 @@ const ProfilePage = () => {
               className="text-2xl font-bold text-center text-white"
               data-testid="total-balance"
             >
-              $57,901.34
+              {balance}
             </p>
           </div>
           <ul className="grid gap-8 grid-cols-1 mt-10">
