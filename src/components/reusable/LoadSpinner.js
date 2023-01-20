@@ -1,16 +1,10 @@
 import { React, useState } from "react";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 const LoadSpinner = () => {
   return (
-    <div className="w-full h-screen bg-dark-gray overflow-hidden .md:bg-clip-padding">
-      <div className="flex justify-center items-center bg-dark-gray">
-        <div
-          className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full"
-          role="status"
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
+    <div className=" flex h-screen bg-dark-gray justify-center items-center">
+      <PropagateLoader color="hsl(130, 43%, 46%)" size={30} />
     </div>
   );
 };
