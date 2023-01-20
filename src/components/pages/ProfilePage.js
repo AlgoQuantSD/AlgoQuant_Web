@@ -13,6 +13,7 @@ const ProfilePage = () => {
 
   const [balance, setBalance] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [alpacaConnection, setAlpacaConnection] = useState(false);
 
   useEffect(() => {
     algoquantApi
@@ -20,6 +21,13 @@ const ProfilePage = () => {
       .then((resp) => {
         console.log(resp);
         setBalance(resp.data.buying_power);
+        console.log(resp.data.alpaca_secret_key);
+        if (
+          typeof resp.data.alpaca_secret_key !== "undefined" ||
+          resp.data.alpaca_key !== "undefined"
+        ) {
+          setAlpacaConnection(true);
+        }
         setIsLoading(false);
       });
   });
@@ -59,7 +67,7 @@ const ProfilePage = () => {
                 user?.attributes?.family_name}
             </p>
             <p className="text-2xl font-light text-center text-white mt-3">
-              Buying Power
+              {alpacaConnection ? "Buying Power" : "Simulated Buying Power"}
             </p>
             <p
               className="text-2xl font-bold text-center text-white"
