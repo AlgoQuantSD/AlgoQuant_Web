@@ -1,12 +1,23 @@
-import { React } from "react";
+import { React, useContext, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
+import AlgoquantApiContext from "../../ApiContext";
 
 const ProfilePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { signOut } = useAuthenticator((context) => [context.user]);
+  const algoquantApi = useContext(AlgoquantApiContext);
+
+  const [balance, setBalance] = useState(0);
+  console.log(user?.signInUserSession?.accessToken?.jwtToken);
+  algoquantApi
+    .getUser(user?.signInUserSession?.accessToken?.jwtToken)
+    .then((resp) => {
+      console.log(resp);
+      setBalance(resp.data.buying_power);
+    });
 
   return (
     <div className="w-full h-screen bg-dark-gray overflow-hidden .md:bg-clip-padding">
