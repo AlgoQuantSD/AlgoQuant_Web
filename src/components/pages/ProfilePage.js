@@ -10,15 +10,28 @@ const ProfilePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { signOut } = useAuthenticator((context) => [context.user]);
   const algoquantApi = useContext(AlgoquantApiContext);
+  const [jwtToken, setJwtToken] = useState(null);
 
   const [balance, setBalance] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [alpacaConnection, setAlpacaConnection] = useState(false);
 
+  // setJwtToken(user?.signInUserSession?.accessToken?.jwtToken);
   useEffect(() => {
-    algoquantApi
-      .getUser(user?.signInUserSession?.accessToken?.jwtToken)
-      .then((resp) => {
+    const getToken = async () => {
+      try {
+        setJwtToken(user?.signInUserSession?.accessToken?.jwtToken);
+      } catch (error) {
+        console.log(error);
+        setJwtToken(null);
+      }
+    };
+    getToken();
+  }, [user]);
+
+  useEffect(() => {
+    if (jwtToken) {
+      algoquantApi.getUser(jwtToken).then((resp) => {
         console.log(resp);
         setBalance(resp.data.buying_power);
         console.log(resp.data.alpaca_secret_key);
@@ -30,7 +43,8 @@ const ProfilePage = () => {
         }
         setIsLoading(false);
       });
-  });
+    }
+  }, [jwtToken, algoquantApi]);
 
   if (isLoading) {
     return <LoadSpinner />;
