@@ -33,11 +33,11 @@ const ProfilePage = () => {
     if (jwtToken) {
       algoquantApi.getUser(jwtToken).then((resp) => {
         console.log(resp);
-        setBalance(resp.data.Item.available_money);
+        setBalance(resp.data.Item.buying_power);
         console.log(resp.data.Item);
         if (
-          typeof resp.data.alpaca_secret_key !== "undefined" ||
-          resp.data.alpaca_key !== "undefined"
+          typeof resp.data.Item.alpaca_secret_key !== "undefined" ||
+          resp.data.Item.alpaca_key !== "undefined"
         ) {
           setAlpacaConnection(true);
         }
