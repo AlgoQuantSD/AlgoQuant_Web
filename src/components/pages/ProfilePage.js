@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { Auth } from "aws-amplify";
 import { FaArrowRight } from "react-icons/fa";
@@ -32,32 +32,84 @@ const ProfilePage = () => {
   const [code, setCode] = useState("");
   const [user, setUser] = useState({});
 
-  // getUser();
+  const [emailVerified, setEmailVerified] = useState(false);
 
-  console.log("EMAIL: " + user.attributes?.email);
+  const getUser = async () => {
+    const user = await Auth.currentAuthenticatedUser();
+    setUser(user);
+    console.log(user);
+  };
 
-  const saveChanges = async () => {
-    console.log("Changes saved");
-    console.log(firstName);
-    console.log(lastName);
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const verifyEmail = async () => {
+    try {
+      await Auth.verifyCurrentUserAttribute("email");
+      setEmailVerified(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // console.log("EMAIL: " + user.attributes?.email);
+
+  const saveChanges = async (event) => {
+    event.preventDefault();
+
+    // // Update the user's first name and last name attributes
+    // try {
+    //   const user = await Auth.currentAuthenticatedUser();
+    //   console.log(firstName);
+    //   console.log(lastName);
+    //   await Auth.updateUserAttributes(user, {
+    //     // name: firstName + " " + lastName,
+    //     given_name: firstName,
+    //     family_name: lastName,
+    //   });
+    //   // setFirstName(firstName);
+    //   // setLastName(lastName);
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     if (email !== "") {
+      verifyEmail();
       console.log("Email not empty");
-      // console.log(email);
+      console.log(email);
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        await Auth.updateUserAttributes(user, {
+          email: email,
+        });
+        setEmailVerified(false);
+      } catch (error) {
+        console.log(error);
+      }
+
       setEmailModal(true);
+      setEmail(event.target.value);
+
+      console.log("capturing email and phone");
+
       const result = await Auth.updateUserAttributes(user, {
-        email: email.value,
-        // family_name: "Lastname",
+        email: email,
       });
-      console.log(result);
+
+      // console.log(result);
     }
 
     if (phone !== "") {
       console.log("Phone not empty");
+
       setPhoneModal(true);
-      const result = await Auth.updateUserAttributes(user, {
-        phone: phone.value,
+      setPhone(event.target.value);
+
+      const result = await Auth.updateUserAttributes(result, {
+        phone: phone,
       });
+
       console.log(result);
     }
   };
