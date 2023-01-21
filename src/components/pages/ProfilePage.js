@@ -67,7 +67,7 @@ const ProfilePage = () => {
                 user?.attributes?.family_name}
             </p>
             <p className="text-2xl font-light text-center text-white mt-3">
-              {alpacaConnection ? "Buying Power" : "Simulated Buying Power"}
+              {alpacaConnection ? "Simulated Buying Power" : "Buying Power"}
             </p>
             <p
               className="text-2xl font-bold text-center text-white"
