@@ -16,7 +16,6 @@ const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [alpacaConnection, setAlpacaConnection] = useState(false);
 
-  // setJwtToken(user?.signInUserSession?.accessToken?.jwtToken);
   useEffect(() => {
     const getToken = async () => {
       try {
@@ -32,15 +31,8 @@ const ProfilePage = () => {
   useEffect(() => {
     if (jwtToken) {
       algoquantApi.getUser(jwtToken).then((resp) => {
-        console.log(resp);
         setBalance(resp.data.buying_power);
-        console.log(resp.data.alpaca_secret_key);
-        if (
-          typeof resp.data.alpaca_secret_key !== "undefined" ||
-          resp.data.alpaca_key !== "undefined"
-        ) {
-          setAlpacaConnection(true);
-        }
+        setAlpacaConnection(resp.data.alpaca);
         setIsLoading(false);
       });
     }
@@ -81,7 +73,9 @@ const ProfilePage = () => {
                 user?.attributes?.family_name}
             </p>
             <p className="text-2xl font-light text-center text-white mt-3">
-              {alpacaConnection ? "Simulated Buying Power" : "Buying Power"}
+              {alpacaConnection
+                ? "Alpaca verfied Buying Power"
+                : "Simulated Buying Power"}
             </p>
             <p
               className="text-2xl font-bold text-center text-white"
