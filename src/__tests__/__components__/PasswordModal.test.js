@@ -2,6 +2,7 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 // import { BrowserRouter } from "react-router-dom";
 import PasswordModal from "../../components/singular/Modals/PasswordModal";
+import { BrowserRouter } from "react-router-dom";
 
 describe("PasswordModal", () => {
   it("should render the modal when isVisible is true", () => {
@@ -33,6 +34,12 @@ describe("PasswordModal", () => {
     expect(queryByText("Save Changes")).toBeNull();
   });
 
+  // it("renders all buttons and input boxes", () => {
+  //   const { getByText } = render (
+  //     <PasswordModal setPasswordModal={setPasswordModal} passwordModal={true} />
+  //   );
+
+  // });
   it("should call setPasswordModal with false when clicking the cancel button", () => {
     const setPasswordModal = jest.fn();
     const { getByText } = render(
