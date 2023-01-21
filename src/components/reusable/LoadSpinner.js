@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import PropagateLoader from "react-spinners/PropagateLoader";
 
 const LoadSpinner = () => {
