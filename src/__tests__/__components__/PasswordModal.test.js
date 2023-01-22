@@ -1,8 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
-// import { BrowserRouter } from "react-router-dom";
 import PasswordModal from "../../components/singular/Modals/PasswordModal";
-import { BrowserRouter } from "react-router-dom";
 
 describe("PasswordModal", () => {
   it("should render the modal when isVisible is true", () => {
@@ -34,12 +32,33 @@ describe("PasswordModal", () => {
     expect(queryByText("Save Changes")).toBeNull();
   });
 
-  // it("renders all buttons and input boxes", () => {
-  //   const { getByText } = render (
-  //     <PasswordModal setPasswordModal={setPasswordModal} passwordModal={true} />
-  //   );
+  it("renders all input boxes and placeholders correctly", () => {
+    const setPasswordModal = jest.fn();
+    const { getByPlaceholderText } = render(
+      <PasswordModal setPasswordModal={setPasswordModal} passwordModal={true} />
+    );
+    const oldPassInput = getByPlaceholderText("Old Password");
+    const newPassInput = getByPlaceholderText("New Password");
+    const confirmPassInput = getByPlaceholderText("Confirm Password");
+    expect(oldPassInput).toBeInTheDocument();
+    expect(newPassInput).toBeInTheDocument();
+    expect(confirmPassInput).toBeInTheDocument();
+  });
 
-  // });
+  it("renders all buttons correctly", () => {
+    const setPasswordModal = jest.fn();
+    const { getByText } = render(
+      <PasswordModal setPasswordModal={setPasswordModal} passwordModal={true} />
+    );
+    const buttonsText = ["Cancel", "Save Changes"];
+
+    buttonsText.forEach((text) => {
+      const button = getByText(text);
+      expect(button).toBeInTheDocument();
+      expect(button.tagName).toBe("BUTTON");
+    });
+  });
+
   it("should call setPasswordModal with false when clicking the cancel button", () => {
     const setPasswordModal = jest.fn();
     const { getByText } = render(
