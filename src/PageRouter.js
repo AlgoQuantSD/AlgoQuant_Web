@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import HomePage from "./components/pages/HomePage";
@@ -8,7 +8,7 @@ import BacktestingPage from "./components/pages/BacktestingPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import SignInPage from "./components/pages/SignInPage";
-
+import JwtContext from "./JwtContext";
 /*
 This Component is used to wrap each Route and ensure that they cannot 
 be acessed unless the user is authenticated. If the user is authenticated
@@ -35,59 +35,75 @@ function ProtectLogin({ children }) {
 }
 
 export function PageRouter() {
+  const { user } = useAuthenticator((context) => [context.user]);
+  const [jwtToken, setJwtToken] = useState(null);
+
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        setJwtToken(user?.signInUserSession?.accessToken?.jwtToken);
+      } catch (error) {
+        console.log(error);
+        setJwtToken(null);
+      }
+    };
+    getToken();
+  }, [user]);
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<WelcomePage />} />
-        <Route
-          path="/home"
-          element={
-            <RequireAuth>
-              <HomePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/createinvestor"
-          element={
-            <RequireAuth>
-              <CreateInvestorPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/backtesting"
-          element={
-            <RequireAuth>
-              <BacktestingPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/history"
-          element={
-            <RequireAuth>
-              <TransactionHistoryPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <RequireAuth>
-              <ProfilePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <ProtectLogin>
-              <SignInPage />
-            </ProtectLogin>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <JwtContext.Provider value={jwtToken}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route
+            path="/home"
+            element={
+              <RequireAuth>
+                <HomePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createinvestor"
+            element={
+              <RequireAuth>
+                <CreateInvestorPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/backtesting"
+            element={
+              <RequireAuth>
+                <BacktestingPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <RequireAuth>
+                <TransactionHistoryPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <ProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <ProtectLogin>
+                <SignInPage />
+              </ProtectLogin>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </JwtContext.Provider>
   );
 }

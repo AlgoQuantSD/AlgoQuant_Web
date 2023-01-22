@@ -5,38 +5,26 @@ import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import AlgoquantApiContext from "../../ApiContext";
 import LoadSpinner from "../reusable/LoadSpinner";
+import JwtContext from "../../JwtContext";
 
 const ProfilePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { signOut } = useAuthenticator((context) => [context.user]);
   const algoquantApi = useContext(AlgoquantApiContext);
-  const [jwtToken, setJwtToken] = useState(null);
-
+  const jwtContext = useContext(JwtContext);
   const [balance, setBalance] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [alpacaConnection, setAlpacaConnection] = useState(false);
 
   useEffect(() => {
-    const getToken = async () => {
-      try {
-        setJwtToken(user?.signInUserSession?.accessToken?.jwtToken);
-      } catch (error) {
-        console.log(error);
-        setJwtToken(null);
-      }
-    };
-    getToken();
-  }, [user]);
-
-  useEffect(() => {
-    if (jwtToken) {
-      algoquantApi.getUser(jwtToken).then((resp) => {
+    if (jwtContext) {
+      algoquantApi.getUser(jwtContext).then((resp) => {
         setBalance(resp.data.buying_power);
         setAlpacaConnection(resp.data.alpaca);
         setIsLoading(false);
       });
     }
-  }, [jwtToken, algoquantApi]);
+  }, [jwtContext, algoquantApi]);
 
   if (isLoading) {
     return <LoadSpinner />;
