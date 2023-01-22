@@ -1,7 +1,56 @@
-import { React } from "react";
+import { React,useState } from "react";
 import Modal from "../Modal";
+import { Auth } from "aws-amplify";
 
-const PasswordModal = ({ setPasswordModal, passwordModal }) => {
+const PasswordModal = ({ setPasswordModal, passwordModal, user }) => {
+
+  // The states that are solely for the password modal
+  const [oldPassword,setOldPassword] = useState(null);
+  const [newPassword,setNewPassword] = useState(null);
+  const [confirmNewPassword,setConfirmNewPassword] = useState(null);
+  const [error, setError] = useState("")
+
+  /*
+  All the event handlers will be used to update the various user fields
+  */
+  const handleNewPassword = (event) => {
+    setNewPassword({ value: event.target.value });
+  };
+
+  const handleOldPassword = (event) => {
+    setOldPassword({ value: event.target.value });
+  };
+
+  const handleConfirmNewPassword = (event) => {
+    setConfirmNewPassword({ value: event.target.value });
+  };
+
+  // Utility method to clear the state of each attribute
+  const clearState = () => {
+    setError("")
+  }
+
+  // Function that will handle the actual changing of the passwords
+  const submitChange = async () => {
+    // Ensure the passwords match
+    if(confirmNewPassword.value != newPassword.value){
+      setError("Passwords do not match!")
+    } else{
+      Auth.changePassword(user, oldPassword.value, newPassword.value).then(
+        () => {
+        // Password changed
+        setPasswordModal(false)
+        clearState()
+        }
+      ).catch(
+        () => {
+          // Ensure the error gets added to the list
+          setError("Incorrect username or password")
+        }
+      );
+    }
+  }
+  
   return (
     <Modal isVisible={passwordModal} onClose={() => setPasswordModal(false)}>
       <div className="bg-dark-gray p-2 rounded border border-light-gray">
@@ -16,6 +65,7 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
             className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="Old Password"
+            onChange={handleOldPassword}
           />
           <p className="text-light-gray font-light mb-2 text-md">
             Please enter your new password
@@ -24,6 +74,7 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
             className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="New Password"
+            onChange={handleNewPassword}
           />
           <p className="text-light-gray font-light mb-2 text-md">
             Confirm your new password
@@ -32,17 +83,26 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
             className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="Confirm Password"
+            onChange={handleConfirmNewPassword}
           />
+        </div>
+        <div className="p-6 flex justify-between">
+          <p className="text-red font-light mb-2 text-md">{error}</p>
         </div>
         <div className="p-6 flex justify-between">
           <button
             className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-            onClick={() => setPasswordModal(false)}
+            onClick={ () => {
+              clearState()
+              setPasswordModal(false)} }
           >
             Cancel
           </button>
-          <button className="text-white bg-green py-2 px-6 rounded shadow-md">
-            Save Changes
+          <button 
+          className="text-white bg-green py-2 px-6 rounded shadow-md"
+          onClick={submitChange}
+          >
+            Change Password
           </button>
         </div>
       </div>

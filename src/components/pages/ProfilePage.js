@@ -1,8 +1,8 @@
 import { React, useState, useEffect } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import { Auth } from "aws-amplify";
 import { FaArrowRight } from "react-icons/fa";
 
+import { updateEmail,updateGivenName,updateFamilyName,updatePhone } from "../authentication/AuthUtils";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import EmailModal from "../singular/Modals/EmailModal";
@@ -13,10 +13,10 @@ import DeleteModal from "../singular/Modals/DeleteModal";
 import ResetModal from "../singular/Modals/ResetModal";
 
 const ProfilePage = () => {
-  // const { user } = useAuthenticator((context) => [context.user]);
 
-  const { signOut } = useAuthenticator((context) => [context.user]);
+  const { user,signOut } = useAuthenticator((context) => [context.user]);
 
+  // All the modal states none should be shown at first
   const [passwordModal, setPasswordModal] = useState(false);
   const [alpacaModal, setAlpacaModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -24,119 +24,79 @@ const ProfilePage = () => {
   const [emailModal, setEmailModal] = useState(false);
   const [phoneModal, setPhoneModal] = useState(false);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  // The attributes that will be updated by the modal
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [phone, setPhone] = useState(null);
 
-  const [code, setCode] = useState("");
-  const [user, setUser] = useState({});
+  // Utility method to clear the state of each attribute
+  const clearState = () => {
+    setFirstName(null)
+    setLastName(null)
+    setPhone(null)
+    setEmail(null)
+  }
 
-  const [emailVerified, setEmailVerified] = useState(false);
-
-  const getUser = async () => {
-    const user = await Auth.currentAuthenticatedUser();
-    setUser(user);
-    console.log(user);
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  const verifyEmail = async () => {
-    try {
-      await Auth.verifyCurrentUserAttribute("email");
-      setEmailVerified(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // console.log("EMAIL: " + user.attributes?.email);
-
-  const saveChanges = async (event) => {
-    event.preventDefault();
-
-    // // Update the user's first name and last name attributes
-    // try {
-    //   const user = await Auth.currentAuthenticatedUser();
-    //   console.log(firstName);
-    //   console.log(lastName);
-    //   await Auth.updateUserAttributes(user, {
-    //     // name: firstName + " " + lastName,
-    //     given_name: firstName,
-    //     family_name: lastName,
-    //   });
-    //   // setFirstName(firstName);
-    //   // setLastName(lastName);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    if (email !== "") {
-      verifyEmail();
-      console.log("Email not empty");
-      console.log(email);
-      try {
-        const user = await Auth.currentAuthenticatedUser();
-        await Auth.updateUserAttributes(user, {
-          email: email,
-        });
-        setEmailVerified(false);
-      } catch (error) {
-        console.log(error);
-      }
-
-      setEmailModal(true);
-      setEmail(event.target.value);
-
-      console.log("capturing email and phone");
-
-      const result = await Auth.updateUserAttributes(user, {
-        email: email,
-      });
-
-      // console.log(result);
-    }
-
-    if (phone !== "") {
-      console.log("Phone not empty");
-
-      setPhoneModal(true);
-      setPhone(event.target.value);
-
-      const result = await Auth.updateUserAttributes(result, {
-        phone: phone,
-      });
-
-      console.log(result);
-    }
-  };
-
+  /*
+  All the event handlers will be used to update the various user fields
+  */
   const handleFirstName = (event) => {
-    console.log(event.target.value);
     setFirstName({ value: event.target.value });
   };
 
   const handleLastName = (event) => {
-    console.log(event.target.value);
     setLastName({ value: event.target.value });
   };
 
   const handleEmail = (event) => {
-    console.log(event.target.value);
     setEmail({ value: event.target.value });
   };
 
   const handlePhone = (event) => {
-    console.log(event.target.value);
     setPhone({ value: event.target.value });
   };
 
-  const handleCode = (event) => {
-    console.log(event.target.value);
-    setCode({ value: event.target.value });
+  /*
+  Function called when the user attempts to save changes. Will check all the user values and 
+  attempt to update them.
+  */
+  const saveChanges = async () => {
+    // Update a user email
+    if (email !== null) {
+      updateEmail(user,email.value).then(()=>{
+        setEmailModal(true)
+      }).catch( (error ) => {
+        // TODO: Instead of logging this should display the error
+        console.log("ERROR")
+    })
+    }
+
+    // Update a user first name
+    if (firstName !== null){ 
+      updateGivenName(user,firstName.value).catch( (error ) => {
+       // TODO: Instead of logging this should display the error
+      console.log("ERROR")
+    }) 
+    }
+
+    // Update a user last name
+    if (lastName !== null){
+      updateFamilyName(user,lastName.value).catch( (error ) => {
+       // TODO: Instead of logging this should display the error
+      console.log("ERROR")
+    })
+    }
+
+    // Update a user phone number
+    if (phone !== null){
+      updatePhone(user,phone.value).catch( (error ) => {
+      // TODO: Instead of logging this should display the error
+      console.log("ERROR")
+    })
+    }
+    // Clear the state after changes have been saved
+    clearState() 
   };
 
   return (
@@ -244,6 +204,7 @@ const ProfilePage = () => {
                 <PasswordModal
                   setPasswordModal={setPasswordModal}
                   passwordModal={passwordModal}
+                  user={user}
                 />
                 <li>
                   <button
@@ -270,6 +231,7 @@ const ProfilePage = () => {
                 <DeleteModal
                   setDeleteModal={setDeleteModal}
                   deleteModal={deleteModal}
+                  user={user}
                 />
               </ul>
             </li>

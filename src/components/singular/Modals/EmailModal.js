@@ -1,8 +1,30 @@
-import { React } from "react";
+import { React,useState } from "react";
 import Modal from "../Modal";
 import { Auth } from "aws-amplify";
 
-const EmailModal = ({ setEmailModal, emailModal, handleCode, code }) => {
+const EmailModal = ({ setEmailModal, emailModal}) => {
+
+  // Keep track of the user provided verification code
+  const [verificationCode, setVerificationCode] = useState(null);
+
+  // Used to display error messages on the modal
+  const [error,setError] = useState("")
+
+  const handleCode = (event) => {
+    setVerificationCode(event.target.value);
+  };
+
+  // Used when the user attempts to submit their verification code 
+  const submitCode = async () => {
+    try {
+    await Auth.verifyCurrentUserAttributeSubmit('email', verificationCode).then(() => {
+        setEmailModal(false)
+    })
+  } catch (error) {
+    setError("Invalid verification code")
+  }   
+  };
+
   return (
     <Modal isVisible={emailModal} onClose={() => setEmailModal(false)}>
       <div className="bg-dark-gray p-2 rounded border border-light-gray">
@@ -19,6 +41,9 @@ const EmailModal = ({ setEmailModal, emailModal, handleCode, code }) => {
             placeholder="Verification Code"
             onChange={handleCode}
           />
+          <p className="text-red font-light mb-5 text-xl">
+            {error}
+          </p>
         </div>
         <div className="p-6 flex justify-between">
           <button
@@ -29,17 +54,7 @@ const EmailModal = ({ setEmailModal, emailModal, handleCode, code }) => {
           </button>
           <button
             className="text-white bg-green py-2 px-6 rounded shadow-md"
-            onClick={async () => {
-              var verificationCode = code.value;
-              // console.log(verificationCode);
-              const result = await Auth.verifyCurrentUserAttributeSubmit(
-                "email",
-                verificationCode
-              ).then(() => {
-                setEmailModal(false);
-              });
-              console.log(result);
-            }}
+            onClick={submitCode}
           >
             Verify
           </button>

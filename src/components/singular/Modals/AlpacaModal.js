@@ -1,7 +1,28 @@
-import React from "react";
+import {useState,React} from "react";
 import Modal from "../Modal";
 
-const AlpacaModal = ({ setAlpacaModal, alpacaModal }) => {
+const AlpacaModal = ({ setAlpacaModal, alpacaModal, alpaca }) => {
+
+  const [alpacaKey,setAlpacaKey] = useState("");
+  const [secretKey,setSecretKey] = useState("");
+
+  const handleAlpacaKey = (event) => {
+    setAlpacaKey({ value: event.target.value });
+  };
+
+  const handleSecretKey = (event) => {
+    setSecretKey({ value: event.target.value });
+  };
+
+  // This method will be called when submit is entered. This will send an API request to the reset-balance endpoint
+  // TODO: Hook up with API
+  const submitRequest = async () => {
+    // Demonstrating that the keys are being handled appropriately
+    console.log(alpacaKey)
+    console.log(secretKey)
+    setAlpacaModal(false)
+  }
+
   return (
     <Modal isVisible={alpacaModal} onClose={() => setAlpacaModal(false)}>
       <div className="bg-dark-gray p-2 rounded border border-light-gray">
@@ -10,12 +31,22 @@ const AlpacaModal = ({ setAlpacaModal, alpacaModal }) => {
             Connect to PaperTrade
           </h3>
           <p className="text-light-gray font-medium mb-5 text-xl">
-            Please enter your Alpaca Key
+            Please enter Alpaca API Key
           </p>
           <input
             className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="Alpaca Key"
+            onChange={handleAlpacaKey}
+          />
+          <p className="text-light-gray font-medium mb-5 text-xl">
+            Please enter Alpaca Secret Key
+          </p>
+          <input
+            className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            type="text"
+            placeholder="Secret Key"
+            onChange={handleSecretKey}
           />
           <p className="text-faded-dark-gray">
             NOTE: Updating the Alpaca Key will reset your paper trading
@@ -24,11 +55,14 @@ const AlpacaModal = ({ setAlpacaModal, alpacaModal }) => {
         <div className="p-6 flex justify-between">
           <button
             className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-            onClick={() => setAlpacaModal(false)}
-          >
+            onClick={ () => {setAlpacaModal(false)} }
+            >
             Cancel
           </button>
-          <button className="text-white bg-green py-2 px-6 rounded shadow-md">
+          <button 
+            className="text-white bg-green py-2 px-6 rounded shadow-md"
+            onClick={submitRequest}
+            >
             Continue
           </button>
         </div>

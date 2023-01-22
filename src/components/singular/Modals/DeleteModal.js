@@ -1,7 +1,36 @@
-import React from "react";
+import { Auth } from "aws-amplify";
+import {React,useState} from "react";
 import Modal from "../Modal";
 
-const DeleteModal = ({ setDeleteModal, deleteModal }) => {
+const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
+
+  const [password,setPassword] = useState(null);
+
+  const [error,setError] = useState("");
+
+  const handlePassword = (event) => {
+    setPassword({ value: event.target.value });
+  };
+
+  const confirmDelete = async () => {
+
+    
+
+    // Attempt to signin using the provided username and password
+    Auth.signIn(  user?.attributes?.email,password.value).then( () => {
+      Auth.deleteUser().then( () => {
+        Auth.signOut()
+        console.log("User Deleted")
+      }).catch(() => {
+        setError("Error Deleting")
+      })
+    }
+    ).catch(() => {
+      setError("Invalid Password")
+    })
+  }
+
+
   return (
     <Modal isVisible={deleteModal} onClose={() => setDeleteModal(false)}>
       <div className="bg-dark-gray p-2 rounded border border-red">
@@ -17,9 +46,13 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
             className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="Password"
+            onChange={handlePassword}
           />
           <p className="text-faded-dark-gray">
             NOTE: You will not be able to recover your account upon deletion.
+          </p>
+          <p className="text-red">
+            {error}
           </p>
         </div>
         <div className="p-6 flex justify-between">
@@ -29,7 +62,10 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
           >
             Cancel
           </button>
-          <button className="text-white bg-red py-2 px-6 rounded shadow-md">
+          <button 
+          className="text-white bg-red py-2 px-6 rounded shadow-md"
+          onClick={confirmDelete}
+          >
             Delete
           </button>
         </div>
