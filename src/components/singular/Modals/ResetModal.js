@@ -13,7 +13,7 @@ const ResetModal = ({ setResetModal, resetModal }) => {
             Are you sure you want to reset your balance?
           </p>
           <p className="text-light-gray font-light mb-5">
-            Please enter your Alpaca Key to confirm.
+            Please enter your Alpaca Key to confirm
           </p>
           <input
             className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
