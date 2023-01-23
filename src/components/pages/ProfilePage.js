@@ -2,7 +2,12 @@ import { React, useState, useEffect } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 
-import { updateEmail,updateGivenName,updateFamilyName,updatePhone } from "../authentication/AuthUtils";
+import {
+  updateEmail,
+  updateGivenName,
+  updateFamilyName,
+  updatePhone,
+} from "../authentication/AuthUtils";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import EmailModal from "../singular/Modals/EmailModal";
@@ -10,11 +15,9 @@ import PhoneModal from "../singular/Modals/PhoneModal";
 import PasswordModal from "../singular/Modals/PasswordModal";
 import AlpacaModal from "../singular/Modals/AlpacaModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
-import ResetModal from "../singular/Modals/ResetModal";
 
 const ProfilePage = () => {
-
-  const { user,signOut } = useAuthenticator((context) => [context.user]);
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
 
   // All the modal states none should be shown at first
   const [passwordModal, setPasswordModal] = useState(false);
@@ -32,11 +35,11 @@ const ProfilePage = () => {
 
   // Utility method to clear the state of each attribute
   const clearState = () => {
-    setFirstName(null)
-    setLastName(null)
-    setPhone(null)
-    setEmail(null)
-  }
+    setFirstName(null);
+    setLastName(null);
+    setPhone(null);
+    setEmail(null);
+  };
 
   /*
   All the event handlers will be used to update the various user fields
@@ -64,39 +67,41 @@ const ProfilePage = () => {
   const saveChanges = async () => {
     // Update a user email
     if (email !== null) {
-      updateEmail(user,email.value).then(()=>{
-        setEmailModal(true)
-      }).catch( (error ) => {
-        // TODO: Instead of logging this should display the error
-        console.log("ERROR")
-    })
+      updateEmail(user, email.value)
+        .then(() => {
+          setEmailModal(true);
+        })
+        .catch((error) => {
+          // TODO: Instead of logging this should display the error
+          console.log("ERROR");
+        });
     }
 
     // Update a user first name
-    if (firstName !== null){ 
-      updateGivenName(user,firstName.value).catch( (error ) => {
-       // TODO: Instead of logging this should display the error
-      console.log("ERROR")
-    }) 
+    if (firstName !== null) {
+      updateGivenName(user, firstName.value).catch((error) => {
+        // TODO: Instead of logging this should display the error
+        console.log("ERROR");
+      });
     }
 
     // Update a user last name
-    if (lastName !== null){
-      updateFamilyName(user,lastName.value).catch( (error ) => {
-       // TODO: Instead of logging this should display the error
-      console.log("ERROR")
-    })
+    if (lastName !== null) {
+      updateFamilyName(user, lastName.value).catch((error) => {
+        // TODO: Instead of logging this should display the error
+        console.log("ERROR");
+      });
     }
 
     // Update a user phone number
-    if (phone !== null){
-      updatePhone(user,phone.value).catch( (error ) => {
-      // TODO: Instead of logging this should display the error
-      console.log("ERROR")
-    })
+    if (phone !== null) {
+      updatePhone(user, phone.value).catch((error) => {
+        // TODO: Instead of logging this should display the error
+        console.log("ERROR");
+      });
     }
     // Clear the state after changes have been saved
-    clearState() 
+    clearState();
   };
 
   return (
@@ -114,7 +119,7 @@ const ProfilePage = () => {
               Reset balance
             </button>
           </div>
-          <ResetModal setResetModal={setResetModal} resetModal={resetModal} />
+          <AlpacaModal setResetModal={setResetModal} resetModal={resetModal} />
           <div className="m-10">
             <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
               <p
