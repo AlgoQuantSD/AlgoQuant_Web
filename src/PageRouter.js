@@ -37,8 +37,13 @@ function ProtectLogin({ children }) {
 
 export function PageRouter() {
   const { user } = useAuthenticator((context) => [context.user]);
-  const algoquant = initAlgoQuantApi(user);
-
+  let algoquant = undefined;
+  try {
+    algoquant = initAlgoQuantApi(user);
+  } catch (err) {
+    // TO-DO: handle this error and show error on screen
+    console.log(err);
+  }
   return (
     <AlgoquantApiContext.Provider value={algoquant}>
       <BrowserRouter>
