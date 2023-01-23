@@ -21,26 +21,18 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (algoquantApi.token) {
-      algoquantApi.getUser().then((resp) => {
-        setBalance(resp.data.buying_power);
-        setAlpacaConnection(resp.data.alpaca);
-        setIsLoading(false);
-      });
+      algoquantApi
+        .getUser()
+        .then((resp) => {
+          setBalance(resp.data.buying_power);
+          setAlpacaConnection(resp.data.alpaca);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          throw new Error(`code: ${err}, message: ${err}`);
+        });
     }
   }, [algoquantApi]);
-
-  // useEffect(() => {
-  //   if (algoquantApi.token) {
-  //     algoquantApi
-  //       .resetBalance({
-  //         alpaca_key: "AKWV35F35Z4WM2XK4VQZ",
-  //         alpaca_secret_key: "Rbh2aEHGIqTdvRv1fvvRgNhovEhP0cSAn7UVPENs",
-  //       })
-  //       .then((resp) => {
-  //         console.log(resp);
-  //       });
-  //   }
-  // }, [algoquantApi]);
 
   if (isLoading) {
     return <LoadSpinner />;
