@@ -3,7 +3,7 @@ import { PageRouter } from "./PageRouter";
 import { Authenticator } from "@aws-amplify/ui-react";
 import { Amplify } from "aws-amplify";
 import authConfig from "./components/authentication/aws-export";
-import AlgoquantApiContext from "./ApiContext";
+import AlgoquantApiContext from "./api/ApiContext";
 import { AlgoQuant } from "../node_modules/algoquant/lib/AlgoQuant";
 
 import "./App.css";

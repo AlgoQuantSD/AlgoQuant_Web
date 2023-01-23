@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import HomePage from "./components/pages/HomePage";
@@ -8,7 +8,8 @@ import BacktestingPage from "./components/pages/BacktestingPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import SignInPage from "./components/pages/SignInPage";
-import JwtContext from "./JwtContext";
+import AlgoquantApiContext from "./api/ApiContext";
+import initAlgoQuantApi from "../src/api/ApiUtils";
 /*
 This Component is used to wrap each Route and ensure that they cannot 
 be acessed unless the user is authenticated. If the user is authenticated
@@ -36,21 +37,10 @@ function ProtectLogin({ children }) {
 
 export function PageRouter() {
   const { user } = useAuthenticator((context) => [context.user]);
-  const [jwtToken, setJwtToken] = useState(null);
+  const algoquant = initAlgoQuantApi(user);
 
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        setJwtToken(user?.signInUserSession?.accessToken?.jwtToken);
-      } catch (error) {
-        console.log(error);
-        setJwtToken(null);
-      }
-    };
-    getToken();
-  }, [user]);
   return (
-    <JwtContext.Provider value={jwtToken}>
+    <AlgoquantApiContext.Provider value={algoquant}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<WelcomePage />} />
@@ -104,6 +94,6 @@ export function PageRouter() {
           />
         </Routes>
       </BrowserRouter>
-    </JwtContext.Provider>
+    </AlgoquantApiContext.Provider>
   );
 }

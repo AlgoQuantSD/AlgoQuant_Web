@@ -3,28 +3,26 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import AlgoquantApiContext from "../../ApiContext";
+import AlgoquantApiContext from "../../api/ApiContext";
 import LoadSpinner from "../reusable/LoadSpinner";
-import JwtContext from "../../JwtContext";
 
 const ProfilePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { signOut } = useAuthenticator((context) => [context.user]);
   const algoquantApi = useContext(AlgoquantApiContext);
-  const jwtContext = useContext(JwtContext);
   const [balance, setBalance] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [alpacaConnection, setAlpacaConnection] = useState(false);
 
   useEffect(() => {
-    if (jwtContext) {
-      algoquantApi.getUser(jwtContext).then((resp) => {
+    if (algoquantApi.token) {
+      algoquantApi.getUser().then((resp) => {
         setBalance(resp.data.buying_power);
         setAlpacaConnection(resp.data.alpaca);
         setIsLoading(false);
       });
     }
-  }, [jwtContext, algoquantApi]);
+  }, [algoquantApi]);
 
   if (isLoading) {
     return <LoadSpinner />;
