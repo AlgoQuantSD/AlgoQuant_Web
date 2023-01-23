@@ -13,6 +13,11 @@ const ProfilePage = () => {
   const [balance, setBalance] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [alpacaConnection, setAlpacaConnection] = useState(false);
+  // Create our number formatter.
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
   useEffect(() => {
     if (algoquantApi.token) {
@@ -23,6 +28,19 @@ const ProfilePage = () => {
       });
     }
   }, [algoquantApi]);
+
+  // useEffect(() => {
+  //   if (algoquantApi.token) {
+  //     algoquantApi
+  //       .resetBalance({
+  //         alpaca_key: "AKWV35F35Z4WM2XK4VQZ",
+  //         alpaca_secret_key: "Rbh2aEHGIqTdvRv1fvvRgNhovEhP0cSAn7UVPENs",
+  //       })
+  //       .then((resp) => {
+  //         console.log(resp);
+  //       });
+  //   }
+  // }, [algoquantApi]);
 
   if (isLoading) {
     return <LoadSpinner />;
@@ -67,7 +85,7 @@ const ProfilePage = () => {
               className="text-2xl font-bold text-center text-white"
               data-testid="total-balance"
             >
-              {balance}
+              {formatter.format(balance)}
             </p>
           </div>
           <ul className="grid gap-8 grid-cols-1 mt-10">
