@@ -33,9 +33,9 @@ const PasswordModal = ({ setPasswordModal, passwordModal, user }) => {
   // Function that will handle the actual changing of the passwords
   const submitChange = async () => {
     // Ensure the passwords match
-    if (confirmNewPassword.value != newPassword.value) {
+    if (confirmNewPassword.value !== newPassword.value) {
       setError("Passwords do not match!");
-    } else if (confirmNewPassword.value == newPassword.value) {
+    } else if (confirmNewPassword.value === newPassword.value) {
       setSuccess("You have successfully changed your password!");
     } else {
       Auth.changePassword(user, oldPassword.value, newPassword.value)

@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 
@@ -32,6 +32,8 @@ const ProfilePage = () => {
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   // Utility method to clear the state of each attribute
   const clearState = () => {
@@ -70,35 +72,56 @@ const ProfilePage = () => {
       updateEmail(user, email.value)
         .then(() => {
           setEmailModal(true);
+          setSuccess("You have successfully changed your email");
+          setTimeout(() => {
+            setSuccess("");
+          }, 5000);
         })
-        .catch((error) => {
-          // TODO: Instead of logging this should display the error
-          console.log("ERROR");
+        .catch(() => {
+          setError("There was a problem updating your email");
+          setTimeout(() => {
+            setError("");
+          }, 5000);
         });
     }
 
     // Update a user first name
     if (firstName !== null) {
-      updateGivenName(user, firstName.value).catch((error) => {
-        // TODO: Instead of logging this should display the error
-        console.log("ERROR");
+      updateGivenName(user, firstName.value).catch(() => {
+        setError("There was a problem updating your first name");
       });
+      setTimeout(() => {
+        setSuccess("You have successfully changed your first name!");
+      }, 1000);
+      setTimeout(() => {
+        setSuccess("");
+      }, 4000);
     }
 
     // Update a user last name
     if (lastName !== null) {
-      updateFamilyName(user, lastName.value).catch((error) => {
-        // TODO: Instead of logging this should display the error
-        console.log("ERROR");
+      updateFamilyName(user, lastName.value).catch(() => {
+        setError("There was a problem updating your last name");
       });
+      setTimeout(() => {
+        setSuccess("You have successfully changed your last name!");
+      }, 1000);
+      setTimeout(() => {
+        setSuccess("");
+      }, 4000);
     }
 
     // Update a user phone number
     if (phone !== null) {
-      updatePhone(user, phone.value).catch((error) => {
-        // TODO: Instead of logging this should display the error
-        console.log("ERROR");
+      updatePhone(user, phone.value).catch(() => {
+        setError("There was a problem updating your phone number");
       });
+      setTimeout(() => {
+        setSuccess("You have successfully changed your phone number!");
+      }, 1000);
+      setTimeout(() => {
+        setSuccess("");
+      }, 4000);
     }
     // Clear the state after changes have been saved
     clearState();
@@ -148,7 +171,7 @@ const ProfilePage = () => {
               $57,901.34
             </p>
           </div>
-          <ul className="grid gap-8 grid-cols-1 mt-10">
+          <ul className="grid gap-8 grid-cols-1 mt-5">
             <li className="flex">
               <p className="text-white font-semibold inline py-2 w-1/6">
                 First name
@@ -194,9 +217,11 @@ const ProfilePage = () => {
                 onChange={handlePhone}
               />
             </li>
+            <p className="flex text-red font-semibold text-md">{error}</p>
+            <p className="flex text-green font-semibold text-md">{success}</p>
             <PhoneModal setPhoneModal={setPhoneModal} phoneModal={phoneModal} />
             <li>
-              <ul className="grid grid-cols-1 gap-6 mt-5">
+              <ul className="grid grid-cols-1 gap-6">
                 <li>
                   <button
                     className="text-white font-semibold underline"
