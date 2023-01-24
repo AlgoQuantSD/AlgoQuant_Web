@@ -1,4 +1,4 @@
-import { React, useState, useContext, useEffect } from "react";
+import { React, useState, useContext} from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
 
