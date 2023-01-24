@@ -1,6 +1,7 @@
 import { React, useState, useContext, useEffect } from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
+import { eventWrapper } from "@testing-library/user-event/dist/utils";
 
 /*
 Enum specifying the different options for the users account
@@ -17,9 +18,8 @@ This modal is responsible for the different interactions with the users account.
 connecting an alpaca account, and disconnecting an alpaca account. 
 */
 const AccountModal = ({
-  setAlpacaModal,
-  alpacaModal,
-  modalType
+  handleAccountModals,
+  accountModal,
 }) => {
 
   const algoquantApi = useContext(AlgoquantApiContext);
@@ -28,6 +28,8 @@ const AccountModal = ({
   const [secretKey, setSecretKey] = useState("");
 
   const [error,setError] = useState("")
+
+  const modalType = accountModal.type
 
   const handleAlpacaKey = (event) => {
     setAlpacaKey(event.target.value);
@@ -41,162 +43,163 @@ const AccountModal = ({
   // TODO: Hook up with API
   const submitRequest = async () => {
 
-
-    if (algoquantApi.token) {
-      algoquantApi
-        .resetBalance({
-          alpaca_key: alpacaKey,
-          alpaca_secret_key: secretKey,
-        })
-        .then((resp) => {
-          setAlpacaModal(false);
-          console.log(resp);
-        })
-        .catch((err) => {
-          throw new Error(`code: ${err}, message: ${err}`);
-        });
-
     // Demonstrating that the keys are being handled appropriately
     console.log(alpacaKey);
     console.log(secretKey);
+
+    var requestBody = {}
+
     // Check the type of modal for what action must be performed
     switch(modalType){
       case ModalTypes.connect:
-        // TODO: Define request body for connect
-        console.log(ModalTypes.connect)
+        requestBody =  {
+        alpaca_key: alpacaKey,
+        alpaca_secret_key: secretKey
+        }
         break
       case ModalTypes.disconnect:
-        // TODO: Define request body for disconnect
-        console.log(ModalTypes.disconnect)
+        requestBody = {}
         break
-      case ModalTypes.reset:
-        // TODO: Define request body for reset
-        console.log(ModalTypes.reset)
+      case ModalTypes.reset_alpaca:
+        requestBody =  {
+          alpaca_key: alpacaKey,
+          alpaca_secret_key: secretKey
+          }
         break
       case ModalTypes.reset_simulated:
-        console.log(ModalTypes.reset_simulated)
+        requestBody = {}
         break
       default:
-        console.log("Invalid type!!!!!!!")
+        console.log('failed')
+    }
+
+    if (algoquantApi.token) {
+      algoquantApi
+        .resetBalance(requestBody)
+        .then((resp) => {
+          handleAccountModals();
+          console.log(resp);
+        })
+        .catch((err) => {
+          setError("Invalid Keys!")
+          console.log(err)
+        });
     }
     // TODO: Make API request here
-    setError("Unimplemented!")
     // This should be called on sucessful API request
-    setAlpacaModal(false);
   };
 
   // The modal used by the user to reset their alpaca account
-  if (modalType === ModalTypes.reset_alpaca) {
+  switch(modalType){ 
+    case ModalTypes.connect:
+      return (
+        <Modal isVisible={accountModal.visible} onClose={() => handleAccountModals()}>
+          <div className="bg-dark-gray p-2 rounded border border-light-gray">
+            <div className="p-6">
+              <h3 className="text-3xl font-bold text-light-gray mb-5">
+                Reset Balance
+              </h3>
+              <p className="text-light-gray font-medium mb-5 text-xl">
+                Are you sure you want to reset your balance?
+              </p>
+              <p className="text-light-gray font-medium mb-5 text-xl">
+                Please enter Alpaca API Key
+              </p>
+              <input
+                className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                type="text"
+                placeholder="Alpaca Key"
+                onChange={handleAlpacaKey}
+              />
+              <p className="text-light-gray font-medium mb-5 text-xl">
+                Please enter Alpaca Secret Key
+              </p>
+              <input
+                className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                type="text"
+                placeholder="Secret Key"
+                onChange={handleSecretKey}
+              />
+              <p className="text-red">{error}</p>
+              <p className="text-faded-dark-gray">
+                NOTE: Your balance will be reset to $100,000 and all active jobs
+                will be terminated.
+              </p>
+            </div>
+            <div className="p-6 flex justify-between">
+              <button
+                className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
+                onClick={() => handleAccountModals()}
+              >
+                Cancel
+              </button>
+              <button
+                className="text-white bg-green py-2 px-6 rounded shadow-md"
+                onClick={() => {
+                  submitRequest();
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </Modal>)
+        
+    case ModalTypes.reset_alpaca:
+      return (
+        <Modal isVisible={accountModal.visible} onClose={() => handleAccountModals()}>
+          <div className="bg-dark-gray p-2 rounded border border-light-gray">
+            <div className="p-6">
+              <h3 className="text-3xl font-bold text-light-gray mb-5">
+                Please provide new Alpaca Key
+              </h3>
+              <p className="text-light-gray font-medium mb-5 text-xl">
+                Please enter Alpaca API Key
+              </p>
+              <input
+                className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                type="text"
+                placeholder="Alpaca Key"
+                onChange={handleAlpacaKey}
+              />
+              <p className="text-light-gray font-medium mb-5 text-xl">
+                Please enter Alpaca Secret Key
+              </p>
+              <input
+                className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                type="text"
+                placeholder="Secret Key"
+                onChange={handleSecretKey}
+              />
+              <p className="text-red">{error}</p>
+              <p className="text-faded-dark-gray">
+                NOTE: Updating the Alpaca Key will reset your paper trading
+              </p>
+            </div>
+            <div className="p-6 flex justify-between">
+              <button
+                className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
+                onClick={() => {
+                  handleAccountModals();
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="text-white bg-green py-2 px-6 rounded shadow-md"
+                onClick={() => {
+                  submitRequest();
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </Modal>);
+  case ModalTypes.reset_simulated:
+  case ModalTypes.disconnect:
     return (
-      <Modal isVisible={alpacaModal} onClose={() => setAlpacaModal(false)}>
-        <div className="bg-dark-gray p-2 rounded border border-light-gray">
-          <div className="p-6">
-            <h3 className="text-3xl font-bold text-light-gray mb-5">
-              Reset Balance
-            </h3>
-            <p className="text-light-gray font-medium mb-5 text-xl">
-              Are you sure you want to reset your balance?
-            </p>
-            <p className="text-light-gray font-medium mb-5 text-xl">
-              Please enter Alpaca API Key
-            </p>
-            <input
-              className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-              type="text"
-              placeholder="Alpaca Key"
-              onChange={handleAlpacaKey}
-            />
-            <p className="text-light-gray font-medium mb-5 text-xl">
-              Please enter Alpaca Secret Key
-            </p>
-            <input
-              className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-              type="text"
-              placeholder="Secret Key"
-              onChange={handleSecretKey}
-            />
-            <p className="text-red">{error}</p>
-            <p className="text-faded-dark-gray">
-              NOTE: Your balance will be reset to $100,000 and all active jobs
-              will be terminated.
-            </p>
-          </div>
-          <div className="p-6 flex justify-between">
-            <button
-              className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-              onClick={() => setAlpacaModal(false)}
-            >
-              Cancel
-            </button>
-            <button
-              className="text-white bg-green py-2 px-6 rounded shadow-md"
-              onClick={() => {
-                submitRequest();
-              }}
-            >
-              Continue
-            </button>
-          </div>
-        </div>
-      </Modal>
-    );
-  // The modal used by the user to connect to their Alpaca account
-  } else if (modalType === ModalTypes.connect) {
-    return (
-      <Modal isVisible={alpacaModal} onClose={() => setAlpacaModal(false)}>
-        <div className="bg-dark-gray p-2 rounded border border-light-gray">
-          <div className="p-6">
-            <h3 className="text-3xl font-bold text-light-gray mb-5">
-              Connect to PaperTrade
-            </h3>
-            <p className="text-light-gray font-medium mb-5 text-xl">
-              Please enter Alpaca API Key
-            </p>
-            <input
-              className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-              type="text"
-              placeholder="Alpaca Key"
-              onChange={handleAlpacaKey}
-            />
-            <p className="text-light-gray font-medium mb-5 text-xl">
-              Please enter Alpaca Secret Key
-            </p>
-            <input
-              className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
-              type="text"
-              placeholder="Secret Key"
-              onChange={handleSecretKey}
-            />
-            <p className="text-red">{error}</p>
-            <p className="text-faded-dark-gray">
-              NOTE: Updating the Alpaca Key will reset your paper trading
-            </p>
-          </div>
-          <div className="p-6 flex justify-between">
-            <button
-              className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-              onClick={() => {
-                setAlpacaModal(false);
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              className="text-white bg-green py-2 px-6 rounded shadow-md"
-              onClick={() => {
-                submitRequest();
-              }}
-            >
-              Continue
-            </button>
-          </div>
-        </div>
-      </Modal>
-    );
-  // The modal used by the user to disconnect from Alpaca or use simulated balance.
-  } else if (modalType === ModalTypes.disconnect || modalType === ModalTypes.reset_simulated) {
-    return (
-      <Modal isVisible={alpacaModal} onClose={() => setAlpacaModal(false)}>
+      <Modal isVisible={accountModal.visible} onClose={() => handleAccountModals()}>
       <div className="bg-dark-gray p-2 rounded border border-red">
         <div className="p-6">
           <h3 className="text-3xl font-bold text-red mb-5"> {modalType === ModalTypes.disconnect ? ("Are you sure you want to reset your balance") : ("Reset your balance")}</h3>
@@ -208,7 +211,7 @@ const AccountModal = ({
         <div className="p-6 flex justify-between">
           <button
             className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-            onClick={() => setAlpacaModal(false)}
+            onClick={() => handleAccountModals()}
           >
             Cancel
           </button>
@@ -221,8 +224,9 @@ const AccountModal = ({
         </div>
       </div>
     </Modal>)
+    default:
+      console.log("Modal failed")
   }
-}
 };
 
 export default AccountModal;
