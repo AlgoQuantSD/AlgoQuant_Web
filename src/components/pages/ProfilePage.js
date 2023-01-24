@@ -9,27 +9,31 @@ const ProfilePage = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
 
   return (
-    <div className="w-full h-screen bg-dark-gray overflow-hidden .md:bg-clip-padding">
-      <Navbar />
+    // Main Div Container 
+    <div className="bg-dark-gray  overflow-x-scroll">
+      <Navbar />  
+      {/* Main Div for the side bar and all the page content */}
+      <div className="flex self-stretch">
       <Sidebar />
-      <div className="flex justify-center items-center">
-        <div className="w-8/12">
-          <div className="ml-3 flex">
-            <h1 className="text-green font-bold text-5xl pt-24">My Account</h1>
-            <button className="text-white font-medium rounded-lg bg-another-gray px-6 mt-24 ml-auto">
+      {/* Div for all the profile content */}
+      <div className="w-full h-full p-5 ">
+          <div className="flex ml-3 mt-24">
+            <h1 className="text-green font-bold text-5xl mr-5">My Account</h1>
+            <button className="text-white font-medium rounded-lg bg-another-gray p-3 ml-auto">
               Reset balance
             </button>
           </div>
-          <div className="m-10">
-            <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
-              <p
-                className="text-white text-center font-light text-6xl flex"
-                data-testid="user-initials"
-              >
-                {user?.attributes?.given_name?.charAt(0)}
-                {user?.attributes?.family_name?.charAt(0)}
-              </p>
-            </div>
+        {/* Profile "Picture" ,Name, and Buying Power */}
+        <div className="m-10">
+          <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
+            <p
+              className="text-white text-center font-light text-6xl flex"
+              data-testid="user-initials"
+            >
+              {user?.attributes?.given_name?.charAt(0)}
+              {user?.attributes?.family_name?.charAt(0)}
+            </p>
+          </div>
             <p
               className="text-center text-white font-thin text-md"
               data-testid="user-name"
@@ -47,10 +51,10 @@ const ProfilePage = () => {
             >
               $57,901.34
             </p>
-          </div>
+        </div>
           <ul className="grid gap-8 grid-cols-1 mt-10">
             <li className="flex">
-              <p className="text-white font-semibold inline py-2 w-1/6">
+              <p className="text-white font-semibold inline pt-2 w-1/6">
                 First name
               </p>
               <input
@@ -111,18 +115,18 @@ const ProfilePage = () => {
                 </li>
               </ul>
             </li>
-            <li>
-              <button className="text-white font-medium rounded-lg bg-green py-2 px-6">
+           {/* Div for Save Changes and Signout Button*/}
+            <div className = "flex">
+              <button className="text-white font-medium rounded-lg bg-green p-4">
                 Save changes
               </button>
               <button
-                className="text-white font-medium rounded-lg bg-red py-2 px-6 float-right"
+                className="text-white font-medium rounded-lg bg-red ml-auto p-4"
                 onClick={signOut}
               >
-                {/* absolute bottom-0 right-0 mr-6 mb-6 */}
                 Sign out
               </button>
-            </li>
+              </div>
           </ul>
         </div>
       </div>

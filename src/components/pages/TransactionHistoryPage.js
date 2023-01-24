@@ -4,7 +4,7 @@ import Sidebar from "../reusable/SideBar";
 
 const TransactionHistoryPage = () => {
   return (
-    <div className="w-full h-screen bg-dark-gray">
+    <div className="flex bg-dark-gray overflow-x-scroll">
       <Navbar />
       <Sidebar />
       <div className="flex justify-center items-center">
