@@ -7,15 +7,18 @@ const HomePage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
 
   return (
-    <div className="w-full h-screen bg-dark-gray">
+    <div className="bg-dark-gray h-screen">
       <Navbar />
-      <Sidebar />
-      <h1 className="font-semibold text-5xl text-white text-center pt-32">
-        HomePage
-      </h1>
-      <p className="text-white text-center">
-        Welcome {user?.attributes?.given_name}
-      </p>
+      <div className="container mx-auto flex">
+        <Sidebar className="w-1/6 ml-3 md:ml-0 lg:ml-0" />
+        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 bg-dark-gray overflow-y">
+          <div className="flex justify-center items-center pt-24">
+            <div className="sm:w-full md:w-8/12">
+              <h1 className="text-green font-bold text-5xl">Home</h1>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@
 exports[`Sidebar should render correctly 1`] = `
 <div>
   <div
-    class="absolute bg-dark-gray w-64 h-screen pl-5 shadow-md pr-5"
+    class="relative w-64 h-screen shadow-md bg-dark-gray pl-5 mr-5 p-5 z-5 "
   >
     <ul
       class="list-none p-0 mt-28"

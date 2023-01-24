@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 
@@ -105,13 +105,15 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-dark-gray overflow-hidden .md:bg-clip-padding">
+    <div className="bg-dark-gray overflow-y">
       <Navbar />
-      <Sidebar />
-      <div className="flex justify-center items-center">
-        <div className="w-8/12">
-          <div className="ml-3 flex">
-            <h1 className="text-green font-bold text-5xl pt-24">My Account</h1>
+      <div className="container mx-auto flex overflow-y bg-dark-gray">
+        <Sidebar />
+        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 bg-dark-gray overflow-y pl-5">
+          <div className="flex">
+            <h1 className="text-green font-bold sm:text-3xl md:text-5xl pt-24">
+              My Profile
+            </h1>
             <button
               className="text-white font-medium rounded-lg bg-another-gray px-6 mt-24 ml-auto"
               onClick={() => setResetModal(true)}
@@ -148,7 +150,7 @@ const ProfilePage = () => {
               $57,901.34
             </p>
           </div>
-          <ul className="grid gap-8 grid-cols-1 mt-10">
+          <ul className="grid gap-8 grid-cols-1 mt-10 mb-10">
             <li className="flex">
               <p className="text-white font-semibold inline py-2 w-1/6">
                 First name

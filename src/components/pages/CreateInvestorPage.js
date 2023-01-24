@@ -4,12 +4,18 @@ import Sidebar from "../reusable/SideBar";
 
 const CreateInvestorPage = () => {
   return (
-    <div className="w-gull h-screen bg-dark-gray">
+    <div className="bg-dark-gray h-screen">
       <Navbar />
-      <Sidebar />
-      <h1 className="font-semibold text-5xl text-white text-center pt-32">
-        Create Investor Page
-      </h1>
+      <div className="container mx-auto flex">
+        <Sidebar className="w-1/6 ml-3 md:ml-0 lg:ml-0" />
+        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 bg-dark-gray overflow-y">
+          <div className="flex justify-center items-center pt-24">
+            <div className="sm:w-full md:w-8/12">
+              <h1 className="text-green font-bold text-5xl">Create Investor</h1>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
