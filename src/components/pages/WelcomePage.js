@@ -5,8 +5,8 @@ import CardGallery from "../singular/CardGallery";
 
 const WelcomePage = () => {
   return (
-    <div className="flex bg-green h-screen w-screen">
-      <nav className="fixed top-0 w-full z-50 px-4 py-2 bg-dark-gray border-gray-300 shadow">
+    <div className="flex bg-green h-screen w-screen overflow-x-scroll">
+      <nav className="fixed top-0 w-full bg-dark-gray p-3 border-gray-300 shadow">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <Link to="/" className="flex items-center">
             <img
@@ -15,7 +15,7 @@ const WelcomePage = () => {
               alt="AlgoQuant Logo"
             />
           </Link>
-          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+          <div className="hidden w-full  md:block md:w-auto" id="navbar-default">
             <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <Link
@@ -29,25 +29,26 @@ const WelcomePage = () => {
           </div>
         </div>
       </nav>
-
-      {/* Left side */}
-      <div className="bg-gray w-1/2 h-full flex items-center justify-center">
-        <CardGallery />
-      </div>
-
-      {/* Right side */}
-      <div className="bg-gray w-1/2 h-full flex flex-col justify-center pl-32">
-        <div className="text-7xl text-dark-gray font-bold pb-5">
-          Investing
-          <br></br>
-          simplified.
+      <div className="flex justify-between items-center">
+        {/* Left side */}
+        <div className="flex bg-gray ml-60">
+          <CardGallery />
         </div>
+
+        {/* Right side */}
+        <div className="flex bg-gray flex-col justify-center ml-80">
+          <div className="text-7xl text-dark-gray font-bold pb-5">
+            Investing
+            <br></br>
+            simplified.
+          </div>
         <Link
           to="/login"
           className="bg-dark-gray rounded-full text-white p-4 font-normal w-32 flex items-center justify-center"
         >
           Get Started
         </Link>
+        </div>
       </div>
     </div>
   );
