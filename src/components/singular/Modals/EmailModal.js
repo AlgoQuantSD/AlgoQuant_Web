@@ -66,4 +66,10 @@ const EmailModal = ({ setEmailModal, emailModal}) => {
     </Modal>
   );
 };
+
+const test = () => {
+  
+
+}
+
 export default EmailModal;
