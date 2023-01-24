@@ -19,14 +19,24 @@ const EmailModal = ({ setEmailModal, emailModal}) => {
     try {
     await Auth.verifyCurrentUserAttributeSubmit('email', verificationCode).then(() => {
         setEmailModal(false)
+        setError("")
     })
-  } catch (error) {
-    setError("Invalid verification code")
+  } catch (err) {
+    setError("Error verifying account: " + err.message)
   }   
   };
 
+  /*
+  Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
+  attributes of the Modal
+  */
+  const handleClose = () => {
+    setError("")
+    setEmailModal(false)
+  }
+
   return (
-    <Modal isVisible={emailModal} onClose={() => setEmailModal(false)}>
+    <Modal isVisible={emailModal} onClose={handleClose}>
       <div className="bg-dark-gray p-2 rounded border border-light-gray">
         <div className="p-6">
           <h3 className="text-3xl font-bold text-light-gray mb-5">
@@ -51,7 +61,7 @@ const EmailModal = ({ setEmailModal, emailModal}) => {
         <div className="p-6 flex justify-between">
           <button
             className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-            onClick={() => setEmailModal(false)}
+            onClick={handleClose}
           >
             Cancel
           </button>
@@ -66,10 +76,5 @@ const EmailModal = ({ setEmailModal, emailModal}) => {
     </Modal>
   );
 };
-
-const test = () => {
-  
-
-}
 
 export default EmailModal;

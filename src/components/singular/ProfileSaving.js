@@ -4,6 +4,7 @@ import {SaveSpinner} from "../reusable/LoadSpinner";
 Component displayed when the user saves their changes in the profile page
 */
 const ProfileSaving = ({saving, errorMessages, successMessages}) => {
+  
     // If the fields are in the process of saving
     if (saving) {
       return (

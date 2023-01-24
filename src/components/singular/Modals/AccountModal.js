@@ -3,7 +3,7 @@ import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
 
 /*
-Enum specifying the different options available to the user
+The different types of Modals that will be displayed
 */
 export const ModalTypes = {
   reset_alpaca: "reset_alpaca",
@@ -61,28 +61,12 @@ const AccountModal = ({
     // request body is empty by default
     var requestBody = {}
 
-    // Check the type of modal for what action must be performed
-    switch(modalType){
-      case ModalTypes.connect:
-        requestBody =  {
+    // Connecting and resetting balance requires alpaca keys
+    if (modalType === ModalTypes.connect || modalType === ModalTypes.reset_alpaca){
+      requestBody =  {
         alpaca_key: alpacaKey,
         alpaca_secret_key: secretKey
         }
-        break
-      // Disconnect will just use the empty body {}
-      case ModalTypes.disconnect:
-        break
-      case ModalTypes.reset_alpaca:
-        requestBody =  {
-          alpaca_key: alpacaKey,
-          alpaca_secret_key: secretKey
-          }
-        break
-      // Reset Simulated will just the empty body
-      case ModalTypes.reset_simulated:
-        break
-      default:
-        setError('Application Error!')
     }
 
     // Create the API request
@@ -94,7 +78,7 @@ const AccountModal = ({
           console.log(resp);
         })
         .catch((err) => {
-          setError("Invalid Keys!")
+          setError("Keys provided are invalid. try again.")
           console.log(err)
         });
     }
@@ -114,7 +98,7 @@ const AccountModal = ({
                 Reset Balance
               </h3>
               <p className="text-light-gray font-medium mb-5 text-xl">
-                Are you sure you want to reset your balance?
+                Resetting Balance requires new Alpaca Keys
               </p>
               <p className="text-light-gray font-medium mb-5 text-xl">
                 Please enter Alpaca API Key
@@ -215,9 +199,14 @@ const AccountModal = ({
       <Modal isVisible={accountModal.visible} onClose={handleClose}>
       <div className="bg-dark-gray p-2 rounded border border-red">
         <div className="p-6">
-          <h3 className="text-3xl font-bold text-red mb-5"> {modalType === ModalTypes.disconnect ? ("Are you sure you want to reset your balance") : ("Reset your balance")}</h3>
+          <h3 className="text-3xl font-bold text-red mb-5"> {modalType === ModalTypes.disconnect ? 
+          ("Disconnect Alpaca") : ("Reset Balance")}
+          </h3>
           <p className="text-light-gray font-medium mb-5 text-xl">
-            { modalType === ModalTypes.disconnect ? ("Are you sure you want to stop using Alapca?") : ("Are you sure you want to reset your balance") }
+            { modalType === ModalTypes.disconnect ? 
+             ("Are you sure you want to disconnect from Alpaca? Doing this will terminate all jobs and reset account to a simulated balance of $100,000.") :
+             ("Are you sure you want to reset your balance? Doing this will terminate all jobs and reset account to $100,000.")
+            }
           </p>
         </div>
         <p className="text-red">{error}</p>
@@ -238,7 +227,7 @@ const AccountModal = ({
       </div>
     </Modal>)
     default:
-      break
+      console.log("No option provided")
   }
 };
 

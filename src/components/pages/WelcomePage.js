@@ -5,7 +5,7 @@ import CardGallery from "../singular/CardGallery";
 
 const WelcomePage = () => {
   return (
-    <div className="flex bg-green h-screen w-screen overflow-x-scroll">
+    <div className="flex bg-green h-screen w-screen overflow-x-auto overflow-y-auto">
       <nav className="fixed top-0 w-full bg-dark-gray p-3 border-gray-300 shadow">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <Link to="/" className="flex items-center">

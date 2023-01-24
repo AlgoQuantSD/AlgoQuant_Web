@@ -13,20 +13,20 @@ export const updateEmail = async(user,email) =>  {
 /*
 Utility method to update a users given name
 */
-export const updateGivenName = async(user,given_name) =>  {
+export const updateGivenName = async(user,givenName) =>  {
 
     return Auth.updateUserAttributes(user, {
-        given_name : given_name,
+        given_name : givenName,
         })   
 }
 
 /*
 Utility method to update a users family name
 */
-export const updateFamilyName = async(user,family_name) =>  {
+export const updateFamilyName = async(user,familyName) =>  {
 
     return Auth.updateUserAttributes(user, {
-        family_name : family_name,
+        family_name : familyName,
         })
 }  
 
