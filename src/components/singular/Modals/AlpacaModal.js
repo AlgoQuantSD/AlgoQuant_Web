@@ -1,5 +1,6 @@
-import { React, useState } from "react";
+import { React, useState, useContext, useEffect } from "react";
 import Modal from "../Modal";
+import AlgoquantApiContext from "../../../api/ApiContext";
 
 const AlpacaModal = ({
   setAlpacaModal,
@@ -7,26 +8,40 @@ const AlpacaModal = ({
   setResetModal,
   resetModal,
 }) => {
+  const algoquantApi = useContext(AlgoquantApiContext);
+
   const [alpacaKey, setAlpacaKey] = useState("");
   const [secretKey, setSecretKey] = useState("");
+  const [error, setError] = useState(false);
 
   const handleAlpacaKey = (event) => {
-    setAlpacaKey({ value: event.target.value });
+    setAlpacaKey(event.target.value);
   };
 
   const handleSecretKey = (event) => {
-    setSecretKey({ value: event.target.value });
+    setSecretKey(event.target.value);
   };
 
   // This method will be called when submit is entered. This will send an API request to the reset-balance endpoint
   // TODO: Hook up with API
-  const submitRequest = async () => {
-    // Demonstrating that the keys are being handled appropriately
-    console.log(alpacaKey);
-    console.log(secretKey);
-    setAlpacaModal(false);
+  const submitRequest = () => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .resetBalance({
+          alpaca_key: alpacaKey,
+          alpaca_secret_key: secretKey,
+        })
+        .then((resp) => {
+          setAlpacaModal(false);
+          console.log(resp);
+        })
+        .catch((err) => {
+          throw new Error(`code: ${err}, message: ${err}`);
+          // TO DO: HANDLE ERROR HERE
+          setError(true);
+        });
+    }
   };
-
   if (resetModal) {
     return (
       <Modal isVisible={resetModal} onClose={() => setResetModal(false)}>
@@ -70,7 +85,9 @@ const AlpacaModal = ({
             </button>
             <button
               className="text-white bg-green py-2 px-6 rounded shadow-md"
-              onClick={submitRequest}
+              onClick={() => {
+                submitRequest();
+              }}
             >
               Continue
             </button>
@@ -119,7 +136,9 @@ const AlpacaModal = ({
             </button>
             <button
               className="text-white bg-green py-2 px-6 rounded shadow-md"
-              onClick={submitRequest}
+              onClick={() => {
+                submitRequest();
+              }}
             >
               Continue
             </button>
