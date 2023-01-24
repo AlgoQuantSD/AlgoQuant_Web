@@ -6,7 +6,8 @@ describe("AlpacaModal", () => {
   it("should render the modal when isVisible is true", () => {
     const { getByText } = render(<AlpacaModal alpacaModal={true} />);
     expect(getByText("Connect to PaperTrade")).toBeInTheDocument();
-    expect(getByText("Please enter your Alpaca Key")).toBeInTheDocument();
+    expect(getByText("Please enter Alpaca API Key")).toBeInTheDocument();
+    expect(getByText("Please enter Alpaca Secret Key")).toBeInTheDocument();
     expect(
       getByText("NOTE: Updating the Alpaca Key will reset your paper trading")
     ).toBeInTheDocument();

@@ -22,7 +22,7 @@ describe("ProfilePage", () => {
       "Save changes",
       "Sign out",
       "Change password",
-      "Update Alpaca Key",
+      "Connect to PaperTrade",
       "Delete account",
     ];
 

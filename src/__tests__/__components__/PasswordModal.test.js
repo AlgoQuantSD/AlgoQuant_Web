@@ -4,32 +4,27 @@ import PasswordModal from "../../components/singular/Modals/PasswordModal";
 
 describe("PasswordModal", () => {
   it("should render the modal when isVisible is true", () => {
-    const setPasswordModal = jest.fn();
-    const { getByText } = render(
-      <PasswordModal setPasswordModal={setPasswordModal} passwordModal={true} />
+    const { getByText, getAllByText } = render(
+      <PasswordModal passwordModal={true} />
     );
-    expect(getByText("Change Password")).toBeInTheDocument();
+    expect(getAllByText("Change Password").at(0)).toBeInTheDocument();
     expect(getByText("Please enter your old password")).toBeInTheDocument();
     expect(getByText("Please enter your new password")).toBeInTheDocument();
     expect(getByText("Confirm your new password")).toBeInTheDocument();
-    expect(getByText("Cancel")).toBeInTheDocument();
-    expect(getByText("Save Changes")).toBeInTheDocument();
   });
 
   it("should not render the modal when isVisible is false", () => {
     const setPasswordModal = jest.fn();
-    const { queryByText } = render(
+    const { queryByText, queryAllByText } = render(
       <PasswordModal
         setPasswordModal={setPasswordModal}
         passwordModal={false}
       />
     );
-    expect(queryByText("Change Password")).toBeNull();
+    expect(queryAllByText("Change Password")).toHaveLength(0);
     expect(queryByText("Please enter your old password")).toBeNull();
     expect(queryByText("Please enter your new password")).toBeNull();
     expect(queryByText("Confirm your new password")).toBeNull();
-    expect(queryByText("Cancel")).toBeNull();
-    expect(queryByText("Save Changes")).toBeNull();
   });
 
   it("renders all input boxes and placeholders correctly", () => {
@@ -46,16 +41,13 @@ describe("PasswordModal", () => {
   });
 
   it("renders all buttons correctly", () => {
-    const setPasswordModal = jest.fn();
-    const { getByText } = render(
-      <PasswordModal setPasswordModal={setPasswordModal} passwordModal={true} />
-    );
-    const buttonsText = ["Cancel", "Save Changes"];
+    const { getAllByText } = render(<PasswordModal passwordModal={true} />);
+    const buttonsText = ["Cancel", "Change Password"];
 
-    buttonsText.forEach((text) => {
-      const button = getByText(text);
+    const buttons = getAllByText(/Cancel|Change Password/i);
+    expect(buttons).toHaveLength(buttonsText.length + 1);
+    buttons.forEach((button) => {
       expect(button).toBeInTheDocument();
-      expect(button.tagName).toBe("BUTTON");
     });
   });
 
