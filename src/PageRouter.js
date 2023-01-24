@@ -8,7 +8,8 @@ import BacktestingPage from "./components/pages/BacktestingPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import SignInPage from "./components/pages/SignInPage";
-
+import AlgoquantApiContext from "./api/ApiContext";
+import initAlgoQuantApi from "../src/api/ApiUtils";
 /*
 This Component is used to wrap each Route and ensure that they cannot 
 be acessed unless the user is authenticated. If the user is authenticated
@@ -35,59 +36,69 @@ function ProtectLogin({ children }) {
 }
 
 export function PageRouter() {
+  const { user } = useAuthenticator((context) => [context.user]);
+  let algoquant = undefined;
+  try {
+    algoquant = initAlgoQuantApi(user);
+  } catch (err) {
+    // TO-DO: handle this error and show error on screen
+    console.log(err);
+  }
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<WelcomePage />} />
-        <Route
-          path="/home"
-          element={
-            <RequireAuth>
-              <HomePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/createinvestor"
-          element={
-            <RequireAuth>
-              <CreateInvestorPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/backtesting"
-          element={
-            <RequireAuth>
-              <BacktestingPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/history"
-          element={
-            <RequireAuth>
-              <TransactionHistoryPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <RequireAuth>
-              <ProfilePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <ProtectLogin>
-              <SignInPage />
-            </ProtectLogin>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <AlgoquantApiContext.Provider value={algoquant}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route
+            path="/home"
+            element={
+              <RequireAuth>
+                <HomePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createinvestor"
+            element={
+              <RequireAuth>
+                <CreateInvestorPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/backtesting"
+            element={
+              <RequireAuth>
+                <BacktestingPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <RequireAuth>
+                <TransactionHistoryPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <ProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <ProtectLogin>
+                <SignInPage />
+              </ProtectLogin>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AlgoquantApiContext.Provider>
   );
 }
