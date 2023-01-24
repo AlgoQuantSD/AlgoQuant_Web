@@ -1,35 +1,33 @@
 import { Auth } from "aws-amplify";
-import {React,useState} from "react";
+import { React, useState } from "react";
 import Modal from "../Modal";
 
 const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
+  const [password, setPassword] = useState(null);
 
-  const [password,setPassword] = useState(null);
-
-  const [error,setError] = useState("");
+  const [error, setError] = useState("");
 
   const handlePassword = (event) => {
     setPassword({ value: event.target.value });
   };
 
   const confirmDelete = async () => {
-
-    
-
     // Attempt to signin using the provided username and password
-    Auth.signIn(  user?.attributes?.email,password.value).then( () => {
-      Auth.deleteUser().then( () => {
-        Auth.signOut()
-        console.log("User Deleted")
-      }).catch(() => {
-        setError("Error Deleting")
+    Auth.signIn(user?.attributes?.email, password.value)
+      .then(() => {
+        Auth.deleteUser()
+          .then(() => {
+            Auth.signOut();
+            console.log("User Deleted");
+          })
+          .catch(() => {
+            setError("Error Deleting");
+          });
       })
-    }
-    ).catch(() => {
-      setError("Invalid Password")
-    })
-  }
-
+      .catch(() => {
+        setError("Invalid Password");
+      });
+  };
 
   return (
     <Modal isVisible={deleteModal} onClose={() => setDeleteModal(false)}>
@@ -51,9 +49,7 @@ const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
           <p className="text-faded-dark-gray">
             NOTE: You will not be able to recover your account upon deletion.
           </p>
-          <p className="text-red">
-            {error}
-          </p>
+          <p className="text-red">{error}</p>
         </div>
         <div className="p-6 flex justify-between">
           <button
@@ -62,9 +58,9 @@ const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
           >
             Cancel
           </button>
-          <button 
-          className="text-white bg-red py-2 px-6 rounded shadow-md"
-          onClick={confirmDelete}
+          <button
+            className="text-white bg-red py-2 px-6 rounded shadow-md"
+            onClick={confirmDelete}
           >
             Delete
           </button>

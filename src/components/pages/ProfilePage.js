@@ -1,8 +1,13 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 
-import { updateEmail,updateGivenName,updateFamilyName,updatePhone } from "../authentication/AuthUtils";
+import {
+  updateEmail,
+  updateGivenName,
+  updateFamilyName,
+  updatePhone,
+} from "../authentication/AuthUtils";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import EmailModal from "../singular/Modals/EmailModal";
@@ -10,11 +15,9 @@ import PhoneModal from "../singular/Modals/PhoneModal";
 import PasswordModal from "../singular/Modals/PasswordModal";
 import AlpacaModal from "../singular/Modals/AlpacaModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
-import ResetModal from "../singular/Modals/ResetModal";
 
 const ProfilePage = () => {
-
-  const { user,signOut } = useAuthenticator((context) => [context.user]);
+  const { user, signOut } = useAuthenticator((context) => [context.user]);
 
   // All the modal states none should be shown at first
   const [passwordModal, setPasswordModal] = useState(false);
@@ -29,14 +32,16 @@ const ProfilePage = () => {
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   // Utility method to clear the state of each attribute
   const clearState = () => {
-    setFirstName(null)
-    setLastName(null)
-    setPhone(null)
-    setEmail(null)
-  }
+    setFirstName(null);
+    setLastName(null);
+    setPhone(null);
+    setEmail(null);
+  };
 
   /*
   All the event handlers will be used to update the various user fields
@@ -64,39 +69,62 @@ const ProfilePage = () => {
   const saveChanges = async () => {
     // Update a user email
     if (email !== null) {
-      updateEmail(user,email.value).then(()=>{
-        setEmailModal(true)
-      }).catch( (error ) => {
-        // TODO: Instead of logging this should display the error
-        console.log("ERROR")
-    })
+      updateEmail(user, email.value)
+        .then(() => {
+          setEmailModal(true);
+          setSuccess("You have successfully changed your email");
+          setTimeout(() => {
+            setSuccess("");
+          }, 5000);
+        })
+        .catch(() => {
+          setError("There was a problem updating your email");
+          setTimeout(() => {
+            setError("");
+          }, 5000);
+        });
     }
 
     // Update a user first name
-    if (firstName !== null){ 
-      updateGivenName(user,firstName.value).catch( (error ) => {
-       // TODO: Instead of logging this should display the error
-      console.log("ERROR")
-    }) 
+    if (firstName !== null) {
+      updateGivenName(user, firstName.value).catch(() => {
+        setError("There was a problem updating your first name");
+      });
+      setTimeout(() => {
+        setSuccess("You have successfully changed your first name!");
+      }, 1000);
+      setTimeout(() => {
+        setSuccess("");
+      }, 4000);
     }
 
     // Update a user last name
-    if (lastName !== null){
-      updateFamilyName(user,lastName.value).catch( (error ) => {
-       // TODO: Instead of logging this should display the error
-      console.log("ERROR")
-    })
+    if (lastName !== null) {
+      updateFamilyName(user, lastName.value).catch(() => {
+        setError("There was a problem updating your last name");
+      });
+      setTimeout(() => {
+        setSuccess("You have successfully changed your last name!");
+      }, 1000);
+      setTimeout(() => {
+        setSuccess("");
+      }, 4000);
     }
 
     // Update a user phone number
-    if (phone !== null){
-      updatePhone(user,phone.value).catch( (error ) => {
-      // TODO: Instead of logging this should display the error
-      console.log("ERROR")
-    })
+    if (phone !== null) {
+      updatePhone(user, phone.value).catch(() => {
+        setError("There was a problem updating your phone number");
+      });
+      setTimeout(() => {
+        setSuccess("You have successfully changed your phone number!");
+      }, 1000);
+      setTimeout(() => {
+        setSuccess("");
+      }, 4000);
     }
     // Clear the state after changes have been saved
-    clearState() 
+    clearState();
   };
 
   return (
@@ -114,18 +142,17 @@ const ProfilePage = () => {
               Reset balance
             </button>
           </div>
-        {/* Profile "Picture" ,Name, and Buying Power */}
-          <ResetModal setResetModal={setResetModal} resetModal={resetModal} />
-        <div className="m-10">
-          <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
-            <p
-              className="text-white text-center font-light text-6xl flex"
-              data-testid="user-initials"
-            >
-              {user?.attributes?.given_name?.charAt(0)}
-              {user?.attributes?.family_name?.charAt(0)}
-            </p>
-          </div>
+          <AlpacaModal setResetModal={setResetModal} resetModal={resetModal} />
+          <div className="m-10">
+            <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
+              <p
+                className="text-white text-center font-light text-6xl flex"
+                data-testid="user-initials"
+              >
+                {user?.attributes?.given_name?.charAt(0)}
+                {user?.attributes?.family_name?.charAt(0)}
+              </p>
+            </div>
             <p
               className="text-center text-white font-thin text-md"
               data-testid="user-name"
@@ -143,8 +170,8 @@ const ProfilePage = () => {
             >
               $57,901.34
             </p>
-        </div>
-          <ul className="grid gap-8 grid-cols-1 mt-10">
+          </div>
+          <ul className="grid gap-8 grid-cols-1 mt-5">
             <li className="flex">
               <p className="text-white font-semibold inline pt-2 w-1/6">
                 First name
@@ -190,9 +217,11 @@ const ProfilePage = () => {
                 onChange={handlePhone}
               />
             </li>
+            <p className="flex text-red font-semibold text-md">{error}</p>
+            <p className="flex text-green font-semibold text-md">{success}</p>
             <PhoneModal setPhoneModal={setPhoneModal} phoneModal={phoneModal} />
             <li>
-              <ul className="grid grid-cols-1 gap-6 mt-5">
+              <ul className="grid grid-cols-1 gap-6">
                 <li>
                   <button
                     className="text-white font-semibold underline"
