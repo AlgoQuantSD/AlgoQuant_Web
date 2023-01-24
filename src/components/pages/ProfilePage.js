@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 
@@ -15,11 +15,13 @@ import PhoneModal from "../singular/Modals/PhoneModal";
 import PasswordModal from "../singular/Modals/PasswordModal";
 import AlpacaModal from "../singular/Modals/AlpacaModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
+import AlgoquantApiContext from "../../api/ApiContext";
+import LoadSpinner from "../reusable/LoadSpinner";
 
 const ProfilePage = () => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
 
-  // All the modal states none should be shown at first
+  // All the modal states, none should be shown at first
   const [passwordModal, setPasswordModal] = useState(false);
   const [alpacaModal, setAlpacaModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -35,6 +37,18 @@ const ProfilePage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  // State variables used to access API and display user data
+  const algoquantApi = useContext(AlgoquantApiContext);
+  const [balance, setBalance] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [alpacaConnection, setAlpacaConnection] = useState(false);
+
+  // Create our number formatter.
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   // Utility method to clear the state of each attribute
   const clearState = () => {
     setFirstName(null);
@@ -44,7 +58,7 @@ const ProfilePage = () => {
   };
 
   /*
-  All the event handlers will be used to update the various user fields
+  All the event handlers to update the various user fields
   */
   const handleFirstName = (event) => {
     setFirstName({ value: event.target.value });
@@ -127,15 +141,34 @@ const ProfilePage = () => {
     clearState();
   };
 
+  useEffect(() => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .getUser()
+        .then((resp) => {
+          setBalance(resp.data.buying_power);
+          setAlpacaConnection(resp.data.alpaca);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          throw new Error(`code: ${err}, message: ${err}`);
+        });
+    }
+  }, [algoquantApi]);
+
+  if (isLoading) {
+    return <LoadSpinner />;
+  }
+
   return (
-    // Main Div Container 
+    // Main Div Container
     <div className="bg-dark-gray  overflow-x-scroll">
-      <Navbar />  
+      <Navbar />
       {/* Main Div for the side bar and all the page content */}
       <div className="flex self-stretch">
-      <Sidebar />
-      {/* Div for all the profile content */}
-      <div className="w-full h-full p-5 ">
+        <Sidebar />
+        {/* Div for all the profile content */}
+        <div className="w-full h-full p-5 ">
           <div className="flex ml-3 mt-24">
             <h1 className="text-green font-bold text-5xl mr-5">My Account</h1>
             <button className="text-white font-medium rounded-lg bg-another-gray p-3 ml-auto">
@@ -162,13 +195,15 @@ const ProfilePage = () => {
                 user?.attributes?.family_name}
             </p>
             <p className="text-2xl font-light text-center text-white mt-3">
-              Buying Power
+              {alpacaConnection
+                ? "Alpaca verfied Buying Power"
+                : "Simulated Buying Power"}
             </p>
             <p
               className="text-2xl font-bold text-center text-white"
               data-testid="total-balance"
             >
-              $57,901.34
+              {formatter.format(balance)}
             </p>
           </div>
           <ul className="grid gap-8 grid-cols-1 mt-5">
@@ -266,8 +301,8 @@ const ProfilePage = () => {
               </ul>
             </li>
 
-           {/* Div for Save Changes and Signout Button*/}
-            <div className = "flex">
+            {/* Div for Save Changes and Signout Button*/}
+            <div className="flex">
               <button
                 className="text-white font-medium rounded-lg bg-green p-4"
                 onClick={saveChanges}
@@ -280,7 +315,7 @@ const ProfilePage = () => {
               >
                 Sign out
               </button>
-              </div>
+            </div>
           </ul>
         </div>
       </div>
