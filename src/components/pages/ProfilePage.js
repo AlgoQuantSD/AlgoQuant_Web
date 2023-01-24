@@ -14,7 +14,6 @@ import {
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import EmailModal from "../singular/Modals/EmailModal";
-import PhoneModal from "../singular/Modals/PhoneModal";
 import PasswordModal from "../singular/Modals/PasswordModal";
 import AccountModal from "../singular/Modals/AccountModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
@@ -172,7 +171,6 @@ const ProfilePage = () => {
                   accountModal={accountModal}
             />
           <EmailModal setEmailModal={setEmailModal} emailModal={emailModal} />
-          <PhoneModal setPhoneModal={setPhoneModal} phoneModal={phoneModal} />
           <PasswordModal
                   setPasswordModal={setPasswordModal}
                   passwordModal={passwordModal}

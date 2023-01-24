@@ -1,10 +1,9 @@
 import { React, useState, useContext, useEffect } from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
-import { eventWrapper } from "@testing-library/user-event/dist/utils";
 
 /*
-Enum specifying the different options for the users account
+Enum specifying the different options available to the user
 */
 export const ModalTypes = {
   reset_alpaca: "reset_alpaca",
@@ -20,17 +19,22 @@ connecting an alpaca account, and disconnecting an alpaca account.
 const AccountModal = ({
   handleAccountModals,
   accountModal,
-}) => {
+  }) => {
 
   const algoquantApi = useContext(AlgoquantApiContext);
 
+  // Keep track of the input for the alpaca key and secret key
   const [alpacaKey, setAlpacaKey] = useState("");
   const [secretKey, setSecretKey] = useState("");
 
+  // Used to dispaly error messages for the modals
   const [error,setError] = useState("")
 
   const modalType = accountModal.type
 
+  /*
+  Handlers for the two Alpaca keys
+  */
   const handleAlpacaKey = (event) => {
     setAlpacaKey(event.target.value);
   };
@@ -39,14 +43,22 @@ const AccountModal = ({
     setSecretKey(event.target.value);
   };
 
-  // This method will be called when submit is entered. This will send an API request to the reset-balance endpoint
-  // TODO: Hook up with API
+  /*
+  Callback for whenever the modals are closed either by clicking a cancel button or the onClose 
+  attributes of the Modal
+  */
+  const handleClose = () => {
+    setError("")
+    handleAccountModals()
+  }
+
+  /*
+  Submit a request to the reset-balance endpoint. This method will handle the 4 different cases of connect, disconnect, 
+  reset_alpaca, and reset_simualted. 
+  */
   const submitRequest = async () => {
 
-    // Demonstrating that the keys are being handled appropriately
-    console.log(alpacaKey);
-    console.log(secretKey);
-
+    // request body is empty by default
     var requestBody = {}
 
     // Check the type of modal for what action must be performed
@@ -57,8 +69,8 @@ const AccountModal = ({
         alpaca_secret_key: secretKey
         }
         break
+      // Disconnect will just use the empty body {}
       case ModalTypes.disconnect:
-        requestBody = {}
         break
       case ModalTypes.reset_alpaca:
         requestBody =  {
@@ -66,13 +78,14 @@ const AccountModal = ({
           alpaca_secret_key: secretKey
           }
         break
+      // Reset Simulated will just the empty body
       case ModalTypes.reset_simulated:
-        requestBody = {}
         break
       default:
-        console.log('failed')
+        setError('Application Error!')
     }
 
+    // Create the API request
     if (algoquantApi.token) {
       algoquantApi
         .resetBalance(requestBody)
@@ -85,15 +98,16 @@ const AccountModal = ({
           console.log(err)
         });
     }
-    // TODO: Make API request here
-    // This should be called on sucessful API request
-  };
+  }
 
-  // The modal used by the user to reset their alpaca account
+  /*
+  There are 4 different variations of Modals depending on the user input. This switch statement will handle
+  each case and render the appropriate Modal.
+  */
   switch(modalType){ 
-    case ModalTypes.connect:
+    case ModalTypes.reset_alpaca:
       return (
-        <Modal isVisible={accountModal.visible} onClose={() => handleAccountModals()}>
+        <Modal isVisible={accountModal.visible} onClose={handleClose}>
           <div className="bg-dark-gray p-2 rounded border border-light-gray">
             <div className="p-6">
               <h3 className="text-3xl font-bold text-light-gray mb-5">
@@ -122,14 +136,13 @@ const AccountModal = ({
               />
               <p className="text-red">{error}</p>
               <p className="text-faded-dark-gray">
-                NOTE: Your balance will be reset to $100,000 and all active jobs
-                will be terminated.
+                NOTE: Your active jobs will be terminated.
               </p>
             </div>
             <div className="p-6 flex justify-between">
               <button
                 className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-                onClick={() => handleAccountModals()}
+                onClick={handleClose}
               >
                 Cancel
               </button>
@@ -139,19 +152,19 @@ const AccountModal = ({
                   submitRequest();
                 }}
               >
-                Continue
+                Confirm
               </button>
             </div>
           </div>
         </Modal>)
         
-    case ModalTypes.reset_alpaca:
+    case ModalTypes.connect:
       return (
-        <Modal isVisible={accountModal.visible} onClose={() => handleAccountModals()}>
+        <Modal isVisible={accountModal.visible} onClose={handleClose}>
           <div className="bg-dark-gray p-2 rounded border border-light-gray">
             <div className="p-6">
               <h3 className="text-3xl font-bold text-light-gray mb-5">
-                Please provide new Alpaca Key
+                Please provide your Alpaca Keys
               </h3>
               <p className="text-light-gray font-medium mb-5 text-xl">
                 Please enter Alpaca API Key
@@ -173,15 +186,13 @@ const AccountModal = ({
               />
               <p className="text-red">{error}</p>
               <p className="text-faded-dark-gray">
-                NOTE: Updating the Alpaca Key will reset your paper trading
+                NOTE: Connecting to Alpaca will terminate any progress with your simulated account
               </p>
             </div>
             <div className="p-6 flex justify-between">
               <button
                 className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-                onClick={() => {
-                  handleAccountModals();
-                }}
+                onClick={handleClose}
               >
                 Cancel
               </button>
@@ -196,10 +207,12 @@ const AccountModal = ({
             </div>
           </div>
         </Modal>);
+
+  // The reset_simulated an disconnect modals are identical with just a different title
   case ModalTypes.reset_simulated:
   case ModalTypes.disconnect:
     return (
-      <Modal isVisible={accountModal.visible} onClose={() => handleAccountModals()}>
+      <Modal isVisible={accountModal.visible} onClose={handleClose}>
       <div className="bg-dark-gray p-2 rounded border border-red">
         <div className="p-6">
           <h3 className="text-3xl font-bold text-red mb-5"> {modalType === ModalTypes.disconnect ? ("Are you sure you want to reset your balance") : ("Reset your balance")}</h3>
@@ -211,7 +224,7 @@ const AccountModal = ({
         <div className="p-6 flex justify-between">
           <button
             className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-            onClick={() => handleAccountModals()}
+            onClick={handleClose}
           >
             Cancel
           </button>
@@ -225,7 +238,7 @@ const AccountModal = ({
       </div>
     </Modal>)
     default:
-      console.log("Modal failed")
+      break
   }
 };
 

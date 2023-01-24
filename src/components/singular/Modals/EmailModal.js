@@ -41,6 +41,9 @@ const EmailModal = ({ setEmailModal, emailModal}) => {
             placeholder="Verification Code"
             onChange={handleCode}
           />
+           <p className="text-light-gray font-light mb-5 text-lg">
+            After changing your email it can take a few minutes to update
+          </p>
           <p className="text-red font-light mb-5 text-xl">
             {error}
           </p>

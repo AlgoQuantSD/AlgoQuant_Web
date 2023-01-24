@@ -33,16 +33,14 @@ const PasswordModal = ({ setPasswordModal, passwordModal, user }) => {
   // Function that will handle the actual changing of the passwords
   const submitChange = async () => {
     // Ensure the passwords match
-    if (confirmNewPassword.value !== newPassword.value) {
+    if (confirmNewPassword?.value !== newPassword?.value) {
       setError("Passwords do not match!");
-    } else if (confirmNewPassword.value === newPassword.value) {
-      setSuccess("You have successfully changed your password!");
     } else {
       Auth.changePassword(user, oldPassword.value, newPassword.value)
         .then(() => {
           // Password changed
-          setPasswordModal(false);
           clearState();
+          setPasswordModal(false);
         })
         .catch(() => {
           // Ensure the error gets added to the list
@@ -51,8 +49,17 @@ const PasswordModal = ({ setPasswordModal, passwordModal, user }) => {
     }
   };
 
+    /*
+  Callback for whenever the modals are closed either by clicking a cancel button or the onClose 
+  attributes of the Modal
+  */
+  const handleClose = () => {
+    setError("")
+    setPasswordModal(false)
+  }
+
   return (
-    <Modal isVisible={passwordModal} onClose={() => setPasswordModal(false)}>
+    <Modal isVisible={passwordModal} onClose={handleClose}>
       <div className="bg-dark-gray p-2 rounded border border-light-gray">
         <div className="p-6">
           <h3 className="text-3xl font-bold text-light-gray mb-5">
@@ -93,10 +100,7 @@ const PasswordModal = ({ setPasswordModal, passwordModal, user }) => {
         <div className="p-6 flex justify-between">
           <button
             className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-            onClick={() => {
-              clearState();
-              setPasswordModal(false);
-            }}
+            onClick={handleClose}
           >
             Cancel
           </button>
