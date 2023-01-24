@@ -1,19 +1,33 @@
 import { React, useState, useEffect } from "react";
-import { useAuthenticator } from "@aws-amplify/ui-react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 
 const TransactionHistoryPage = () => {
-  // const { user } = useAuthenticator((context) => [context.user]);
-  // const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    // Fetch transaction data from API and set it to the transactions state
-    // Example:
-    // axios.get('api/transactions')
-    //   .then(res => setTransactions(res.data))
-    //   .catch(err => console.log(err))
-  }, []);
+    const newTransactions = [];
+    for (let i = (page - 1) * 20; i < page * 20; i++) {
+      newTransactions.push({
+        jobName: `Job ${i + 1}`,
+        buyOrSell: i & (2 === 0) ? "Buy" : "Sell",
+        stockTicker: "APPL",
+        shares: i + 1,
+        amount: i * 100,
+        date: "01/01/2022 8:55PM",
+      });
+    }
+    setTransactions(newTransactions);
+  }, [page]);
+
+  const handleNextClick = () => {
+    setPage(page + 1);
+  };
+
+  const handlePreviousClick = () => {
+    if (page > 1) setPage(page - 1);
+  };
 
   return (
     <div className="bg-dark-gray overflow-y-scroll overflow-x-scroll">
@@ -28,90 +42,73 @@ const TransactionHistoryPage = () => {
           </div>
           <table className="table-auto w-full font-light text-white">
             <thead>
-              <tr className="bg-medium-gray text-white">
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 font-semibold lg:text-xl md:text-md">
+              <tr className="bg-medium-gray text-white ">
+                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
                   Job Name
                 </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 font-semibold lg:text-xl md:text-md">
+                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
                   Buy or Sell
                 </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 font-semibold lg:text-xl md:text-md">
+                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
                   Stock Ticker
                 </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 font-semibold lg:text-xl md:text-md">
+                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
                   Shares
                 </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 font-semibold lg:text-xl md:text-md">
+                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
                   Amount
                 </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 font-semibold lg:text-xl md:text-md">
+                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
                   Date
                 </th>
               </tr>
             </thead>
-            <tbody className="border border-another-gray border-opacity-30">
-              {/* {transactions.map((transaction, index) => (
-                <tr key={index}>
-                  <td className="border px-4 py-2">{transaction.jobName}</td>
-                  <td className="border px-4 py-2">{transaction.buyOrSell}</td>
-                  <td className="border px-4 py-2">
+            <tbody className="border border-another-gray border-opacity-30 text-center lg:font-normal sm:font-thin">
+              {transactions.map((transaction, index) => (
+                <tr
+                  key={index}
+                  className={
+                    index % 2 === 0
+                      ? "bg-dark-gray align-left"
+                      : "bg-another-gray align-left"
+                  }
+                >
+                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
+                    {transaction.jobName}
+                  </td>
+                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
+                    {transaction.buyOrSell}
+                  </td>
+                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
                     {transaction.stockTicker}
                   </td>
-                  <td className="border px-4 py-2">{transaction.shares}</td>
-                  <td className="border px-4 py-2">{transaction.amount}</td>
-                  <td className="border px-4 py-2">{transaction.date}</td>
+                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
+                    {transaction.shares}
+                  </td>
+                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
+                    {transaction.amount}
+                  </td>
+                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
+                    {transaction.date}
+                  </td>
                 </tr>
-              ))} */}
-              <tr className="bg-dark-gray text-center align-left">
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">Job 1</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">Buy</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">APPL</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">1</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">$128.55</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">
-                  08/12/2022
-                  <br></br>
-                  8:55PM
-                </td>
-              </tr>
-              <tr className="bg-another-gray text-center">
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">Job 1</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">Buy</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">APPL</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">1</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">$128.55</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">
-                  08/12/2022
-                  <br></br>
-                  8:55PM
-                </td>
-              </tr>
-              <tr className="bg-dark-gray text-center">
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">Job 1</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">Buy</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">APPL</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">1</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">$128.55</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">
-                  08/12/2022
-                  <br></br>
-                  8:55PM
-                </td>
-              </tr>
-              <tr className="bg-another-gray text-center">
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">Job 1</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">Buy</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">APPL</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">1</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">$128.55</td>
-                <td className="lg:px-3 lg:py-3 md:px-2 md:py-2">
-                  08/12/2022
-                  <br></br>
-                  8:55PM
-                </td>
-              </tr>
+              ))}
             </tbody>
           </table>
+          <div className="p-6 pt-24 pb-20 overflow-x-scroll overflow-y-scroll">
+            <button
+              className="text-white rounded-md bg-another-gray py-2 px-6"
+              onClick={handlePreviousClick}
+            >
+              Previous
+            </button>
+            <button
+              className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
+              onClick={handleNextClick}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

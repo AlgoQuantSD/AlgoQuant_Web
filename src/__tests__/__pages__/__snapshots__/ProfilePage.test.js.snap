@@ -51,7 +51,7 @@ exports[`ProfilePage should render 1`] = `
       class="container mx-auto flex overflow-y bg-dark-gray"
     >
       <div
-        class="relative w-64 h-screen shadow-md bg-dark-gray pl-5 mr-5 p-5 z-5 "
+        class="relative w-64 h-screen bg-dark-gray pl-5 mr-5 p-5 z-5 "
       >
         <ul
           class="list-none p-0 mt-28"
