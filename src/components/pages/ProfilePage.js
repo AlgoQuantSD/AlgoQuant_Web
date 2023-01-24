@@ -1,4 +1,4 @@
-import { React, useContext, useEffect, useState,useEffect } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 import ProfileSaving from "../singular/ProfileSaving";
@@ -15,15 +15,13 @@ import Sidebar from "../reusable/SideBar";
 import EmailModal from "../singular/Modals/EmailModal";
 import PhoneModal from "../singular/Modals/PhoneModal";
 import PasswordModal from "../singular/Modals/PasswordModal";
-import AlpacaModal from "../singular/Modals/AccountModal";
+import AccountModal from "../singular/Modals/AccountModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
 import AlgoquantApiContext from "../../api/ApiContext";
-import LoadSpinner from "../reusable/LoadSpinner";
+import {LoadSpinner} from "../reusable/LoadSpinner";
 
 const ProfilePage = () => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
-
-  const alpaca = false
 
   // All the modal states, none should be shown at first
   const [passwordModal, setPasswordModal] = useState(false);
@@ -39,8 +37,9 @@ const ProfilePage = () => {
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
+  const [successMessages, setSuccessMessages] = useState([]);
+  const [saving,setSaving] = useState(false)
 
   // State variables used to access API and display user data
   const algoquantApi = useContext(AlgoquantApiContext);
@@ -61,6 +60,21 @@ const ProfilePage = () => {
     setPhone(null);
     setEmail(null);
   };
+
+  useEffect(() => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .getUser()
+        .then((resp) => {
+          setBalance(resp.data.buying_power);
+          setAlpacaConnection(resp.data.alpaca);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          throw new Error(`code: ${err}, message: ${err}`);
+        });
+    }
+  }, [algoquantApi]);
 
   /*
   All the event handlers to update the various user fields
@@ -83,6 +97,7 @@ const ProfilePage = () => {
 
   const handleAlpacaModal = (event,type) => {
     setAlpacaModal(true)
+    console.log(alpacaModal)
     setAlpacaModalTypes(type)
   }
 
@@ -148,21 +163,6 @@ const ProfilePage = () => {
     clearState();
   };
 
-  useEffect(() => {
-    if (algoquantApi.token) {
-      algoquantApi
-        .getUser()
-        .then((resp) => {
-          setBalance(resp.data.buying_power);
-          setAlpacaConnection(resp.data.alpaca);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          throw new Error(`code: ${err}, message: ${err}`);
-        });
-    }
-  }, [algoquantApi]);
-
   if (isLoading) {
     return <LoadSpinner />;
   }
@@ -181,7 +181,7 @@ const ProfilePage = () => {
             <button className="text-white font-medium rounded-lg bg-another-gray p-3 ml-auto"
              onClick ={ (event) => {
               // Either will reset and ask the user for new API keys are just reset simualted balance
-             alpaca ? handleAlpacaModal(event,ModalTypes.reset_alpaca) : (handleAlpacaModal(event,ModalTypes.reset)) 
+              alpacaConnection ? handleAlpacaModal(event,ModalTypes.reset_alpaca) : (handleAlpacaModal(event,ModalTypes.reset_simulated)) 
              }}>
               Reset balance
             </button>
@@ -287,15 +287,15 @@ const ProfilePage = () => {
                     className="text-white font-semibold underline"
                     onClick={
                     // If the user has not connected Alpaca then they must disconnect, otherwise they can connect
-                    (event) => alpaca ? (handleAlpacaModal(event,ModalTypes.disconnect)) :  (handleAlpacaModal(event,ModalTypes.connect)) } 
+                    (event) => alpacaConnection ? (handleAlpacaModal(event,ModalTypes.disconnect)) :  (handleAlpacaModal(event,ModalTypes.connect)) } 
                   > {
-                        alpaca ? ("Disconnect from Alpaca") : ("Connect to Alpaca") 
+                      alpacaConnection ? ("Disconnect from Alpaca") : ("Connect to Alpaca") 
                     }               
                   </button>
                   
                   <FaArrowRight className="inline mb-1 ml-1 text-white" />
                 </li>
-                <AlpacaModal
+                <AccountModal
                   setAlpacaModal={setAlpacaModal}
                   alpacaModal={alpacaModal}
                   modalType={alpacaModalTypes}

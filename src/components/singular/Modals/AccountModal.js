@@ -16,11 +16,12 @@ export const ModalTypes = {
 This modal is responsible for the different interactions with the users account. This involves resetting an alpaca and simualted account, 
 connecting an alpaca account, and disconnecting an alpaca account. 
 */
-const AlpacaModal = ({
+const AccountModal = ({
   setAlpacaModal,
   alpacaModal,
   modalType
 }) => {
+
   const algoquantApi = useContext(AlgoquantApiContext);
 
   const [alpacaKey, setAlpacaKey] = useState("");
@@ -39,6 +40,22 @@ const AlpacaModal = ({
   // This method will be called when submit is entered. This will send an API request to the reset-balance endpoint
   // TODO: Hook up with API
   const submitRequest = async () => {
+
+
+    if (algoquantApi.token) {
+      algoquantApi
+        .resetBalance({
+          alpaca_key: alpacaKey,
+          alpaca_secret_key: secretKey,
+        })
+        .then((resp) => {
+          setAlpacaModal(false);
+          console.log(resp);
+        })
+        .catch((err) => {
+          throw new Error(`code: ${err}, message: ${err}`);
+        });
+
     // Demonstrating that the keys are being handled appropriately
     console.log(alpacaKey);
     console.log(secretKey);
@@ -70,25 +87,6 @@ const AlpacaModal = ({
 
   // The modal used by the user to reset their alpaca account
   if (modalType === ModalTypes.reset_alpaca) {
-  const submitRequest = () => {
-    if (algoquantApi.token) {
-      algoquantApi
-        .resetBalance({
-          alpaca_key: alpacaKey,
-          alpaca_secret_key: secretKey,
-        })
-        .then((resp) => {
-          setAlpacaModal(false);
-          console.log(resp);
-        })
-        .catch((err) => {
-          throw new Error(`code: ${err}, message: ${err}`);
-          // TO DO: HANDLE ERROR HERE
-          setError(true);
-        });
-    }
-  };
-  if (resetModal) {
     return (
       <Modal isVisible={alpacaModal} onClose={() => setAlpacaModal(false)}>
         <div className="bg-dark-gray p-2 rounded border border-light-gray">
@@ -224,6 +222,7 @@ const AlpacaModal = ({
       </div>
     </Modal>)
   }
+}
 };
 
-export default AlpacaModal;
+export default AccountModal;
