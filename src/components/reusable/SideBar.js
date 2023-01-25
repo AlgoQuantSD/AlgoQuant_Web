@@ -10,13 +10,8 @@ import {
 
 const Sidebar = () => {
   return (
-<<<<<<< HEAD
     <div className="relative w-64 h-screen bg-dark-gray pl-5 mr-5 p-5 z-5 ">
       <ul className="list-none p-0 mt-28">
-=======
-    <div className="flex-none w-50 bg-dark-gray h-screen pl-5 pr-5 mt-10">
-      <ul className="list-none mt-20">
->>>>>>> main
         <li>
           <p className="text-light-gray font-light">PAGES</p>
         </li>

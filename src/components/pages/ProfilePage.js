@@ -194,17 +194,6 @@ const ProfilePage = () => {
   }
 
   return (
-<<<<<<< HEAD
-    <div className="bg-dark-gray overflow-y">
-      <Navbar />
-      <div className="container mx-auto flex overflow-y bg-dark-gray">
-        <Sidebar />
-        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 bg-dark-gray overflow-y pl-5">
-          <div className="flex">
-            <h1 className="text-green font-bold sm:text-3xl md:text-5xl pt-24">
-              My Profile
-            </h1>
-=======
     // Main Div Container
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
       <Navbar />
@@ -229,7 +218,6 @@ const ProfilePage = () => {
           />
           <div className="flex ml-3 mt-24">
             <h1 className="text-green font-bold text-5xl mr-5">My Account</h1>
->>>>>>> main
             <button
               className="text-white font-medium rounded-lg bg-another-gray p-3 ml-auto"
               onClick={() => {
@@ -272,11 +260,7 @@ const ProfilePage = () => {
               {formatter.format(balance)}
             </p>
           </div>
-<<<<<<< HEAD
-          <ul className="grid gap-8 grid-cols-1 mt-10 mb-10">
-=======
           <ul className="grid gap-8 grid-cols-1 mt-5">
->>>>>>> main
             <li className="flex">
               <p className="text-white font-semibold inline pt-2 w-1/6">
                 First name
