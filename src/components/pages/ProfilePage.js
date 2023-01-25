@@ -49,11 +49,13 @@ const ProfilePage = () => {
   const [successMessages, setSuccessMessages] = useState([]);
   const [saving, setSaving] = useState(false);
 
-  // State variables used to access API and display user data
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const [balance, setBalance] = useState();
-  const [isLoading, setIsLoading] = useState(true);
   const [alpacaConnection, setAlpacaConnection] = useState(false);
+
+  // State variable used to track when loading screen should be shown
+  const [isLoading, setIsLoading] = useState(true);
 
   // Utility method to clear the state of each attribute, used after changes are saved
   const clearState = () => {
@@ -77,6 +79,7 @@ const ProfilePage = () => {
   };
 
   // When the page is loaded the user object must be fetched
+  // runs the getUser axios request to receive user information from the database
   useEffect(() => {
     if (algoquantApi.token) {
       algoquantApi
@@ -185,7 +188,7 @@ const ProfilePage = () => {
     clearState();
   };
 
-  // The profile should not be dispalyed if the user information is still being retrieved
+  // The profile should not be displayed if the user information is still being retrieved
   if (isLoading) {
     return <LoadSpinner />;
   }
