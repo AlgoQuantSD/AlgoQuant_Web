@@ -8,6 +8,8 @@ import BacktestingPage from "./components/pages/BacktestingPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import SignInPage from "./components/pages/SignInPage";
+import AlgoquantApiContext from "./api/ApiContext";
+import initAlgoQuantApi from "../src/api/ApiUtils";
 
 /*
 This Component is used to wrap each Route and ensure that they cannot 
@@ -35,59 +37,74 @@ function ProtectLogin({ children }) {
 }
 
 export function PageRouter() {
+  // get logged in user information from amplify's context
+  const { user } = useAuthenticator((context) => [context.user]);
+
+  // Declare algoquant variable and attempt to initialize it passing in the user for authorization.
+  // This object is used to access all the api request code from the algoquant sdk
+  let algoquant = undefined;
+  try {
+    algoquant = initAlgoQuantApi(user);
+  } catch (err) {
+    // TO-DO: handle this error and show error on screen
+    console.log(err);
+  }
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<WelcomePage />} />
-        <Route
-          path="/home"
-          element={
-            <RequireAuth>
-              <HomePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/createinvestor"
-          element={
-            <RequireAuth>
-              <CreateInvestorPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/backtesting"
-          element={
-            <RequireAuth>
-              <BacktestingPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/history"
-          element={
-            <RequireAuth>
-              <TransactionHistoryPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <RequireAuth>
-              <ProfilePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <ProtectLogin>
-              <SignInPage />
-            </ProtectLogin>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    // Context Provider to make the algoquant object global for child components of this Provider
+    <AlgoquantApiContext.Provider value={algoquant}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route
+            path="/home"
+            element={
+              <RequireAuth>
+                <HomePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createinvestor"
+            element={
+              <RequireAuth>
+                <CreateInvestorPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/backtesting"
+            element={
+              <RequireAuth>
+                <BacktestingPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <RequireAuth>
+                <TransactionHistoryPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <ProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <ProtectLogin>
+                <SignInPage />
+              </ProtectLogin>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AlgoquantApiContext.Provider>
   );
 }

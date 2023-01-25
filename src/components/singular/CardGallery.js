@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import Card from "./Card";
+import Card from "../singular/Card";
 
 const CardGallery = () => {
   const [selectedIndicator, setSelectedIndicator] = useState("MACD");

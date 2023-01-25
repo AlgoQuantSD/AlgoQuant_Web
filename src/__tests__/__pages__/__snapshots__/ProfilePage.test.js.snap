@@ -6,7 +6,7 @@ exports[`ProfilePage should render 1`] = `
     class="w-full h-screen bg-dark-gray overflow-hidden .md:bg-clip-padding"
   >
     <nav
-      class="fixed top-0 w-full z-50 px-4 py-2 bg-dark-gray border-gray-300 shadow"
+      class="fixed top-0 w-full z-10 px-4 py-2 bg-dark-gray border-gray-300 shadow"
     >
       <div
         class="container flex flex-wrap justify-between items-center mx-auto"
@@ -245,7 +245,7 @@ exports[`ProfilePage should render 1`] = `
           </p>
         </div>
         <ul
-          class="grid gap-8 grid-cols-1 mt-10"
+          class="grid gap-8 grid-cols-1 mt-5"
         >
           <li
             class="flex"
@@ -303,9 +303,15 @@ exports[`ProfilePage should render 1`] = `
               type="text"
             />
           </li>
+          <p
+            class="flex text-red font-semibold text-md"
+          />
+          <p
+            class="flex text-green font-semibold text-md"
+          />
           <li>
             <ul
-              class="grid grid-cols-1 gap-6 mt-5"
+              class="grid grid-cols-1 gap-6"
             >
               <li>
                 <button
@@ -332,7 +338,7 @@ exports[`ProfilePage should render 1`] = `
                 <button
                   class="text-white font-semibold underline"
                 >
-                  Update Alpaca Key
+                  Connect to PaperTrade
                 </button>
                 <svg
                   class="inline mb-1 ml-1 text-white"
