@@ -217,6 +217,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
               <button
                 className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
                 onClick={handleClose}
+                data-testid="submit-button"
               >
                 Cancel
               </button>
@@ -231,7 +232,6 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
         </Modal>
       );
     default:
-      console.log("No option provided");
   }
 };
 

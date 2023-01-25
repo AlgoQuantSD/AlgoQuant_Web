@@ -1,56 +1,73 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, getByTestId } from "@testing-library/react";
 import AccountModal from "../../components/singular/Modals/AccountModal";
 
 describe("AccountModal", () => {
-  it("should render the modal when isVisible is true", () => {
-    const { getByText } = render(<AccountModal accountModal={true} />);
-    expect(getByText("Please provide your Alpaca Keys")).toBeInTheDocument();
+  it("should render the reset alpaca modal when the type is set to reset_alpaca", () => {
+    const accountModal = {
+      type: "reset_alpaca",
+      visible: true,
+    };
+
+    const { getByText } = render(
+      <AccountModal
+        handleAccountModals={() => {}}
+        accountModal={accountModal}
+      />
+    );
+    expect(
+      getByText("Resetting Balance requires new Alpaca Keys")
+    ).toBeInTheDocument();
     expect(getByText("Please enter Alpaca API Key")).toBeInTheDocument();
     expect(getByText("Please enter Alpaca Secret Key")).toBeInTheDocument();
-    expect(
-      getByText(
-        "NOTE: Connecting to Alpaca will terminate any progress with your simulated account"
-      )
-    ).toBeInTheDocument();
   });
 
-  it("should not render the modal when isVisible is false", () => {
-    const { queryByText } = render(<AccountModal accountModal={false} />);
-    expect(queryByText("Connect to PaperTrade")).toBeNull();
-    expect(queryByText("Please enter your Alpaca Key")).toBeNull();
-    expect(
-      queryByText("NOTE: Updating the Alpaca Key will reset your paper trading")
-    ).toBeNull();
-  });
-
-  it("renders input box and placeholder correctly", () => {
-    const { getByPlaceholderText } = render(
-      <AccountModal accountModal={true} />
+  it("should not render the modal when the visible prop is set to false", () => {
+    const accountModal = {
+      type: "reset_alpaca",
+      visible: false,
+    };
+    const { queryByText } = render(
+      <AccountModal
+        handleAccountModals={() => {}}
+        accountModal={accountModal}
+      />
     );
-    const alpacaInput = getByPlaceholderText("Alpaca Key");
-    const secretInput = getByPlaceholderText("Secret Key");
-    expect(alpacaInput).toBeInTheDocument();
-    expect(secretInput).toBeInTheDocument();
+    expect(
+      queryByText("Resetting Balance requires new Alpaca Keys")
+    ).toBeNull();
+    expect(queryByText("Please enter Alpaca API Key")).toBeNull();
+    expect(queryByText("Please enter Alpaca Secret Key")).toBeNull();
   });
 
-  it("renders all buttons correctly", () => {
-    const { getByText } = render(<AccountModal accountModal={true} />);
-    const buttonsText = ["Cancel", "Continue"];
-
-    buttonsText.forEach((text) => {
-      const button = getByText(text);
-      expect(button).toBeInTheDocument();
-      expect(button.tagName).toBe("BUTTON");
-    });
-  });
-
-  it("should call set AlpacaModal with false when clicking the cancel button", () => {
-    const setAccountModal = jest.fn();
+  it("should call handleAccountModals when clicking the cancel button", () => {
+    const handleAccountModals = jest.fn();
+    const accountModal = {
+      type: "reset_alpaca",
+      visible: true,
+    };
     const { getByText } = render(
-      <AccountModal setAccountModal={setAccountModal} accountModal={true} />
+      <AccountModal
+        handleAccountModals={handleAccountModals}
+        accountModal={accountModal}
+      />
     );
     fireEvent.click(getByText("Cancel"));
-    expect(setAccountModal).toHaveBeenCalledWith(false);
+    expect(handleAccountModals).toHaveBeenCalled();
+  });
+  it("should update alpacaKey state when input value changes", () => {
+    const accountModal = {
+      type: "reset_alpaca",
+      visible: true,
+    };
+    const { getByPlaceholderText } = render(
+      <AccountModal
+        handleAccountModals={() => {}}
+        accountModal={accountModal}
+      />
+    );
+    const alpacaInput = getByPlaceholderText("Alpaca Key");
+    fireEvent.change(alpacaInput, { target: { value: "test-key" } });
+    expect(alpacaInput.value).toBe("test-key");
   });
 });
