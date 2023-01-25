@@ -18,7 +18,7 @@ import PasswordModal from "../singular/Modals/PasswordModal";
 import AccountModal from "../singular/Modals/AccountModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
 import AlgoquantApiContext from "../../api/ApiContext";
-import {LoadSpinner} from "../reusable/LoadSpinner";
+import { LoadSpinner } from "../reusable/LoadSpinner";
 
 // Uitlity fuction used to format numbers
 const formatter = new Intl.NumberFormat("en-US", {
@@ -31,7 +31,10 @@ const ProfilePage = () => {
 
   // All the modal states for managing the display of hte Modals
   const [passwordModal, setPasswordModal] = useState(false);
-  const [accountModal, setAccountModal] = useState({'visible':false,'type':null});
+  const [accountModal, setAccountModal] = useState({
+    visible: false,
+    type: null,
+  });
   const [deleteModal, setDeleteModal] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
 
@@ -44,13 +47,15 @@ const ProfilePage = () => {
   // State used to manage the process of saving saving chagnes
   const [errorMessages, setErrorMessages] = useState([]);
   const [successMessages, setSuccessMessages] = useState([]);
-  const [saving,setSaving] = useState(false)
+  const [saving, setSaving] = useState(false);
 
-  // State variables used to access API and display user data
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const [balance, setBalance] = useState();
-  const [isLoading, setIsLoading] = useState(true);
   const [alpacaConnection, setAlpacaConnection] = useState(false);
+
+  // State variable used to track when loading screen should be shown
+  const [isLoading, setIsLoading] = useState(true);
 
   // Utility method to clear the state of each attribute, used after changes are saved
   const clearState = () => {
@@ -66,14 +71,15 @@ const ProfilePage = () => {
   */
   const handleAccountModals = (type) => {
     // If its already visible then set it to not visible otherwise set it visible
-    if( accountModal.visible){
-      setAccountModal({'visible':false,'type':null})
+    if (accountModal.visible) {
+      setAccountModal({ visible: false, type: null });
     } else {
-      setAccountModal({'visible':true,'type':type})
+      setAccountModal({ visible: true, type: type });
     }
-  }
+  };
 
   // When the page is loaded the user object must be fetched
+  // runs the getUser axios request to receive user information from the database
   useEffect(() => {
     if (algoquantApi.token) {
       algoquantApi
@@ -85,7 +91,7 @@ const ProfilePage = () => {
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
-          console.log(err)
+          console.log(err);
         });
     }
   }, [algoquantApi]);
@@ -100,45 +106,75 @@ const ProfilePage = () => {
       updateEmail(user, email)
         .then(() => {
           setEmailModal(true);
-          setSuccessMessages(successMessages => [...successMessages,"Sucessfully changed email"]);
-          setSaving(false)
+          setSuccessMessages((successMessages) => [
+            ...successMessages,
+            "Sucessfully changed email",
+          ]);
+          setSaving(false);
         })
         .catch((err) => {
-          setErrorMessages(errorMessages => [...errorMessages,"There was a problem updating your email: " + err.msg]);  
-          setSaving(false)
+          setErrorMessages((errorMessages) => [
+            ...errorMessages,
+            "There was a problem updating your email: " + err.msg,
+          ]);
+          setSaving(false);
         });
     }
     // Update a user first name
     if (firstName !== null) {
-      updateGivenName(user, firstName).then(()=>{
-        setSuccessMessages(successMessages => [...successMessages,"You have successfully changed your first name!"]);
-        setSaving(false)
-      }).catch((err) => {
-        setErrorMessages(errorMessages => [...errorMessages,"There was a problem updating your first name: " + err.message]);
-        setSaving(false)
-      });
+      updateGivenName(user, firstName)
+        .then(() => {
+          setSuccessMessages((successMessages) => [
+            ...successMessages,
+            "You have successfully changed your first name!",
+          ]);
+          setSaving(false);
+        })
+        .catch((err) => {
+          setErrorMessages((errorMessages) => [
+            ...errorMessages,
+            "There was a problem updating your first name: " + err.message,
+          ]);
+          setSaving(false);
+        });
     }
 
     // Update a user last name
     if (lastName !== null) {
-      updateFamilyName(user, lastName).then(()=>{
-        setSuccessMessages(successMessages => [...successMessages,"You have successfully changed your last name!"]);
-        setSaving(false)
-      }).catch((err) => {
-        setErrorMessages(errorMessages => [...errorMessages,"There was a problem updating your last name: " + err.message]);
-        setSaving(false)
-      });
+      updateFamilyName(user, lastName)
+        .then(() => {
+          setSuccessMessages((successMessages) => [
+            ...successMessages,
+            "You have successfully changed your last name!",
+          ]);
+          setSaving(false);
+        })
+        .catch((err) => {
+          setErrorMessages((errorMessages) => [
+            ...errorMessages,
+            "There was a problem updating your last name: " + err.message,
+          ]);
+          setSaving(false);
+        });
     }
 
     // Update a user phone number
     if (phone !== null) {
-      updatePhone(user, phone).then(() => {
-        setSuccessMessages(successMessages => [...successMessages,"You have successfully changed your phone number!"]);
-        setSaving(false)
-      }).catch((err) => {
-        setErrorMessages(errorMessages => [...errorMessages,"There was a problem updating your phone number: " + err.message]);
-        setSaving(false)
-      });
+      updatePhone(user, phone)
+        .then(() => {
+          setSuccessMessages((successMessages) => [
+            ...successMessages,
+            "You have successfully changed your phone number!",
+          ]);
+          setSaving(false);
+        })
+        .catch((err) => {
+          setErrorMessages((errorMessages) => [
+            ...errorMessages,
+            "There was a problem updating your phone number: " + err.message,
+          ]);
+          setSaving(false);
+        });
     }
 
     // Clear the error and sucess printouts after everything has been saved
@@ -146,13 +182,13 @@ const ProfilePage = () => {
       setErrorMessages([]);
       setSuccessMessages([]);
       // This ensures that the application does not get stuck in a saving state
-      setSaving(false)
-    }, 3000);  
+      setSaving(false);
+    }, 3000);
     // Clear the state after changes have been saved
     clearState();
   };
 
-  // The profile should not be dispalyed if the user information is still being retrieved
+  // The profile should not be displayed if the user information is still being retrieved
   if (isLoading) {
     return <LoadSpinner />;
   }
@@ -166,28 +202,31 @@ const ProfilePage = () => {
         <Sidebar />
         {/* Div for all the profile content */}
         <div className="w-full h-full p-5 ">
-        {/* All the Modals used by this page */}
+          {/* All the Modals used by this page */}
           <AccountModal
-                  handleAccountModals={handleAccountModals}
-                  accountModal={accountModal}
-            />
+            handleAccountModals={handleAccountModals}
+            accountModal={accountModal}
+          />
           <EmailModal setEmailModal={setEmailModal} emailModal={emailModal} />
           <PasswordModal
-                  setPasswordModal={setPasswordModal}
-                  passwordModal={passwordModal}
-                />
+            setPasswordModal={setPasswordModal}
+            passwordModal={passwordModal}
+          />
           <DeleteModal
-                  setDeleteModal={setDeleteModal}
-                  deleteModal={deleteModal}
-                />
+            setDeleteModal={setDeleteModal}
+            deleteModal={deleteModal}
+          />
           <div className="flex ml-3 mt-24">
             <h1 className="text-green font-bold text-5xl mr-5">My Account</h1>
-            <button className="text-white font-medium rounded-lg bg-another-gray p-3 ml-auto"
-             onClick ={ () => {
-              // Either will reset and ask the user for new API keys are just reset simualted balance
-              alpacaConnection ? handleAccountModals(ModalTypes.reset_alpaca) :
-              (handleAccountModals(ModalTypes.reset_simulated)) 
-             }}>
+            <button
+              className="text-white font-medium rounded-lg bg-another-gray p-3 ml-auto"
+              onClick={() => {
+                // Either will reset and ask the user for new API keys are just reset simulated balance
+                alpacaConnection
+                  ? handleAccountModals(ModalTypes.reset_alpaca)
+                  : handleAccountModals(ModalTypes.reset_simulated);
+              }}
+            >
               Reset balance
             </button>
           </div>
@@ -230,7 +269,7 @@ const ProfilePage = () => {
                 className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.given_name}
-                onChange={ (event) => {
+                onChange={(event) => {
                   setFirstName(event.target.value);
                 }}
               />
@@ -243,7 +282,7 @@ const ProfilePage = () => {
                 className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.family_name}
-                onChange={ (event) => {
+                onChange={(event) => {
                   setLastName(event.target.value);
                 }}
               />
@@ -256,7 +295,7 @@ const ProfilePage = () => {
                 className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.email}
-                onChange={ (event) => {
+                onChange={(event) => {
                   setEmail(event.target.value);
                 }}
               />
@@ -269,12 +308,16 @@ const ProfilePage = () => {
                 className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder={user?.attributes?.phone_number}
-                onChange={ (event) => {
+                onChange={(event) => {
                   setPhone(event.target.value);
                 }}
               />
             </li>
-            <ProfileSaving saving={saving} errorMessages={errorMessages} successMessages={successMessages}/>
+            <ProfileSaving
+              saving={saving}
+              errorMessages={errorMessages}
+              successMessages={successMessages}
+            />
             <li>
               <ul className="grid grid-cols-1 gap-6">
                 <li>
@@ -290,11 +333,17 @@ const ProfilePage = () => {
                   <button
                     className="text-white font-semibold underline"
                     onClick={
-                    // If the user has not connected Alpaca then they must disconnect, otherwise they can connect
-                    () => alpacaConnection ? (handleAccountModals(ModalTypes.disconnect)) : (handleAccountModals(ModalTypes.connect))  }
-                    > 
-                    {alpacaConnection ?  ("Disconnect from Alpaca") : ("Connect to Alpaca") }               
-                  </button>          
+                      // If the user has not connected Alpaca then they must disconnect, otherwise they can connect
+                      () =>
+                        alpacaConnection
+                          ? handleAccountModals(ModalTypes.disconnect)
+                          : handleAccountModals(ModalTypes.connect)
+                    }
+                  >
+                    {alpacaConnection
+                      ? "Disconnect from Alpaca"
+                      : "Connect to Alpaca"}
+                  </button>
                   <FaArrowRight className="inline mb-1 ml-1 text-white" />
                 </li>
                 <li>
@@ -306,16 +355,16 @@ const ProfilePage = () => {
                   </button>
                   <FaArrowRight className="inline mb-1 ml-1 text-red" />
                 </li>
-               
               </ul>
             </li>
-           {/* Div for Save Changes and Signout Button*/}
-            <div className = "flex">
+            {/* Div for Save Changes and Signout Button*/}
+            <div className="flex">
               <button
                 className="text-white font-medium rounded-lg bg-green p-4"
-                onClick={ () => {
-                  setSaving(true)
-                  saveChanges()}}
+                onClick={() => {
+                  setSaving(true);
+                  saveChanges();
+                }}
               >
                 Save changes
               </button>

@@ -10,6 +10,7 @@ import ProfilePage from "./components/pages/ProfilePage";
 import SignInPage from "./components/pages/SignInPage";
 import AlgoquantApiContext from "./api/ApiContext";
 import initAlgoQuantApi from "../src/api/ApiUtils";
+
 /*
 This Component is used to wrap each Route and ensure that they cannot 
 be acessed unless the user is authenticated. If the user is authenticated
@@ -36,7 +37,11 @@ function ProtectLogin({ children }) {
 }
 
 export function PageRouter() {
+  // get logged in user information from amplify's context
   const { user } = useAuthenticator((context) => [context.user]);
+
+  // Declare algoquant variable and attempt to initialize it passing in the user for authorization.
+  // This object is used to access all the api request code from the algoquant sdk
   let algoquant = undefined;
   try {
     algoquant = initAlgoQuantApi(user);
@@ -45,6 +50,7 @@ export function PageRouter() {
     console.log(err);
   }
   return (
+    // Context Provider to make the algoquant object global for child components of this Provider
     <AlgoquantApiContext.Provider value={algoquant}>
       <BrowserRouter>
         <Routes>
