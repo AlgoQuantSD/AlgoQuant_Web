@@ -1,3 +1,4 @@
+import React from "react";
 import { render } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import ProfilePage from "../../components/pages/ProfilePage";
@@ -22,7 +23,7 @@ describe("ProfilePage", () => {
       "Save changes",
       "Sign out",
       "Change password",
-      "Connect to PaperTrade",
+      "Connect to Alpaca",
       "Delete account",
     ];
 
@@ -45,6 +46,7 @@ describe("ProfilePage", () => {
     expect(firstNameInput).toBeInTheDocument();
     expect(lastNameInput).toBeInTheDocument();
     expect(emailInput).toBeInTheDocument();
+    expect(phoneInput).toBeInTheDocument();
   });
   it("renders the user's information", () => {
     const { getByTestId } = render(

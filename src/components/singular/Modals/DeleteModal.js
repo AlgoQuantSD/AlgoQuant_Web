@@ -1,8 +1,12 @@
 import { Auth } from "aws-amplify";
 import { React, useState } from "react";
 import Modal from "../Modal";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
-const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
+const DeleteModal = ({ setDeleteModal, deleteModal }) => {
+
+  const { user } = useAuthenticator((context) => [context.user]);
+
   const [password, setPassword] = useState(null);
 
   const [error, setError] = useState("");
@@ -14,23 +18,32 @@ const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
   const confirmDelete = async () => {
     // Attempt to signin using the provided username and password
     Auth.signIn(user?.attributes?.email, password.value)
+    // On sucessful sign in , the user can be deleted
       .then(() => {
         Auth.deleteUser()
           .then(() => {
             Auth.signOut();
-            console.log("User Deleted");
           })
-          .catch(() => {
-            setError("Error Deleting");
+          .catch((err) => {
+            setError("Error occured while deleting user: " + err.message);
           });
       })
-      .catch(() => {
-        setError("Invalid Password");
+      .catch((err) => {
+        setError("Error occured while deleting user: " + err.message);
       });
   };
 
+    /*
+  Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
+  attributes of the Modal
+  */
+  const handleClose = () => {
+    setError("")
+    setDeleteModal(false)
+  }
+
   return (
-    <Modal isVisible={deleteModal} onClose={() => setDeleteModal(false)}>
+    <Modal isVisible={deleteModal} onClose={handleClose}>
       <div className="bg-dark-gray p-2 rounded border border-red">
         <div className="p-6">
           <h3 className="text-3xl font-bold text-red mb-5">Delete Account</h3>
@@ -54,7 +67,7 @@ const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
         <div className="p-6 flex justify-between">
           <button
             className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-            onClick={() => setDeleteModal(false)}
+            onClick={handleClose}
           >
             Cancel
           </button>

@@ -3,10 +3,10 @@
 exports[`Sidebar should render correctly 1`] = `
 <div>
   <div
-    class="absolute bg-dark-gray w-64 h-screen pl-5 shadow-md pr-5"
+    class="flex-none w-50 bg-dark-gray h-screen pl-5 pr-5 mt-10"
   >
     <ul
-      class="list-none p-0 mt-28"
+      class="list-none mt-20"
     >
       <li>
         <p
@@ -17,7 +17,7 @@ exports[`Sidebar should render correctly 1`] = `
       </li>
       <li>
         <a
-          class="block py-3 mt-4 pt-3 bg-darker-gray"
+          class="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
           href="/home"
         >
           <svg
@@ -43,7 +43,7 @@ exports[`Sidebar should render correctly 1`] = `
       </li>
       <li>
         <a
-          class="block py-3 mt-4 pt-3 bg-darker-gray"
+          class="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
           href="/createInvestor"
         >
           <svg
@@ -69,7 +69,7 @@ exports[`Sidebar should render correctly 1`] = `
       </li>
       <li>
         <a
-          class="block py-3 mt-4 pt-3 bg-darker-gray"
+          class="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
           href="/backtesting"
         >
           <svg
@@ -95,7 +95,7 @@ exports[`Sidebar should render correctly 1`] = `
       </li>
       <li>
         <a
-          class="block py-3 mt-4 pt-3 bg-darker-gray"
+          class="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
           href="/history"
         >
           <svg
@@ -121,7 +121,7 @@ exports[`Sidebar should render correctly 1`] = `
       </li>
       <li>
         <a
-          class="block py-3 mt-4 pt-3 bg-darker-gray"
+          class="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
           href="/profile"
         >
           <svg
