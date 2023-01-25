@@ -198,8 +198,8 @@ const ProfilePage = () => {
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
       <Navbar />
       {/* Main Div for the side bar and all the page content */}
-      <div className="flex self-stretch">
-        <Sidebar />
+      <div className="container mx-auto flex bg-dark-gray">       
+       <Sidebar />
         {/* Div for all the profile content */}
         <div className="w-full h-full p-5 ">
           {/* All the Modals used by this page */}
