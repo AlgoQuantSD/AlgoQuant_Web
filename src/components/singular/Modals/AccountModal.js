@@ -92,19 +92,13 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
         <Modal isVisible={accountModal.visible} onClose={handleClose}>
           <div className="bg-dark-gray p-2 rounded border border-light-gray">
             <div className="p-6">
-              <h3
-                className="text-3xl font-bold text-light-gray mb-5"
-                data-testid="modal-title"
-              >
+              <h3 className="text-3xl font-bold text-light-gray mb-5">
                 Reset Balance
               </h3>
               <p className="text-light-gray font-medium mb-5 text-xl">
                 Resetting Balance requires new Alpaca Keys
               </p>
-              <p
-                className="text-light-gray font-medium mb-5 text-xl"
-                data-testid="alpaca-key-label"
-              >
+              <p className="text-light-gray font-medium mb-5 text-xl">
                 Please enter Alpaca API Key
               </p>
               <input
@@ -112,7 +106,6 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 type="text"
                 placeholder="Alpaca Key"
                 onChange={handleAlpacaKey}
-                data-testid="alpaca-key-input"
               />
               <p className="text-light-gray font-medium mb-5 text-xl">
                 Please enter Alpaca Secret Key
@@ -122,7 +115,6 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 type="text"
                 placeholder="Secret Key"
                 onChange={handleSecretKey}
-                data-testid="secret-key-input"
               />
               <p className="text-red">{error}</p>
               <p className="text-faded-dark-gray">
