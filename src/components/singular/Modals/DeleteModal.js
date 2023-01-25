@@ -1,38 +1,49 @@
 import { Auth } from "aws-amplify";
-import {React,useState} from "react";
+import { React, useState } from "react";
 import Modal from "../Modal";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
-const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
+const DeleteModal = ({ setDeleteModal, deleteModal }) => {
 
-  const [password,setPassword] = useState(null);
+  const { user } = useAuthenticator((context) => [context.user]);
 
-  const [error,setError] = useState("");
+  const [password, setPassword] = useState(null);
+
+  const [error, setError] = useState("");
 
   const handlePassword = (event) => {
     setPassword({ value: event.target.value });
   };
 
   const confirmDelete = async () => {
-
-    
-
     // Attempt to signin using the provided username and password
-    Auth.signIn(  user?.attributes?.email,password.value).then( () => {
-      Auth.deleteUser().then( () => {
-        Auth.signOut()
-        console.log("User Deleted")
-      }).catch(() => {
-        setError("Error Deleting")
+    Auth.signIn(user?.attributes?.email, password.value)
+    // On sucessful sign in , the user can be deleted
+      .then(() => {
+        Auth.deleteUser()
+          .then(() => {
+            Auth.signOut();
+          })
+          .catch((err) => {
+            setError("Error occured while deleting user: " + err.message);
+          });
       })
-    }
-    ).catch(() => {
-      setError("Invalid Password")
-    })
+      .catch((err) => {
+        setError("Error occured while deleting user: " + err.message);
+      });
+  };
+
+    /*
+  Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
+  attributes of the Modal
+  */
+  const handleClose = () => {
+    setError("")
+    setDeleteModal(false)
   }
 
-
   return (
-    <Modal isVisible={deleteModal} onClose={() => setDeleteModal(false)}>
+    <Modal isVisible={deleteModal} onClose={handleClose}>
       <div className="bg-dark-gray p-2 rounded border border-red">
         <div className="p-6">
           <h3 className="text-3xl font-bold text-red mb-5">Delete Account</h3>
@@ -51,20 +62,18 @@ const DeleteModal = ({ setDeleteModal, deleteModal, user }) => {
           <p className="text-faded-dark-gray">
             NOTE: You will not be able to recover your account upon deletion.
           </p>
-          <p className="text-red">
-            {error}
-          </p>
+          <p className="text-red">{error}</p>
         </div>
         <div className="p-6 flex justify-between">
           <button
             className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
-            onClick={() => setDeleteModal(false)}
+            onClick={handleClose}
           >
             Cancel
           </button>
-          <button 
-          className="text-white bg-red py-2 px-6 rounded shadow-md"
-          onClick={confirmDelete}
+          <button
+            className="text-white bg-red py-2 px-6 rounded shadow-md"
+            onClick={confirmDelete}
           >
             Delete
           </button>
