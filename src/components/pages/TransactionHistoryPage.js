@@ -30,11 +30,11 @@ const TransactionHistoryPage = () => {
   };
 
   return (
-    <div className="flex bg-dark-gray overflow-x-scroll">
+    <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
       <Navbar />
-      <div className="container mx-auto flex bg-dark-gray">
+      <div className="flex self-stretch">
         <Sidebar />
-        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 bg-dark-gray pl-5">
+        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 pl-5">
           <div className="flex pt-24">
             <h1 className="text-green font-bold sm:text-3xl md:text-5xl mb-10">
               Transaction History
@@ -97,13 +97,13 @@ const TransactionHistoryPage = () => {
           </table>
           <div className="p-6 pt-24 pb-20 overflow-x-scroll overflow-y-scroll">
             <button
-              className="text-white rounded-md bg-another-gray py-2 px-6"
+              className="text-white rounded-md bg-another-gray lg:text-xl md:text-lg lg:py-3 md:py-2 sm:py-1 lg:px-6 md:px-4 sm:px-2"
               onClick={handlePreviousClick}
             >
               Previous
             </button>
             <button
-              className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
+              className="text-white rounded-md bg-another-gray lg:text-xl md:text-lg lg:py-3 md:py-2 sm:py-1 lg:px-6 md:px-4 sm:px-2 float-right"
               onClick={handleNextClick}
             >
               Next
