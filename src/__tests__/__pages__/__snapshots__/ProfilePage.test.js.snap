@@ -245,7 +245,7 @@ exports[`ProfilePage should render 1`] = `
           </p>
         </div>
         <ul
-          class="grid gap-8 grid-cols-1 mt-10 mb-10"
+          class="grid gap-8 grid-cols-1 mt-10"
         >
           <li
             class="flex"
@@ -303,9 +303,15 @@ exports[`ProfilePage should render 1`] = `
               type="text"
             />
           </li>
+          <p
+            class="flex text-red font-semibold text-md"
+          />
+          <p
+            class="flex text-green font-semibold text-md"
+          />
           <li>
             <ul
-              class="grid grid-cols-1 gap-6 mt-5"
+              class="grid grid-cols-1 gap-6"
             >
               <li>
                 <button
