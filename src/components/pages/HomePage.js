@@ -7,7 +7,7 @@ const HomePage = () => {
   // const { user } = useAuthenticator((context) => [context.user]);
 
   return (
-    <div className="w-full bg-dark-gray overflow-y-scroll overflow-x-scroll">
+    <div className="w-full bg-dark-gray overflow-auto">
       <Navbar />
       <div className="container mx-auto flex bg-dark-gray">
         <Sidebar />
