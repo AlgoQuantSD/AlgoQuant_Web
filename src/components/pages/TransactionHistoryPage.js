@@ -12,7 +12,7 @@ const TransactionHistoryPage = () => {
       newTransactions.push({
         jobName: `Job ${i + 1}`,
         buyOrSell: i & (2 === 0) ? "Buy" : "Sell",
-        stockTicker: "APPL",
+        stockTicker: "Puss",
         shares: i + 1,
         amount: i * 100,
         date: "01/01/2022 8:55PM",
@@ -95,7 +95,7 @@ const TransactionHistoryPage = () => {
               ))}
             </tbody>
           </table>
-          <div className="p-6 pt-24 pb-20 overflow-x-scroll overflow-y-scroll">
+          <div className="p-6 pt-24 pb-20 overflow-auto	">
             <button
               className="text-white rounded-md bg-another-gray py-2 px-6"
               onClick={handlePreviousClick}
