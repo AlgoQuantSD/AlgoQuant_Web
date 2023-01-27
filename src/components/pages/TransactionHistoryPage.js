@@ -95,7 +95,7 @@ const TransactionHistoryPage = () => {
               ))}
             </tbody>
           </table>
-          <div className="p-6 pt-24 pb-20 overflow-x-scroll overflow-y-scroll">
+          <div className="p-6 pt-24 pb-20 overflow-auto">
             <button
               className="text-white rounded-md bg-another-gray py-2 px-6"
               onClick={handlePreviousClick}
