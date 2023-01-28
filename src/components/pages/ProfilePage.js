@@ -195,10 +195,10 @@ const ProfilePage = () => {
 
   return (
     // Main Div Container
-    <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
+    <div className="bg-dark-gray overflow-auto">
       <Navbar />
       {/* Main Div for the side bar and all the page content */}
-      <div className="flex self-stretch">
+      <div className="container mx-auto flex bg-dark-gray">
         <Sidebar />
         {/* Div for all the profile content */}
         <div className="w-full h-full p-5 ">
