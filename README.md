@@ -1,6 +1,8 @@
 # AlgoQuant Web Application
 
+<p align="center">
 ![alt text](./src/assets/images/aq-logo-with-name.png)
+</p>
 
 ## What is AlgoQuant?
 
