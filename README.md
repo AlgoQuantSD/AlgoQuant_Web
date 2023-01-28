@@ -1,7 +1,7 @@
 # AlgoQuant Web Application
 
 <p align="center">
-  <img src=".src/assets/images/aq-logo-with-name.png"  alt="Algoquant logo"/>
+  <img src="src/assets/images/aq-logo-with-name.png"  alt="Algoquant logo"/>
 </p>
 
 ## What is AlgoQuant?
