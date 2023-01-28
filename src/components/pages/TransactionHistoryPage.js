@@ -1,25 +1,57 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import AlgoquantApiContext from "../../api/ApiContext";
 
 const TransactionHistoryPage = () => {
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
+  const { user } = useAuthenticator((context) => [context.user]);
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+  const [pagUser, setPaguser] = useState(null);
 
   useEffect(() => {
     const newTransactions = [];
-    for (let i = (page - 1) * 20; i < page * 20; i++) {
-      newTransactions.push({
-        jobName: `Job ${i + 1}`,
-        buyOrSell: i & (2 === 0) ? "Buy" : "Sell",
-        stockTicker: "Puss",
-        shares: i + 1,
-        amount: i * 100,
-        date: "01/01/2022 8:55PM",
-      });
+    if (algoquantApi.token) {
+      algoquantApi
+        .getTrades(10, pagUser)
+        .then((resp) => {
+          setPaguser(null);
+          if (resp.data.LastEvaluatedKey !== undefined) {
+            setPaguser({
+              timestamp: resp.data.LastEvaluatedKey.timestamp,
+              user_id: resp.data.LastEvaluatedKey.user_id,
+            });
+          }
+          console.log(resp.data);
+          console.log(resp.data.Count);
+          for (let i = 0; i < resp.data.Count; i++) {
+            let timestamp = new Date(parseInt(resp.data.Items[i].timestamp));
+            newTransactions.push({
+              // jobName: `Job ${i + 1}`,
+              // buyOrSell: i & (2 === 0) ? "Buy" : "Sell",
+              // stockTicker: "Puss",
+              // shares: i + 1,
+              // amount: i * 100,
+              // date: "01/01/2022 8:55PM",
+              jobName: resp.data.Items[i].job_name,
+              buyOrSell: resp.data.Items[i].side === "B" ? "Buy" : "Sell",
+              stockTicker: resp.data.Items[i].symbol,
+              shares: resp.data.Items[i].qty,
+              amount: resp.data.Items[i].avg_price,
+              date: timestamp.toLocaleString(),
+            });
+          }
+          setTransactions(newTransactions);
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log(err);
+        });
     }
-    setTransactions(newTransactions);
-  }, [page]);
+  }, [algoquantApi, page]);
 
   const handleNextClick = () => {
     setPage(page + 1);
