@@ -78,7 +78,6 @@ const ProfilePage = () => {
       algoquantApi
         .getUser()
         .then((resp) => {
-          console.log(resp);
           setBalance(resp.data.buying_power);
           setAlpacaConnection(resp.data.alpaca);
           setIsLoading(false);

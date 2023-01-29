@@ -4,6 +4,7 @@ import Sidebar from "../reusable/SideBar";
 import AlgoquantApiContext from "../../api/ApiContext";
 import Table from "../reusable/Table";
 import formatter from "../utils/CurrencyFormatter";
+import { TableSpinner } from "../reusable/LoadSpinner";
 
 const TransactionHistoryPage = () => {
   const [history, setHistory] = useState([]);
@@ -14,6 +15,7 @@ const TransactionHistoryPage = () => {
   const algoquantApi = useContext(AlgoquantApiContext);
   const [pagUser, setPaguser] = useState(null);
   const [next, setNext] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   // if page == 1 then dont set last page. if so if the last key is undefined then set it
   useEffect(() => {
@@ -47,6 +49,7 @@ const TransactionHistoryPage = () => {
             }
 
             setHistory(history.concat(historyBuffer));
+            setIsLoading(false);
           })
           .catch((err) => {
             // TODO: Need to implement better error handling
@@ -71,6 +74,9 @@ const TransactionHistoryPage = () => {
   }, [history, algoquantApi, page]);
 
   const handleNextClick = () => {
+    if (!lastPage && next <= page) {
+      setIsLoading(true);
+    }
     setPage(page + 1);
   };
 
@@ -100,44 +106,50 @@ const TransactionHistoryPage = () => {
               Transaction History
             </h1>
           </div>
+          {isLoading ? (
+            <TableSpinner />
+          ) : (
+            <>
+              {" "}
+              <Table data={transactions} header={header}></Table>
+              <div className="p-6 pt-24 pb-20 overflow-auto	">
+                <p className="text-2xl font-light text-center text-white ">
+                  {"Page " + page}
+                </p>
+                {page === 1 ? (
+                  <button
+                    className="text-white rounded-md bg-another-gray py-2 px-6"
+                    disabled
+                  >
+                    Previous
+                  </button>
+                ) : (
+                  <button
+                    className="text-white rounded-md bg-another-gray py-2 px-6"
+                    onClick={handlePreviousClick}
+                  >
+                    Previous
+                  </button>
+                )}
 
-          <Table data={transactions} header={header}></Table>
-          <div className="p-6 pt-24 pb-20 overflow-auto	">
-            <p className="text-2xl font-light text-center text-white ">
-              {"Page " + page}
-            </p>
-            {page === 1 ? (
-              <button
-                className="text-white rounded-md bg-another-gray py-2 px-6"
-                disabled
-              >
-                Previous
-              </button>
-            ) : (
-              <button
-                className="text-white rounded-md bg-another-gray py-2 px-6"
-                onClick={handlePreviousClick}
-              >
-                Previous
-              </button>
-            )}
-
-            {transactions.length === 0 || transactions.length !== 10 ? (
-              <button
-                className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
-                disabled
-              >
-                Next
-              </button>
-            ) : (
-              <button
-                className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
-                onClick={handleNextClick}
-              >
-                Next
-              </button>
-            )}
-          </div>
+                {transactions.length === 0 || transactions.length !== 10 ? (
+                  <button
+                    className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
+                    disabled
+                  >
+                    Next
+                  </button>
+                ) : (
+                  <button
+                    className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
+                    onClick={handleNextClick}
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
