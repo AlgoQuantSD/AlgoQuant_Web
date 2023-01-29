@@ -40,13 +40,19 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/history" className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray">
+          <Link
+            to="/history"
+            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
+          >
             <FaMoneyBill className="text-2xl inline mr-3 mb-1 ml-2 text-light-gray" />
             <p className="text-l inline text-light-gray">Transaction History</p>
           </Link>
         </li>
         <li>
-          <Link to="/profile" className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray">
+          <Link
+            to="/profile"
+            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
+          >
             <FaCog className="text-2xl inline mr-3 mb-1 ml-2 text-light-gray" />
             <p className="text-l inline text-light-gray">My Profile</p>
           </Link>

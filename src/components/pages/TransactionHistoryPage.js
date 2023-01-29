@@ -1,8 +1,8 @@
 import { React, useState, useEffect, useContext } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import { useAuthenticator } from "@aws-amplify/ui-react";
 import AlgoquantApiContext from "../../api/ApiContext";
+import Table from "../reusable/Table";
 
 const TransactionHistoryPage = () => {
   const [history, setHistory] = useState([]);
@@ -22,7 +22,6 @@ const TransactionHistoryPage = () => {
         algoquantApi
           .getTrades(10, pagUser)
           .then((resp) => {
-            console.log("fuck yea");
             setPaguser(null);
             setNext(next + 1);
             if (resp.data.LastEvaluatedKey === undefined && page !== 1) {
@@ -54,7 +53,7 @@ const TransactionHistoryPage = () => {
           });
       }
     }
-  }, [algoquantApi, page]);
+  }, [algoquantApi, page, history, lastPage, next, pagUser]);
   useEffect(() => {
     const newTransactions = [];
     let itemCounter = 0;
@@ -72,15 +71,22 @@ const TransactionHistoryPage = () => {
 
   const handleNextClick = () => {
     setPage(page + 1);
-    // setNext(true);
   };
 
   const handlePreviousClick = () => {
     if (page > 1) {
       setPage(page - 1);
-      // setNext(false);
     }
   };
+
+  const header = [
+    { key: "jobName", title: "Job Name" },
+    { key: "buyOrSell", title: "Buy or Sell" },
+    { key: "stockTicker", title: "Stock Ticker" },
+    { key: "shares", title: "Shares" },
+    { key: "amount", title: "Amount" },
+    { key: "date", title: "Date" },
+  ];
 
   return (
     <div className="bg-dark-gray overflow-y-scroll overflow-x-scroll">
@@ -93,61 +99,7 @@ const TransactionHistoryPage = () => {
               Transaction History
             </h1>
           </div>
-          <table className="table-auto w-full font-light text-white">
-            <thead>
-              <tr className="bg-medium-gray text-white ">
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
-                  Job Name
-                </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
-                  Buy or Sell
-                </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
-                  Stock Ticker
-                </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
-                  Shares
-                </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
-                  Amount
-                </th>
-                <th className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm">
-                  Date
-                </th>
-              </tr>
-            </thead>
-            <tbody className="border border-another-gray border-opacity-30 text-center lg:font-normal sm:font-thin">
-              {transactions.map((transaction, index) => (
-                <tr
-                  key={index}
-                  className={
-                    index % 2 === 0
-                      ? "bg-dark-gray align-left"
-                      : "bg-another-gray align-left"
-                  }
-                >
-                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
-                    {transaction.jobName}
-                  </td>
-                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
-                    {transaction.buyOrSell}
-                  </td>
-                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
-                    {transaction.stockTicker}
-                  </td>
-                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
-                    {transaction.shares}
-                  </td>
-                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
-                    {transaction.amount}
-                  </td>
-                  <td className="lg:px-3 lg:py-5 md:px-2 md:py-2">
-                    {transaction.date}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table data={transactions} header={header} />
           <div className="p-6 pt-24 pb-20 overflow-auto	">
             <p className="text-2xl font-light text-center text-white ">
               {"Page " + page}
