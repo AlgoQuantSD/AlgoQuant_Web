@@ -13,25 +13,25 @@ const TransactionHistoryPage = () => {
   const [page, setPage] = useState(1);
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  const [pagUser, setPaguser] = useState(null);
-  const [next, setNext] = useState(0);
+  const [lastKey, setLastKey] = useState(null);
+  const [pagesSeen, setPagesSeen] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   // if page == 1 then dont set last page. if so if the last key is undefined then set it
   useEffect(() => {
     const historyBuffer = [];
-    if (!lastPage && next < page) {
+    if (!lastPage && pagesSeen < page) {
       if (algoquantApi.token) {
         algoquantApi
-          .getTrades(10, pagUser)
+          .getTrades(10, lastKey)
           .then((resp) => {
-            setPaguser(null);
-            setNext(next + 1);
+            setLastKey(null);
+            setPagesSeen(pagesSeen + 1);
             if (resp.data.LastEvaluatedKey === undefined && page !== 1) {
               setLastPage(true);
             }
             if (resp.data.LastEvaluatedKey !== undefined) {
-              setPaguser({
+              setLastKey({
                 timestamp: resp.data.LastEvaluatedKey.timestamp,
                 user_id: resp.data.LastEvaluatedKey.user_id,
               });
@@ -57,7 +57,7 @@ const TransactionHistoryPage = () => {
           });
       }
     }
-  }, [algoquantApi, page, history, lastPage, next, pagUser]);
+  }, [algoquantApi, page, history, lastPage, pagesSeen, lastKey]);
   useEffect(() => {
     const newTransactions = [];
     let itemCounter = 0;
@@ -74,7 +74,7 @@ const TransactionHistoryPage = () => {
   }, [history, algoquantApi, page]);
 
   const handleNextClick = () => {
-    if (!lastPage && next <= page) {
+    if (!lastPage && pagesSeen <= page) {
       setIsLoading(true);
     }
     setPage(page + 1);
