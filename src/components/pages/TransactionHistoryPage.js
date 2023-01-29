@@ -3,6 +3,7 @@ import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import AlgoquantApiContext from "../../api/ApiContext";
 import Table from "../reusable/Table";
+import formatter from "../utils/CurrencyFormatter";
 
 const TransactionHistoryPage = () => {
   const [history, setHistory] = useState([]);
@@ -40,7 +41,7 @@ const TransactionHistoryPage = () => {
                 buyOrSell: resp.data.Items[i].side === "B" ? "Buy" : "Sell",
                 stockTicker: resp.data.Items[i].symbol,
                 shares: resp.data.Items[i].qty,
-                amount: resp.data.Items[i].avg_price,
+                amount: formatter.format(resp.data.Items[i].avg_price),
                 date: timestamp.toLocaleString(),
               });
             }
@@ -99,7 +100,8 @@ const TransactionHistoryPage = () => {
               Transaction History
             </h1>
           </div>
-          <Table data={transactions} header={header} />
+
+          <Table data={transactions} header={header}></Table>
           <div className="p-6 pt-24 pb-20 overflow-auto	">
             <p className="text-2xl font-light text-center text-white ">
               {"Page " + page}
