@@ -5,60 +5,81 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import AlgoquantApiContext from "../../api/ApiContext";
 
 const TransactionHistoryPage = () => {
+  const [history, setHistory] = useState([]);
+  const [lastPage, setLastPage] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
-  const { user } = useAuthenticator((context) => [context.user]);
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const [pagUser, setPaguser] = useState(null);
+  const [next, setNext] = useState(0);
 
+  // if page == 1 then dont set last page. if so if the last key is undefined then set it
   useEffect(() => {
-    const newTransactions = [];
-    if (algoquantApi.token) {
-      algoquantApi
-        .getTrades(10, pagUser)
-        .then((resp) => {
-          setPaguser(null);
-          if (resp.data.LastEvaluatedKey !== undefined) {
-            setPaguser({
-              timestamp: resp.data.LastEvaluatedKey.timestamp,
-              user_id: resp.data.LastEvaluatedKey.user_id,
-            });
-          }
-          console.log(resp.data);
-          console.log(resp.data.Count);
-          for (let i = 0; i < resp.data.Count; i++) {
-            let timestamp = new Date(parseInt(resp.data.Items[i].timestamp));
-            newTransactions.push({
-              // jobName: `Job ${i + 1}`,
-              // buyOrSell: i & (2 === 0) ? "Buy" : "Sell",
-              // stockTicker: "Puss",
-              // shares: i + 1,
-              // amount: i * 100,
-              // date: "01/01/2022 8:55PM",
-              jobName: resp.data.Items[i].job_name,
-              buyOrSell: resp.data.Items[i].side === "B" ? "Buy" : "Sell",
-              stockTicker: resp.data.Items[i].symbol,
-              shares: resp.data.Items[i].qty,
-              amount: resp.data.Items[i].avg_price,
-              date: timestamp.toLocaleString(),
-            });
-          }
-          setTransactions(newTransactions);
-        })
-        .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log(err);
-        });
+    const historyBuffer = [];
+    if (!lastPage && next < page) {
+      if (algoquantApi.token) {
+        algoquantApi
+          .getTrades(10, pagUser)
+          .then((resp) => {
+            console.log("fuck yea");
+            setPaguser(null);
+            setNext(next + 1);
+            if (resp.data.LastEvaluatedKey === undefined && page !== 1) {
+              setLastPage(true);
+            }
+            if (resp.data.LastEvaluatedKey !== undefined) {
+              setPaguser({
+                timestamp: resp.data.LastEvaluatedKey.timestamp,
+                user_id: resp.data.LastEvaluatedKey.user_id,
+              });
+            }
+            for (let i = 0; i < resp.data.Count; i++) {
+              let timestamp = new Date(parseInt(resp.data.Items[i].timestamp));
+              historyBuffer.push({
+                jobName: resp.data.Items[i].job_name,
+                buyOrSell: resp.data.Items[i].side === "B" ? "Buy" : "Sell",
+                stockTicker: resp.data.Items[i].symbol,
+                shares: resp.data.Items[i].qty,
+                amount: resp.data.Items[i].avg_price,
+                date: timestamp.toLocaleString(),
+              });
+            }
+
+            setHistory(history.concat(historyBuffer));
+          })
+          .catch((err) => {
+            // TODO: Need to implement better error handling
+            console.log(err);
+          });
+      }
     }
   }, [algoquantApi, page]);
+  useEffect(() => {
+    const newTransactions = [];
+    let itemCounter = 0;
+
+    //  this is whats gonna handle what shows on screen
+    if (history.length !== 0) {
+      for (let i = (page - 1) * 10; i < history.length; i++) {
+        if (itemCounter === 10) break;
+        newTransactions.push(history[i]);
+        itemCounter++;
+      }
+    }
+    setTransactions(newTransactions);
+  }, [history, algoquantApi, page]);
 
   const handleNextClick = () => {
     setPage(page + 1);
+    // setNext(true);
   };
 
   const handlePreviousClick = () => {
-    if (page > 1) setPage(page - 1);
+    if (page > 1) {
+      setPage(page - 1);
+      // setNext(false);
+    }
   };
 
   return (
@@ -128,18 +149,40 @@ const TransactionHistoryPage = () => {
             </tbody>
           </table>
           <div className="p-6 pt-24 pb-20 overflow-auto	">
-            <button
-              className="text-white rounded-md bg-another-gray py-2 px-6"
-              onClick={handlePreviousClick}
-            >
-              Previous
-            </button>
-            <button
-              className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
-              onClick={handleNextClick}
-            >
-              Next
-            </button>
+            <p className="text-2xl font-light text-center text-white ">
+              {"Page " + page}
+            </p>
+            {page === 1 ? (
+              <button
+                className="text-white rounded-md bg-another-gray py-2 px-6"
+                disabled
+              >
+                Previous
+              </button>
+            ) : (
+              <button
+                className="text-white rounded-md bg-another-gray py-2 px-6"
+                onClick={handlePreviousClick}
+              >
+                Previous
+              </button>
+            )}
+
+            {transactions.length === 0 || transactions.length !== 10 ? (
+              <button
+                className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
+                disabled
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
+                onClick={handleNextClick}
+              >
+                Next
+              </button>
+            )}
           </div>
         </div>
       </div>
