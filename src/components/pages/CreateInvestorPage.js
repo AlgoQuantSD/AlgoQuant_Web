@@ -4,7 +4,7 @@ import Sidebar from "../reusable/SideBar";
 
 const CreateInvestorPage = () => {
   return (
-    <div className="bg-dark-gray overflow-y-scroll overflow-x-scroll">
+    <div className="bg-dark-gray overflow-auto">
       <Navbar />
       <div className="container mx-auto flex bg-dark-gray">
         <Sidebar />

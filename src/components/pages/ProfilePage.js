@@ -188,7 +188,7 @@ const ProfilePage = () => {
 
   return (
     // Main Div Container
-    <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
+    <div className="bg-dark-gray overflow-auto">
       <Navbar />
       {/* Main Div for the side bar and all the page content */}
       <div className="container mx-auto flex bg-dark-gray">

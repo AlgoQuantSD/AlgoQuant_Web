@@ -96,7 +96,7 @@ const TransactionHistoryPage = () => {
   ];
 
   return (
-    <div className="bg-dark-gray overflow-y-scroll overflow-x-scroll">
+    <div className="bg-dark-gray overflow-auto">
       <Navbar />
       <div className="container mx-auto flex bg-dark-gray">
         <Sidebar />
@@ -110,7 +110,6 @@ const TransactionHistoryPage = () => {
             <TableSpinner />
           ) : (
             <>
-              {" "}
               <Table data={transactions} header={header}></Table>
               <div className="p-6 pt-24 pb-20 overflow-auto	">
                 <p className="text-2xl font-light text-center text-white ">
