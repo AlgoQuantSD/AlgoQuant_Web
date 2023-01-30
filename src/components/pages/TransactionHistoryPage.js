@@ -17,14 +17,14 @@ const TransactionHistoryPage = () => {
   const [pagesSeen, setPagesSeen] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  // if page == 1 then dont set last page. if so if the last key is undefined then set it
-  useEffect(() => {
+  function fetchTrades(fetchAmt) {
     const historyBuffer = [];
     if (!lastPage && pagesSeen < page) {
       if (algoquantApi.token) {
         algoquantApi
-          .getTrades(10, lastKey)
+          .getTrades(fetchAmt, lastKey)
           .then((resp) => {
+            console.log(resp.data);
             setLastKey(null);
             setPagesSeen(pagesSeen + 1);
             if (resp.data.LastEvaluatedKey === undefined && page !== 1) {
@@ -57,11 +57,12 @@ const TransactionHistoryPage = () => {
           });
       }
     }
-  }, [algoquantApi, page, history, lastPage, pagesSeen, lastKey]);
+  }
+
   useEffect(() => {
     const newTransactions = [];
     let itemCounter = 0;
-
+    fetchTrades(10);
     //  this is whats gonna handle what shows on screen
     if (history.length !== 0) {
       for (let i = (page - 1) * 10; i < history.length; i++) {
