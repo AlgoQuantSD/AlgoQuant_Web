@@ -18,78 +18,71 @@ const TransactionHistoryPage = () => {
   const [pagesSeen, setPagesSeen] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchTrades = useCallback(
-    (FETCH_AMOUNT) => {
-      const historyBuffer = [];
-      if (!lastPage && pagesSeen < page) {
-        if (algoquantApi.token) {
-          algoquantApi
-            .getTrades(FETCH_AMOUNT, lastKey)
-            .then((resp) => {
-              setLastKey(null);
-              setPagesSeen(pagesSeen + 1);
-              if (resp.data.LastEvaluatedKey === undefined && page !== 1) {
-                setLastPage(true);
-              }
-              if (resp.data.LastEvaluatedKey !== undefined) {
-                setLastKey({
-                  timestamp: resp.data.LastEvaluatedKey.timestamp,
-                  user_id: resp.data.LastEvaluatedKey.user_id,
-                });
-              }
-              for (let i = 0; i < resp.data.Count; i++) {
-                let timestamp = new Date(
-                  parseInt(resp.data.Items[i].timestamp)
-                );
-                historyBuffer.push({
-                  jobName: resp.data.Items[i].job_name,
-                  buyOrSell: resp.data.Items[i].side === "B" ? "Buy" : "Sell",
-                  stockTicker: resp.data.Items[i].symbol,
-                  shares: resp.data.Items[i].qty,
-                  amount: formatter.format(resp.data.Items[i].avg_price),
-                  date: timestamp.toLocaleString(),
-                });
-              }
+  const fetchTrades = useCallback(() => {
+    const historyBuffer = [];
+    if (!lastPage && pagesSeen < page) {
+      if (algoquantApi.token) {
+        algoquantApi
+          .getTrades(FETCH_AMOUNT, lastKey)
+          .then((resp) => {
+            setLastKey(null);
+            setPagesSeen(pagesSeen + 1);
+            if (resp.data.LastEvaluatedKey === undefined && page !== 1) {
+              setLastPage(true);
+            }
+            if (resp.data.LastEvaluatedKey !== undefined) {
+              setLastKey({
+                timestamp: resp.data.LastEvaluatedKey.timestamp,
+                user_id: resp.data.LastEvaluatedKey.user_id,
+              });
+            }
+            for (let i = 0; i < resp.data.Count; i++) {
+              let timestamp = new Date(parseInt(resp.data.Items[i].timestamp));
+              historyBuffer.push({
+                jobName: resp.data.Items[i].job_name,
+                buyOrSell: resp.data.Items[i].side === "B" ? "Buy" : "Sell",
+                stockTicker: resp.data.Items[i].symbol,
+                shares: resp.data.Items[i].qty,
+                amount: formatter.format(resp.data.Items[i].avg_price),
+                date: timestamp.toLocaleString(),
+              });
+            }
 
-              setHistory(history.concat(historyBuffer));
-              setIsLoading(false);
-            })
-            .catch((err) => {
-              // TODO: Need to implement better error handling
-              console.log(err);
-            });
-        }
+            setHistory(history.concat(historyBuffer));
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            // TODO: Need to implement better error handling
+            console.log(err);
+          });
       }
-    },
-    [algoquantApi, page, history, lastPage, pagesSeen, lastKey]
-  );
+    }
+  }, [algoquantApi, page, history, lastPage, pagesSeen, lastKey]);
 
   useEffect(() => {
     const newTransactions = [];
     let itemCounter = 0;
     fetchTrades(FETCH_AMOUNT);
     //  this is whats gonna handle what shows on screen
-    if (history.length !== 0) {
-      for (let i = (page - 1) * FETCH_AMOUNT; i < history.length; i++) {
-        if (itemCounter === FETCH_AMOUNT) break;
-        newTransactions.push(history[i]);
-        itemCounter++;
-      }
+
+    for (let i = (page - 1) * FETCH_AMOUNT; i < history.length; i++) {
+      if (itemCounter === FETCH_AMOUNT) break;
+      newTransactions.push(history[i]);
+      itemCounter++;
     }
+
     setTransactions(newTransactions);
   }, [history, fetchTrades, page]);
 
   const handleNextClick = () => {
-    if (!lastPage && pagesSeen <= page) {
+    if (pagesSeen <= page) {
       setIsLoading(true);
     }
     setPage(page + 1);
   };
 
   const handlePreviousClick = () => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
+    setPage(page - 1);
   };
 
   const header = [
@@ -137,7 +130,7 @@ const TransactionHistoryPage = () => {
                   </button>
                 )}
 
-                {transactions.length === 0 || transactions.length !== 10 ? (
+                {transactions.length < 10 ? (
                   <button
                     className="text-white rounded-md bg-another-gray py-2 px-6 float-right"
                     disabled
