@@ -1,6 +1,7 @@
 import { React } from "react";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import BarLoader from "react-spinners/BarLoader";
+import GridLoader from "react-spinners/GridLoader";
 
 export const LoadSpinner = () => {
   return (
@@ -14,6 +15,14 @@ export const SaveSpinner = () => {
   return (
     <div className=" flex bg-dark-gray justify-center items-center">
       <BarLoader color="hsla(112, 54%, 41%, 1)" size={15} />
+    </div>
+  );
+};
+
+export const TableSpinner = () => {
+  return (
+    <div className=" flex bg-dark-gray justify-center items-center">
+      <GridLoader color="hsla(112, 54%, 41%, 1)" size={20} />
     </div>
   );
 };

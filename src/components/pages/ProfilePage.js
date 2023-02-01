@@ -3,14 +3,12 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 import ProfileSaving from "../singular/ProfileSaving";
 import { ModalTypes } from "../singular/Modals/AccountModal";
-
 import {
   updateEmail,
   updateGivenName,
   updateFamilyName,
   updatePhone,
 } from "../authentication/AuthUtils";
-
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import EmailModal from "../singular/Modals/EmailModal";
@@ -19,12 +17,7 @@ import AccountModal from "../singular/Modals/AccountModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { LoadSpinner } from "../reusable/LoadSpinner";
-
-// Uitlity fuction used to format numbers
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
+import formatter from "../utils/CurrencyFormatter";
 
 const ProfilePage = () => {
   const { user, signOut } = useAuthenticator((context) => [context.user]);
