@@ -63,6 +63,9 @@ const Searchbar = ({ searchCallback, getSearchResults }) => {
   return (
     <div ref={searchRef} className="relative">
       <div className="flex border border-another-gray rounded-sm">
+        <button className="px-4 bg-dark-gray rounded-md">
+          <FaSearch className="text-white" />
+        </button>
         <input
           className="bg-dark-gray px-4 py-2 w-64 rounded-md text-white focus:outline-none"
           type="text"
@@ -71,9 +74,6 @@ const Searchbar = ({ searchCallback, getSearchResults }) => {
           onKeyDown={handleKeyDown}
           value={searchValue}
         />
-        <button className="px-4 bg-dark-gray rounded-md">
-          <FaSearch className="text-white" />
-        </button>
       </div>
       {showResults && searchValue.length > 0 && (
         <div className="absolute bg-darker-gray rounded-sm shadow-lg text-white w-full">
