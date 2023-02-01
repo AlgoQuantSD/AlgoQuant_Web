@@ -1,7 +1,11 @@
 # AlgoQuant Web Application
 
-![alt text](./src/assets/images/aqLogo.png)
+<p align="center">
+  <img src="src/assets/images/aq-logo-with-name.png"  alt="Algoquant logo"/>
+</p>
+
 ## What is AlgoQuant?
+
 AlgoQuant is a project centered around the creation, customization, and implementation of algorithmic trading bots.  From technical analysis indicators to a neural network service, AlgoQuant aims to provide retail investors with the tools, strategies, and education commonly found in institutional algorithmic trading.
 
 Built using:
@@ -9,6 +13,7 @@ Built using:
 - Front-end library: React
 - CSS framework: Tailwind CSS
 <!-- - CSS animations library: -->
+
 ### How to run the application
 
 ### `npm start`

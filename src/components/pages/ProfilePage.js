@@ -188,11 +188,6 @@ const ProfilePage = () => {
     clearState();
   };
 
-  // The profile should not be displayed if the user information is still being retrieved
-  if (isLoading) {
-    return <LoadSpinner />;
-  }
-
   return (
     // Main Div Container
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
@@ -200,6 +195,7 @@ const ProfilePage = () => {
       {/* Main Div for the side bar and all the page content */}
       <div className="flex self-stretch">
         <Sidebar />
+        
         {/* Div for all the profile content */}
         <div className="w-full h-full p-5 ">
           {/* All the Modals used by this page */}
@@ -216,7 +212,9 @@ const ProfilePage = () => {
             setDeleteModal={setDeleteModal}
             deleteModal={deleteModal}
           />
+
           <div className="flex ml-3 mt-24">
+            
             <h1 className="text-green font-bold text-5xl mr-5">My Account</h1>
             <button
               className="text-white font-medium rounded-lg bg-another-gray p-3 ml-auto"
@@ -230,6 +228,11 @@ const ProfilePage = () => {
               Reset balance
             </button>
           </div>
+          {/* The rest of the page relies on data from API, dont show until ready */}
+          {isLoading ? (
+             <LoadSpinner />
+           ) : (
+          <>
           <div className="m-10">
             <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
               <p
@@ -376,6 +379,8 @@ const ProfilePage = () => {
               </button>
             </div>
           </ul>
+          </>
+        )}
         </div>
       </div>
     </div>
