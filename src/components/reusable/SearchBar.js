@@ -1,4 +1,5 @@
 import { React, useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 
 const Searchbar = () => {
@@ -69,12 +70,11 @@ const Searchbar = () => {
           onKeyDown={handleKeyDown}
           value={searchValue}
         />
-        <button
-          className="px-4 bg-dark-gray rounded-md"
-          onClick={() => setShowResults(true)}
-        >
-          <FaSearch className="text-white" />
-        </button>
+        <Link to={`/search/${searchValue}`}>
+          <button className="px-4 bg-dark-gray rounded-md">
+            <FaSearch className="text-white" />
+          </button>
+        </Link>
       </div>
       {showResults && searchValue.length > 0 && (
         <div className="absolute bg-darker-gray rounded-sm shadow-lg text-white w-full">

@@ -12,7 +12,7 @@ const Navbar = () => {
     <nav className="flex top-0 bg-dark-gray border-gray-300 shadow-sm">
       {/* div for logo */}
       <div className="flex flex-1 justify-between items-center bg-dark-gray">
-        <Link to="/" className="">
+        <Link to="/">
           <img src={aqLogo} className="ml-3 h-10" alt="AlgoQuant Logo" />
         </Link>
       </div>
