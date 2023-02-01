@@ -24,6 +24,10 @@ const Searchbar = ({ selectItem, getSearchResults }) => {
   // Handles traversing and choosing dropdown options
   const handleKey = (event) => {
     if (event.key === "Enter") {
+      // If an index has been highlighted, should navigate on enter
+      if( highlightedIndex >= 0){
+        handleSelect(searchResults[highlightedIndex])
+      } else {
       // Ensure page is not re-rendered
       event.preventDefault();
       // When a user hits enter new search results should be added to the list
@@ -32,6 +36,7 @@ const Searchbar = ({ selectItem, getSearchResults }) => {
       });
       // Results should be shown after entering
       setShowResults(true);
+      }
     }
     // Action for when a user hits the up arrow, will decrease the highlighted index
     if (event.key === "ArrowUp" && highlightedIndex > 0) {
@@ -52,24 +57,24 @@ const Searchbar = ({ selectItem, getSearchResults }) => {
 
   // Keyboard input in search box
   const handleTextChange = (event) => {
-    // If a user clears everything in the text box then the drop down should be closed
-    if(event.target.value === ""){
-      closeDropdown();
-    }
+    // When new text is typed the dropdown should be closed
+    closeDropdown();
     event.preventDefault();
     // Update the search value to the new text
     setSearchValue(event.target.value);
   };
 
-  // Handles clicking on dropdown options
-  const handleClick = (value) => {
-      // Call the search callback and close the dropdown
-      selectItem(value);
+  // Handles selecting an item from the dropdown
+  const handleSelect = (item) => {
+      // Call the select item callback and close the dropdown
+      selectItem(item);
       closeDropdown()
     };
 
-  /* Called anytime the drop down needs to be closed
-  Will hid the results, restore highlighted index, and set the search string to empty*/
+  /* 
+  Called anytime the drop down needs to be closed
+  Will hid the results, restore highlighted index, and set the search string to empty
+  */
   const closeDropdown = () => {
     setShowResults(false);
     setHighlightedIndex(-1);
@@ -116,7 +121,7 @@ const Searchbar = ({ selectItem, getSearchResults }) => {
                   : ""
               }`}
               key={result}
-              onClick={() => handleClick(result)}
+              onClick={() => handleSelect(result)}
               onKeyDown={() => handleKey(result)}
               tabIndex="0"
             >
