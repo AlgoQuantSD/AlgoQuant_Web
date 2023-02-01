@@ -13,11 +13,9 @@ const SearchResultsPage = () => {
         <Sidebar />
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 pl-5">
           <div className="flex pt-24">
-            <h1 className="text-green font-bold text-5xl">Search Results</h1>
-            <p className="pt-4 text-white font-bold flex">
-              <br></br>
+            <h1 className="text-green font-bold text-5xl">
               {location.state.value}
-            </p>
+            </h1>
           </div>
         </div>
       </div>
