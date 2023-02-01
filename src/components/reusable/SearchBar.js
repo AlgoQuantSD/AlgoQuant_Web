@@ -1,20 +1,23 @@
 import { React, useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 
-const Searchbar = () => {
+const Searchbar = ({ searchCallback, getSearchResults }) => {
   const [showResults, setShowResults] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
-  const dummyData = ["AAPL", "GOOGL", "AMZN", "TSLA", "MSFT"];
+  const [searchResults, setSearchResults] = useState([]);
+
   const searchRef = useRef(null);
 
   // Handles traversing and choosing dropdown options
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      setSearchValue(searchResults[highlightedIndex]);
-      setShowResults(false);
+
+      setSearchResults(() => {
+        return getSearchResults(searchValue);
+      });
+      setShowResults(true);
     }
     if (event.key === "ArrowUp" && highlightedIndex > 0) {
       event.preventDefault();
@@ -33,24 +36,22 @@ const Searchbar = () => {
   const handleChange = (event) => {
     event.preventDefault();
     setSearchValue(event.target.value);
-    setShowResults(true);
   };
 
   // Handles clicking on dropdown options
   const handleClick = (value) => {
-    setSearchValue(value);
+    searchCallback(value);
+    setSearchValue("");
     setShowResults(false);
   };
-
-  const searchResults = dummyData.filter((d) =>
-    d.toLowerCase().includes(searchValue.toLowerCase())
-  );
 
   // Close search upon clicking anywhere outside of the component
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setShowResults(false);
+        setHighlightedIndex(-1);
+        setSearchResults([]);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -70,11 +71,9 @@ const Searchbar = () => {
           onKeyDown={handleKeyDown}
           value={searchValue}
         />
-        <Link to={`/search/${searchValue}`}>
-          <button className="px-4 bg-dark-gray rounded-md">
-            <FaSearch className="text-white" />
-          </button>
-        </Link>
+        <button className="px-4 bg-dark-gray rounded-md">
+          <FaSearch className="text-white" />
+        </button>
       </div>
       {showResults && searchValue.length > 0 && (
         <div className="absolute bg-darker-gray rounded-sm shadow-lg text-white w-full">

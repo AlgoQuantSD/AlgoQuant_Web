@@ -1,11 +1,10 @@
 import React from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import { useMatch } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const SearchResultsPage = () => {
-  let { params } = useMatch();
-  let searchValue = params.searchValue;
+  const location = useLocation();
 
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
@@ -15,7 +14,10 @@ const SearchResultsPage = () => {
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 pl-5">
           <div className="flex pt-24">
             <h1 className="text-green font-bold text-5xl">Search Results</h1>
-            <p className="pt-4">Search Value: {searchValue}</p>
+            <p className="pt-4 text-white font-bold flex">
+              <br></br>
+              {location.state.value}
+            </p>
           </div>
         </div>
       </div>

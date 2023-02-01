@@ -1,11 +1,22 @@
 import { React } from "react";
+import Searchbar from "./SearchBar";
 import aqLogo from "../../assets/images/aq-logo.png";
 import { Link } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import Searchbar from "./SearchBar";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
+  const navigate = useNavigate();
+
+  const searchCallback = (value) => {
+    navigate("/search", { state: { value: value } });
+  };
+
+  const getSearchResults = (value) => {
+    console.log(value);
+    return ["AAPL", "GOOGL", "AMZN", "TSLA", "MSFT"];
+  };
 
   return (
     // Big nav div
@@ -18,7 +29,10 @@ const Navbar = () => {
       </div>
       {/* div for search */}
       <div className="flex items-center">
-        <Searchbar />
+        <Searchbar
+          searchCallback={searchCallback}
+          getSearchResults={getSearchResults}
+        />
       </div>
       {/* div for my profile button */}
       <div className="flex-1 flex justify-end bg-dark-gray">
