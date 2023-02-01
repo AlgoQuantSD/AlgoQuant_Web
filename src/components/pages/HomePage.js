@@ -1,10 +1,8 @@
 import { React } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-// import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const HomePage = () => {
-  // const { user } = useAuthenticator((context) => [context.user]);
 
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
