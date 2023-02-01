@@ -27,7 +27,7 @@ const TransactionHistoryPage = () => {
           .then((resp) => {
             setLastKey(null);
             setPagesSeen(pagesSeen + 1);
-            if (resp.data.LastEvaluatedKey === undefined && page !== 1) {
+            if (resp.data.LastEvaluatedKey === undefined) {
               setLastPage(true);
             }
             if (resp.data.LastEvaluatedKey !== undefined) {
@@ -38,12 +38,13 @@ const TransactionHistoryPage = () => {
             }
             for (let i = 0; i < resp.data.Count; i++) {
               let timestamp = new Date(parseInt(resp.data.Items[i].timestamp));
+              let shares = parseFloat(resp.data.Items[i].qty).toFixed(3);
               historyBuffer.push({
                 jobName: resp.data.Items[i].job_name,
                 buyOrSell: resp.data.Items[i].side === "B" ? "Buy" : "Sell",
                 stockTicker: resp.data.Items[i].symbol,
-                shares: resp.data.Items[i].qty,
-                amount: formatter.format(resp.data.Items[i].avg_price),
+                shares: shares,
+                avgPrice: formatter.format(resp.data.Items[i].avg_price),
                 date: timestamp.toLocaleString(),
               });
             }
@@ -90,7 +91,7 @@ const TransactionHistoryPage = () => {
     { key: "buyOrSell", title: "Buy or Sell" },
     { key: "stockTicker", title: "Stock Ticker" },
     { key: "shares", title: "Shares" },
-    { key: "amount", title: "Amount" },
+    { key: "avgPrice", title: "Average Price" },
     { key: "date", title: "Date" },
   ];
 
