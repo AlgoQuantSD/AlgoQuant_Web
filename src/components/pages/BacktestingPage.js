@@ -8,8 +8,8 @@ const BacktestingPage = () => {
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
-        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 pl-5">
-          <div className="flex pt-24">
+        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
+          <div className="flex pt-10">
             <h1 className="text-green font-bold text-5xl">Backtesting</h1>
           </div>
         </div>
