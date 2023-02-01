@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     // Big nav div
-    <nav className="flex top-0 bg-dark-gray border-gray-300 shadow-md">
+    <nav className="flex top-0 bg-dark-gray border-gray-300 shadow-sm">
       {/* div for logo */}
       <div className="flex flex-1 justify-between items-center bg-dark-gray">
         <Link to="/" className="">
@@ -17,7 +17,7 @@ const Navbar = () => {
         </Link>
       </div>
       {/* div for search */}
-      <div className="flex flex-1 justify-center items-center ">
+      <div className="flex items-center">
         <Searchbar />
       </div>
       {/* div for my profile button */}
