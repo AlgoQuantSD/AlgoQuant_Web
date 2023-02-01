@@ -112,12 +112,9 @@ const TransactionHistoryPage = () => {
             <>
               <Table data={transactions} header={header}></Table>
               <div className="p-6 pt-24 pb-20 overflow-auto	">
-                <p className="text-2xl font-light text-center text-white ">
-                  {"Page " + page}
-                </p>
                 {page === 1 ? (
                   <button
-                    className="text-white rounded-md bg-another-gray py-2 px-6"
+                    className="text-dark-gray rounded-md bg-dark-gray py-2 px-6"
                     disabled
                   >
                     Previous
@@ -146,6 +143,9 @@ const TransactionHistoryPage = () => {
                     Next
                   </button>
                 )}
+                <p className="text-md font-light text-center text-light-gray mt-5">
+                  {"Page " + page}
+                </p>
               </div>
             </>
           )}
