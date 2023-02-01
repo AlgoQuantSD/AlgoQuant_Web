@@ -9,11 +9,21 @@ const Navbar = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
   const navigate = useNavigate();
 
-  const searchCallback = (value) => {
+  /* 
+  Function called anytime a user selects one of the items in the dropdown. Will navigate 
+  a user to the search page passing in the value. 
+  */
+  const selectItem = (value) => {
     navigate("/search", { state: { value: value } });
   };
 
+  /*
+  Function called anytime a user hits search using the searchbar. This will make an API 
+  call to get a list of search results that max the search value. The searchbar will then use 
+  these results in creating the dropdown
+  */
   const getSearchResults = (value) => {
+    // TODO: this needs to make an API request to the search endpoitn and return a list in the same format
     console.log(value);
     return ["AAPL", "GOOGL", "AMZN", "TSLA", "MSFT"];
   };
@@ -30,7 +40,7 @@ const Navbar = () => {
       {/* div for search */}
       <div className="flex items-center">
         <Searchbar
-          searchCallback={searchCallback}
+          selectItem={selectItem}
           getSearchResults={getSearchResults}
         />
       </div>

@@ -1,57 +1,88 @@
 import { React, useState, useEffect, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const Searchbar = ({ searchCallback, getSearchResults }) => {
+/*
+Reusable search component that takes a call back function defining what should be done when a search is done. Additionally,
+this takes in a callback function that will get new search results based on what has been entered
+*/
+const Searchbar = ({ selectItem, getSearchResults }) => {
+
+  // This flag controls rather the drop down will show
   const [showResults, setShowResults] = useState(false);
+
+  // The current search value entered
   const [searchValue, setSearchValue] = useState("");
+
+  // Which item in the drop down the user has selected
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+
+  // The search results to be displayed in the dropdown
   const [searchResults, setSearchResults] = useState([]);
 
   const searchRef = useRef(null);
 
   // Handles traversing and choosing dropdown options
-  const handleKeyDown = (event) => {
+  const handleKey = (event) => {
     if (event.key === "Enter") {
+      // Ensure page is not re-rendered
       event.preventDefault();
-
+      // When a user hits enter new search results should be added to the list
       setSearchResults(() => {
         return getSearchResults(searchValue);
       });
+      // Results should be shown after entering
       setShowResults(true);
     }
+    // Action for when a user hits the up arrow, will decrease the highlighted index
     if (event.key === "ArrowUp" && highlightedIndex > 0) {
+      // Ensure page is not re-rendered
       event.preventDefault();
       setHighlightedIndex(highlightedIndex - 1);
     }
+    // Action for when a user hits the down arrow, will increase the highlighted index
     if (
       event.key === "ArrowDown" &&
       highlightedIndex < searchResults.length - 1
     ) {
+      // Ensure page is not re-rendered
       event.preventDefault();
       setHighlightedIndex(highlightedIndex + 1);
     }
   };
 
   // Keyboard input in search box
-  const handleChange = (event) => {
+  const handleTextChange = (event) => {
+    // If a user clears everything in the text box then the drop down should be closed
+    if(event.target.value === ""){
+      closeDropdown();
+    }
     event.preventDefault();
+    // Update the search value to the new text
     setSearchValue(event.target.value);
   };
 
   // Handles clicking on dropdown options
   const handleClick = (value) => {
-    searchCallback(value);
-    setSearchValue("");
+      // Call the search callback and close the dropdown
+      selectItem(value);
+      closeDropdown()
+    };
+
+  /* Called anytime the drop down needs to be closed
+  Will hid the results, restore highlighted index, and set the search string to empty*/
+  const closeDropdown = () => {
     setShowResults(false);
-  };
+    setHighlightedIndex(-1);
+    setSearchResults([]);
+    setSearchValue("")
+  }
 
   // Close search upon clicking anywhere outside of the component
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setShowResults(false);
-        setHighlightedIndex(-1);
-        setSearchResults([]);
+        // Close the dropdown
+        closeDropdown();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -70,8 +101,8 @@ const Searchbar = ({ searchCallback, getSearchResults }) => {
           className="bg-dark-gray px-4 py-2 w-64 rounded-md text-white focus:outline-none"
           type="text"
           placeholder="Search for stocks"
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onChange={handleTextChange}
+          onKeyDown={handleKey}
           value={searchValue}
         />
       </div>
@@ -86,7 +117,7 @@ const Searchbar = ({ searchCallback, getSearchResults }) => {
               }`}
               key={result}
               onClick={() => handleClick(result)}
-              onKeyDown={(e) => handleKeyDown(result)}
+              onKeyDown={() => handleKey(result)}
               tabIndex="0"
             >
               {result}
