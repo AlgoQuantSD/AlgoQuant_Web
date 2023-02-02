@@ -1,9 +1,8 @@
 import { React } from "react";
-import Searchbar from "./SearchBar";
-import aqLogo from "../../assets/images/aq-logo.png";
-import { Link } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import aqLogo from "../../assets/images/aq-logo.png";
+import Searchbar from "./SearchBar";
 
 const Navbar = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
@@ -23,7 +22,7 @@ const Navbar = () => {
   these results in creating the dropdown
   */
   const getSearchResults = (value) => {
-    // TODO: this needs to make an API request to the search endpoitn and return a list in the same format
+    // TODO: this needs to make an API request to the search endpoint and return a list in the same format
     console.log(value);
     return ["AAPL", "GOOGL", "AMZN", "TSLA", "MSFT"];
   };
