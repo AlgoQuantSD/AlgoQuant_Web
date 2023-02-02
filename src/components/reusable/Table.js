@@ -4,10 +4,10 @@ const Table = ({ data, header }) => {
   return (
     <table className="table-auto w-full font-light text-white">
       <thead>
-        <tr className="bg-medium-gray text-white ">
+        <tr className="bg-medium-gray text-white">
           {header.map((header) => (
             <th
-              className="lg:px-5 lg:py-5 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm"
+              className="lg:px-4 lg:py-4 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm"
               key={header.key}
             >
               {header.title}

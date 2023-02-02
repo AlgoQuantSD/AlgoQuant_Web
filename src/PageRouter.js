@@ -1,6 +1,7 @@
 import { React } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+
 import HomePage from "./components/pages/HomePage";
 import WelcomePage from "./components/pages/WelcomePage";
 import CreateInvestorPage from "./components/pages/CreateInvestorPage";
@@ -8,6 +9,8 @@ import BacktestingPage from "./components/pages/BacktestingPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import SignInPage from "./components/pages/SignInPage";
+import SearchResultsPage from "./components/pages/SearchResultsPage";
+
 import AlgoquantApiContext from "./api/ApiContext";
 import initAlgoQuantApi from "../src/api/ApiUtils";
 
@@ -95,6 +98,13 @@ export function PageRouter() {
               </RequireAuth>
             }
           />
+          <Route 
+            path="/search" 
+            element={
+                <RequireAuth>
+                <SearchResultsPage />
+                </RequireAuth>} />
+                
           <Route
             path="/login"
             element={
@@ -103,6 +113,7 @@ export function PageRouter() {
               </ProtectLogin>
             }
           />
+
         </Routes>
       </BrowserRouter>
     </AlgoquantApiContext.Provider>

@@ -4,7 +4,6 @@ import { Auth } from "aws-amplify";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const PasswordModal = ({ setPasswordModal, passwordModal }) => {
-  
   const { user } = useAuthenticator((context) => [context.user]);
 
   // The states that are solely for the password modal
@@ -51,9 +50,9 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
   attributes of the Modal
   */
   const handleClose = () => {
-    setError("")
-    setPasswordModal(false)
-  }
+    setError("");
+    setPasswordModal(false);
+  };
 
   return (
     <Modal isVisible={passwordModal} onClose={handleClose}>

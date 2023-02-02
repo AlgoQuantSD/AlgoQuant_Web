@@ -246,9 +246,13 @@ exports[`ProfilePage should render 1`] = `
         </div>
         <ul
 <<<<<<< HEAD
+          class="grid gap-8 grid-cols-1 mt-10"
+=======
+<<<<<<< HEAD
           class="grid gap-8 grid-cols-1 mt-10 mb-10"
 =======
           class="grid gap-8 grid-cols-1 mt-5"
+>>>>>>> main
 >>>>>>> main
         >
           <li
