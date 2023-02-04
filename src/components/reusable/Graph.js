@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import Chart from "react-apexcharts";
 
 const Graph = () => {
-  const [selectedFilter, setSelectedFilter] = useState("month");
+  const [selectedFilter, setSelectedFilter] = useState("day");
   const [chartData, setChartData] = useState({
     series: [
       {
         name: "$",
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+        data: [10, 41, 35, 51, 49, 62, 69, 91, 1000],
         color: "#00FF38",
       },
     ],
     options: {
       chart: {
-        height: 350,
+        height: 320,
         type: "line",
         zoom: {
           enabled: false,
@@ -32,6 +32,10 @@ const Graph = () => {
         markers: {
           size: 0,
         },
+        crosshairs: {
+          show: false,
+        },
+        tooltip: false,
         labels: {
           style: {
             colors: "#fff",
@@ -53,13 +57,10 @@ const Graph = () => {
         markers: {
           size: 0,
         },
-        tooltip: {
-          enabled: true,
-          style: {
-            colors: "#000",
-            fontWeight: "bold",
-          },
+        crosshairs: {
+          show: false,
         },
+        tooltip: false,
         labels: {
           style: {
             colors: "#fff",
@@ -75,7 +76,7 @@ const Graph = () => {
   };
 
   return (
-    <div className="relative h-64">
+    <div className="relative h-96">
       <Chart
         options={chartData.options}
         series={chartData.series}
@@ -83,30 +84,38 @@ const Graph = () => {
         width="100%"
         height="100%"
       />
-      <div className="flex bottom-0 left-0 right-0 mb-4">
+      <div className="flex mt-4 justify-center">
         <button
-          className={`w-full p-3 text-white bg-blue-500 hover:bg-blue-600 ${
-            selectedFilter === "day" ? "active" : ""
+          className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+            selectedFilter === "day" ? "border-b-green active" : ""
           }`}
           onClick={() => handleFilterSelection("day")}
         >
-          Day
+          D
         </button>
         <button
-          className={`w-full p-3 text-white bg-blue-500 hover:bg-blue-600 ${
-            selectedFilter === "month" ? "active" : ""
+          className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+            selectedFilter === "five" ? "border-b-green active" : ""
+          }`}
+          onClick={() => handleFilterSelection("five")}
+        >
+          5D
+        </button>
+        <button
+          className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+            selectedFilter === "month" ? "border-b-green active" : ""
           }`}
           onClick={() => handleFilterSelection("month")}
         >
-          Month
+          M
         </button>
         <button
-          className={`w-full p-3 text-white bg-blue-500 hover:bg-blue-600 ${
-            selectedFilter === "year" ? "active" : ""
+          className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+            selectedFilter === "year" ? "border-b-green active" : ""
           }`}
           onClick={() => handleFilterSelection("year")}
         >
-          Year
+          Y
         </button>
       </div>
     </div>

@@ -29,7 +29,7 @@ const SearchResultsPage = () => {
             </p>
           </div>
           {/* <div className="flex"></div> */}
-          <div className="w-3/4 h-2/5 mx-auto my-10">
+          <div className="w-3/4 h-3/5 mx-auto my-10">
             <Graph />
           </div>
         </div>
