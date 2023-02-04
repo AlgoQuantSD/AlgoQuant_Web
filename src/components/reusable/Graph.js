@@ -1,76 +1,86 @@
 import React, { useState } from "react";
 import Chart from "react-apexcharts";
 
-const Graph = () => {
-  const [selectedFilter, setSelectedFilter] = useState("day");
-  const [chartData, setChartData] = useState({
+/*
+Build the graph based on the data, categories and preset configurations
+*/
+const buildGraph = (data, categories) => {
+  return {
     series: [
-      {
-        name: "$",
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 1000],
-        color: "#00FF38",
-      },
-    ],
-    options: {
-      chart: {
-        height: 320,
-        type: "line",
-        zoom: {
-          enabled: false,
-        },
-        toolbar: {
-          show: false,
-        },
-      },
-      dataLabels: {
+    {
+      name: "$",
+      data: data,
+      color: "#00FF38",
+    },
+  ],
+  options: {
+    grid: {
+      show: true
+    },
+
+    chart: {
+
+
+      height: 320,
+      type: "line",
+      zoom: {
         enabled: false,
       },
-      stroke: {
-        curve: "straight",
+      toolbar: {
+        show: false,
       },
-      xaxis: {
-        markers: {
-          size: 0,
-        },
-        crosshairs: {
-          show: false,
-        },
-        tooltip: false,
-        labels: {
-          style: {
-            colors: "#fff",
-          },
-        },
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-        ],
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: "straight",
+    },
+    xaxis: {
+ 
+      markers: {
+        size: 0,
       },
-      yaxis: {
-        markers: {
-          size: 0,
+      crosshairs: {
+        show: false,
+      },
+      tooltip: false,
+      labels: {
+        style: {
+          colors: "#fff",
         },
-        crosshairs: {
-          show: false,
-        },
-        tooltip: false,
-        labels: {
-          style: {
-            colors: "#fff",
-          },
+      },
+      categories: categories
+    },
+    yaxis: {
+     
+      markers: {
+        size: 0,
+      },
+      crosshairs: {
+        show: false,
+      },
+      tooltip: false,
+      labels: {
+        style: {
+          colors: "#fff",
         },
       },
     },
-  });
+  },
+}
+}
+
+const Graph = ({getData, chartData, categories}) => {
+
+  // Default of 1 day
+  const [selectedFilter, setSelectedFilter] = useState("day");
+
+  // Create the graph with the data and categories along with the callback to get more data
+  let chart = buildGraph(chartData,categories)
 
   const handleFilterSelection = (filter) => {
+    getData(filter)
     setSelectedFilter(filter);
     // logic to update chart data based on selected filter
   };
@@ -78,8 +88,8 @@ const Graph = () => {
   return (
     <div className="relative h-96">
       <Chart
-        options={chartData.options}
-        series={chartData.series}
+        options={chart.options}
+        series={chart.series}
         type="line"
         width="100%"
         height="100%"

@@ -1,16 +1,46 @@
-import React from "react";
+import {React,useState} from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import Graph from "../reusable/Graph";
 import { useLocation } from "react-router-dom";
 
+
 const SearchResultsPage = () => {
   const location = useLocation();
 
-  // const getGraphData = (timeFrame) => {
-  //   // Get graph data from API using timeframe
-  //   timeFrame = { timeFrame };
-  // };
+  // Currently hardcoded but will eventually come from API
+  const [chartData, setChartData] = useState([10, 41, 35, 51, 49, 62, 69, 91, 1000])
+  const [categories, setCategories] = useState([
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+  ])
+
+  /*
+  Callback used to get more data based on the filter. Each time any of the buttons 
+  are clicked this will be called to get more data. This will update the chart data which 
+  will then re-render the graph
+  */
+  const getData = (filter) => {
+    if(filter === "year") {
+      setChartData([])
+    } else {
+    setChartData(chartData.concat(chartData))
+    setCategories(categories.concat(categories))
+    console.log('Request filter: ' + filter)
+    }
+  }
+
+  // Should initial get all the data for the day time frame
+  //useEffect(() => {
+  //  getData("day")
+  //})
 
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
@@ -29,8 +59,12 @@ const SearchResultsPage = () => {
             </p>
           </div>
           {/* <div className="flex"></div> */}
-          <div className="w-3/4 h-3/5 mx-auto my-10">
-            <Graph />
+          <div className="w-11/12 h-4/5 mx-auto my-10">
+            <Graph 
+            chartData={chartData}
+            categories={categories}
+            getData={getData}
+            />
           </div>
         </div>
       </div>
