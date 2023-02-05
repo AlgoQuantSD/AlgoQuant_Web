@@ -19,7 +19,9 @@ const HomePage = () => {
     will then re-render the graph
     */
     const getData = (filter) => {
-     console.log("Does Nothing!")
+      setChartData([])
+      setCategories([])
+      console.log(filter)
   }
 
   return (
