@@ -25,7 +25,9 @@ const Searchbar = ({
   // Handles traversing and choosing dropdown options
   const handleKey = (event) => {
     if (event.key === "Enter") {
-      handleSelect(searchResults[highlightedIndex]);
+      if (highlightedIndex >= 0) {
+        handleSelect(searchResults[highlightedIndex]);
+      }
     }
     // Action for when a user hits the up arrow, will decrease the highlighted index
     if (event.key === "ArrowUp" && highlightedIndex > 0) {
@@ -49,16 +51,11 @@ const Searchbar = ({
     closeDropdown();
     setSearchValue(event.target.value);
 
-    // If an index has been highlighted, should navigate on enter
-    if (highlightedIndex >= 0) {
-      handleSelect(searchResults[highlightedIndex]);
-    } else {
-      // Ensure page is not re-rendered
-      event.preventDefault();
-      // When a user hits enter new search results should be added to the list
-      getSearchResults(event.target.value);
-      setShowResults(true);
-    }
+    // Ensure page is not re-rendered
+    event.preventDefault();
+    // When a user hits enter new search results should be added to the list
+    getSearchResults(event.target.value);
+    setShowResults(true);
   };
 
   // Handles selecting an item from the dropdown
