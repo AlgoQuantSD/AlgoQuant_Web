@@ -9,7 +9,7 @@ const SearchResultsPage = () => {
 
   // Currently hardcoded but will eventually come from API
   const [chartData, setChartData] = useState([
-    10, 41, 35, 51, 49, 62, 69, 91, 1000,
+    50, 41, 35, 51, 4, 62, 262, 91, 134,
   ]);
   const [categories, setCategories] = useState([
     "Jan",

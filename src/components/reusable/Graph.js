@@ -7,80 +7,81 @@ Build the graph based on the data, categories and preset configurations
 const buildGraph = (data, categories) => {
   return {
     series: [
-    {
-      name: "$",
-      data: data,
-      color: "#00FF38",
-    },
-  ],
-  options: {
-    grid: {
-      show: true
-    },
-
-    chart: {
-
-
-      height: 320,
-      type: "line",
-      zoom: {
+      {
+        name: "$",
+        data: data,
+        color: "#00FF38",
+      },
+    ],
+    options: {
+      grid: {
+        show: true,
+      },
+      chart: {
+        height: 320,
+        type: "line",
+        zoom: {
+          enabled: false,
+        },
+        toolbar: {
+          show: false,
+        },
+      },
+      dataLabels: {
         enabled: false,
       },
-      toolbar: {
-        show: false,
+      stroke: {
+        curve: "straight",
       },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "straight",
-    },
-    xaxis: {
- 
-      markers: {
-        size: 0,
-      },
-      crosshairs: {
-        show: false,
-      },
-      tooltip: false,
-      labels: {
-        style: {
-          colors: "#fff",
+      xaxis: {
+        markers: {
+          size: 0,
         },
+        crosshairs: {
+          show: false,
+        },
+        tooltip: false,
+        labels: {
+          style: {
+            colors: "#fff",
+          },
+        },
+        categories: categories,
       },
-      categories: categories
-    },
-    yaxis: {
-     
-      markers: {
-        size: 0,
-      },
-      crosshairs: {
-        show: false,
-      },
-      tooltip: false,
-      labels: {
-        style: {
-          colors: "#fff",
+      yaxis: {
+        markers: {
+          size: 0,
+        },
+        crosshairs: {
+          show: false,
+        },
+        tooltip: false,
+        labels: {
+          style: {
+            colors: "#fff",
+          },
         },
       },
     },
-  },
-}
-}
+  };
+};
 
-const Graph = ({getData, chartData, categories}) => {
+const filters = {
+  DAY: "day",
+  FIVE: "five",
+  MONTH: "month",
+  YEAR: "year",
+};
 
+const Graph = ({ getData, chartData, categories }) => {
   // Default of 1 day
   const [selectedFilter, setSelectedFilter] = useState("day");
 
   // Create the graph with the data and categories along with the callback to get more data
-  let chart = buildGraph(chartData,categories)
+  let chart = buildGraph(chartData, categories);
 
   const handleFilterSelection = (filter) => {
-    getData(filter)
+    getData(filter);
     setSelectedFilter(filter);
     // logic to update chart data based on selected filter
   };
@@ -97,33 +98,33 @@ const Graph = ({getData, chartData, categories}) => {
       <div className="flex mt-4 justify-center">
         <button
           className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === "day" ? "border-b-green active" : ""
+            selectedFilter === filters.DAY ? "border-b-green active" : ""
           }`}
-          onClick={() => handleFilterSelection("day")}
+          onClick={() => handleFilterSelection(filters.DAY)}
         >
           D
         </button>
         <button
           className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === "five" ? "border-b-green active" : ""
+            selectedFilter === filters.FIVE ? "border-b-green active" : ""
           }`}
-          onClick={() => handleFilterSelection("five")}
+          onClick={() => handleFilterSelection(filters.FIVE)}
         >
           5D
         </button>
         <button
           className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === "month" ? "border-b-green active" : ""
+            selectedFilter === filters.MONTH ? "border-b-green active" : ""
           }`}
-          onClick={() => handleFilterSelection("month")}
+          onClick={() => handleFilterSelection(filters.MONTH)}
         >
           M
         </button>
         <button
           className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === "year" ? "border-b-green active" : ""
+            selectedFilter === filters.YEAR ? "border-b-green active" : ""
           }`}
-          onClick={() => handleFilterSelection("year")}
+          onClick={() => handleFilterSelection(filters.YEAR)}
         >
           Y
         </button>
