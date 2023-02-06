@@ -1,10 +1,12 @@
 import { React } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
+import Banner from "../singular/Modals/Banner";
 
 const HomePage = () => {
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
+      <Banner />
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
