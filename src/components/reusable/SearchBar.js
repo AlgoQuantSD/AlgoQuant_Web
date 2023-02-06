@@ -1,12 +1,16 @@
-import { React, useState, useEffect, useRef } from "react";
+import { React, useState, useEffect, useRef, useCallback } from "react";
 import { FaSearch } from "react-icons/fa";
 
 /*
 Reusable search component that takes a call back function defining what should be done when a search is done. Additionally,
 this takes in a callback function that will get new search results based on what has been entered
 */
-const Searchbar = ({ selectItem, getSearchResults }) => {
-
+const Searchbar = ({
+  selectItem,
+  getSearchResults,
+  searchResults,
+  resetSearch,
+}) => {
   // This flag controls rather the drop down will show
   const [showResults, setShowResults] = useState(false);
 
@@ -16,26 +20,13 @@ const Searchbar = ({ selectItem, getSearchResults }) => {
   // Which item in the drop down the user has selected
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
-  // The search results to be displayed in the dropdown
-  const [searchResults, setSearchResults] = useState([]);
-
   const searchRef = useRef(null);
 
   // Handles traversing and choosing dropdown options
   const handleKey = (event) => {
     if (event.key === "Enter") {
-      // If an index has been highlighted, should navigate on enter
-      if( highlightedIndex >= 0){
-        handleSelect(searchResults[highlightedIndex])
-      } else {
-      // Ensure page is not re-rendered
-      event.preventDefault();
-      // When a user hits enter new search results should be added to the list
-      setSearchResults(() => {
-        return getSearchResults(searchValue);
-      });
-      // Results should be shown after entering
-      setShowResults(true);
+      if (highlightedIndex >= 0) {
+        handleSelect(searchResults[highlightedIndex]);
       }
     }
     // Action for when a user hits the up arrow, will decrease the highlighted index
@@ -57,30 +48,34 @@ const Searchbar = ({ selectItem, getSearchResults }) => {
 
   // Keyboard input in search box
   const handleTextChange = (event) => {
-    // When new text is typed the dropdown should be closed
     closeDropdown();
-    event.preventDefault();
-    // Update the search value to the new text
     setSearchValue(event.target.value);
+
+    // Ensure page is not re-rendered
+    event.preventDefault();
+    // When a user hits enter new search results should be added to the list
+    getSearchResults(event.target.value);
+    setShowResults(true);
   };
 
   // Handles selecting an item from the dropdown
   const handleSelect = (item) => {
-      // Call the select item callback and close the dropdown
-      selectItem(item);
-      closeDropdown()
-    };
+    // Call the select item callback and close the dropdown
+    selectItem(item);
+    closeDropdown();
+  };
 
   /* 
   Called anytime the drop down needs to be closed
   Will hid the results, restore highlighted index, and set the search string to empty
+  Will clear the last search results to an empty array
   */
-  const closeDropdown = () => {
+  const closeDropdown = useCallback(() => {
     setShowResults(false);
     setHighlightedIndex(-1);
-    setSearchResults([]);
-    setSearchValue("")
-  }
+    setSearchValue("");
+    resetSearch();
+  }, [setShowResults, setHighlightedIndex, setSearchValue, resetSearch]);
 
   // Close search upon clicking anywhere outside of the component
   useEffect(() => {
@@ -94,7 +89,7 @@ const Searchbar = ({ selectItem, getSearchResults }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [searchRef]);
+  }, [closeDropdown, searchRef]);
 
   return (
     <div ref={searchRef} className="relative">
