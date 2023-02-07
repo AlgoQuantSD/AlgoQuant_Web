@@ -1,9 +1,8 @@
 import { React, useContext, useState } from "react";
-import Searchbar from "./SearchBar";
-import aqLogo from "../../assets/images/aq-logo.png";
-import { Link } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import aqLogo from "../../assets/images/aq-logo.png";
+import Searchbar from "./SearchBar";
 import AlgoquantApiContext from "../../api/ApiContext";
 
 const Navbar = () => {
@@ -49,7 +48,7 @@ const Navbar = () => {
     // Big nav div
     <nav className="flex top-0 bg-dark-gray border-gray-300 shadow-sm">
       {/* div for logo */}
-      <div className="flex flex-1 justify-between items-center bg-dark-gray">
+      <div className="flex flex-1 items-center bg-dark-gray">
         <Link to="/">
           <img src={aqLogo} className="ml-3 h-10" alt="AlgoQuant Logo" />
         </Link>
