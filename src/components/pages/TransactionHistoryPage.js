@@ -6,18 +6,30 @@ import Table from "../reusable/Table";
 import formatter from "../utils/CurrencyFormatter";
 import { TableSpinner } from "../reusable/LoadSpinner";
 
+// The amount of data (trade history for a user) that is being fetched for each api call
 const FETCH_AMOUNT = 10;
+
 const TransactionHistoryPage = () => {
+  /* 
+  history - store the data and previous data fetched from api endpoint. keeps a local copy of data instead of continously calling the api 
+  lastPage - boolean value that will be set to true when the last query of data has been called, the highest amount of trades a user has in their history 
+  transactions - used to show data in a paginated manner on the screen for EACH page, gets data from history array 
+  page - tracks the current page is currently on, starts at page one 
+  lastKey - stores a "key" that is a response from the api that allows paginated calls, used to stop fetching for data when "key" is not returned from the api endpoint 
+  pagesSeen - tracks the highest page number the user has seen to prevent fetching of newer data until the user goes to a new page for the first time.
+  isLoading - used to show a loading spinner if their is new data being fetched for a page 
+  */
   const [history, setHistory] = useState([]);
   const [lastPage, setLastPage] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
-  // State variables used to access algoquant SDK API and display/ keep state of user data from database
-  const algoquantApi = useContext(AlgoquantApiContext);
   const [lastKey, setLastKey] = useState(null);
   const [pagesSeen, setPagesSeen] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
 
+  // function that that queries users trades and stores them into history in a paginated manner
   const fetchTrades = useCallback(() => {
     const historyBuffer = [];
     if (!lastPage && pagesSeen < page) {
@@ -25,12 +37,10 @@ const TransactionHistoryPage = () => {
         algoquantApi
           .getTrades(FETCH_AMOUNT, lastKey)
           .then((resp) => {
-            setLastKey(null);
             setPagesSeen(pagesSeen + 1);
             if (resp.data.LastEvaluatedKey === undefined) {
               setLastPage(true);
-            }
-            if (resp.data.LastEvaluatedKey !== undefined) {
+            } else {
               setLastKey({
                 timestamp: resp.data.LastEvaluatedKey.timestamp,
                 user_id: resp.data.LastEvaluatedKey.user_id,
@@ -60,12 +70,15 @@ const TransactionHistoryPage = () => {
     }
   }, [algoquantApi, page, history, lastPage, pagesSeen, lastKey]);
 
+  // controls when fetchTrades functin will be called
+  // uses transaction to show at most a FETCH_AMOUNT of history data on a page, uses a paginated approach to target the values from history. transaction variable changes with each page change to show new and the correct data on each page
   useEffect(() => {
     const newTransactions = [];
     let itemCounter = 0;
-    fetchTrades(FETCH_AMOUNT);
-    //  this is whats gonna handle what shows on screen
 
+    fetchTrades(FETCH_AMOUNT);
+
+    //  this is whats gonna handle what shows on screen
     for (let i = (page - 1) * FETCH_AMOUNT; i < history.length; i++) {
       if (itemCounter === FETCH_AMOUNT) break;
       newTransactions.push(history[i]);
@@ -75,6 +88,7 @@ const TransactionHistoryPage = () => {
     setTransactions(newTransactions);
   }, [history, fetchTrades, page]);
 
+  // functions to handle a page change
   const handleNextClick = () => {
     if (pagesSeen <= page) {
       setIsLoading(true);
@@ -86,6 +100,7 @@ const TransactionHistoryPage = () => {
     setPage(page - 1);
   };
 
+  // header used for the columns on the table
   const header = [
     { key: "jobName", title: "Job Name" },
     { key: "buyOrSell", title: "Buy or Sell" },

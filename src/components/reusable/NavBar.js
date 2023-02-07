@@ -1,12 +1,16 @@
-import { React } from "react";
+import { React, useContext, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { Link, useNavigate } from "react-router-dom";
 import aqLogo from "../../assets/images/aq-logo.png";
 import Searchbar from "./SearchBar";
+import AlgoquantApiContext from "../../api/ApiContext";
 
 const Navbar = () => {
+  const [searchResults, setSearchResults] = useState(["No search yet"]);
   const { signOut } = useAuthenticator((context) => [context.user]);
   const navigate = useNavigate();
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
 
   /* 
   Function called anytime a user selects one of the items in the dropdown. Will navigate 
@@ -22,9 +26,22 @@ const Navbar = () => {
   these results in creating the dropdown
   */
   const getSearchResults = (value) => {
-    // TODO: this needs to make an API request to the search endpoint and return a list in the same format
-    console.log(value);
-    return ["AAPL", "GOOGL", "AMZN", "TSLA", "MSFT"];
+    if (algoquantApi.token) {
+      algoquantApi
+        .searchStock(value)
+        .then((resp) => {
+          setSearchResults(resp.data["stock-tickers"]);
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log(err);
+        });
+    }
+    return searchResults;
+  };
+
+  const resetSearch = () => {
+    setSearchResults([]);
   };
 
   return (
@@ -41,6 +58,8 @@ const Navbar = () => {
         <Searchbar
           selectItem={selectItem}
           getSearchResults={getSearchResults}
+          searchResults={searchResults}
+          resetSearch={resetSearch}
         />
       </div>
       {/* div for my profile button */}
