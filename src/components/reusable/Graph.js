@@ -97,7 +97,7 @@ const Graph = ({ getData, chartData, categories }) => {
       />
       <div className="flex mt-4 justify-center">
         <button
-          className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
             selectedFilter === filters.DAY ? "border-b-green active" : ""
           }`}
           onClick={() => handleFilterSelection(filters.DAY)}
@@ -105,7 +105,7 @@ const Graph = ({ getData, chartData, categories }) => {
           D
         </button>
         <button
-          className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
             selectedFilter === filters.FIVE ? "border-b-green active" : ""
           }`}
           onClick={() => handleFilterSelection(filters.FIVE)}
@@ -113,7 +113,7 @@ const Graph = ({ getData, chartData, categories }) => {
           5D
         </button>
         <button
-          className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
             selectedFilter === filters.MONTH ? "border-b-green active" : ""
           }`}
           onClick={() => handleFilterSelection(filters.MONTH)}
@@ -121,7 +121,7 @@ const Graph = ({ getData, chartData, categories }) => {
           M
         </button>
         <button
-          className={`py-2 px-4 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
             selectedFilter === filters.YEAR ? "border-b-green active" : ""
           }`}
           onClick={() => handleFilterSelection(filters.YEAR)}

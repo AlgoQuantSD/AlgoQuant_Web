@@ -1,8 +1,9 @@
 import { React, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import Graph from "../reusable/Graph";
-import { useLocation } from "react-router-dom";
+import StockTable from "../singular/StockTable";
 
 const SearchResultsPage = () => {
   const location = useLocation();
@@ -59,13 +60,13 @@ const SearchResultsPage = () => {
               <p className="inline text-light-gray font-light"> Today</p>
             </p>
           </div>
-          {/* <div className="flex"></div> */}
           <div className="w-11/12 h-4/5 mx-auto my-10">
             <Graph
               chartData={chartData}
               categories={categories}
               getData={getData}
             />
+            <StockTable />
           </div>
         </div>
       </div>
