@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
@@ -7,11 +7,13 @@ import StockTable from "../singular/StockTable";
 
 const SearchResultsPage = () => {
   const location = useLocation();
+  const [selectedFilter, setSelectedFilter] = useState("Today");
 
   // Currently hardcoded but will eventually come from API
   const [chartData, setChartData] = useState([
     50, 41, 35, 51, 4, 62, 262, 91, 134,
   ]);
+
   const [categories, setCategories] = useState([
     "Jan",
     "Feb",
@@ -23,6 +25,14 @@ const SearchResultsPage = () => {
     "Aug",
     "Sep",
   ]);
+
+  const filters = {
+    DAY: "Today",
+    FIVE: "Past 5 days",
+    MONTH: "Past month",
+    YEAR: "Past Year",
+  };
+
   const [stockData, setStockData] = useState([
     {
       symbol: "AAPL",
@@ -32,9 +42,15 @@ const SearchResultsPage = () => {
       low: 126.5,
       yearHigh: 167.0,
       yearLow: 100.0,
+      percentChanged: 0.1267,
     },
   ]);
-  const [percentChanged, setPercentChanged] = useState(0);
+
+  const handleFilterSelection = (filter) => {
+    getData(filter);
+    setSelectedFilter(filter);
+    // logic to update chart data based on selected filter
+  };
 
   /*
   Callback used to get more data based on the filter. Each time any of the buttons 
@@ -51,13 +67,6 @@ const SearchResultsPage = () => {
       console.log("Request filter: " + filter);
     }
   };
-
-  // Calculate the percentage changed
-  useEffect(() => {
-    setPercentChanged(
-      ((stockData[0].recentPrice - stockData[0].open) / stockData[0].open) * 100
-    );
-  }, [stockData]);
 
   // Should initial get all the data for the day time frame
   //useEffect(() => {
@@ -82,13 +91,12 @@ const SearchResultsPage = () => {
               {Math.abs(stockData[0].recentPrice - stockData[0].open).toFixed(
                 2
               )}{" "}
-              (
-              {(
-                ((stockData[0].recentPrice - stockData[0].open) /
-                  stockData[0].open) *
-                100
-              ).toFixed(2)}
-              %)<p className="inline text-light-gray font-light"> Today</p>
+              ({stockData[0].percentChanged * 100}
+              %)
+              <p className="inline text-light-gray font-light">
+                {" "}
+                {selectedFilter}
+              </p>
             </p>
           </div>
           <div className="w-11/12 h-4/5 mx-auto my-10">
@@ -97,6 +105,42 @@ const SearchResultsPage = () => {
               categories={categories}
               getData={getData}
             />
+            <div className="flex mt-4 justify-center">
+              <button
+                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
+                  selectedFilter === filters.DAY ? "border-b-green active" : ""
+                }`}
+                onClick={() => handleFilterSelection(filters.DAY)}
+              >
+                D
+              </button>
+              <button
+                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
+                  selectedFilter === filters.FIVE ? "border-b-green active" : ""
+                }`}
+                onClick={() => handleFilterSelection(filters.FIVE)}
+              >
+                5D
+              </button>
+              <button
+                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
+                  selectedFilter === filters.MONTH
+                    ? "border-b-green active"
+                    : ""
+                }`}
+                onClick={() => handleFilterSelection(filters.MONTH)}
+              >
+                M
+              </button>
+              <button
+                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
+                  selectedFilter === filters.YEAR ? "border-b-green active" : ""
+                }`}
+                onClick={() => handleFilterSelection(filters.YEAR)}
+              >
+                Y
+              </button>
+            </div>
             <StockTable stockData={stockData} getData={getData} />
           </div>
         </div>

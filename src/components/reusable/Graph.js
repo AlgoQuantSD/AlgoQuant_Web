@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Chart from "react-apexcharts";
 
 /*
@@ -66,25 +66,11 @@ const buildGraph = (data, categories) => {
   };
 };
 
-const filters = {
-  DAY: "day",
-  FIVE: "five",
-  MONTH: "month",
-  YEAR: "year",
-};
-
 const Graph = ({ getData, chartData, categories }) => {
   // Default of 1 day
-  const [selectedFilter, setSelectedFilter] = useState("day");
 
   // Create the graph with the data and categories along with the callback to get more data
   let chart = buildGraph(chartData, categories);
-
-  const handleFilterSelection = (filter) => {
-    getData(filter);
-    setSelectedFilter(filter);
-    // logic to update chart data based on selected filter
-  };
 
   return (
     <div className="relative h-96">
@@ -95,40 +81,6 @@ const Graph = ({ getData, chartData, categories }) => {
         width="100%"
         height="100%"
       />
-      <div className="flex mt-4 justify-center">
-        <button
-          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === filters.DAY ? "border-b-green active" : ""
-          }`}
-          onClick={() => handleFilterSelection(filters.DAY)}
-        >
-          D
-        </button>
-        <button
-          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === filters.FIVE ? "border-b-green active" : ""
-          }`}
-          onClick={() => handleFilterSelection(filters.FIVE)}
-        >
-          5D
-        </button>
-        <button
-          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === filters.MONTH ? "border-b-green active" : ""
-          }`}
-          onClick={() => handleFilterSelection(filters.MONTH)}
-        >
-          M
-        </button>
-        <button
-          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === filters.YEAR ? "border-b-green active" : ""
-          }`}
-          onClick={() => handleFilterSelection(filters.YEAR)}
-        >
-          Y
-        </button>
-      </div>
     </div>
   );
 };
