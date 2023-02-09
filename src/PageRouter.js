@@ -98,13 +98,14 @@ export function PageRouter() {
               </RequireAuth>
             }
           />
-          <Route 
-            path="/search" 
+          <Route
+            path="/search"
             element={
-                <RequireAuth>
+              <RequireAuth>
                 <SearchResultsPage />
-                </RequireAuth>} />
-                
+              </RequireAuth>
+            }
+          />
           <Route
             path="/login"
             element={
@@ -113,7 +114,6 @@ export function PageRouter() {
               </ProtectLogin>
             }
           />
-
         </Routes>
       </BrowserRouter>
     </AlgoquantApiContext.Provider>

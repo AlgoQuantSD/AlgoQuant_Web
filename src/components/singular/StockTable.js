@@ -1,18 +1,6 @@
 import React from "react";
 
-const StockTable = () => {
-  const stockData = [
-    {
-      symbol: "AAPL",
-      recentPrice: 132.23,
-      open: 131.0,
-      high: 133.5,
-      low: 130.5,
-      yearHigh: 140.0,
-      yearLow: 100.0,
-    },
-  ];
-
+const StockTable = ({ stockData }) => {
   return (
     <div className="mt-24 w-full">
       <h2 className="text-white font-medium text-4xl mt-2">Stock Data</h2>
