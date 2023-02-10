@@ -5,6 +5,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import HomePage from "./components/pages/HomePage";
 import WelcomePage from "./components/pages/WelcomePage";
 import CreateInvestorPage from "./components/pages/CreateInvestorPage";
+import CreateJobPage from "./components/pages/CreateJobPage";
 import BacktestingPage from "./components/pages/BacktestingPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
@@ -75,6 +76,14 @@ export function PageRouter() {
             }
           />
           <Route
+            path="/createjob"
+            element={
+              <RequireAuth>
+                <CreateJobPage />
+              </RequireAuth>
+            }
+          />
+          <Route
             path="/backtesting"
             element={
               <RequireAuth>
@@ -98,13 +107,15 @@ export function PageRouter() {
               </RequireAuth>
             }
           />
-          <Route 
-            path="/search" 
+          <Route
+            path="/search"
             element={
-                <RequireAuth>
+              <RequireAuth>
                 <SearchResultsPage />
-                </RequireAuth>} />
-                
+              </RequireAuth>
+            }
+          />
+
           <Route
             path="/login"
             element={
@@ -113,7 +124,6 @@ export function PageRouter() {
               </ProtectLogin>
             }
           />
-
         </Routes>
       </BrowserRouter>
     </AlgoquantApiContext.Provider>

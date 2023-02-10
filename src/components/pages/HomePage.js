@@ -149,16 +149,8 @@ const HomePage = () => {
               </button>
             </div>
           </div>
-          <div className="flex w-full">
+          <div className="w-full">
             <h3 className="text-green font-bold text-4xl">Invest</h3>
-            <div className="pl-5 self-center">
-              <Link
-                to="/createinvestor"
-                className="text-white font-medium rounded-lg bg-green px-4 py-3"
-              >
-                Create new
-              </Link>
-            </div>
           </div>
           <div className="flex mx-auto justify-center w-2/4 mt-8">
             <button
@@ -196,11 +188,38 @@ const HomePage = () => {
             {(() => {
               switch (selectedTabFilter) {
                 case "investor":
-                  return <p className="text-white">Investor</p>;
+                  return (
+                    <div>
+                      <Link
+                        to="/createinvestor"
+                        className="relative text-white font-medium rounded-lg bg-green px-4 py-3"
+                      >
+                        Create Investor
+                      </Link>
+                    </div>
+                  );
                 case "job":
-                  return <p className="text-white">Job</p>;
+                  return (
+                    <div>
+                      <Link
+                        to="/createjob"
+                        className="relative text-white font-medium rounded-lg bg-green px-4 py-3"
+                      >
+                        Create Job
+                      </Link>
+                    </div>
+                  );
                 case "history":
-                  return <p className="text-white">History</p>;
+                  return (
+                    <div>
+                      <Link
+                        to="/history"
+                        className="relative text-white font-medium rounded-lg bg-green px-4 py-3"
+                      >
+                        View all transactions
+                      </Link>
+                    </div>
+                  );
                 default:
                   return null;
               }
