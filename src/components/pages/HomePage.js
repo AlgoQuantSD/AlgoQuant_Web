@@ -23,14 +23,6 @@ const HomePage = () => {
   ]);
 
   const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
-  const [selectedGraphFilter, setSelectedGraphFilter] = useState("Today");
-
-  const graphFilters = {
-    DAY: "Today",
-    FIVE: "Past 5 days",
-    MONTH: "Past month",
-    YEAR: "Past Year",
-  };
 
   const tabFilters = {
     INVESTOR: "investor",
@@ -56,18 +48,12 @@ const HomePage = () => {
     // logic to update chart data based on selected filter
   };
 
-  const handleGraphFilterSelection = (filter) => {
-    getGraphData(filter);
-    setSelectedGraphFilter(filter);
-    // logic to update chart data based on selected filter
-  };
-
   /*
     Callback used to get more data based on the filter. Each time any of the buttons 
     are clicked this will be called to get more data. This will update the chart data which 
     will then re-render the graph
     */
-  const getGraphData = (filter) => {
+  const getData = (filter) => {
     if (filter === "Past Year") {
       setChartData([]);
     } else {
@@ -95,59 +81,13 @@ const HomePage = () => {
             {Math.abs(stockData[0].recentPrice - stockData[0].open).toFixed(2)}{" "}
             ({stockData[0].percentChanged}
             %)
-            <p className="inline text-light-gray font-light">
-              {" "}
-              {selectedGraphFilter}
-            </p>
           </p>
           <div className="w-11/12 mx-auto my-10">
             <Graph
               chartData={chartData}
               categories={categories}
-              getGraphData={getGraphData}
+              getData={getData}
             />
-            <div className="flex mt-4 justify-center">
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedGraphFilter === graphFilters.DAY
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleGraphFilterSelection(graphFilters.DAY)}
-              >
-                D
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedGraphFilter === graphFilters.FIVE
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleGraphFilterSelection(graphFilters.FIVE)}
-              >
-                5D
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedGraphFilter === graphFilters.MONTH
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleGraphFilterSelection(graphFilters.MONTH)}
-              >
-                M
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedGraphFilter === graphFilters.YEAR
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleGraphFilterSelection(graphFilters.YEAR)}
-              >
-                Y
-              </button>
-            </div>
           </div>
           <div className="w-full">
             <h3 className="text-green font-bold text-4xl">Invest</h3>
@@ -201,12 +141,7 @@ const HomePage = () => {
                 case "job":
                   return (
                     <div>
-                      <Link
-                        to="/createjob"
-                        className="relative text-white font-medium rounded-lg bg-green px-4 py-3"
-                      >
-                        Create Job
-                      </Link>
+                      <p className="text-white">Create Job</p>
                     </div>
                   );
                 case "history":
