@@ -16,7 +16,10 @@ const Sidebar = () => {
           <p className="text-light-gray font-light">PAGES</p>
         </li>
         <li>
-          <Link to="/home" className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray">
+          <Link
+            to="/home"
+            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray hover:bg-another-gray"
+          >
             <FaHome className="text-2xl inline mr-3 mb-1 ml-2 text-light-gray" />
             <p className="text-l inline text-light-gray">Home</p>
           </Link>
@@ -24,7 +27,7 @@ const Sidebar = () => {
         <li>
           <Link
             to="/createInvestor"
-            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
+            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray hover:bg-another-gray"
           >
             <FaBrain className="text-2xl inline mr-3 mb-1 ml-2 text-light-gray" />
             <p className="text-l inline text-light-gray">Create Investor</p>
@@ -33,7 +36,7 @@ const Sidebar = () => {
         <li>
           <Link
             to="/backtesting"
-            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
+            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray hover:bg-another-gray"
           >
             <FaClipboardList className="text-2xl inline mr-3 mb-1 ml-2 text-light-gray" />
             <p className="text-l inline text-light-gray">Back Testing</p>
@@ -42,7 +45,7 @@ const Sidebar = () => {
         <li>
           <Link
             to="/history"
-            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
+            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray hover:bg-another-gray"
           >
             <FaMoneyBill className="text-2xl inline mr-3 mb-1 ml-2 text-light-gray" />
             <p className="text-l inline text-light-gray">Transaction History</p>
@@ -51,7 +54,7 @@ const Sidebar = () => {
         <li>
           <Link
             to="/profile"
-            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray"
+            className="flex mt-3 pt-3 pb-3 pr-3 bg-darker-gray hover:bg-another-gray"
           >
             <FaCog className="text-2xl inline mr-3 mb-1 ml-2 text-light-gray" />
             <p className="text-l inline text-light-gray">My Profile</p>
