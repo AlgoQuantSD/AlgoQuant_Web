@@ -42,7 +42,7 @@ const SearchResultsPage = () => {
       low: 126.5,
       yearHigh: 167.0,
       yearLow: 100.0,
-      percentChanged: 0.1267,
+      percentChanged: 1.5,
     },
   ]);
 
@@ -91,7 +91,7 @@ const SearchResultsPage = () => {
               {Math.abs(stockData[0].recentPrice - stockData[0].open).toFixed(
                 2
               )}{" "}
-              ({stockData[0].percentChanged * 100}
+              ({stockData[0].percentChanged}
               %)
               <p className="inline text-light-gray font-light">
                 {" "}
