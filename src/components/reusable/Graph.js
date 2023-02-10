@@ -66,7 +66,7 @@ const buildGraph = (data, categories) => {
   };
 };
 
-const Graph = ({ getData, chartData, categories }) => {
+const Graph = ({ chartData, categories }) => {
   // Create the graph with the data and categories along with the callback to get more data
   let chart = buildGraph(chartData, categories);
 
