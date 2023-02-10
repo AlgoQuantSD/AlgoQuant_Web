@@ -3,9 +3,20 @@ import { Link } from "react-router-dom";
 import Graph from "../reusable/Graph";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
+import InvestorGallery from "../singular/InvestorGallery";
+import "react-multi-carousel/lib/styles.css";
 
 const HomePage = () => {
   // Currently hardcoded but will eventually come from API
+  const [selectedGraphFilter, setSelectedGraphFilter] = useState("Today");
+
+  const graphFilters = {
+    DAY: "Today",
+    FIVE: "Past 5 days",
+    MONTH: "Past month",
+    YEAR: "Past Year",
+  };
+
   const [chartData, setChartData] = useState([
     50, 41, 35, 51, 4, 62, 262, 91, 134,
   ]);
@@ -22,22 +33,6 @@ const HomePage = () => {
     "Sep",
   ]);
 
-  const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
-  const [selectedGraphFilter, setSelectedGraphFilter] = useState("Today");
-
-  const graphFilters = {
-    DAY: "Today",
-    FIVE: "Past 5 days",
-    MONTH: "Past month",
-    YEAR: "Past Year",
-  };
-
-  const tabFilters = {
-    INVESTOR: "investor",
-    JOB: "job",
-    history: "history",
-  };
-
   const [stockData, setStockData] = useState([
     {
       symbol: "AAPL",
@@ -50,11 +45,6 @@ const HomePage = () => {
       percentChanged: 1.5,
     },
   ]);
-
-  const handleTabFilterSelection = (filter) => {
-    setSelectedTabFilter(filter);
-    // logic to update chart data based on selected filter
-  };
 
   const handleGraphFilterSelection = (filter) => {
     getGraphData(filter);
@@ -76,6 +66,18 @@ const HomePage = () => {
       setStockData(stockData);
       console.log("Request filter: " + filter);
     }
+  };
+  const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
+
+  const tabFilters = {
+    INVESTOR: "investor",
+    JOB: "job",
+    history: "history",
+  };
+
+  const handleTabFilterSelection = (filter) => {
+    setSelectedTabFilter(filter);
+    // logic to update chart data based on selected filter
   };
 
   return (
@@ -196,6 +198,7 @@ const HomePage = () => {
                       >
                         Create Investor
                       </Link>
+                      <InvestorGallery />
                     </div>
                   );
                 case "job":
