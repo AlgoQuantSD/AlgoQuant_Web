@@ -1,30 +1,19 @@
-import { React, useState } from "react";
+import { React, useState, useEffect, useContext, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import Graph from "../reusable/Graph";
 import StockTable from "../singular/StockTable";
-
+import AlgoquantApiContext from "../../api/ApiContext";
 const SearchResultsPage = () => {
   const location = useLocation();
   const [selectedFilter, setSelectedFilter] = useState("Today");
 
   // Currently hardcoded but will eventually come from API
-  const [chartData, setChartData] = useState([
-    50, 41, 35, 51, 4, 62, 262, 91, 134,
-  ]);
-
-  const [categories, setCategories] = useState([
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-  ]);
+  const [chartData, setChartData] = useState([1, 2, 3, 4, 5]);
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+  const [categories, setCategories] = useState([1, 2, 3, 4, 5]);
 
   const filters = {
     DAY: "Today",
@@ -47,6 +36,7 @@ const SearchResultsPage = () => {
   ]);
 
   const handleFilterSelection = (filter) => {
+    console.log("in here");
     getData(filter);
     setSelectedFilter(filter);
     // logic to update chart data based on selected filter
@@ -57,22 +47,79 @@ const SearchResultsPage = () => {
   are clicked this will be called to get more data. This will update the chart data which 
   will then re-render the graph
   */
-  const getData = (filter) => {
-    if (filter === "year") {
-      setChartData([]);
-    } else {
-      setChartData(chartData.concat(chartData));
-      setCategories(categories.concat(categories));
-      setStockData(stockData);
-      console.log("Request filter: " + filter);
+  const getData = (filters) => {
+    // if (filter === "year") {
+    //   setChartData([]);
+    // } else {
+    //   getGraphData("5D");
+    //   setCategories(categories);
+    //   setStockData(stockData);
+    //   console.log("Request f
+    console.log(filters);
+    switch (filters) {
+      case "Today":
+        getGraphData("D");
+        console.log("ep");
+        break;
+      case "Past 5 Days":
+        getGraphData("5D");
+        break;
+      case filters.MONTH:
+        getGraphData("M");
+        break;
+      case filters.YEAR:
+        getGraphData("Y");
+        break;
     }
   };
-
-  // Should initial get all the data for the day time frame
-  //useEffect(() => {
-  //  `getData("day")
-  //})
-
+  const getGraphData = useCallback(
+    (timeframe) => {
+      if (algoquantApi.token) {
+        algoquantApi
+          .getGraphData(location.state.value, timeframe)
+          .then((resp) => {
+            setChartData(resp.data["close"]);
+            setCategories(resp.data["timestamp"]);
+          })
+          .catch((err) => {
+            // TODO: Need to implement better error handling
+            console.log(err);
+          });
+      }
+    },
+    [algoquantApi]
+  );
+  console.log(chartData);
+  console.log(stockData);
+  // Should initial get all the graphdata for the day time frame and the stock data info for the table and when the search value change
+  // aka when a user searches for a new ticker
+  useEffect(() => {
+    getData(filters.DAY);
+    if (algoquantApi.token) {
+      algoquantApi
+        .getStockInfo(location.state.value)
+        .then((resp) => {
+          setStockData([
+            {
+              symbol: location.state.value,
+              recentPrice: resp.data["recent_price"],
+              open: resp.data["open"],
+              high: resp.data["high"],
+              low: resp.data["low"],
+              yearHigh: resp.data["52wk_high"],
+              yearLow: resp.data["52wk_low"],
+              percentChanged: 1.5,
+            },
+          ]);
+          console.log("poop");
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log(err);
+        });
+    }
+  }, [location.state.value]);
+  console.log(location.state.value);
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
       <Navbar />
