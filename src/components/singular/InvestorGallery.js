@@ -32,26 +32,37 @@ const InvestorGallery = () => {
       name: "Warren Buffett",
       indicators: ["RSI", "MACD", "OBV"],
       stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      id: "investor",
     },
     {
       name: "Money Maker",
       indicators: ["RSI", "MACD", "OBV"],
       stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      id: "bot",
     },
     {
       name: "Jordan Belfort",
       indicators: ["RSI", "MACD", "OBV"],
       stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      id: "investor",
     },
     {
       name: "Jordan Belfort's Cat",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      stocks: ["AMZN", "APPL", "GOOGL", "SPOT", "3 more"],
+      id: "investor",
     },
     {
       name: "Warren Buffett's Left Nut",
       indicators: ["RSI", "MACD", "OBV"],
       stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      id: "investor",
+    },
+    {
+      name: "Warren Buffett's Left Nut",
+      indicators: ["RSI", "MACD", "OBV"],
+      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      id: "investor",
     },
   ];
 
@@ -66,7 +77,9 @@ const InvestorGallery = () => {
       >
         {investors.map((investor) => (
           <div
-            className="h-full w-11/12 text-white bg-faded-dark-gray mx-auto p-6"
+            className={`h-full w-11/12 text-white bg-faded-dark-gray mx-auto p-6 ${
+              investor.id === "bot" ? " border-2 border-gold" : ""
+            }`}
             key={investor.name}
           >
             {/* Name and logos */}
@@ -87,19 +100,19 @@ const InvestorGallery = () => {
             </div>
             {/* Indicators / Stocks */}
             <div className="flex flex-col">
-              <div className="flex justify-between">
+              <div className="flex justify-between pl-16 pr-16">
                 <div className="w-1/4">
-                  <p className="flex justify-center font-bold">Indicators</p>
+                  <p className="flex justify-left font-bold">Indicators</p>
                   {investor.indicators.map((indicator, i) => (
-                    <p key={i} className="flex justify-center text-green">
+                    <p key={i} className="flex justify-left text-green">
                       {indicator}
                     </p>
                   ))}
                 </div>
                 <div className="w-1/4">
-                  <p className="flex justify-center font-bold">Stocks</p>
+                  <p className="flex justify-left font-bold">Stocks</p>
                   {investor.stocks.map((stock, i) => (
-                    <p key={i} className="flex justify-center text-green">
+                    <p key={i} className="flex justify-left text-green">
                       {stock}
                     </p>
                   ))}
