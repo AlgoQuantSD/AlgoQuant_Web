@@ -24,14 +24,14 @@ const SearchResultsPage = () => {
 
   const [stockData, setStockData] = useState([
     {
-      symbol: "AAPL",
-      recentPrice: 150.23,
-      open: 140.0,
-      high: 162.5,
-      low: 126.5,
-      yearHigh: 167.0,
-      yearLow: 100.0,
-      percentChanged: 1.5,
+      symbol: "",
+      recentPrice: 0,
+      open: 0,
+      high: 0,
+      low: 0,
+      yearHigh: 0,
+      yearLow: 0,
+      percentChanged: 0,
     },
   ]);
 
@@ -70,6 +70,8 @@ const SearchResultsPage = () => {
       case filters.YEAR:
         getGraphData("Y");
         break;
+      // default:
+      //   break;
     }
   };
   const getGraphData = useCallback(
@@ -87,7 +89,7 @@ const SearchResultsPage = () => {
           });
       }
     },
-    [algoquantApi]
+    [algoquantApi, location.state.value]
   );
   console.log(chartData);
   console.log(stockData);
@@ -118,7 +120,7 @@ const SearchResultsPage = () => {
           console.log(err);
         });
     }
-  }, [location.state.value]);
+  }, [location.state.value, algoquantApi]);
   console.log(location.state.value);
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
