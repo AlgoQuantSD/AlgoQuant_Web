@@ -118,35 +118,37 @@ const InvestorGallery = () => {
                   className="h-52 mt-6 mb-6"
                 />
               ) : (
-                <img src={bot1} alt="bot" className="h-64" />
+                <img src={bot1} alt="bot" className="h-72 mt-12" />
               )}
             </div>
             {/* Indicators / Stocks */}
-            <div className="flex flex-col">
-              <div className="flex justify-between pl-16 pr-16">
-                <div className="w-1/4">
-                  <p className="flex justify-left font-bold">Indicators</p>
-                  {investor.indicators.map((indicator, i) => (
-                    <p key={i} className="flex justify-left text-green">
-                      {indicator}
-                    </p>
-                  ))}
-                </div>
-                <div className="w-1/4">
-                  <p className="flex justify-left font-bold">Stocks</p>
-                  {investor.stocks.slice(0, 4).map((stock, i) => (
-                    <p key={i} className="flex justify-left text-green">
-                      {stock}
-                    </p>
-                  ))}
-                  {investor.stocks.length > 4 && (
-                    <p className="flex justify-left text-green">
-                      + {investor.stocks.length - 4} more
-                    </p>
-                  )}
+            {investor.id !== "bot" && (
+              <div className="flex flex-col">
+                <div className="flex justify-between pl-16 pr-16">
+                  <div className="w-1/4">
+                    <p className="flex justify-left font-bold">Indicators</p>
+                    {investor.indicators.map((indicator, i) => (
+                      <p key={i} className="flex justify-left text-green">
+                        {indicator}
+                      </p>
+                    ))}
+                  </div>
+                  <div className="w-1/4">
+                    <p className="flex justify-left font-bold">Stocks</p>
+                    {investor.stocks.slice(0, 4).map((stock, i) => (
+                      <p key={i} className="flex justify-left text-green">
+                        {stock}
+                      </p>
+                    ))}
+                    {investor.stocks.length > 4 && (
+                      <p className="flex justify-left text-green">
+                        + {investor.stocks.length - 4} more
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         ))}
       </Carousel>
