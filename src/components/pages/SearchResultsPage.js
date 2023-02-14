@@ -4,6 +4,7 @@ import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import Graph from "../reusable/Graph";
 import StockTable from "../singular/StockTable";
+import GraphStats from "../reusable/GraphStats";
 
 const SearchResultsPage = () => {
   const location = useLocation();
@@ -69,17 +70,11 @@ const SearchResultsPage = () => {
             <h1 className="text-white font-bold text-5xl">
               {location.state.value}
             </h1>
-            <h2 className="text-white font-semibold text-3xl mt-2">
-              ${stockData[0].recentPrice}
-            </h2>
-            <p className="text-bright-green font-medium text-md mt-2">
-              {stockData[0].recentPrice - stockData[0].open >= 0 ? "+" : "-"} $
-              {Math.abs(stockData[0].recentPrice - stockData[0].open).toFixed(
-                2
-              )}{" "}
-              ({stockData[0].percentChanged}
-              %)
-            </p>
+            <GraphStats
+              recentPrice={stockData[0].recentPrice}
+              open={stockData[0].open}
+              percentChanged={stockData[0].percentChanged}
+            />
           </div>
           <div className="w-11/12 h-4/5 mx-auto my-10">
             <Graph

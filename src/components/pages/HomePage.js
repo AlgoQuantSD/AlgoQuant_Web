@@ -1,8 +1,9 @@
 import { React, useState } from "react";
 import { Link } from "react-router-dom";
-import Graph from "../reusable/Graph";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
+import Graph from "../reusable/Graph";
+import GraphStats from "../reusable/GraphStats";
 
 const HomePage = () => {
   // Currently hardcoded but will eventually come from API
@@ -73,15 +74,11 @@ const HomePage = () => {
           <div className="pt-10">
             <h2 className="text-green font-bold text-4xl">Your Assets</h2>
           </div>
-          <h2 className="text-white font-semibold text-5xl mt-2">
-            ${stockData[0].recentPrice}
-          </h2>
-          <p className="text-bright-green font-medium text-md mt-2">
-            {stockData[0].recentPrice - stockData[0].open >= 0 ? "+" : "-"} $
-            {Math.abs(stockData[0].recentPrice - stockData[0].open).toFixed(2)}{" "}
-            ({stockData[0].percentChanged}
-            %)
-          </p>
+          <GraphStats
+            recentPrice={stockData[0].recentPrice}
+            open={stockData[0].open}
+            percentChanged={stockData[0].percentChanged}
+          />
           <div className="w-11/12 mx-auto my-10">
             <Graph
               chartData={chartData}
