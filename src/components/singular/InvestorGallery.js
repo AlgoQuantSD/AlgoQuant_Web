@@ -1,8 +1,10 @@
 import React from "react";
 import Carousel from "react-multi-carousel";
-import { BsPersonLinesFill } from "react-icons/bs";
-import investor1 from "../../assets/images/investors/investor1.png";
 import InvestorDropdown from "./InvestorDropdown";
+import { BsPersonLinesFill } from "react-icons/bs";
+import { FaBrain } from "react-icons/fa";
+import investorPhotos from "../../assets/images/investors/InvestorPhotos";
+import bot1 from "../../assets/images/investors/bot1.png";
 
 const InvestorGallery = () => {
   const responsive = {
@@ -31,7 +33,19 @@ const InvestorGallery = () => {
     {
       name: "Warren Buffett",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      stocks: [
+        "AMZN",
+        "APPL",
+        "GOOGL",
+        "SPOT",
+        "WHAT",
+        "WOWZ",
+        "YEAH",
+        "BALL",
+        "DEEP",
+        "YUMM",
+        "FUKK",
+      ],
       id: "investor",
     },
     {
@@ -49,7 +63,7 @@ const InvestorGallery = () => {
     {
       name: "Jordan Belfort's Cat",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT", "3 more"],
+      stocks: ["AMZN", "APPL", "GOOGL", "+ 3 more"],
       id: "investor",
     },
     {
@@ -75,7 +89,7 @@ const InvestorGallery = () => {
         draggable={false}
         showDots={false}
       >
-        {investors.map((investor) => (
+        {investors.map((investor, i) => (
           <div
             className={`h-full w-11/12 text-white bg-faded-dark-gray mx-auto p-6 ${
               investor.id === "bot" ? " border-2 border-gold" : ""
@@ -84,11 +98,12 @@ const InvestorGallery = () => {
           >
             {/* Name and logos */}
             <div className="flex justify-between">
-              <BsPersonLinesFill className="text-green text-3xl" />
+              {investor.id === "bot" ? (
+                <FaBrain className="text-green text-3xl" />
+              ) : (
+                <BsPersonLinesFill className="text-green text-3xl" />
+              )}
               <p className="font-bold text-xl">{investor.name}</p>
-              {/* <button className="flex bg-gray p-1 rounded-full hover:bg-dark-gray">
-                <BsThreeDots className="text-2xl text-light-gray" />
-              </button> */}
               <InvestorDropdown
                 startJob={() => console.log("Start Job clicked")}
                 viewInvestor={() => console.log("View Investor clicked")}
@@ -96,7 +111,15 @@ const InvestorGallery = () => {
             </div>
             {/* Investor Image */}
             <div className="flex justify-center">
-              <img src={investor1} alt="investor" className="h-64" />
+              {investor.id === "investor" ? (
+                <img
+                  src={investorPhotos[i % investorPhotos.length]}
+                  alt=""
+                  className="h-52 mt-6 mb-6"
+                />
+              ) : (
+                <img src={bot1} alt="bot" className="h-64" />
+              )}
             </div>
             {/* Indicators / Stocks */}
             <div className="flex flex-col">
@@ -111,11 +134,16 @@ const InvestorGallery = () => {
                 </div>
                 <div className="w-1/4">
                   <p className="flex justify-left font-bold">Stocks</p>
-                  {investor.stocks.map((stock, i) => (
+                  {investor.stocks.slice(0, 4).map((stock, i) => (
                     <p key={i} className="flex justify-left text-green">
                       {stock}
                     </p>
                   ))}
+                  {investor.stocks.length > 4 && (
+                    <p className="flex justify-left text-green">
+                      + {investor.stocks.length - 4} more
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
