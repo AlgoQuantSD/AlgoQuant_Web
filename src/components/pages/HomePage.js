@@ -186,7 +186,7 @@ const HomePage = () => {
               History
             </button>
           </div>
-          <div className="mt-10 h-screen">
+          <div className=" mt-10">
             {(() => {
               switch (selectedTabFilter) {
                 case "investor":

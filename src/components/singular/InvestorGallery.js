@@ -1,16 +1,12 @@
-import { React, useState } from "react";
+import React from "react";
 import Carousel from "react-multi-carousel";
+import { BsPersonLinesFill } from "react-icons/bs";
+import investor1 from "../../assets/images/investors/investor1.png";
+import InvestorDropdown from "./InvestorDropdown";
 
 const InvestorGallery = () => {
-  // const [selectedInvestor, setSelectedInvestor] = useState([{}]);
-
-  // const handleChange = (event) => {
-  //   setSelectedIndicator(event.target.value);
-  // };
-
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 5,
       slidesToSlide: 3,
@@ -60,39 +56,59 @@ const InvestorGallery = () => {
   ];
 
   return (
-    <div className="h-400 w-600 flex flex-col">
-      <Carousel responsive={responsive}>
+    <div className="mt-14 p-4">
+      <Carousel
+        responsive={responsive}
+        infinite={true}
+        wipeable={false}
+        draggable={false}
+        showDots={false}
+      >
         {investors.map((investor) => (
-          <div className="investor-card" key={investor.name}>
-            <h3>{investor.name}</h3>
-            <p>Indicators: {investor.indicators.join(", ")}</p>
-            <p>Stocks: {investor.stocks.join(", ")}</p>
+          <div
+            className="h-full w-11/12 text-white bg-faded-dark-gray mx-auto p-6"
+            key={investor.name}
+          >
+            {/* Name and logos */}
+            <div className="flex justify-between">
+              <BsPersonLinesFill className="text-green text-3xl" />
+              <p className="font-bold text-xl">{investor.name}</p>
+              {/* <button className="flex bg-gray p-1 rounded-full hover:bg-dark-gray">
+                <BsThreeDots className="text-2xl text-light-gray" />
+              </button> */}
+              <InvestorDropdown
+                startJob={() => console.log("Start Job clicked")}
+                viewInvestor={() => console.log("View Investor clicked")}
+              />
+            </div>
+            {/* Investor Image */}
+            <div className="flex justify-center">
+              <img src={investor1} alt="investor" className="h-64" />
+            </div>
+            {/* Indicators / Stocks */}
+            <div className="flex flex-col">
+              <div className="flex justify-between">
+                <div className="w-1/4">
+                  <p className="flex justify-center font-bold">Indicators</p>
+                  {investor.indicators.map((indicator, i) => (
+                    <p key={i} className="flex justify-center text-green">
+                      {indicator}
+                    </p>
+                  ))}
+                </div>
+                <div className="w-1/4">
+                  <p className="flex justify-center font-bold">Stocks</p>
+                  {investor.stocks.map((stock, i) => (
+                    <p key={i} className="flex justify-center text-green">
+                      {stock}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         ))}
       </Carousel>
-      {/* <Card
-        name={selectedIndicatorObject.name}
-        description={selectedIndicatorObject.description}
-      />
-      <div className="pt-36">
-        {indicators.map((indicator) => (
-          <div key={indicator.name} className="inline-flex items-center pr-4">
-            <input
-              type="radio"
-              name="selected-indicator"
-              value={indicator.name}
-              checked={indicator.name === selectedIndicator}
-              onChange={handleChange}
-              className="rounded-full h-6 w-6 border-2 border-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-            <label className="inline-flex items-center cursor-pointer select-none">
-              <span className="ml-3 text-dark-gray text-xl">
-                {indicator.name}
-              </span>
-            </label>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };
