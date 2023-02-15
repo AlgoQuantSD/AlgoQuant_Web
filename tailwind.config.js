@@ -16,6 +16,7 @@ module.exports = {
       "light-gray": "#C7C7C7",
       "darker-gray": "#2F2F2F",
       "another-gray": "#4A4A4A",
+      gold: "#E4C419",
     },
   },
   plugins: [],
