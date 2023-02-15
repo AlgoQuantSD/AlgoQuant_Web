@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useContext, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
@@ -6,24 +6,13 @@ import InvestorGallery from "../singular/InvestorGallery";
 import "react-multi-carousel/lib/styles.css";
 import Graph from "../reusable/Graph";
 import GraphStats from "../reusable/GraphStats";
+import AlgoquantApiContext from "../../api/ApiContext";
 
 const HomePage = () => {
-  // Currently hardcoded but will eventually come from API
-  const [chartData, setChartData] = useState([
-    50, 41, 35, 51, 4, 62, 262, 91, 134,
-  ]);
-
-  const [categories, setCategories] = useState([
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-  ]);
+  const [chartData, setChartData] = useState([1, 2, 3, 4, 5]);
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+  const [categories, setCategories] = useState([1, 2, 3, 4, 5]);
 
   const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
 
@@ -55,16 +44,75 @@ const HomePage = () => {
     are clicked this will be called to get more data. This will update the chart data which 
     will then re-render the graph
     */
-  const getData = (filter) => {
-    if (filter === "Past Year") {
-      setChartData([]);
-    } else {
-      setChartData(chartData.concat(chartData));
-      setCategories(categories.concat(categories));
-      setStockData(stockData);
-      console.log("Request filter: " + filter);
-    }
-  };
+
+  const getData = useCallback(
+    (timeframe) => {
+      if (algoquantApi.token) {
+        algoquantApi
+          .getPerformance(timeframe)
+          .then((resp) => {
+            console.log(resp);
+            setChartData(resp.data["close"]);
+            switch (timeframe) {
+              case "D":
+                setCategories(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  )
+                );
+                break;
+              case "5D":
+                setCategories(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
+                      month: "numeric",
+                      day: "numeric",
+                    })
+                  )
+                );
+                break;
+              case "M":
+                setCategories(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
+                      month: "numeric",
+                      day: "numeric",
+                    })
+                  )
+                );
+                break;
+              case "Y":
+                setCategories(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
+                      month: "numeric",
+                      year: "numeric",
+                    })
+                  )
+                );
+                break;
+              default:
+                break;
+            }
+          })
+          .catch((err) => {
+            // TODO: Need to implement better error handling
+            console.log(err);
+          });
+      }
+    },
+    [algoquantApi]
+  );
+
+  // // get day when page loads
+  // useEffect(() => {
+  //   setChartData([1, 2, 3, 4, 5]);
+  //   getData(filters.DAY);
+  //   // eslint-disable-next-line
+  // }, [algoquantApi]);
 
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">

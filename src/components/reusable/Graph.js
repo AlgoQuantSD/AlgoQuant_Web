@@ -78,8 +78,28 @@ const Graph = ({ getData, chartData, categories }) => {
     YEAR: "Past Year",
   };
 
+  const getDataWrapper = (filter) => {
+    switch (filter) {
+      case "Today":
+        console.log("here");
+        getData("D");
+        break;
+      case "Past 5 days":
+        getData("5D");
+        break;
+      case "Past month":
+        getData("M");
+        break;
+      case "Past Year":
+        getData("Y");
+        break;
+      default:
+        break;
+    }
+  };
+
   const handleFilterSelection = (filter) => {
-    getData(filter);
+    getDataWrapper(filter);
     setSelectedFilter(filter);
     // logic to update chart data based on selected filter
   };
