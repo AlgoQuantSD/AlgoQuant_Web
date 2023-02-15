@@ -1,22 +1,14 @@
 import { React, useState } from "react";
 import { Link } from "react-router-dom";
-import Graph from "../reusable/Graph";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import InvestorGallery from "../singular/InvestorGallery";
 import "react-multi-carousel/lib/styles.css";
+import Graph from "../reusable/Graph";
+import GraphStats from "../reusable/GraphStats";
 
 const HomePage = () => {
   // Currently hardcoded but will eventually come from API
-  const [selectedGraphFilter, setSelectedGraphFilter] = useState("Today");
-
-  const graphFilters = {
-    DAY: "Today",
-    FIVE: "Past 5 days",
-    MONTH: "Past month",
-    YEAR: "Past Year",
-  };
-
   const [chartData, setChartData] = useState([
     50, 41, 35, 51, 4, 62, 262, 91, 134,
   ]);
@@ -33,6 +25,14 @@ const HomePage = () => {
     "Sep",
   ]);
 
+  const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
+
+  const tabFilters = {
+    INVESTOR: "investor",
+    JOB: "job",
+    history: "history",
+  };
+
   const [stockData, setStockData] = useState([
     {
       symbol: "AAPL",
@@ -46,18 +46,16 @@ const HomePage = () => {
     },
   ]);
 
-  const handleGraphFilterSelection = (filter) => {
-    getGraphData(filter);
-    setSelectedGraphFilter(filter);
+  const handleTabFilterSelection = (filter) => {
+    setSelectedTabFilter(filter);
     // logic to update chart data based on selected filter
   };
 
-  /*
-    Callback used to get more data based on the filter. Each time any of the buttons 
+  /*Callback used to get more data based on the filter. Each time any of the buttons 
     are clicked this will be called to get more data. This will update the chart data which 
     will then re-render the graph
     */
-  const getGraphData = (filter) => {
+  const getData = (filter) => {
     if (filter === "Past Year") {
       setChartData([]);
     } else {
@@ -66,18 +64,6 @@ const HomePage = () => {
       setStockData(stockData);
       console.log("Request filter: " + filter);
     }
-  };
-  const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
-
-  const tabFilters = {
-    INVESTOR: "investor",
-    JOB: "job",
-    history: "history",
-  };
-
-  const handleTabFilterSelection = (filter) => {
-    setSelectedTabFilter(filter);
-    // logic to update chart data based on selected filter
   };
 
   return (
@@ -89,67 +75,17 @@ const HomePage = () => {
           <div className="pt-10">
             <h2 className="text-green font-bold text-4xl">Your Assets</h2>
           </div>
-          <h2 className="text-white font-semibold text-5xl mt-2">
-            ${stockData[0].recentPrice}
-          </h2>
-          <p className="text-bright-green font-medium text-md mt-2">
-            {stockData[0].recentPrice - stockData[0].open >= 0 ? "+" : "-"} $
-            {Math.abs(stockData[0].recentPrice - stockData[0].open).toFixed(2)}{" "}
-            ({stockData[0].percentChanged}
-            %)
-            <p className="inline text-light-gray font-light">
-              {" "}
-              {selectedGraphFilter}
-            </p>
-          </p>
-          <div className="w-11/12 mx-auto my-10">
+          <GraphStats
+            recentPrice={stockData[0].recentPrice}
+            open={stockData[0].open}
+            percentChanged={stockData[0].percentChanged}
+          />
+          <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph
               chartData={chartData}
               categories={categories}
-              getGraphData={getGraphData}
+              getData={getData}
             />
-            <div className="flex mt-4 justify-center">
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedGraphFilter === graphFilters.DAY
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleGraphFilterSelection(graphFilters.DAY)}
-              >
-                D
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedGraphFilter === graphFilters.FIVE
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleGraphFilterSelection(graphFilters.FIVE)}
-              >
-                5D
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedGraphFilter === graphFilters.MONTH
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleGraphFilterSelection(graphFilters.MONTH)}
-              >
-                M
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedGraphFilter === graphFilters.YEAR
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleGraphFilterSelection(graphFilters.YEAR)}
-              >
-                Y
-              </button>
-            </div>
           </div>
           <div className="w-full">
             <h3 className="text-green font-bold text-4xl">Invest</h3>
@@ -204,12 +140,7 @@ const HomePage = () => {
                 case "job":
                   return (
                     <div>
-                      <Link
-                        to="/createjob"
-                        className="relative text-white font-medium rounded-lg bg-green px-4 py-3"
-                      >
-                        Create Job
-                      </Link>
+                      <p className="text-white">Create Job</p>
                     </div>
                   );
                 case "history":

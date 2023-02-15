@@ -18,24 +18,12 @@ const StockTable = ({ stockData }) => {
         <tbody className="justify-center">
           {stockData.map((stock) => (
             <tr key={stock.symbol} className="border-hidden">
-              <td className="border px-4 py-2 hover:bg-another-gray">
-                {stock.recentPrice}
-              </td>
-              <td className="border px-4 py-2 hover:bg-another-gray">
-                {stock.open}
-              </td>
-              <td className="border px-4 py-2 hover:bg-another-gray">
-                {stock.low}
-              </td>
-              <td className="border px-4 py-2 hover:bg-another-gray">
-                {stock.high}
-              </td>
-              <td className="border px-4 py-2 hover:bg-another-gray">
-                {stock.yearLow}
-              </td>
-              <td className="border px-4 py-2 hover:bg-another-gray">
-                {stock.yearHigh}
-              </td>
+              <td className="border px-4 py-2">${stock.recentPrice}</td>
+              <td className="border px-4 py-2">${stock.open}</td>
+              <td className="border px-4 py-2">${stock.low}</td>
+              <td className="border px-4 py-2">${stock.high}</td>
+              <td className="border px-4 py-2">${stock.yearLow}</td>
+              <td className="border px-4 py-2">${stock.yearHigh}</td>
             </tr>
           ))}
         </tbody>
