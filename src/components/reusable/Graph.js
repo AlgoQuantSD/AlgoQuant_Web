@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Chart from "react-apexcharts";
 
 /*
@@ -67,13 +67,26 @@ const buildGraph = (data, categories) => {
 };
 
 const Graph = ({ getData, chartData, categories }) => {
-  // Default of 1 day
-
   // Create the graph with the data and categories along with the callback to get more data
   let chart = buildGraph(chartData, categories);
+  const [selectedFilter, setSelectedFilter] = useState("Today");
+
+  const filters = {
+    DAY: "Today",
+    FIVE: "Past 5 days",
+    MONTH: "Past month",
+    YEAR: "Past Year",
+  };
+
+  const handleFilterSelection = (filter) => {
+    getData(filter);
+    setSelectedFilter(filter);
+    // logic to update chart data based on selected filter
+  };
 
   return (
     <div className="relative h-96">
+      <p className="inline text-light-gray font-light"> {selectedFilter}</p>
       <Chart
         options={chart.options}
         series={chart.series}
@@ -81,6 +94,40 @@ const Graph = ({ getData, chartData, categories }) => {
         width="100%"
         height="100%"
       />
+      <div className="flex mt-4 justify-center">
+        <button
+          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
+            selectedFilter === filters.DAY ? "border-b-green active" : ""
+          }`}
+          onClick={() => handleFilterSelection(filters.DAY)}
+        >
+          D
+        </button>
+        <button
+          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
+            selectedFilter === filters.FIVE ? "border-b-green active" : ""
+          }`}
+          onClick={() => handleFilterSelection(filters.FIVE)}
+        >
+          5D
+        </button>
+        <button
+          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
+            selectedFilter === filters.MONTH ? "border-b-green active" : ""
+          }`}
+          onClick={() => handleFilterSelection(filters.MONTH)}
+        >
+          M
+        </button>
+        <button
+          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
+            selectedFilter === filters.YEAR ? "border-b-green active" : ""
+          }`}
+          onClick={() => handleFilterSelection(filters.YEAR)}
+        >
+          Y
+        </button>
+      </div>
     </div>
   );
 };
