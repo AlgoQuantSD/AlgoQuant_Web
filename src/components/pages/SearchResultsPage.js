@@ -36,7 +36,6 @@ const SearchResultsPage = () => {
   ]);
 
   const handleFilterSelection = (filter) => {
-    console.log("in here");
     getData(filter);
     setSelectedFilter(filter);
     // logic to update chart data based on selected filter
@@ -48,30 +47,21 @@ const SearchResultsPage = () => {
   will then re-render the graph
   */
   const getData = (filters) => {
-    // if (filter === "year") {
-    //   setChartData([]);
-    // } else {
-    //   getGraphData("5D");
-    //   setCategories(categories);
-    //   setStockData(stockData);
-    //   console.log("Request f
-    console.log(filters);
     switch (filters) {
       case "Today":
         getGraphData("D");
-        console.log("ep");
         break;
-      case "Past 5 Days":
+      case "Past 5 days":
         getGraphData("5D");
         break;
-      case filters.MONTH:
+      case "Past month":
         getGraphData("M");
         break;
-      case filters.YEAR:
+      case "Past Year":
         getGraphData("Y");
         break;
-      // default:
-      //   break;
+      default:
+        break;
     }
   };
   const getGraphData = useCallback(
@@ -81,7 +71,50 @@ const SearchResultsPage = () => {
           .getGraphData(location.state.value, timeframe)
           .then((resp) => {
             setChartData(resp.data["close"]);
-            setCategories(resp.data["timestamp"]);
+            switch (timeframe) {
+              case "D":
+                setCategories(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  )
+                );
+                break;
+              case "5D":
+                setCategories(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
+                      month: "numeric",
+                      day: "numeric",
+                    })
+                  )
+                );
+                break;
+              case "M":
+                setCategories(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
+                      month: "numeric",
+                      day: "numeric",
+                    })
+                  )
+                );
+                break;
+              case "Y":
+                setCategories(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
+                      month: "numeric",
+                      year: "numeric",
+                    })
+                  )
+                );
+                break;
+              default:
+                break;
+            }
           })
           .catch((err) => {
             // TODO: Need to implement better error handling
@@ -91,11 +124,13 @@ const SearchResultsPage = () => {
     },
     [algoquantApi, location.state.value]
   );
-  console.log(chartData);
-  console.log(stockData);
+
   // Should initial get all the graphdata for the day time frame and the stock data info for the table and when the search value change
   // aka when a user searches for a new ticker
   useEffect(() => {
+    if (selectedFilter !== "Today") {
+      setSelectedFilter("Today");
+    }
     getData(filters.DAY);
     if (algoquantApi.token) {
       algoquantApi
@@ -113,15 +148,15 @@ const SearchResultsPage = () => {
               percentChanged: 1.5,
             },
           ]);
-          console.log("poop");
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
           console.log(err);
         });
     }
+    // eslint-disable-next-line
   }, [location.state.value, algoquantApi]);
-  console.log(location.state.value);
+
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
       <Navbar />
