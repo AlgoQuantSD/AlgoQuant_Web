@@ -49,7 +49,7 @@ const HomePage = () => {
     (timeframe) => {
       if (algoquantApi.token) {
         algoquantApi
-          .getPerformance(timeframe)
+          .getPerformance(timeframe, null)
           .then((resp) => {
             console.log(resp);
             setChartData(resp.data["close"]);
