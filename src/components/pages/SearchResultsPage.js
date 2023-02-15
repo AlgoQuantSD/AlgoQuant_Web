@@ -131,6 +131,8 @@ const SearchResultsPage = () => {
     if (selectedFilter !== "Today") {
       setSelectedFilter("Today");
     }
+    setChartData([1, 2, 3, 4, 5]);
+
     getData(filters.DAY);
     if (algoquantApi.token) {
       algoquantApi
