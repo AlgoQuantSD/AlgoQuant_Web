@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import Graph from "../reusable/Graph";
-import StockTable from "../singular/StockTable";
 import AlgoquantApiContext from "../../api/ApiContext";
+import Table from "../reusable/Table";
 const SearchResultsPage = () => {
   const location = useLocation();
   const [selectedFilter, setSelectedFilter] = useState("Today");
@@ -31,9 +31,19 @@ const SearchResultsPage = () => {
       low: 0,
       yearHigh: 0,
       yearLow: 0,
-      percentChanged: 0,
     },
   ]);
+  const [percentChanged, setPercentChanged] = useState(0);
+  const [priceChange, setPriceChange] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  // header used for the columns on the table
+  const header = [
+    { key: "open", title: "Open" },
+    { key: "high", title: "High" },
+    { key: "low", title: "Low" },
+    { key: "yearHigh", title: "Year High" },
+    { key: "yearLow", title: "Year Low" },
+  ];
 
   const handleFilterSelection = (filter) => {
     getData(filter);
@@ -67,9 +77,12 @@ const SearchResultsPage = () => {
   const getGraphData = useCallback(
     (timeframe) => {
       if (algoquantApi.token) {
+        setIsLoading(true);
         algoquantApi
           .getGraphData(location.state.value, timeframe)
           .then((resp) => {
+            setPercentChanged(resp.data["percent_change"]);
+            setPriceChange(resp.data["interval_price_change"]);
             setChartData(resp.data["close"]);
             switch (timeframe) {
               case "D":
@@ -115,6 +128,7 @@ const SearchResultsPage = () => {
               default:
                 break;
             }
+            setIsLoading(false);
           })
           .catch((err) => {
             // TODO: Need to implement better error handling
@@ -141,15 +155,15 @@ const SearchResultsPage = () => {
           setStockData([
             {
               symbol: location.state.value,
-              recentPrice: resp.data["recent_price"],
-              open: resp.data["open"],
-              high: resp.data["high"],
-              low: resp.data["low"],
-              yearHigh: resp.data["52wk_high"],
-              yearLow: resp.data["52wk_low"],
-              percentChanged: 1.5,
+              recentPrice: resp.data["recent_price"].toFixed(2),
+              open: resp.data["open"].toFixed(2),
+              high: resp.data["high"].toFixed(2),
+              low: resp.data["low"].toFixed(2),
+              yearHigh: resp.data["52wk_high"].toFixed(2),
+              yearLow: resp.data["52wk_low"].toFixed(2),
             },
           ]);
+          setIsLoading(false);
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
@@ -173,11 +187,8 @@ const SearchResultsPage = () => {
               ${stockData[0].recentPrice}
             </h2>
             <p className="text-bright-green font-medium text-md mt-2">
-              {stockData[0].recentPrice - stockData[0].open >= 0 ? "+" : "-"} $
-              {Math.abs(stockData[0].recentPrice - stockData[0].open).toFixed(
-                2
-              )}{" "}
-              ({stockData[0].percentChanged}
+              {priceChange >= 0 ? "+" : "-"} ${Math.abs(priceChange)} (
+              {percentChanged.toFixed(2)}
               %)
               <p className="inline text-light-gray font-light">
                 {" "}
@@ -191,7 +202,7 @@ const SearchResultsPage = () => {
               categories={categories}
               getData={getData}
             />
-            <div className="flex mt-4 justify-center">
+            <div className="flex mt-4 justify-center pb-2.5">
               <button
                 className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
                   selectedFilter === filters.DAY ? "border-b-green active" : ""
@@ -227,7 +238,7 @@ const SearchResultsPage = () => {
                 Y
               </button>
             </div>
-            <StockTable stockData={stockData} getData={getData} />
+            <Table data={stockData} header={header} />
           </div>
         </div>
       </div>
