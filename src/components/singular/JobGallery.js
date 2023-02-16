@@ -2,78 +2,66 @@ import React from "react";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 
 const JobGallery = () => {
-  const investors = [
+  const jobs = [
     {
       name: "Warren Buffett",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: [
-        "AMZN",
-        "APPL",
-        "GOOGL",
-        "SPOT",
-        "WHAT",
-        "WOWZ",
-        "YEAH",
-        "BALL",
-        "DEEP",
-        "YUMM",
-        "FUKK",
-      ],
+      status: "$128.34 (4.8%)",
       id: "investor",
     },
     {
       name: "Money Maker",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      status: "$128.34 (4.8%)",
       id: "bot",
     },
     {
       name: "Jordan Belfort",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      status: "$128.34 (4.8%)",
       id: "investor",
     },
     {
       name: "Jordan Belfort's Cat",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "+ 3 more"],
+      status: "$128.34 (4.8%)",
       id: "investor",
     },
     {
       name: "Warren Buffett's Left Nut",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      status: "$128.34 (4.8%)",
       id: "investor",
     },
     {
       name: "Warren Buffett's Left Nut",
       indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
+      status: "$128.34 (4.8%)",
       id: "investor",
     },
   ];
 
   return (
     <div className="mt-14 p-4">
-      {investors.map((investor, i) => (
+      {jobs.map((job, i) => (
         <div
-          className="w-11/12 text-white bg-red mx-auto p-6"
-          key={investor.name}
+          className="w-11/12 text-white bg-green mx-auto mb-5 p-4"
+          key={job.name}
         >
-          {/* Investor Image */}
-          <div className="flex justify-center h-24">
+          <div className="flex justify-between h-12">
+            <p className="text-cokewhite text-xl font-medium self-center">
+              {job.name}'s Job
+            </p>
+            <p className="text-cokewhite text-xl font-medium self-center">
+              {job.status}
+            </p>
             <img
               src={investorPhotos[i % investorPhotos.length]}
               alt=""
-              className="h-12 mt-6 mb-6"
+              className="h-10 self-center"
             />
+            <div></div>
           </div>
-          {/* Indicators / Stocks */}
-          {investor.id !== "bot" && (
-            <div className="flex flex-col">
-              <div className="flex justify-between pl-16 pr-16"></div>
-            </div>
-          )}
         </div>
       ))}
     </div>

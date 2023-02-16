@@ -129,12 +129,12 @@ const TransactionHistoryPage = () => {
               <div className="p-6 pt-24 pb-20 overflow-auto	">
                 {page === 1 ? (
                   <button
-                    className="text-white rounded-md w-28 h-10 bg-dark-gray py-2 px-6"
+                    className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
                     disabled
                   ></button>
                 ) : (
                   <button
-                    className="text-white rounded-md w-28 h-10 bg-another-gray py-2 px-6"
+                    className="text-cokewhite rounded-md w-28 h-10 bg-green py-2 px-6"
                     onClick={handlePreviousClick}
                   >
                     Previous
@@ -143,12 +143,12 @@ const TransactionHistoryPage = () => {
 
                 {transactions.length < 10 ? (
                   <button
-                    className="text-white rounded-md w-28 h-10 bg-dark-gray py-2 px-6"
+                    className="text-cokewhite rounded-md w-28 h-10 bg-dark-gray py-2 px-6"
                     disabled
                   ></button>
                 ) : (
                   <button
-                    className="text-white w-28 h-10 rounded-md bg-another-gray py-2 px-6 float-right"
+                    className="text-cokewhite w-28 h-10 rounded-md bg-green py-2 px-6 float-right"
                     onClick={handleNextClick}
                   >
                     Next
