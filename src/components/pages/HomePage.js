@@ -1,4 +1,4 @@
-import { React, useState, useContext, useCallback } from "react";
+import { React, useState, useContext, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
@@ -17,6 +17,7 @@ const HomePage = () => {
   const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
   const [recentPrice, setRecentPrice] = useState(0);
   const [lastIntervalChange, setLastIntervalChange] = useState(0);
+  const [percentChanged, setPercentChanged] = useState(0);
 
   const tabFilters = {
     INVESTOR: "investor",
@@ -44,6 +45,7 @@ const HomePage = () => {
             setChartData(resp.data["close"]);
             setLastIntervalChange(resp.data["interval_price_change"]);
             setRecentPrice(resp.data["recent_price"]);
+            setPercentChanged(resp.data["percent_change"]);
             switch (timeframe) {
               case "D":
                 setCategories(
@@ -98,12 +100,9 @@ const HomePage = () => {
     [algoquantApi]
   );
 
-  // // get day when page loads
-  // useEffect(() => {
-  //   setChartData([1, 2, 3, 4, 5]);
-  //   getData(filters.DAY);
-  //   // eslint-disable-next-line
-  // }, [algoquantApi]);
+  useEffect(() => {
+    getData("D");
+  }, [getData]);
 
   return (
     <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
@@ -116,8 +115,8 @@ const HomePage = () => {
           </div>
           <GraphStats
             recentPrice={recentPrice}
-            open={lastIntervalChange}
-            percentChanged={12}
+            lastIntervalChange={lastIntervalChange}
+            percentChanged={percentChanged}
           />
           <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph

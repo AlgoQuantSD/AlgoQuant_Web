@@ -47,6 +47,7 @@ const buildGraph = (data, categories) => {
           },
         },
         categories: categories,
+        tickAmount: 10,
       },
       yaxis: {
         markers: {
@@ -59,6 +60,9 @@ const buildGraph = (data, categories) => {
         labels: {
           style: {
             colors: "#fff",
+          },
+          formatter: function (value) {
+            return value.toFixed(2); // Set the label value to have a maximum of 2 decimal points
           },
         },
       },
@@ -81,7 +85,6 @@ const Graph = ({ getData, chartData, categories }) => {
   const getDataWrapper = (filter) => {
     switch (filter) {
       case "Today":
-        console.log("here");
         getData("D");
         break;
       case "Past 5 days":
