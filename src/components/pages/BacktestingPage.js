@@ -4,7 +4,7 @@ import Sidebar from "../reusable/SideBar";
 
 const BacktestingPage = () => {
   return (
-    <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

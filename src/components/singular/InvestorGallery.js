@@ -91,8 +91,8 @@ const InvestorGallery = () => {
       >
         {investors.map((investor, i) => (
           <div
-            className={`h-full w-11/12 text-white bg-faded-dark-gray mx-auto p-6 ${
-              investor.id === "bot" ? " border-2 border-gold" : ""
+            className={`h-full w-11/12 text-white bg-green mx-auto p-6 ${
+              investor.id === "bot" ? "bg-gold border-4 border-green" : ""
             }`}
             key={investor.name}
           >

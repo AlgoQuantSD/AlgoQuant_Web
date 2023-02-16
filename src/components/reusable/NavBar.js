@@ -46,9 +46,9 @@ const Navbar = () => {
 
   return (
     // Big nav div
-    <nav className="flex top-0 bg-dark-gray border-gray-300 shadow-sm">
+    <nav className="flex top-0 bg-cokewhite border-gray-300 shadow-sm">
       {/* div for logo */}
-      <div className="flex flex-1 items-center bg-dark-gray">
+      <div className="flex flex-1 items-center bg-cokewhite">
         <Link to="/">
           <img src={aqLogo} className="ml-3 h-10" alt="AlgoQuant Logo" />
         </Link>
@@ -63,7 +63,7 @@ const Navbar = () => {
         />
       </div>
       {/* div for my profile button */}
-      <div className="flex-1 flex justify-end bg-dark-gray">
+      <div className="flex-1 flex justify-end bg-cokewhite">
         <ul className="flex flex-row p-4">
           <li>
             <Link

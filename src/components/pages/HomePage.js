@@ -6,6 +6,7 @@ import InvestorGallery from "../singular/InvestorGallery";
 import "react-multi-carousel/lib/styles.css";
 import Graph from "../reusable/Graph";
 import GraphStats from "../reusable/GraphStats";
+import JobGallery from "../singular/JobGallery";
 
 const HomePage = () => {
   // Currently hardcoded but will eventually come from API
@@ -67,7 +68,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -92,9 +93,9 @@ const HomePage = () => {
           </div>
           <div className="flex mx-auto justify-center w-2/4 mt-8">
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite  ${
                 selectedTabFilter === tabFilters.INVESTOR
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.INVESTOR)}
@@ -102,9 +103,9 @@ const HomePage = () => {
               Investor
             </button>
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.JOB
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.JOB)}
@@ -112,9 +113,9 @@ const HomePage = () => {
               Job
             </button>
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.history
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.history)}
@@ -140,7 +141,7 @@ const HomePage = () => {
                 case "job":
                   return (
                     <div>
-                      <p className="text-white">Create Job</p>
+                      <JobGallery />
                     </div>
                   );
                 case "history":
