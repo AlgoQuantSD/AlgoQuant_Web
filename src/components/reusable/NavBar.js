@@ -68,14 +68,14 @@ const Navbar = () => {
           <li>
             <Link
               to="/profile"
-              className="flex py-2 pr-4 pl-3 text-green rounded hover:bg-gray-100"
+              className="flex mx-auto py-2 px-5 text-cokewhite rounded-full bg-green hover:bg-gray-100"
             >
               My Profile
             </Link>
           </li>
           <li>
             <button
-              className="flex py-2 pr-4 pl-3 text-red rounded hover:bg-gray-100 "
+              className="flex mx-auto py-2 px-5 text-red rounded"
               onClick={signOut}
             >
               Sign Out
