@@ -5,6 +5,9 @@ import Sidebar from "../reusable/SideBar";
 import Graph from "../reusable/Graph";
 import AlgoquantApiContext from "../../api/ApiContext";
 import Table from "../reusable/Table";
+import { SaveSpinner } from "../reusable/LoadSpinner";
+import { GraphSpinner } from "../reusable/LoadSpinner";
+
 const SearchResultsPage = () => {
   const location = useLocation();
   const [selectedFilter, setSelectedFilter] = useState("Today");
@@ -35,7 +38,8 @@ const SearchResultsPage = () => {
   ]);
   const [percentChanged, setPercentChanged] = useState(0);
   const [priceChange, setPriceChange] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [graphLoading, setGraphLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(true);
   // header used for the columns on the table
   const header = [
     { key: "open", title: "Open" },
@@ -77,7 +81,7 @@ const SearchResultsPage = () => {
   const getGraphData = useCallback(
     (timeframe) => {
       if (algoquantApi.token) {
-        setIsLoading(true);
+        setGraphLoading(true);
         algoquantApi
           .getGraphData(location.state.value, timeframe)
           .then((resp) => {
@@ -128,7 +132,7 @@ const SearchResultsPage = () => {
               default:
                 break;
             }
-            setIsLoading(false);
+            setGraphLoading(false);
           })
           .catch((err) => {
             // TODO: Need to implement better error handling
@@ -146,7 +150,7 @@ const SearchResultsPage = () => {
       setSelectedFilter("Today");
     }
     setChartData([1, 2, 3, 4, 5]);
-
+    setStatsLoading(true);
     getData(filters.DAY);
     if (algoquantApi.token) {
       algoquantApi
@@ -163,7 +167,7 @@ const SearchResultsPage = () => {
               yearLow: resp.data["52wk_low"].toFixed(2),
             },
           ]);
-          setIsLoading(false);
+          setStatsLoading(false);
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
@@ -197,11 +201,16 @@ const SearchResultsPage = () => {
             </p>
           </div>
           <div className="w-11/12 h-4/5 mx-auto my-10">
-            <Graph
-              chartData={chartData}
-              categories={categories}
-              getData={getData}
-            />
+            {graphLoading ? (
+              <GraphSpinner />
+            ) : (
+              <Graph
+                chartData={chartData}
+                categories={categories}
+                getData={getData}
+              />
+            )}
+
             <div className="flex mt-4 justify-center pb-2.5">
               <button
                 className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
@@ -238,7 +247,11 @@ const SearchResultsPage = () => {
                 Y
               </button>
             </div>
-            <Table data={stockData} header={header} />
+            {statsLoading ? (
+              <SaveSpinner />
+            ) : (
+              <Table data={stockData} header={header} />
+            )}
           </div>
         </div>
       </div>
