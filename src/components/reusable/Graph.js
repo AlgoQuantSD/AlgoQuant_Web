@@ -4,13 +4,17 @@ import Chart from "react-apexcharts";
 /*
 Build the graph based on the data, categories and preset configurations
 */
-const buildGraph = (data, categories) => {
+const buildGraph = (data, categories, isTrendingUp) => {
+  let lineColor = "#00FF33";
+  if (!isTrendingUp) {
+    lineColor = "#FF0000";
+  }
   return {
     series: [
       {
         name: "$",
         data: data,
-        color: "#00FF38",
+        color: lineColor,
       },
     ],
     options: {
@@ -70,11 +74,11 @@ const buildGraph = (data, categories) => {
   };
 };
 
-const Graph = ({ getData, chartData, categories }) => {
+const Graph = ({ chartData, categories, isTrendingUp }) => {
   // Default of 1 day
 
   // Create the graph with the data and categories along with the callback to get more data
-  let chart = buildGraph(chartData, categories);
+  let chart = buildGraph(chartData, categories, isTrendingUp);
 
   return (
     <div className="relative h-96">

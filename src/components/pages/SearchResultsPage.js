@@ -10,13 +10,13 @@ import { GraphSpinner } from "../reusable/LoadSpinner";
 
 const SearchResultsPage = () => {
   const location = useLocation();
-  const [selectedFilter, setSelectedFilter] = useState("Today");
 
+  const [selectedFilter, setSelectedFilter] = useState("Today");
   // Currently hardcoded but will eventually come from API
-  const [chartData, setChartData] = useState([1, 2, 3, 4, 5]);
+  const [chartData, setChartData] = useState([]);
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  const [categories, setCategories] = useState([1, 2, 3, 4, 5]);
+  const [categories, setCategories] = useState([]);
 
   const filters = {
     DAY: "Today",
@@ -40,6 +40,10 @@ const SearchResultsPage = () => {
   const [priceChange, setPriceChange] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
+  const [dateClosed, setDateClosed] = useState(0);
+  const [marketClosed, setMarketClosed] = useState(false);
+
+  const isTrendingUp = percentChanged >= 0;
   // header used for the columns on the table
   const header = [
     { key: "open", title: "Open" },
@@ -88,6 +92,19 @@ const SearchResultsPage = () => {
             setPercentChanged(resp.data["percent_change"]);
             setPriceChange(resp.data["interval_price_change"]);
             setChartData(resp.data["close"]);
+            setMarketClosed(resp.data["is_market_closed"]);
+            if (timeframe === "D") {
+              setDateClosed(
+                new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
+                  "en-US",
+                  {
+                    weekday: "long",
+                    month: "numeric",
+                    day: "numeric",
+                  }
+                )
+              );
+            }
             switch (timeframe) {
               case "D":
                 setCategories(
@@ -149,7 +166,7 @@ const SearchResultsPage = () => {
     if (selectedFilter !== "Today") {
       setSelectedFilter("Today");
     }
-    setChartData([1, 2, 3, 4, 5]);
+    setChartData([]);
     setStatsLoading(true);
     getData(filters.DAY);
     if (algoquantApi.token) {
@@ -190,15 +207,31 @@ const SearchResultsPage = () => {
             <h2 className="text-white font-semibold text-3xl mt-2">
               ${stockData[0].recentPrice}
             </h2>
-            <p className="text-bright-green font-medium text-md mt-2">
-              {priceChange >= 0 ? "+" : "-"} ${Math.abs(priceChange)} (
-              {percentChanged.toFixed(2)}
-              %)
-              <p className="inline text-light-gray font-light">
-                {" "}
-                {selectedFilter}
+            {isTrendingUp ? (
+              <p className="text-bright-green font-medium text-md mt-2">
+                {priceChange >= 0 ? "+" : "-"} ${Math.abs(priceChange)} (
+                {percentChanged.toFixed(2)}
+                %)
+                <p className="inline text-light-gray font-light">
+                  {" "}
+                  {marketClosed
+                    ? selectedFilter + "Closed on " + dateClosed
+                    : selectedFilter}
+                </p>
               </p>
-            </p>
+            ) : (
+              <p className="text-red font-medium text-md mt-2">
+                {priceChange >= 0 ? "+" : "-"} ${Math.abs(priceChange)} (
+                {percentChanged.toFixed(2)}
+                %)
+                <p className="inline text-light-gray font-light">
+                  {" "}
+                  {marketClosed
+                    ? selectedFilter + "Closed on " + dateClosed
+                    : selectedFilter}
+                </p>
+              </p>
+            )}
           </div>
           <div className="w-11/12 h-4/5 mx-auto my-10">
             {graphLoading ? (
@@ -207,7 +240,7 @@ const SearchResultsPage = () => {
               <Graph
                 chartData={chartData}
                 categories={categories}
-                getData={getData}
+                isTrendingUp={isTrendingUp}
               />
             )}
 
