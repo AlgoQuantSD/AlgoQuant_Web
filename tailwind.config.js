@@ -4,9 +4,12 @@ module.exports = {
   theme: {
     colors: {
       white: "#ffffff",
+      cokewhite: "#FAFAFA",
+      smokewhite: "#F0F0F0",
       "faded-white": "FFFFFFE6",
       black: "#000000",
-      green: "#3f9f30",
+      // green: "#3f9f30",
+      green: "#1F302B",
       "faded-green": "#3F9F3059",
       "bright-green": "#00FF38",
       red: "#B11818",
@@ -16,6 +19,7 @@ module.exports = {
       "light-gray": "#C7C7C7",
       "darker-gray": "#2F2F2F",
       "another-gray": "#4A4A4A",
+      gold: "#E4C419",
     },
   },
   plugins: [],

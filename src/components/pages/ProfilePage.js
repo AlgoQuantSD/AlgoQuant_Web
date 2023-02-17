@@ -190,7 +190,7 @@ const ProfilePage = () => {
 
   return (
     // Main Div Container
-    <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
       {/* Main Div for the side bar and all the page content */}
       <div className="flex self-stretch">
@@ -218,7 +218,7 @@ const ProfilePage = () => {
               My Account
             </h1>
             <button
-              className="text-white font-medium rounded-lg bg-another-gray p-3 ml-auto"
+              className="text-cokewhite font-medium rounded-lg bg-green p-3 ml-auto"
               onClick={() => {
                 // Either will reset and ask the user for new API keys are just reset simualted balance
                 alpacaConnection
@@ -235,9 +235,9 @@ const ProfilePage = () => {
           ) : (
             <>
               <div className="m-10">
-                <div className="rounded-full w-32 h-32 bg-faded-dark-gray flex justify-center items-center mx-auto">
+                <div className="rounded-full w-32 h-32 bg-light-gray flex justify-center items-center mx-auto">
                   <p
-                    className="text-white text-center font-light text-6xl flex"
+                    className="text- text-center font-light text-6xl flex"
                     data-testid="user-initials"
                   >
                     {user?.attributes?.given_name?.charAt(0)}
@@ -245,20 +245,20 @@ const ProfilePage = () => {
                   </p>
                 </div>
                 <p
-                  className="text-center text-white font-thin text-md"
+                  className="text-center text-green font-thin text-md"
                   data-testid="user-name"
                 >
                   {user?.attributes?.given_name +
                     " " +
                     user?.attributes?.family_name}
                 </p>
-                <p className="text-2xl font-light text-center text-white mt-3">
+                <p className="text-2xl font-light text-center text-green mt-3">
                   {alpacaConnection
                     ? "Alpaca Verified Buying Power"
                     : "Simulated Buying Power"}
                 </p>
                 <p
-                  className="text-2xl font-bold text-center text-white"
+                  className="text-2xl font-bold text-center text-green"
                   data-testid="total-balance"
                 >
                   {formatter.format(balance)}
@@ -266,11 +266,11 @@ const ProfilePage = () => {
               </div>
               <ul className="grid gap-8 grid-cols-1 mt-5">
                 <li className="flex">
-                  <p className="text-white font-semibold inline pt-2 w-1/6">
+                  <p className="text-green font-semibold inline pt-2 w-1/6">
                     First name
                   </p>
                   <input
-                    className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
+                    className="bg-smokewhite focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-green text-green"
                     type="text"
                     placeholder={user?.attributes?.given_name}
                     onChange={(event) => {
@@ -279,11 +279,11 @@ const ProfilePage = () => {
                   />
                 </li>
                 <li className="flex">
-                  <p className="text-white font-semibold inline py-2 w-1/6">
+                  <p className="text-green font-semibold inline py-2 w-1/6">
                     Last name
                   </p>
                   <input
-                    className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
+                    className="bg-smokewhite focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-green text-green"
                     type="text"
                     placeholder={user?.attributes?.family_name}
                     onChange={(event) => {
@@ -292,11 +292,11 @@ const ProfilePage = () => {
                   />
                 </li>
                 <li className="flex">
-                  <p className="text-white font-semibold inline py-2 w-1/6">
+                  <p className="text-green font-semibold inline py-2 w-1/6">
                     Email Address
                   </p>
                   <input
-                    className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
+                    className="bg-smokewhite focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-green text-green"
                     type="text"
                     placeholder={user?.attributes?.email}
                     onChange={(event) => {
@@ -305,11 +305,11 @@ const ProfilePage = () => {
                   />
                 </li>
                 <li className="flex">
-                  <p className="text-white font-semibold inline py-2 w-1/6">
+                  <p className="text-green font-semibold inline py-2 w-1/6">
                     Phone Number
                   </p>
                   <input
-                    className="bg-faded-dark-gray focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-white text-white"
+                    className="bg-smokewhite focus:outline-none focus:shadow-outline ml-20 py-2 px-4 block w-1/3 appearance-none leading-normal shadow-md caret-green text-green"
                     type="text"
                     placeholder={user?.attributes?.phone_number}
                     onChange={(event) => {
@@ -326,16 +326,16 @@ const ProfilePage = () => {
                   <ul className="grid grid-cols-1 gap-6">
                     <li>
                       <button
-                        className="text-white font-semibold underline"
+                        className="text-green font-semibold underline"
                         onClick={() => setPasswordModal(true)}
                       >
                         Change password
                       </button>
-                      <FaArrowRight className="inline mb-1 ml-1 text-white" />
+                      <FaArrowRight className="inline mb-1 ml-1 text-green" />
                     </li>
                     <li>
                       <button
-                        className="text-white font-semibold underline"
+                        className="text-green font-semibold underline"
                         onClick={
                           // If the user has not connected Alpaca then they must disconnect, otherwise they can connect
                           () =>
@@ -348,7 +348,7 @@ const ProfilePage = () => {
                           ? "Disconnect from Alpaca"
                           : "Connect to Alpaca"}
                       </button>
-                      <FaArrowRight className="inline mb-1 ml-1 text-white" />
+                      <FaArrowRight className="inline mb-1 ml-1 text-green" />
                     </li>
                     <li>
                       <button
@@ -364,7 +364,7 @@ const ProfilePage = () => {
                 {/* Div for Save Changes and Signout Button*/}
                 <div className="flex">
                   <button
-                    className="text-white font-medium rounded-lg bg-green p-4"
+                    className="text-cokewhite font-medium rounded-lg bg-green p-4"
                     onClick={() => {
                       setSaving(true);
                       saveChanges();
@@ -373,7 +373,7 @@ const ProfilePage = () => {
                     Save changes
                   </button>
                   <button
-                    className="text-white font-medium rounded-lg bg-red ml-auto p-4"
+                    className="text-cokewhite font-medium rounded-lg bg-red ml-auto p-4"
                     onClick={signOut}
                   >
                     Sign out

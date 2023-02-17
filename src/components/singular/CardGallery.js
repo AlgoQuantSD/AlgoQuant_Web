@@ -63,7 +63,7 @@ const CardGallery = () => {
               className="rounded-full h-6 w-6 border-2 border-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <label className="inline-flex items-center cursor-pointer select-none">
-              <span className="ml-3 text-dark-gray text-xl">
+              <span className="ml-3 text-cokewhite text-xl">
                 {indicator.name}
               </span>
             </label>

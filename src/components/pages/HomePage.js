@@ -2,8 +2,11 @@ import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
+import InvestorGallery from "../singular/InvestorGallery";
+import "react-multi-carousel/lib/styles.css";
 import Graph from "../reusable/Graph";
 import GraphStats from "../reusable/GraphStats";
+import JobGallery from "../singular/JobGallery";
 
 const HomePage = () => {
   // Currently hardcoded but will eventually come from API
@@ -49,8 +52,7 @@ const HomePage = () => {
     // logic to update chart data based on selected filter
   };
 
-  /*
-    Callback used to get more data based on the filter. Each time any of the buttons 
+  /*Callback used to get more data based on the filter. Each time any of the buttons 
     are clicked this will be called to get more data. This will update the chart data which 
     will then re-render the graph
     */
@@ -66,7 +68,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -79,7 +81,7 @@ const HomePage = () => {
             open={stockData[0].open}
             percentChanged={stockData[0].percentChanged}
           />
-          <div className="w-11/12 mx-auto my-10">
+          <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph
               chartData={chartData}
               categories={categories}
@@ -91,9 +93,9 @@ const HomePage = () => {
           </div>
           <div className="flex mx-auto justify-center w-2/4 mt-8">
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite  ${
                 selectedTabFilter === tabFilters.INVESTOR
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.INVESTOR)}
@@ -101,9 +103,9 @@ const HomePage = () => {
               Investor
             </button>
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.JOB
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.JOB)}
@@ -111,9 +113,9 @@ const HomePage = () => {
               Job
             </button>
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.history
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.history)}
@@ -121,7 +123,7 @@ const HomePage = () => {
               History
             </button>
           </div>
-          <div className="mt-10 h-screen">
+          <div className=" mt-10">
             {(() => {
               switch (selectedTabFilter) {
                 case "investor":
@@ -133,12 +135,13 @@ const HomePage = () => {
                       >
                         Create Investor
                       </Link>
+                      <InvestorGallery />
                     </div>
                   );
                 case "job":
                   return (
                     <div>
-                      <p className="text-white">Create Job</p>
+                      <JobGallery />
                     </div>
                   );
                 case "history":
