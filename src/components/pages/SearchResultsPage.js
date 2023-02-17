@@ -215,7 +215,7 @@ const SearchResultsPage = () => {
                 <p className="inline text-light-gray font-light">
                   {" "}
                   {marketClosed
-                    ? selectedFilter + "Closed on " + dateClosed
+                    ? selectedFilter + " Closed on " + dateClosed
                     : selectedFilter + " - Market  Open"}
                 </p>
               </p>
@@ -227,7 +227,7 @@ const SearchResultsPage = () => {
                 <p className="inline text-light-gray font-light">
                   {" "}
                   {marketClosed
-                    ? selectedFilter + "Closed on " + dateClosed
+                    ? selectedFilter + " Closed on " + dateClosed
                     : selectedFilter + " - Market  Open"}
                 </p>
               </p>
