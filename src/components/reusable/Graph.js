@@ -5,7 +5,7 @@ import Chart from "react-apexcharts";
 Build the graph based on the data, categories and preset configurations
 */
 const buildGraph = (data, categories, isTrendingUp) => {
-  let lineColor = "#00FF33";
+  let lineColor = "#1F302B";
   if (!isTrendingUp) {
     lineColor = "#FF0000";
   }
@@ -30,6 +30,7 @@ const buildGraph = (data, categories, isTrendingUp) => {
         toolbar: {
           show: false,
         },
+        background: "#F0F0F0",
       },
       dataLabels: {
         enabled: false,
@@ -47,7 +48,7 @@ const buildGraph = (data, categories, isTrendingUp) => {
         tooltip: false,
         labels: {
           style: {
-            colors: "#fff",
+            colors: "#1F302B",
           },
         },
         categories: categories,
@@ -63,7 +64,7 @@ const buildGraph = (data, categories, isTrendingUp) => {
         tooltip: false,
         labels: {
           style: {
-            colors: "#fff",
+            colors: "#1F302B",
           },
           formatter: function (value) {
             return value.toFixed(2); // Set the label value to have a maximum of 2 decimal points
@@ -94,7 +95,7 @@ const Graph = ({ getData, chartData, categories, isTrendingUp }) => {
 
   return (
     <div className="relative h-96">
-      <p className="inline text-light-gray font-light"> {selectedFilter}</p>
+      <p className="inline text-green font-light"> {selectedFilter}</p>
       <Chart
         options={chart.options}
         series={chart.series}
@@ -104,32 +105,40 @@ const Graph = ({ getData, chartData, categories, isTrendingUp }) => {
       />
       <div className="flex mt-4 justify-center">
         <button
-          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === filters.DAY ? "border-b-green active" : ""
+          className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
+            selectedFilter === filters.DAY
+              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+              : ""
           }`}
           onClick={() => handleFilterSelection(filters.DAY)}
         >
           D
         </button>
         <button
-          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === filters.FIVE ? "border-b-green active" : ""
+          className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
+            selectedFilter === filters.FIVE
+              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+              : ""
           }`}
           onClick={() => handleFilterSelection(filters.FIVE)}
         >
           5D
         </button>
         <button
-          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === filters.MONTH ? "border-b-green active" : ""
+          className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
+            selectedFilter === filters.MONTH
+              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+              : ""
           }`}
           onClick={() => handleFilterSelection(filters.MONTH)}
         >
           M
         </button>
         <button
-          className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-            selectedFilter === filters.YEAR ? "border-b-green active" : ""
+          className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
+            selectedFilter === filters.YEAR
+              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+              : ""
           }`}
           onClick={() => handleFilterSelection(filters.YEAR)}
         >

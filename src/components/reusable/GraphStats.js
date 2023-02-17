@@ -10,12 +10,12 @@ const GraphStats = ({
   dateClosed,
 }) => {
   return (
-    <div>
-      <h2 className="text-white font-semibold text-3xl mt-2">
+    <div className="mt-2">
+      <h2 className="text-green font-semibold text-5xl">
         ${stockData[0].recentPrice}
       </h2>
       {isTrendingUp ? (
-        <p className="text-bright-green font-medium text-md mt-2">
+        <p className="text-bright-green font-medium text-md mt-2 py-2 px-4 rounded-full bg-green inline-block">
           {priceChange >= 0 ? "+" : "-"} ${Math.abs(priceChange)} (
           {percentChanged.toFixed(2)}
           %)
@@ -27,7 +27,7 @@ const GraphStats = ({
           </p>
         </p>
       ) : (
-        <p className="text-red font-medium text-md mt-2">
+        <p className="text-red font-medium text-md mt-2 py-2 px-4 rounded-full bg-green inline-block">
           {priceChange >= 0 ? "+" : "-"} ${Math.abs(priceChange)} (
           {percentChanged.toFixed(2)}
           %)
