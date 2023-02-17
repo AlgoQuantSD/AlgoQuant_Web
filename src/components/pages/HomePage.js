@@ -39,7 +39,7 @@ const HomePage = () => {
     (timeframe) => {
       if (algoquantApi.token) {
         algoquantApi
-          .getPerformance(timeframe, null)
+          .getPerformance(timeframe, "1676606064385479302")
           .then((resp) => {
             console.log(resp);
             setChartData(resp.data["close"]);
