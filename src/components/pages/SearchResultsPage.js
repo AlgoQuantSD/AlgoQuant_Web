@@ -7,6 +7,8 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import Table from "../reusable/Table";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { GraphSpinner } from "../reusable/LoadSpinner";
+import StockTable from "../singular/StockTable";
+import GraphStats from "../reusable/GraphStats";
 
 const SearchResultsPage = () => {
   const location = useLocation();
@@ -17,13 +19,6 @@ const SearchResultsPage = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const [categories, setCategories] = useState([]);
-
-  const filters = {
-    DAY: "Today",
-    FIVE: "Past 5 days",
-    MONTH: "Past month",
-    YEAR: "Past Year",
-  };
 
   const [stockData, setStockData] = useState([
     {
@@ -43,6 +38,13 @@ const SearchResultsPage = () => {
   const [dateClosed, setDateClosed] = useState(0);
   const [marketClosed, setMarketClosed] = useState(false);
 
+  const filters = {
+    DAY: "Today",
+    FIVE: "Past 5 days",
+    MONTH: "Past month",
+    YEAR: "Past Year",
+  };
+
   const isTrendingUp = percentChanged >= 0;
   // header used for the columns on the table
   const header = [
@@ -52,12 +54,6 @@ const SearchResultsPage = () => {
     { key: "yearHigh", title: "Year High" },
     { key: "yearLow", title: "Year Low" },
   ];
-
-  const handleFilterSelection = (filter) => {
-    getData(filter);
-    setSelectedFilter(filter);
-    // logic to update chart data based on selected filter
-  };
 
   /*
   Callback used to get more data based on the filter. Each time any of the buttons 
@@ -82,6 +78,7 @@ const SearchResultsPage = () => {
         break;
     }
   };
+  console.log(isTrendingUp);
   const getGraphData = useCallback(
     (timeframe) => {
       if (algoquantApi.token) {
@@ -204,86 +201,29 @@ const SearchResultsPage = () => {
             <h1 className="text-white font-bold text-5xl">
               {location.state.value}
             </h1>
-            <h2 className="text-white font-semibold text-3xl mt-2">
-              ${stockData[0].recentPrice}
-            </h2>
-            {isTrendingUp ? (
-              <p className="text-bright-green font-medium text-md mt-2">
-                {priceChange >= 0 ? "+" : "-"} ${Math.abs(priceChange)} (
-                {percentChanged.toFixed(2)}
-                %)
-                <p className="inline text-light-gray font-light">
-                  {" "}
-                  {marketClosed
-                    ? selectedFilter + " Closed on " + dateClosed
-                    : selectedFilter + " - Market  Open"}
-                </p>
-              </p>
-            ) : (
-              <p className="text-red font-medium text-md mt-2">
-                {priceChange >= 0 ? "+" : "-"} ${Math.abs(priceChange)} (
-                {percentChanged.toFixed(2)}
-                %)
-                <p className="inline text-light-gray font-light">
-                  {" "}
-                  {marketClosed
-                    ? selectedFilter + " Closed on " + dateClosed
-                    : selectedFilter + " - Market  Open"}
-                </p>
-              </p>
-            )}
+            <GraphStats
+              stockData={stockData}
+              percentChanged={percentChanged}
+              isTrendingUp={isTrendingUp}
+              selectedFilter={selectedFilter}
+              marketClosed={marketClosed}
+              priceChange={priceChange}
+              dateClosed={dateClosed}
+            />
           </div>
-          <div className="w-11/12 h-4/5 mx-auto my-10">
-            {graphLoading ? (
-              <GraphSpinner />
-            ) : (
-              <Graph
-                chartData={chartData}
-                categories={categories}
-                isTrendingUp={isTrendingUp}
-              />
-            )}
-
-            <div className="flex mt-4 justify-center pb-10">
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedFilter === filters.DAY ? "border-b-green active" : ""
-                }`}
-                onClick={() => handleFilterSelection(filters.DAY)}
-              >
-                D
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedFilter === filters.FIVE ? "border-b-green active" : ""
-                }`}
-                onClick={() => handleFilterSelection(filters.FIVE)}
-              >
-                5D
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedFilter === filters.MONTH
-                    ? "border-b-green active"
-                    : ""
-                }`}
-                onClick={() => handleFilterSelection(filters.MONTH)}
-              >
-                M
-              </button>
-              <button
-                className={`py-2 px-4 text-white font-semibold border-b-2 border-dark-gray hover:bg-another-gray ${
-                  selectedFilter === filters.YEAR ? "border-b-green active" : ""
-                }`}
-                onClick={() => handleFilterSelection(filters.YEAR)}
-              >
-                Y
-              </button>
-            </div>
+          <div className="w-11/12 h-4/5">
+            <Graph
+              chartData={chartData}
+              categories={categories}
+              getData={getData}
+              isTrendingUp={isTrendingUp}
+            />
             {statsLoading ? (
               <SaveSpinner />
             ) : (
-              <Table data={stockData} header={header} />
+              <div className="mt-28 w-full">
+                <Table data={stockData} header={header} />
+              </div>
             )}
           </div>
         </div>
