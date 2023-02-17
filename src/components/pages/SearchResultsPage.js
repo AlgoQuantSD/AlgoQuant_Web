@@ -64,18 +64,18 @@ const SearchResultsPage = () => {
   are clicked this will be called to get more data. This will update the chart data which 
   will then re-render the graph
   */
-  const getData = (filters) => {
-    switch (filters) {
-      case "Today":
+  const getData = (filter) => {
+    switch (filter) {
+      case filters.DAY:
         getGraphData("D");
         break;
-      case "Past 5 days":
+      case filters.FIVE:
         getGraphData("5D");
         break;
-      case "Past month":
+      case filters.MONTH:
         getGraphData("M");
         break;
-      case "Past Year":
+      case filters.YEAR:
         getGraphData("Y");
         break;
       default:
@@ -216,7 +216,7 @@ const SearchResultsPage = () => {
                   {" "}
                   {marketClosed
                     ? selectedFilter + "Closed on " + dateClosed
-                    : selectedFilter}
+                    : selectedFilter + " - Market  Open"}
                 </p>
               </p>
             ) : (
@@ -228,7 +228,7 @@ const SearchResultsPage = () => {
                   {" "}
                   {marketClosed
                     ? selectedFilter + "Closed on " + dateClosed
-                    : selectedFilter}
+                    : selectedFilter + " - Market  Open"}
                 </p>
               </p>
             )}
