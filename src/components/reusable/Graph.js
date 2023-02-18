@@ -99,8 +99,8 @@ const Graph = ({ getData, chartData, categories }) => {
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
             selectedFilter === filters.DAY
-              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-              : ""
+              ? "text-cokewhite border-b-green bg-faded-green active hover:bg-green"
+              : "border-b-2 border-b-green "
           }`}
           onClick={() => handleFilterSelection(filters.DAY)}
         >
@@ -109,8 +109,8 @@ const Graph = ({ getData, chartData, categories }) => {
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
             selectedFilter === filters.FIVE
-              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-              : ""
+              ? "text-cokewhite border-b-green bg-faded-green active hover:bg-green"
+              : "border-b-2 border-b-green "
           }`}
           onClick={() => handleFilterSelection(filters.FIVE)}
         >
@@ -119,8 +119,8 @@ const Graph = ({ getData, chartData, categories }) => {
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
             selectedFilter === filters.MONTH
-              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-              : ""
+              ? "text-cokewhite border-b-green bg-faded-green active hover:bg-green"
+              : "border-b-2 border-b-green "
           }`}
           onClick={() => handleFilterSelection(filters.MONTH)}
         >
@@ -129,8 +129,8 @@ const Graph = ({ getData, chartData, categories }) => {
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
             selectedFilter === filters.YEAR
-              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-              : ""
+              ? "text-cokewhite border-b-green bg-faded-green active hover:bg-green"
+              : "border-b-2 border-b-green"
           }`}
           onClick={() => handleFilterSelection(filters.YEAR)}
         >

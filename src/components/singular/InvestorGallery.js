@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import InvestorDropdown from "./InvestorDropdown";
 import { BsPersonLinesFill } from "react-icons/bs";
@@ -7,6 +8,16 @@ import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot1 from "../../assets/images/investors/bot1.png";
 
 const InvestorGallery = () => {
+  const navigate = useNavigate();
+
+  /* 
+  Function called anytime a user selects one of the items in the dropdown. Will navigate 
+  a user to the search page passing in the value. 
+  */
+  const selectItem = (value) => {
+    navigate("/investor", { state: { value: value } });
+  };
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
