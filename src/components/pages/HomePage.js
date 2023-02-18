@@ -77,9 +77,13 @@ const HomePage = () => {
             <h2 className="text-green font-bold text-4xl">Your Assets</h2>
           </div>
           <GraphStats
-            recentPrice={stockData[0].recentPrice}
-            open={stockData[0].open}
-            percentChanged={stockData[0].percentChanged}
+            stockData={stockData}
+            percentChanged={percentChanged}
+            isTrendingUp={true}
+            selectedFilter={selectedFilter}
+            marketClosed={marketClosed}
+            priceChange={priceChange}
+            dateClosed={dateClosed}
           />
           <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph

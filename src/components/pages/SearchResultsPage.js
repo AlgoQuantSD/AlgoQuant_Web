@@ -7,7 +7,6 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import Table from "../reusable/Table";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { GraphSpinner } from "../reusable/LoadSpinner";
-import StockTable from "../singular/StockTable";
 import GraphStats from "../reusable/GraphStats";
 
 const SearchResultsPage = () => {
