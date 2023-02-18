@@ -5,4 +5,7 @@
 /* Here to override tailwinds button transparancy style that is being applied 
 to the amplify UI button on the authentication page.
 Refer to authentication/CustomAuthTheme.js to see the rest of the styling used for the Sign Page */
-.amplify-button.button, [type="submit"] {background-color: hsl(130, 43%, 46%)} 
+.amplify-button.button,
+[type="submit"] {
+  background-color: #1f302b;
+}
