@@ -76,7 +76,7 @@ const HomePage = () => {
           <div className="pt-10">
             <h2 className="text-green font-bold text-4xl">Your Assets</h2>
           </div>
-          <GraphStats
+          {/* <GraphStats
             stockData={stockData}
             percentChanged={percentChanged}
             isTrendingUp={true}
@@ -84,7 +84,7 @@ const HomePage = () => {
             marketClosed={marketClosed}
             priceChange={priceChange}
             dateClosed={dateClosed}
-          />
+          /> */}
           <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph
               chartData={chartData}

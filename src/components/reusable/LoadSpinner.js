@@ -30,8 +30,8 @@ export const TableSpinner = () => {
 
 export const GraphSpinner = () => {
   return (
-    <div className=" flex bg-dark-gray justify-center items-center">
-      <ClimbingBoxLoader color="hsla(112, 54%, 41%, 1)" size={15} />
+    <div className=" flex bg-cokewhite justify-center items-center">
+      <ClimbingBoxLoader color="hsla(162, 22%, 15%, 1)" size={15} />
     </div>
   );
 };

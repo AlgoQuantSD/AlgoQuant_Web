@@ -77,7 +77,7 @@ const SearchResultsPage = () => {
         break;
     }
   };
-  console.log(isTrendingUp);
+
   const getGraphData = useCallback(
     (timeframe) => {
       if (algoquantApi.token) {
@@ -155,7 +155,11 @@ const SearchResultsPage = () => {
     },
     [algoquantApi, location.state.value]
   );
-
+  const handleFilterSelection = (filter) => {
+    getData(filter);
+    setSelectedFilter(filter);
+    // logic to update chart data based on selected filter
+  };
   // Should initial get all the graphdata for the day time frame and the stock data info for the table and when the search value change
   // aka when a user searches for a new ticker
   useEffect(() => {
@@ -191,11 +195,11 @@ const SearchResultsPage = () => {
   }, [location.state.value, algoquantApi]);
 
   return (
-    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+    <div className="bg-cokewhite">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
-        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
+        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5 ">
           <div className="pt-10">
             <h1 className="text-green font-bold text-5xl">
               {location.state.value}
@@ -204,23 +208,31 @@ const SearchResultsPage = () => {
               stockData={stockData}
               percentChanged={percentChanged}
               isTrendingUp={isTrendingUp}
-              selectedFilter={selectedFilter}
               marketClosed={marketClosed}
               priceChange={priceChange}
               dateClosed={dateClosed}
+              selectedFilter={selectedFilter}
             />
           </div>
           <div className="w-11/12 h-4/5">
-            <Graph
-              chartData={chartData}
-              categories={categories}
-              getData={getData}
-              isTrendingUp={isTrendingUp}
-            />
-            {statsLoading ? (
-              <SaveSpinner />
+            {graphLoading ? (
+              <GraphSpinner />
             ) : (
+              <Graph
+                chartData={chartData}
+                categories={categories}
+                handleFilterSelection={handleFilterSelection}
+                isTrendingUp={isTrendingUp}
+                selectedFilter={selectedFilter}
+              />
+            )}
+
+            {statsLoading ? (
               <div className="mt-28 w-full">
+                <SaveSpinner />
+              </div>
+            ) : (
+              <div className="mt-20 w-full">
                 <Table data={stockData} header={header} />
               </div>
             )}

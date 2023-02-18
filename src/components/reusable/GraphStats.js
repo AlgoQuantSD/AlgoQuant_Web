@@ -10,7 +10,7 @@ const GraphStats = ({
   dateClosed,
 }) => {
   return (
-    <div className="mt-2">
+    <div className="mt-2 mb-4">
       <h2 className="text-green font-semibold text-5xl">
         ${stockData[0].recentPrice}
       </h2>
@@ -22,8 +22,8 @@ const GraphStats = ({
           <p className="inline text-light-gray font-light">
             {" "}
             {marketClosed
-              ? selectedFilter + " Closed on " + dateClosed
-              : selectedFilter + " - Market  Open"}
+              ? selectedFilter + " - Closed on " + dateClosed
+              : selectedFilter + " - Market Open"}
           </p>
         </p>
       ) : (
@@ -34,8 +34,8 @@ const GraphStats = ({
           <p className="inline text-light-gray font-light">
             {" "}
             {marketClosed
-              ? selectedFilter + " Closed on " + dateClosed
-              : selectedFilter + " - Market  Open"}
+              ? selectedFilter + " - Closed on " + dateClosed
+              : selectedFilter + " - Market Open"}
           </p>
         </p>
       )}

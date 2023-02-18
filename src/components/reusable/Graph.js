@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Chart from "react-apexcharts";
 
 /*
@@ -75,10 +75,15 @@ const buildGraph = (data, categories, isTrendingUp) => {
   };
 };
 
-const Graph = ({ getData, chartData, categories, isTrendingUp }) => {
+const Graph = ({
+  handleFilterSelection,
+  chartData,
+  categories,
+  isTrendingUp,
+  selectedFilter,
+}) => {
   // Create the graph with the data and categories along with the callback to get more data
   let chart = buildGraph(chartData, categories, isTrendingUp);
-  const [selectedFilter, setSelectedFilter] = useState("Today");
 
   const filters = {
     DAY: "Today",
@@ -87,21 +92,15 @@ const Graph = ({ getData, chartData, categories, isTrendingUp }) => {
     YEAR: "Past Year",
   };
 
-  const handleFilterSelection = (filter) => {
-    getData(filter);
-    setSelectedFilter(filter);
-    // logic to update chart data based on selected filter
-  };
-
   return (
     <div className="relative h-96">
-      <p className="inline text-green font-light"> {selectedFilter}</p>
       <Chart
         options={chart.options}
         series={chart.series}
         type="line"
         width="100%"
         height="100%"
+        className="shadow-md"
       />
       <div className="flex mt-4 justify-center">
         <button
