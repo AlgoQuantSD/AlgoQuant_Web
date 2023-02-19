@@ -17,7 +17,7 @@ const SignInPage = () => {
             justifyContent: "center",
           }}
         >
-          Trade to your{<br />} comfort.
+          Trade to your{<br />}comfort.
         </div>
         <div
           className="bg-gray-200 p-4 "

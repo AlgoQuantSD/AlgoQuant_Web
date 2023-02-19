@@ -87,9 +87,9 @@ const HomePage = () => {
           /> */}
           <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph
+              stockData={stockData}
               chartData={chartData}
               categories={categories}
-              getData={getData}
             />
           </div>
           <div className="w-full">

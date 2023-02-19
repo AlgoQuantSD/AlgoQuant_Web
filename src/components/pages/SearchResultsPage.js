@@ -21,7 +21,6 @@ const SearchResultsPage = () => {
 
   const [stockData, setStockData] = useState([
     {
-      symbol: "",
       recentPrice: 0,
       open: 0,
       high: 0,
@@ -30,12 +29,19 @@ const SearchResultsPage = () => {
       yearLow: 0,
     },
   ]);
-  const [percentChanged, setPercentChanged] = useState(0);
+  const [percentChanged, setPercentChanged] = useState(null);
   const [priceChange, setPriceChange] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
   const [dateClosed, setDateClosed] = useState(0);
   const [marketClosed, setMarketClosed] = useState(false);
+
+  const [high52w, setHigh52w] = useState(null);
+  const [low52w, setLow52w] = useState(null);
+  const [high, setHigh] = useState(null);
+  const [low, setLow] = useState(null);
+  const [open, setOpen] = useState(null);
+  const [recentPrice, setRecentPrice] = useState(null);
 
   const filters = {
     DAY: "Today",
@@ -44,7 +50,6 @@ const SearchResultsPage = () => {
     YEAR: "Past Year",
   };
 
-  const isTrendingUp = percentChanged >= 0;
   // header used for the columns on the table
   const header = [
     { key: "open", title: "Open" },
@@ -52,6 +57,22 @@ const SearchResultsPage = () => {
     { key: "low", title: "Low" },
     { key: "yearHigh", title: "Year High" },
     { key: "yearLow", title: "Year Low" },
+  ];
+
+  // Aggregated object of the stock data to pass as a prop to children components
+  const aggregatedStockData = [
+    {
+      recentPrice: recentPrice,
+      open: open,
+      high: high,
+      low: low,
+      yearHigh: high52w,
+      yearLow: low52w,
+      priceChange: priceChange,
+      percentChanged: percentChanged,
+      marketClosed: marketClosed,
+      dateClosed: dateClosed,
+    },
   ];
 
   /*
@@ -175,7 +196,6 @@ const SearchResultsPage = () => {
         .then((resp) => {
           setStockData([
             {
-              symbol: location.state.value,
               recentPrice: resp.data["recent_price"].toFixed(2),
               open: resp.data["open"].toFixed(2),
               high: resp.data["high"].toFixed(2),
@@ -184,6 +204,13 @@ const SearchResultsPage = () => {
               yearLow: resp.data["52wk_low"].toFixed(2),
             },
           ]);
+
+          setRecentPrice(resp.data["recent_price"].toFixed(2));
+          setOpen(resp.data["open"].toFixed(2));
+          setHigh(resp.data["high"].toFixed(2));
+          setLow(resp.data["low"].toFixed(2));
+          setHigh52w(resp.data["low"].toFixed(2));
+          setLow52w(resp.data["52wk_low"].toFixed(2));
           setStatsLoading(false);
         })
         .catch((err) => {
@@ -205,12 +232,12 @@ const SearchResultsPage = () => {
               {location.state.value}
             </h1>
             <GraphStats
-              stockData={stockData}
-              percentChanged={percentChanged}
-              isTrendingUp={isTrendingUp}
-              marketClosed={marketClosed}
-              priceChange={priceChange}
-              dateClosed={dateClosed}
+              stockData={aggregatedStockData}
+              // percentChanged={percentChanged}
+              // isTrendingUp={isTrendingUp}
+              // marketClosed={marketClosed}
+              // priceChange={priceChange}
+              // dateClosed={dateClosed}
               selectedFilter={selectedFilter}
             />
           </div>
@@ -219,10 +246,11 @@ const SearchResultsPage = () => {
               <GraphSpinner />
             ) : (
               <Graph
+                stockData={aggregatedStockData}
                 chartData={chartData}
                 categories={categories}
                 handleFilterSelection={handleFilterSelection}
-                isTrendingUp={isTrendingUp}
+                // isTrendingUp={isTrendingUp}
                 selectedFilter={selectedFilter}
               />
             )}
