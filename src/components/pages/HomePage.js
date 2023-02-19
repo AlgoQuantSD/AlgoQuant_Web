@@ -25,6 +25,7 @@ const HomePage = () => {
     "Aug",
     "Sep",
   ]);
+  const [selectedFilter, setSelectedFilter] = useState("Today");
 
   const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
 
@@ -52,6 +53,11 @@ const HomePage = () => {
     // logic to update chart data based on selected filter
   };
 
+  const handleFilterSelection = (filter) => {
+    getData(filter);
+    setSelectedFilter(filter);
+  };
+
   /*Callback used to get more data based on the filter. Each time any of the buttons 
     are clicked this will be called to get more data. This will update the chart data which 
     will then re-render the graph
@@ -76,16 +82,14 @@ const HomePage = () => {
           <div className="pt-10">
             <h2 className="text-green font-bold text-4xl">Your Assets</h2>
           </div>
-          <GraphStats
-            recentPrice={stockData[0].recentPrice}
-            open={stockData[0].open}
-            percentChanged={stockData[0].percentChanged}
-          />
+          <GraphStats stockData={stockData} selectedFilter={selectedFilter} />
           <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph
+              stockData={stockData}
               chartData={chartData}
               categories={categories}
-              getData={getData}
+              handleFilterSelection={handleFilterSelection}
+              selectedFilter={selectedFilter}
             />
           </div>
           <div className="w-full">
