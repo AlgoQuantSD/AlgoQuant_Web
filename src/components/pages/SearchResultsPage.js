@@ -16,7 +16,7 @@ const SearchResultsPage = () => {
   const algoquantApi = useContext(AlgoquantApiContext);
 
   // State variable to keep track of what timeframe of data is fetched
-  const [selectedFilter, setSelectedFilter] = useState("Today");
+  const [selectedFilter, setSelectedFilter] = useState(filters.DAY);
 
   // State variable to store the graph data displayed
   // x - amount, y - time
