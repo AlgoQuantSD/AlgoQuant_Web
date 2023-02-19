@@ -4,7 +4,6 @@ const GraphStats = ({ stockData, selectedFilter }) => {
   const isTrendingUp = stockData[0].percentChanged >= 0;
   // Conditional variable to set the color of the text on stats based on if the stock at the timeframe selected is trending up
   const textColor = isTrendingUp ? "text-bright-green" : "text-red";
-
   return (
     <div className="mt-2 mb-4">
       <h2 className="text-green font-semibold text-5xl">

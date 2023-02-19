@@ -118,16 +118,6 @@ const SearchResultsPage = () => {
                     })
                   )
                 );
-                break;
-              case "5D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
 
                 // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
                 // DateClosed variable will then used to show the date the market is closed, if it is.
@@ -139,6 +129,16 @@ const SearchResultsPage = () => {
                       month: "numeric",
                       day: "numeric",
                     }
+                  )
+                );
+                break;
+              case "5D":
+                setYValues(
+                  resp.data["timestamp"].map((timestamp) =>
+                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
+                      month: "numeric",
+                      day: "numeric",
+                    })
                   )
                 );
                 break;
