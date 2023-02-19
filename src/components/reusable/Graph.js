@@ -1,5 +1,6 @@
 import React from "react";
 import Chart from "react-apexcharts";
+import { filters } from "../utils/filtersEnum";
 
 /*
 Build the graph based on the data, categories and preset configurations
@@ -75,24 +76,12 @@ const buildGraph = (data, categories, isTrendingUp) => {
   };
 };
 
-const Graph = ({
-  stockData,
-  handleFilterSelection,
-  chartData,
-  categories,
-  selectedFilter,
-}) => {
+const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
+  // conditional variable to indicate whether stock searched is trending up or down
   const isTrendingUp = stockData[0].priceChange >= 0;
 
   // Create the graph with the data and categories along with the callback to get more data
-  let chart = buildGraph(chartData, categories, isTrendingUp);
-
-  const filters = {
-    DAY: "Today",
-    FIVE: "Past 5 days",
-    MONTH: "Past month",
-    YEAR: "Past Year",
-  };
+  let chart = buildGraph(xValues, yValues, isTrendingUp);
 
   return (
     <div className="relative h-96">
@@ -104,6 +93,7 @@ const Graph = ({
         height="100%"
         className="shadow-md"
       />
+      {/* Tabs for users to interact with and fetch different data based on provided timeframes */}
       <div className="flex mt-4 justify-center">
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
@@ -111,7 +101,7 @@ const Graph = ({
               ? "text-cokewhite border-b-green bg-green active hover:bg-green"
               : ""
           }`}
-          onClick={() => handleFilterSelection(filters.DAY)}
+          onClick={() => getData(filters.DAY)}
         >
           D
         </button>
@@ -121,7 +111,7 @@ const Graph = ({
               ? "text-cokewhite border-b-green bg-green active hover:bg-green"
               : ""
           }`}
-          onClick={() => handleFilterSelection(filters.FIVE)}
+          onClick={() => getData(filters.FIVE)}
         >
           5D
         </button>
@@ -131,7 +121,7 @@ const Graph = ({
               ? "text-cokewhite border-b-green bg-green active hover:bg-green"
               : ""
           }`}
-          onClick={() => handleFilterSelection(filters.MONTH)}
+          onClick={() => getData(filters.MONTH)}
         >
           M
         </button>
@@ -141,7 +131,7 @@ const Graph = ({
               ? "text-cokewhite border-b-green bg-green active hover:bg-green"
               : ""
           }`}
-          onClick={() => handleFilterSelection(filters.YEAR)}
+          onClick={() => getData(filters.YEAR)}
         >
           Y
         </button>

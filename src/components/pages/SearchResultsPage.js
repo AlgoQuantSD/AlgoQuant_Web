@@ -8,24 +8,26 @@ import Table from "../reusable/Table";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { GraphSpinner } from "../reusable/LoadSpinner";
 import GraphStats from "../reusable/GraphStats";
+import { filters } from "../utils/filtersEnum";
 
 const SearchResultsPage = () => {
   const location = useLocation();
-
-  const [selectedFilter, setSelectedFilter] = useState("Today");
-  // Currently hardcoded but will eventually come from API
-  const [chartData, setChartData] = useState([]);
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  const [categories, setCategories] = useState([]);
 
+  // State variable to keep track of what timeframe of data is fetched
+  const [selectedFilter, setSelectedFilter] = useState("Today");
+
+  // State variable to store the graph data displayed
+  // x - amount, y - time
+  const [xValues, setXValues] = useState([]);
+  const [yValues, setYValues] = useState([]);
+
+  // All state variables for stock related data / statistics
   const [percentChanged, setPercentChanged] = useState(null);
-  const [priceChange, setPriceChange] = useState(0);
-  const [graphLoading, setGraphLoading] = useState(true);
-  const [statsLoading, setStatsLoading] = useState(true);
-  const [dateClosed, setDateClosed] = useState(0);
+  const [priceChange, setPriceChange] = useState(null);
+  const [dateClosed, setDateClosed] = useState(null);
   const [marketClosed, setMarketClosed] = useState(false);
-
   const [high52w, setHigh52w] = useState(null);
   const [low52w, setLow52w] = useState(null);
   const [high, setHigh] = useState(null);
@@ -33,12 +35,9 @@ const SearchResultsPage = () => {
   const [open, setOpen] = useState(null);
   const [recentPrice, setRecentPrice] = useState(null);
 
-  const filters = {
-    DAY: "Today",
-    FIVE: "Past 5 days",
-    MONTH: "Past month",
-    YEAR: "Past Year",
-  };
+  // used to determine when to show a loading component when data is being fetched
+  const [graphLoading, setGraphLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(true);
 
   // header used for the columns on the table
   const header = [
@@ -50,6 +49,7 @@ const SearchResultsPage = () => {
   ];
 
   // Aggregated object of the stock data to pass as a prop to children components
+  // using the state variables from above
   const aggregatedStockData = [
     {
       recentPrice: recentPrice,
@@ -66,29 +66,33 @@ const SearchResultsPage = () => {
   ];
 
   /*
-  Callback used to get more data based on the filter. Each time any of the buttons 
-  are clicked this will be called to get more data. This will update the chart data which 
-  will then re-render the graph
+ Function to determine what timeframe of graph data to fetch based on the filter enum (timeframe selected by user)
+  calls the getGraphData to retreive data and updates the filter the user has selcted with: setSelectedFilter
   */
   const getData = (filter) => {
     switch (filter) {
       case filters.DAY:
         getGraphData("D");
+        setSelectedFilter(filter);
         break;
       case filters.FIVE:
         getGraphData("5D");
+        setSelectedFilter(filter);
         break;
       case filters.MONTH:
         getGraphData("M");
+        setSelectedFilter(filter);
         break;
       case filters.YEAR:
         getGraphData("Y");
+        setSelectedFilter(filter);
         break;
       default:
         break;
     }
   };
 
+  // Callback function that calls Algoquant's api to grab new graph data based on the timeframe
   const getGraphData = useCallback(
     (timeframe) => {
       if (algoquantApi.token) {
@@ -96,12 +100,15 @@ const SearchResultsPage = () => {
         algoquantApi
           .getGraphData(location.state.value, timeframe)
           .then((resp) => {
+            setXValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
             );
-            setChartData(resp.data["close"]);
             setMarketClosed(resp.data["is_market_closed"]);
+
+            // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
+            // DateClosed variable will then used to show the date the market is closed, if it is.
             if (timeframe === "D") {
               setDateClosed(
                 new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
@@ -114,9 +121,11 @@ const SearchResultsPage = () => {
                 )
               );
             }
+
+            // based on the timeframe selected (filter) set the timeframe (yData) from response to appropriate date format
             switch (timeframe) {
               case "D":
-                setCategories(
+                setYValues(
                   resp.data["timestamp"].map((timestamp) =>
                     new Date(timestamp * 1000).toLocaleTimeString("en-US", {
                       hour: "2-digit",
@@ -126,7 +135,7 @@ const SearchResultsPage = () => {
                 );
                 break;
               case "5D":
-                setCategories(
+                setYValues(
                   resp.data["timestamp"].map((timestamp) =>
                     new Date(timestamp * 1000).toLocaleDateString("en-US", {
                       month: "numeric",
@@ -136,7 +145,7 @@ const SearchResultsPage = () => {
                 );
                 break;
               case "M":
-                setCategories(
+                setYValues(
                   resp.data["timestamp"].map((timestamp) =>
                     new Date(timestamp * 1000).toLocaleDateString("en-US", {
                       month: "numeric",
@@ -146,7 +155,7 @@ const SearchResultsPage = () => {
                 );
                 break;
               case "Y":
-                setCategories(
+                setYValues(
                   resp.data["timestamp"].map((timestamp) =>
                     new Date(timestamp * 1000).toLocaleDateString("en-US", {
                       month: "numeric",
@@ -158,6 +167,7 @@ const SearchResultsPage = () => {
               default:
                 break;
             }
+
             setGraphLoading(false);
           })
           .catch((err) => {
@@ -168,17 +178,28 @@ const SearchResultsPage = () => {
     },
     [algoquantApi, location.state.value]
   );
-  const handleFilterSelection = (filter) => {
-    getData(filter);
-    setSelectedFilter(filter);
+
+  // Helper function to reset state variables to inital values when a new stock is searched, as it does not refresh any of the state variables
+  const ResetStockData = () => {
+    setSelectedFilter("Today");
+    setXValues(null);
+    setXValues(null);
+    setRecentPrice(null);
+    setOpen(null);
+    setHigh(null);
+    setLow(null);
+    setLow52w(null);
+    setHigh52w(null);
+    setPriceChange(null);
+    setPercentChanged(null);
+    setMarketClosed(null);
+    setDateClosed(null);
   };
-  // Should initial get all the graphdata for the day time frame and the stock data info for the table and when the search value change
+
+  // Should initially get all the graphdata for the day time frame and the stock data info for the table and when the search value change
   // aka when a user searches for a new ticker
   useEffect(() => {
-    if (selectedFilter !== "Today") {
-      setSelectedFilter("Today");
-    }
-    setChartData([]);
+    ResetStockData();
     setStatsLoading(true);
     getData(filters.DAY);
     if (algoquantApi.token) {
@@ -222,9 +243,9 @@ const SearchResultsPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedStockData}
-                chartData={chartData}
-                categories={categories}
-                handleFilterSelection={handleFilterSelection}
+                xValues={xValues}
+                yValues={yValues}
+                getData={getData}
                 selectedFilter={selectedFilter}
               />
             )}
