@@ -32,7 +32,6 @@ const SignInPage = () => {
             formFields={signUpConfig}
             components={components}
             initialState="signIn"
-            // variation="modal"
           />
         </div>
       </div>

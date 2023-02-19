@@ -107,21 +107,6 @@ const SearchResultsPage = () => {
             );
             setMarketClosed(resp.data["is_market_closed"]);
 
-            // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
-            // DateClosed variable will then used to show the date the market is closed, if it is.
-            if (timeframe === "D") {
-              setDateClosed(
-                new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
-                  "en-US",
-                  {
-                    weekday: "long",
-                    month: "numeric",
-                    day: "numeric",
-                  }
-                )
-              );
-            }
-
             // based on the timeframe selected (filter) set the timeframe (yData) from response to appropriate date format
             switch (timeframe) {
               case "D":
@@ -141,6 +126,19 @@ const SearchResultsPage = () => {
                       month: "numeric",
                       day: "numeric",
                     })
+                  )
+                );
+
+                // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
+                // DateClosed variable will then used to show the date the market is closed, if it is.
+                setDateClosed(
+                  new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
+                    "en-US",
+                    {
+                      weekday: "long",
+                      month: "numeric",
+                      day: "numeric",
+                    }
                   )
                 );
                 break;
