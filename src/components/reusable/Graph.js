@@ -82,7 +82,6 @@ const Graph = ({
   categories,
   selectedFilter,
 }) => {
-  console.log(stockData[0].priceChange);
   const isTrendingUp = stockData[0].priceChange >= 0;
 
   // Create the graph with the data and categories along with the callback to get more data

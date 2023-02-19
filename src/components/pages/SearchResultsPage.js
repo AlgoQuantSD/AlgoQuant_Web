@@ -19,16 +19,6 @@ const SearchResultsPage = () => {
   const algoquantApi = useContext(AlgoquantApiContext);
   const [categories, setCategories] = useState([]);
 
-  const [stockData, setStockData] = useState([
-    {
-      recentPrice: 0,
-      open: 0,
-      high: 0,
-      low: 0,
-      yearHigh: 0,
-      yearLow: 0,
-    },
-  ]);
   const [percentChanged, setPercentChanged] = useState(null);
   const [priceChange, setPriceChange] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
@@ -106,8 +96,10 @@ const SearchResultsPage = () => {
         algoquantApi
           .getGraphData(location.state.value, timeframe)
           .then((resp) => {
-            setPercentChanged(resp.data["percent_change"]);
-            setPriceChange(resp.data["interval_price_change"]);
+            setPercentChanged(resp.data["percent_change"].toFixed(2));
+            setPriceChange(
+              parseFloat(resp.data["interval_price_change"]).toFixed(2)
+            );
             setChartData(resp.data["close"]);
             setMarketClosed(resp.data["is_market_closed"]);
             if (timeframe === "D") {
@@ -179,7 +171,6 @@ const SearchResultsPage = () => {
   const handleFilterSelection = (filter) => {
     getData(filter);
     setSelectedFilter(filter);
-    // logic to update chart data based on selected filter
   };
   // Should initial get all the graphdata for the day time frame and the stock data info for the table and when the search value change
   // aka when a user searches for a new ticker
@@ -194,17 +185,6 @@ const SearchResultsPage = () => {
       algoquantApi
         .getStockInfo(location.state.value)
         .then((resp) => {
-          setStockData([
-            {
-              recentPrice: resp.data["recent_price"].toFixed(2),
-              open: resp.data["open"].toFixed(2),
-              high: resp.data["high"].toFixed(2),
-              low: resp.data["low"].toFixed(2),
-              yearHigh: resp.data["52wk_high"].toFixed(2),
-              yearLow: resp.data["52wk_low"].toFixed(2),
-            },
-          ]);
-
           setRecentPrice(resp.data["recent_price"].toFixed(2));
           setOpen(resp.data["open"].toFixed(2));
           setHigh(resp.data["high"].toFixed(2));
@@ -233,11 +213,6 @@ const SearchResultsPage = () => {
             </h1>
             <GraphStats
               stockData={aggregatedStockData}
-              // percentChanged={percentChanged}
-              // isTrendingUp={isTrendingUp}
-              // marketClosed={marketClosed}
-              // priceChange={priceChange}
-              // dateClosed={dateClosed}
               selectedFilter={selectedFilter}
             />
           </div>
@@ -250,7 +225,6 @@ const SearchResultsPage = () => {
                 chartData={chartData}
                 categories={categories}
                 handleFilterSelection={handleFilterSelection}
-                // isTrendingUp={isTrendingUp}
                 selectedFilter={selectedFilter}
               />
             )}
@@ -261,7 +235,7 @@ const SearchResultsPage = () => {
               </div>
             ) : (
               <div className="mt-20 w-full">
-                <Table data={stockData} header={header} />
+                <Table data={aggregatedStockData} header={header} />
               </div>
             )}
           </div>
