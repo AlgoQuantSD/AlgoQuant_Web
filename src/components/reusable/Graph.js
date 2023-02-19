@@ -79,9 +79,11 @@ const buildGraph = (data, categories, isTrendingUp) => {
 const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
   // conditional variable to indicate whether stock searched is trending up or down
   const isTrendingUp = stockData[0].priceChange >= 0;
-
   // Create the graph with the data and categories along with the callback to get more data
   let chart = buildGraph(xValues, yValues, isTrendingUp);
+  // String variable containing the style of what fitler is currently active
+  const ACTIVE_FILTER_STYLE =
+    "text-cokewhite border-b-green bg-green active hover:bg-green";
 
   return (
     <div className="relative h-96">
@@ -97,9 +99,7 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
       <div className="flex mt-4 justify-center">
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.DAY
-              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-              : ""
+            selectedFilter === filters.DAY ? ACTIVE_FILTER_STYLE : ""
           }`}
           onClick={() => getData(filters.DAY)}
         >
@@ -107,9 +107,7 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.FIVE
-              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-              : ""
+            selectedFilter === filters.FIVE ? ACTIVE_FILTER_STYLE : ""
           }`}
           onClick={() => getData(filters.FIVE)}
         >
@@ -117,9 +115,7 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.MONTH
-              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-              : ""
+            selectedFilter === filters.MONTH ? ACTIVE_FILTER_STYLE : ""
           }`}
           onClick={() => getData(filters.MONTH)}
         >
@@ -127,9 +123,7 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.YEAR
-              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-              : ""
+            selectedFilter === filters.YEAR ? ACTIVE_FILTER_STYLE : ""
           }`}
           onClick={() => getData(filters.YEAR)}
         >
