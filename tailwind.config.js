@@ -8,7 +8,6 @@ module.exports = {
       smokewhite: "#F0F0F0",
       "faded-white": "FFFFFFE6",
       black: "#000000",
-      // green: "#3f9f30",
       green: "#1F302B",
       "faded-green": "#42504C",
       "bright-green": "#00FF38",
