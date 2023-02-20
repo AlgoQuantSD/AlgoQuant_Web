@@ -2,9 +2,9 @@ import React from "react";
 
 const Table = ({ data, header }) => {
   return (
-    <table className="table-auto w-full font-light text-white">
+    <table className="table-auto w-full font-light text-black">
       <thead>
-        <tr className="bg-medium-gray text-white">
+        <tr className="text-white bg-green">
           {header.map((header) => (
             <th
               className="lg:px-4 lg:py-4 md:px-2 md:py-2 lg:font-semibold md:font-medium sm:font-light lg:text-xl md:text-md sm:text-sm"
@@ -21,8 +21,8 @@ const Table = ({ data, header }) => {
             key={index}
             className={
               index % 2 === 0
-                ? "bg-dark-gray align-left"
-                : "bg-another-gray align-left"
+                ? "bg-smokewhite align-left"
+                : "bg-faded-white align-left"
             }
           >
             {header.map((header) => (
