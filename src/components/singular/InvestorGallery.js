@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import InvestorDropdown from "./InvestorDropdown";
 import { BsPersonLinesFill } from "react-icons/bs";
@@ -8,17 +7,7 @@ import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot1 from "../../assets/images/investors/bot1.png";
 
 const InvestorGallery = () => {
-  const navigate = useNavigate();
   const [selectedInvestor, setSelectedInvestor] = useState(null);
-  const [jobModal, setJobModal] = useState(false);
-
-  /* 
-  Function called anytime a user selects one of the items in the dropdown. Will navigate 
-  a user to the search page passing in the value. 
-  */
-  const selectItem = (value) => {
-    navigate("/investor", { state: { value: value } });
-  };
 
   const responsive = {
     superLargeDesktop: {
@@ -120,7 +109,6 @@ const InvestorGallery = () => {
               <InvestorDropdown
                 startJob={() => {
                   setSelectedInvestor(investor);
-                  setJobModal(true);
                 }}
                 viewInvestor={() => console.log("View Investor clicked")}
                 deleteInvestor={() => console.log("Delete Investor clicked")}

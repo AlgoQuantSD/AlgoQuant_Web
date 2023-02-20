@@ -2,14 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import JobModal from "./Modals/JobModal";
 import { BsThreeDots } from "react-icons/bs";
 
-const InvestorDropdown = ({
-  startJob,
-  viewInvestor,
-  deleteInvestor,
-  investor,
-}) => {
+const InvestorDropdown = ({ viewInvestor, deleteInvestor, investor }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedModal, setSelectedModal] = useState(null);
+  const [jobModal, setJobModal] = useState(null);
 
   const searchRef = useRef(null);
 
@@ -18,7 +13,7 @@ const InvestorDropdown = ({
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         // Close the dropdown and hide the current modal
         setShowDropdown(false);
-        setSelectedModal(null);
+        setJobModal(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -35,8 +30,8 @@ const InvestorDropdown = ({
       >
         <BsThreeDots className="text-2xl text-cokewhite hover:text-green" />
       </button>
-      {selectedModal === "job" && ( // Show the JobModal if it's selected
-        <JobModal setJobModal={setSelectedModal} investor={investor} />
+      {jobModal === true && ( // Show the JobModal if it's selected
+        <JobModal setJobModal={setJobModal} investor={investor} />
       )}
       {showDropdown && (
         <div className="absolute right-0 w-40 shadow-lg bg-cokewhite">
@@ -44,8 +39,7 @@ const InvestorDropdown = ({
             className="block px-4 py-2 text-left w-full text-green hover:bg-smokewhite border-b border-light-gray"
             onClick={() => {
               setShowDropdown(false);
-              setSelectedModal("job"); // Show the JobModal
-              startJob();
+              setJobModal(true); // Show the JobModal
               console.log(investor.id);
             }}
           >
@@ -56,7 +50,7 @@ const InvestorDropdown = ({
             onClick={() => {
               viewInvestor();
               setShowDropdown(false);
-              setSelectedModal(null);
+              setJobModal(false);
             }}
           >
             View Investor
@@ -67,7 +61,7 @@ const InvestorDropdown = ({
             onClick={() => {
               deleteInvestor();
               setShowDropdown(false);
-              setSelectedModal(null);
+              setJobModal(false);
             }}
           >
             Delete
