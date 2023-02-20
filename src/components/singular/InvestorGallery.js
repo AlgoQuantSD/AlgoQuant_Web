@@ -1,13 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import InvestorDropdown from "./InvestorDropdown";
 import { BsPersonLinesFill } from "react-icons/bs";
 import { FaBrain } from "react-icons/fa";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
-import bot1 from "../../assets/images/investors/bot1.png";
+import bot from "../../assets/images/investors/bot1.png";
 
 const InvestorGallery = () => {
+  const navigate = useNavigate();
   const [selectedInvestor, setSelectedInvestor] = useState(null);
+
+  /* 
+  Function called anytime a user selects View Investor in the dropdown. Will navigate 
+  a user to the Investor page passing in the value. 
+  */
+  const viewInvestor = (value) => {
+    navigate("/investor", { state: { value: value } });
+  };
 
   const responsive = {
     superLargeDesktop: {
@@ -110,8 +120,10 @@ const InvestorGallery = () => {
                 startJob={() => {
                   setSelectedInvestor(investor);
                 }}
-                viewInvestor={() => console.log("View Investor clicked")}
-                deleteInvestor={() => console.log("Delete Investor clicked")}
+                viewInvestor={() => viewInvestor(investor)}
+                deleteInvestor={() => {
+                  setSelectedInvestor(investor);
+                }}
                 investor={selectedInvestor}
               />
             </div>
@@ -124,7 +136,7 @@ const InvestorGallery = () => {
                   className="h-52 mt-6 mb-6"
                 />
               ) : (
-                <img src={bot1} alt="bot" className="h-72 mt-12" />
+                <img src={bot} alt="bot" className="h-72 mt-12" />
               )}
             </div>
             {/* Indicators / Stocks */}
