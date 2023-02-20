@@ -1,16 +1,24 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import JobModal from "./Modals/JobModal";
 import { BsThreeDots } from "react-icons/bs";
 
-const InvestorDropdown = ({ startJob, viewInvestor }) => {
+const InvestorDropdown = ({
+  startJob,
+  viewInvestor,
+  deleteInvestor,
+  investor,
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedModal, setSelectedModal] = useState(null);
+
   const searchRef = useRef(null);
 
-  // Close dropdown upon clicking anywhere outside of the component
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        // Close the dropdown
+        // Close the dropdown and hide the current modal
         setShowDropdown(false);
+        setSelectedModal(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -27,24 +35,40 @@ const InvestorDropdown = ({ startJob, viewInvestor }) => {
       >
         <BsThreeDots className="text-2xl text-cokewhite hover:text-green" />
       </button>
+      {selectedModal === "job" && ( // Show the JobModal if it's selected
+        <JobModal setJobModal={setSelectedModal} investor={investor} />
+      )}
       {showDropdown && (
         <div className="absolute right-0 w-40 shadow-lg bg-cokewhite">
           <button
             className="block px-4 py-2 text-left w-full text-green hover:bg-smokewhite border-b border-light-gray"
-            onClick={startJob}
+            onClick={() => {
+              setShowDropdown(false);
+              setSelectedModal("job"); // Show the JobModal
+              startJob();
+              console.log(investor.id);
+            }}
           >
             Start Job
           </button>
           <button
             className="block px-4 py-2 text-left w-full text-green hover:bg-smokewhite border-b border-light-gray"
-            onClick={viewInvestor}
+            onClick={() => {
+              viewInvestor();
+              setShowDropdown(false);
+              setSelectedModal(null);
+            }}
           >
             View Investor
           </button>
 
           <button
             className="block px-4 py-2 text-left w-full text-red hover:bg-smokewhite font-bold"
-            onClick={viewInvestor}
+            onClick={() => {
+              deleteInvestor();
+              setShowDropdown(false);
+              setSelectedModal(null);
+            }}
           >
             Delete
           </button>

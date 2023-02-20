@@ -99,7 +99,7 @@ const HomePage = () => {
             <button
               className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite  ${
                 selectedTabFilter === tabFilters.INVESTOR
-                  ? "text-cokewhite border-b-green bg-faded-green active hover:bg-faded-green"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.INVESTOR)}
@@ -109,7 +109,7 @@ const HomePage = () => {
             <button
               className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.JOB
-                  ? "text-cokewhite border-b-green bg-faded-green active hover:bg-faded-green"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-reen"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.JOB)}
@@ -119,7 +119,7 @@ const HomePage = () => {
             <button
               className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.history
-                  ? "text-cokewhite border-b-green bg-faded-green active hover:bg-faded-green"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.history)}
@@ -157,6 +157,7 @@ const HomePage = () => {
                       >
                         View all transactions
                       </Link>
+                      <JobGallery />
                     </div>
                   );
                 default:

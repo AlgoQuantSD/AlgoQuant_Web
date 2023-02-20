@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import InvestorDropdown from "./InvestorDropdown";
@@ -9,6 +9,8 @@ import bot1 from "../../assets/images/investors/bot1.png";
 
 const InvestorGallery = () => {
   const navigate = useNavigate();
+  const [selectedInvestor, setSelectedInvestor] = useState(null);
+  const [jobModal, setJobModal] = useState(false);
 
   /* 
   Function called anytime a user selects one of the items in the dropdown. Will navigate 
@@ -116,8 +118,13 @@ const InvestorGallery = () => {
               )}
               <p className="font-bold text-xl">{investor.name}</p>
               <InvestorDropdown
-                startJob={() => console.log("Start Job clicked")}
+                startJob={() => {
+                  setSelectedInvestor(investor);
+                  setJobModal(true);
+                }}
                 viewInvestor={() => console.log("View Investor clicked")}
+                deleteInvestor={() => console.log("Delete Investor clicked")}
+                investor={selectedInvestor}
               />
             </div>
             {/* Investor Image */}
