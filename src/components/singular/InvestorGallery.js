@@ -91,8 +91,8 @@ const InvestorGallery = () => {
       >
         {investors.map((investor, i) => (
           <div
-            className={`h-full w-11/12 text-white bg-faded-dark-gray mx-auto p-6 ${
-              investor.id === "bot" ? " border-2 border-gold" : ""
+            className={`h-full w-11/12 text-white bg-green mx-auto p-6 ${
+              investor.id === "bot" ? "bg-gold border-4 border-green" : ""
             }`}
             key={investor.name}
           >
@@ -101,7 +101,7 @@ const InvestorGallery = () => {
               {investor.id === "bot" ? (
                 <FaBrain className="text-green text-3xl" />
               ) : (
-                <BsPersonLinesFill className="text-green text-3xl" />
+                <BsPersonLinesFill className="text-cokewhite text-3xl" />
               )}
               <p className="font-bold text-xl">{investor.name}</p>
               <InvestorDropdown
@@ -128,7 +128,7 @@ const InvestorGallery = () => {
                   <div className="w-1/4">
                     <p className="flex justify-left font-bold">Indicators</p>
                     {investor.indicators.map((indicator, i) => (
-                      <p key={i} className="flex justify-left text-green">
+                      <p key={i} className="flex justify-left text-cokewhite">
                         {indicator}
                       </p>
                     ))}
@@ -136,7 +136,7 @@ const InvestorGallery = () => {
                   <div className="w-1/4">
                     <p className="flex justify-left font-bold">Stocks</p>
                     {investor.stocks.slice(0, 4).map((stock, i) => (
-                      <p key={i} className="flex justify-left text-green">
+                      <p key={i} className="flex justify-left text-cokewhite">
                         {stock}
                       </p>
                     ))}

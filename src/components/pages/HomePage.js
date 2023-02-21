@@ -6,18 +6,27 @@ import InvestorGallery from "../singular/InvestorGallery";
 import "react-multi-carousel/lib/styles.css";
 import Graph from "../reusable/Graph";
 import GraphStats from "../reusable/GraphStats";
+import JobGallery from "../singular/JobGallery";
 import AlgoquantApiContext from "../../api/ApiContext";
+import { GraphSpinner } from "../reusable/LoadSpinner";
+import { filters } from "../utils/filtersEnum";
 
 const HomePage = () => {
-  const [chartData, setChartData] = useState([1, 2, 3, 4, 5]);
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  const [categories, setCategories] = useState([1, 2, 3, 4, 5]);
+  const [xValues, setXValues] = useState([]);
+  const [yValues, setYValues] = useState([]);
+  // All state variables for stock related data / statistics
+  const [percentChanged, setPercentChanged] = useState(null);
+  const [priceChange, setPriceChange] = useState(null);
+  const [dateClosed, setDateClosed] = useState(null);
+  const [marketClosed, setMarketClosed] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState(null);
 
   const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
   const [recentPrice, setRecentPrice] = useState(0);
   const [lastIntervalChange, setLastIntervalChange] = useState(0);
-  const [percentChanged, setPercentChanged] = useState(0);
+  const [graphLoading, setGraphLoading] = useState(true);
 
   const tabFilters = {
     INVESTOR: "investor",
@@ -30,25 +39,35 @@ const HomePage = () => {
     // logic to update chart data based on selected filter
   };
 
+  // const handleFilterSelection = (filter) => {
+  //   getData(filter);
+  //   setSelectedFilter(filter);
+  // };
+
   /*Callback used to get more data based on the filter. Each time any of the buttons 
     are clicked this will be called to get more data. This will update the chart data which 
     will then re-render the graph
     */
 
-  const getData = useCallback(
+  const getGraphData = useCallback(
     (timeframe) => {
       if (algoquantApi.token) {
         algoquantApi
-          .getPerformance(timeframe, null)
+          .getPerformance(timeframe)
           .then((resp) => {
-            console.log(resp);
-            setChartData(resp.data["close"]);
-            setLastIntervalChange(resp.data["interval_price_change"]);
-            setRecentPrice(resp.data["recent_price"]);
-            setPercentChanged(resp.data["percent_change"]);
+            console.log(resp.data);
+            setXValues(resp.data["close"]);
+            setPercentChanged(resp.data["percent_change"].toFixed(2));
+            setPriceChange(
+              parseFloat(resp.data["interval_price_change"]).toFixed(2)
+            );
+            setRecentPrice(resp.data["recent_price"].toFixed(2));
+            setMarketClosed(resp.data["is_market_closed"]);
+
+            // based on the timeframe selected (filter) set the timeframe (yData) from response to appropriate date format
             switch (timeframe) {
               case "D":
-                setCategories(
+                setYValues(
                   resp.data["timestamp"].map((timestamp) =>
                     new Date(timestamp * 1000).toLocaleTimeString("en-US", {
                       hour: "2-digit",
@@ -56,9 +75,22 @@ const HomePage = () => {
                     })
                   )
                 );
+
+                // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
+                // DateClosed variable will then used to show the date the market is closed, if it is.
+                setDateClosed(
+                  new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
+                    "en-US",
+                    {
+                      weekday: "long",
+                      month: "numeric",
+                      day: "numeric",
+                    }
+                  )
+                );
                 break;
               case "5D":
-                setCategories(
+                setYValues(
                   resp.data["timestamp"].map((timestamp) =>
                     new Date(timestamp * 1000).toLocaleDateString("en-US", {
                       month: "numeric",
@@ -68,7 +100,7 @@ const HomePage = () => {
                 );
                 break;
               case "M":
-                setCategories(
+                setYValues(
                   resp.data["timestamp"].map((timestamp) =>
                     new Date(timestamp * 1000).toLocaleDateString("en-US", {
                       month: "numeric",
@@ -78,7 +110,7 @@ const HomePage = () => {
                 );
                 break;
               case "Y":
-                setCategories(
+                setYValues(
                   resp.data["timestamp"].map((timestamp) =>
                     new Date(timestamp * 1000).toLocaleDateString("en-US", {
                       month: "numeric",
@@ -90,6 +122,8 @@ const HomePage = () => {
               default:
                 break;
             }
+
+            setGraphLoading(false);
           })
           .catch((err) => {
             // TODO: Need to implement better error handling
@@ -100,12 +134,65 @@ const HomePage = () => {
     [algoquantApi]
   );
 
+  const getInvestorList = useCallback(() => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .getInvestorList()
+        .then((resp) => {
+          console.log(resp.data);
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log(err);
+        });
+    }
+  });
+
+  const aggregatedStockData = [
+    {
+      recentPrice: recentPrice,
+      priceChange: priceChange,
+      percentChanged: percentChanged,
+      marketClosed: marketClosed,
+      dateClosed: dateClosed,
+    },
+  ];
+
+  /*
+ Function to determine what timeframe of graph data to fetch based on the filter enum (timeframe selected by user)
+  calls the getGraphData to retreive data and updates the filter the user has selcted with: setSelectedFilter
+  */
+  const getData = useCallback((filter) => {
+    switch (filter) {
+      case filters.DAY:
+        getGraphData("D");
+        setSelectedFilter(filter);
+        break;
+      case filters.FIVE:
+        getGraphData("5D");
+        setSelectedFilter(filter);
+        break;
+      case filters.MONTH:
+        getGraphData("M");
+        setSelectedFilter(filter);
+        break;
+      case filters.YEAR:
+        getGraphData("Y");
+        setSelectedFilter(filter);
+        break;
+      default:
+        break;
+    }
+  });
+
   useEffect(() => {
-    getData("D");
-  }, [getData]);
+    setSelectedFilter(filters.DAY);
+    getData(selectedFilter);
+    getInvestorList();
+  }, [selectedFilter]);
 
   return (
-    <div className="bg-dark-gray overflow-x-auto overflow-y-auto">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -114,15 +201,16 @@ const HomePage = () => {
             <h2 className="text-green font-bold text-4xl">Your Assets</h2>
           </div>
           <GraphStats
-            recentPrice={recentPrice}
-            lastIntervalChange={lastIntervalChange}
-            percentChanged={percentChanged}
+            stockData={aggregatedStockData}
+            selectedFilter={selectedFilter}
           />
           <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph
-              chartData={chartData}
-              categories={categories}
+              stockData={aggregatedStockData}
+              xValues={xValues}
+              yValues={yValues}
               getData={getData}
+              selectedFilter={selectedFilter}
             />
           </div>
           <div className="w-full">
@@ -130,9 +218,9 @@ const HomePage = () => {
           </div>
           <div className="flex mx-auto justify-center w-2/4 mt-8">
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite  ${
                 selectedTabFilter === tabFilters.INVESTOR
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.INVESTOR)}
@@ -140,9 +228,9 @@ const HomePage = () => {
               Investor
             </button>
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.JOB
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.JOB)}
@@ -150,9 +238,9 @@ const HomePage = () => {
               Job
             </button>
             <button
-              className={`py-2 px-20 text-white border-b-2 border-dark-gray hover:bg-another-gray ${
+              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.history
-                  ? "border-b-green active"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.history)}
@@ -178,7 +266,7 @@ const HomePage = () => {
                 case "job":
                   return (
                     <div>
-                      <p className="text-white">Create Job</p>
+                      <JobGallery />
                     </div>
                   );
                 case "history":

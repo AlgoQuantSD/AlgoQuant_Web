@@ -10,20 +10,20 @@ const CustomAuthTheme = () => {
     tokens: {
       colors: {
         background: {
-          primary: {},
-          secondary: {},
+          primary: { value: "#F0F0F2" },
+          secondary: { value: "1f302b" },
         },
         font: {
           interactive: {
-            value: tokens.colors.green.value,
+            value: "1f302b",
           },
         },
         brand: {
           primary: {
-            10: tokens.colors.green["100"],
-            80: tokens.colors.green["60"],
-            90: tokens.colors.green["80"],
-            100: tokens.colors.green["40"],
+            10: "#1f302b",
+            80: "#1f302b",
+            90: "#1f302b",
+            100: "#1f302b",
           },
         },
       },
@@ -32,7 +32,7 @@ const CustomAuthTheme = () => {
           item: {
             _focus: {
               color: {
-                value: tokens.colors.green["60"].value,
+                value: "1f302b",
               },
             },
             _hover: {
@@ -42,7 +42,7 @@ const CustomAuthTheme = () => {
             },
             _active: {
               color: {
-                value: tokens.colors.green["60"].value,
+                value: "1f302b",
               },
             },
           },
