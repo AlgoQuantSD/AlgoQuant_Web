@@ -109,7 +109,7 @@ const HomePage = () => {
             <button
               className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.JOB
-                  ? "text-cokewhite border-b-green bg-green active hover:bg-reen"
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
               onClick={() => handleTabFilterSelection(tabFilters.JOB)}
