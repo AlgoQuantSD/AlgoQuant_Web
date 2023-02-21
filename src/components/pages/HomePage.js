@@ -25,8 +25,9 @@ const HomePage = () => {
 
   const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
   const [recentPrice, setRecentPrice] = useState(0);
-  const [lastIntervalChange, setLastIntervalChange] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
+
+  const [investorList, setInvestorList] = useState([]);
 
   const tabFilters = {
     INVESTOR: "investor",
@@ -137,9 +138,10 @@ const HomePage = () => {
   const getInvestorList = useCallback(() => {
     if (algoquantApi.token) {
       algoquantApi
-        .getInvestorList()
+        .getInvestor()
         .then((resp) => {
           console.log(resp.data);
+          setInvestorList(resp.data["investors"]);
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
@@ -189,7 +191,7 @@ const HomePage = () => {
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);
     getInvestorList();
-  }, [selectedFilter]);
+  }, [algoquantApi, selectedFilter]);
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
@@ -260,7 +262,7 @@ const HomePage = () => {
                       >
                         Create Investor
                       </Link>
-                      <InvestorGallery />
+                      <InvestorGallery investorList={investorList} />
                     </div>
                   );
                 case "job":
