@@ -5,7 +5,7 @@ const StockTable = ({ stockData }) => {
     <div className="mt-24 w-full">
       <h2 className="text-white font-medium text-4xl mt-2">Stock Data</h2>
       <table className="mt-4 table-auto text-center text-white mx-auto">
-        <thead className="bg-dark-gray text-white">
+        <thead className="bg-cokewhite text-green">
           <tr>
             <th className="font-light px-4 py-2">Recent Price</th>
             <th className="font-light px-4 py-2">Open</th>
@@ -17,7 +17,7 @@ const StockTable = ({ stockData }) => {
         </thead>
         <tbody className="justify-center">
           {stockData.map((stock) => (
-            <tr key={stock.symbol} className="border-hidden">
+            <tr key={stock.symbol} className="border-hidden text-green">
               <td className="border px-4 py-2">${stock.recentPrice}</td>
               <td className="border px-4 py-2">${stock.open}</td>
               <td className="border px-4 py-2">${stock.low}</td>

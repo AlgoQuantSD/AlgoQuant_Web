@@ -93,12 +93,12 @@ const Searchbar = ({
 
   return (
     <div ref={searchRef} className="relative">
-      <div className="flex border border-another-gray rounded-sm">
-        <button className="px-4 bg-dark-gray rounded-md">
-          <FaSearch className="text-white" />
+      <div className="flex border border-green rounded-sm">
+        <button className="px-4 bg-cokewhite rounded-md">
+          <FaSearch className="text-green" />
         </button>
         <input
-          className="bg-dark-gray px-4 py-2 w-64 rounded-md text-white focus:outline-none"
+          className="bg-cokewhite px-4 py-2 w-64 rounded-md text-green focus:outline-none"
           type="text"
           placeholder="Search for stocks"
           onChange={handleTextChange}
@@ -107,10 +107,10 @@ const Searchbar = ({
         />
       </div>
       {showResults && searchValue.length > 0 && (
-        <div className="absolute bg-darker-gray rounded-sm shadow-lg text-white w-full">
+        <div className="absolute bg-smokewhite rounded-sm shadow-lg text-green w-full">
           {searchResults.map((result, index) => (
             <p
-              className={`px-4 py-2 hover:bg-another-gray cursor-pointer ${
+              className={`px-4 py-2 hover:bg-light-gray cursor-pointer ${
                 highlightedIndex === index
                   ? "bg-another-gray border-l border-light-gray"
                   : ""

@@ -9,9 +9,21 @@ import {
   Heading,
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-
+import algoquantLogo from "../../assets/images/logo-color.svg";
 const components = {
-  Header() {},
+  Header() {
+    const { tokens } = useTheme();
+
+    return (
+      <View textAlign="center" padding={tokens.space.large}>
+        <img
+          src={algoquantLogo}
+          class="object-cover h-20 w-full rounded-2xl"
+          alt="AlgoQuant Logo"
+        />
+      </View>
+    );
+  },
 
   Footer() {
     const { tokens } = useTheme();

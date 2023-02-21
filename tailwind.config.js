@@ -4,10 +4,12 @@ module.exports = {
   theme: {
     colors: {
       white: "#ffffff",
+      cokewhite: "#FAFAFA",
+      smokewhite: "#F0F0F0",
       "faded-white": "FFFFFFE6",
       black: "#000000",
-      green: "#3f9f30",
-      "faded-green": "#3F9F3059",
+      green: "#1F302B",
+      "faded-green": "#42504C",
       "bright-green": "#00FF38",
       red: "#B11818",
       "dark-gray": "#323232",
