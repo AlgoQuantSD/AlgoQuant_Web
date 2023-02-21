@@ -10,7 +10,7 @@ const GraphStats = ({ stockData, selectedFilter }) => {
         ${stockData[0].recentPrice}
       </h2>
       <p
-        className={`${textColor} font-medium text-md mt-2 py-2 px-4 rounded-full bg-green inline-block`}
+        className={`${textColor} font-medium text-md mt-2 py-2 px-4 rounded-full bg-faded-green inline-block`}
       >
         {isTrendingUp >= 0 ? "+" : "-"} ${Math.abs(stockData[0].priceChange)} (
         {stockData[0].percentChanged}
