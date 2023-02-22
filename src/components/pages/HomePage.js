@@ -14,19 +14,28 @@ import { filters } from "../utils/filtersEnum";
 const HomePage = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+
+  // State variable used to keep track of what tab the user is on
+  const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
+
+  // State variables to store the graph data of user's performance
   const [xValues, setXValues] = useState([]);
   const [yValues, setYValues] = useState([]);
+
   // All state variables for stock related data / statistics
   const [percentChanged, setPercentChanged] = useState(null);
   const [priceChange, setPriceChange] = useState(null);
   const [dateClosed, setDateClosed] = useState(null);
   const [marketClosed, setMarketClosed] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(null);
-
-  const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
   const [recentPrice, setRecentPrice] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
 
+  // State variable to store an array of investor objects
+  const [investorList, setInvestorList] = useState([]);
+
+  // Aggregated JSON object containing all the related performance stats of the user
+  // All combined to a single object - so only need to pass a single prop to children components instead of multiple
   const aggregatedStockData = [
     {
       recentPrice: recentPrice,
@@ -37,18 +46,19 @@ const HomePage = () => {
     },
   ];
 
-  const [investorList, setInvestorList] = useState([]);
-
+  // ENUMS that represent the tab a user is on
   const tabFilters = {
     INVESTOR: "investor",
     JOB: "job",
     history: "history",
   };
 
+  // Handles keeping track which tab a user is on
   const handleTabFilterSelection = (filter) => {
     setSelectedTabFilter(filter);
   };
 
+  // CallBack function used to obtain user's performance information
   const getGraphData = useCallback(
     (timeframe) => {
       setGraphLoading(true);
@@ -136,6 +146,7 @@ const HomePage = () => {
     [algoquantApi]
   );
 
+  // CallBack function to get list of investors in bulk
   const getInvestorList = useCallback(() => {
     if (algoquantApi.token) {
       algoquantApi
@@ -181,6 +192,7 @@ const HomePage = () => {
     [getGraphData, setSelectedFilter]
   );
 
+  // Useeffect that is called to render the days performance and investor list as those are the first two shown on screen
   useEffect(() => {
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);

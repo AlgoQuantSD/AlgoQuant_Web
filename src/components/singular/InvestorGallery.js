@@ -6,6 +6,7 @@ import { FaBrain } from "react-icons/fa";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot1 from "../../assets/images/investors/bot1.png";
 
+// investorList: JSON object of investor objects
 const InvestorGallery = ({ investorList }) => {
   const [selectedInvestor, setSelectedInvestor] = useState(null);
 

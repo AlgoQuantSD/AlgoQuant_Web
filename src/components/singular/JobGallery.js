@@ -18,12 +18,21 @@ import { SaveSpinner } from "../reusable/LoadSpinner";
 const JobGallery = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+
+  // Reference to the div that holds the list of jobs shown
   const divRef = useRef();
+  // State variable to hold array of job objects
   const [jobList, setJobList] = useState([]);
+
+  // Used for pagination of the job list data
+  // last evaluated key - used for the api to know if there is more data to fetch
+  // lastQUery - true if last evaluated key comes back undefined, aka no more queries
   const [lekJobId, setlekJobId] = useState(null);
   const [lastQuery, setLastQuery] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
 
+  // CallBack function that fetchs for job list data in a paginiated manner
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
       setIsLoading(true);
@@ -57,6 +66,7 @@ const JobGallery = () => {
     lekJobId,
   ]);
 
+  // Function to call more data job data (if there is more) once user scrolled to the bottom of the component
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollTop + clientHeight === scrollHeight) {
@@ -68,6 +78,7 @@ const JobGallery = () => {
     }
   };
 
+  // Used to call the initial job list when the user switches to job tab
   useEffect(() => {
     getjobList();
     // eslint-disable-next-line
