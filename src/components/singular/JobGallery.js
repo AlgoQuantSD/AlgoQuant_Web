@@ -57,10 +57,58 @@ const JobGallery = () => {
       open: "50",
       id: "investor",
     },
+    {
+      name: "Warren Buffett",
+      indicators: ["RSI", "MACD", "OBV"],
+      recentPrice: "128.34",
+      percentChanged: "4.8",
+      open: "50",
+      id: "investor",
+    },
+    {
+      name: "Money Maker",
+      indicators: ["RSI", "MACD", "OBV"],
+      recentPrice: "128.34",
+      percentChanged: "4.8",
+      open: "50",
+      id: "bot",
+    },
+    {
+      name: "Jordan Belfort",
+      indicators: ["RSI", "MACD", "OBV"],
+      recentPrice: "128.34",
+      percentChanged: "4.8",
+      open: "50",
+      id: "investor",
+    },
+    {
+      name: "Jordan Belfort's Cat",
+      indicators: ["RSI", "MACD", "OBV"],
+      recentPrice: "128.34",
+      percentChanged: "4.8",
+      open: "50",
+      id: "investor",
+    },
+    {
+      name: "Warren Buffett's Left Nut",
+      indicators: ["RSI", "MACD", "OBV"],
+      recentPrice: "128.34",
+      percentChanged: "4.8",
+      open: "130",
+      id: "investor",
+    },
+    {
+      name: "Warren Buffett's Blow",
+      indicators: ["RSI", "MACD", "OBV"],
+      recentPrice: "128.34",
+      percentChanged: "4.8",
+      open: "50",
+      id: "investor",
+    },
   ];
 
   return (
-    <div className="mt-14 p-4">
+    <div className="mt-14 p-4 h-96 overflow-auto">
       {jobs.map((job, i) => (
         <div
           className="w-11/12 text-white bg-green mx-auto mb-5 p-4"

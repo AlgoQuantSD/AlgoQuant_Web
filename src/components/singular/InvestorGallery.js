@@ -7,9 +7,9 @@ import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot1 from "../../assets/images/investors/bot1.png";
 
 const InvestorGallery = ({ investorList }) => {
-  const jsonString = '["RSI","MACD"]';
-  const myArray = JSON.parse(jsonString);
-  console.log(JSON.parse(investorList[0]?.indicators));
+  // const jsonString = '["RSI","MACD"]';
+  // const myArray = JSON.parse(jsonString);
+  // console.log(JSON.parse(investorList[0]?.indicators));
   // JSON.parse(investor?.indicators)
   const responsive = {
     superLargeDesktop: {
@@ -130,27 +130,25 @@ const InvestorGallery = ({ investorList }) => {
                 <div className="flex justify-between pl-16 pr-16">
                   <div className="w-1/4">
                     <p className="flex justify-left font-bold">Indicators</p>{" "}
-                    {JSON.parse(investor?.indicators).map((indicator, i) => (
+                    {investor.indicators.map((indicator, i) => (
                       <p key={i} className="flex justify-left text-cokewhite">
                         {indicator}
                       </p>
                     ))}
                   </div>
-                  {/* <div className="w-1/4">
+                  <div className="w-1/4">
                     <p className="flex justify-left font-bold">Stocks</p>
-                    {JSON.parse(investor.assets_to_track)
-                      .slice(0, 4)
-                      .map((stock, i) => (
-                        <p key={i} className="flex justify-left text-cokewhite">
-                          {stock}
-                        </p>
-                      ))}
-                    {JSON.parse(investor.assets_to_track).length > 4 && (
-                      <p className="flex justify-left text-green">
-                        + {investor.stocks.length - 4} more
+                    {investor.assets_to_track.slice(0, 4).map((stock, i) => (
+                      <p key={i} className="flex justify-left text-cokewhite">
+                        {stock}
+                      </p>
+                    ))}
+                    {investor.assets_to_track.length > 4 && (
+                      <p className="flex justify-left text-light-gray">
+                        + {investor.assets_to_track.length - 4} more
                       </p>
                     )}
-                  </div> */}
+                  </div>
                 </div>
               </div>
             )}
