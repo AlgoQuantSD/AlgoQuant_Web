@@ -37,6 +37,10 @@ const JobGallery = ({ selectedTabFilter }) => {
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
       setIsLoading(true);
+
+      // Used as apart of the request
+      // Active - fetch active jobs
+      // complete - fetch past jobs for the history
       let jobStatus;
       if (selectedTabFilter === tabFilters.history) {
         jobStatus = "complete";
