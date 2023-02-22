@@ -87,7 +87,6 @@ const Graph = ({ getData, chartData, categories }) => {
 
   return (
     <div className="relative h-96">
-      <p className="inline text-green font-light"> {selectedFilter}</p>
       <Chart
         options={chart.options}
         series={chart.series}
