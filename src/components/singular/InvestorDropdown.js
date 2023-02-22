@@ -36,10 +36,14 @@ const InvestorDropdown = ({
       >
         <BsThreeDots className="text-2xl text-cokewhite hover:text-green" />
       </button>
-      {selectedModal === "job" && ( // Show the JobModal if it's selected
-        <JobModal setJobModal={setSelectedModal} investor={investor} />
+      {selectedModal === "job" && (
+        <JobModal
+          setJobModal={setSelectedModal}
+          jobModal={!!setSelectedModal}
+          investor={investor}
+        />
       )}
-      {selectedModal === "delete" && ( // Show the DeleteInvestorModal if it's selected
+      {selectedModal === "delete" && (
         <DeleteInvestorModal
           setDeleteInvestorModal={setSelectedModal}
           investor={investor}
@@ -52,8 +56,7 @@ const InvestorDropdown = ({
             onClick={() => {
               startJob();
               setShowDropdown(false);
-              setSelectedModal("job"); // Show the JobModal
-              console.log(investor.id);
+              setSelectedModal("job");
             }}
           >
             Start Job
@@ -75,7 +78,6 @@ const InvestorDropdown = ({
               deleteInvestor();
               setShowDropdown(false);
               setSelectedModal("delete");
-              console.log("Deleting investor");
             }}
           >
             Delete

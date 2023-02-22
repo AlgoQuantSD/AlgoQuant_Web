@@ -5,14 +5,14 @@ import Sidebar from "../reusable/SideBar";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot from "../../assets/images/investors/bot1.png";
 import Table from "../reusable/Table";
+import JobModal from "../singular/Modals/JobModal";
+import DeleteInvestorModal from "../singular/Modals/DeleteInvestorModal";
 
 const InvestorViewPage = () => {
   const location = useLocation();
-  const [transactions, setTransactions] = useState([]);
-  const [lastPage, setLastPage] = useState(false);
   const [page, setPage] = useState(1);
-  const [pagesSeen, setPagesSeen] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [jobModal, setJobModal] = useState(null);
+  const [deleteInvestorModal, setDeleteInvestorModal] = useState(null);
 
   // dummy data for the table
   const profitStop = "$50";
@@ -47,9 +47,6 @@ const InvestorViewPage = () => {
 
   // functions to handle a page change
   const handleNextClick = () => {
-    if (pagesSeen <= page) {
-      setIsLoading(true);
-    }
     setPage(page + 1);
   };
 
@@ -63,6 +60,16 @@ const InvestorViewPage = () => {
       <div className="flex self-stretch">
         <Sidebar />
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
+          <JobModal
+            setJobModal={setJobModal}
+            jobModal={jobModal}
+            investor={location.state.value}
+          />
+          <DeleteInvestorModal
+            setDeleteInvestorModal={setDeleteInvestorModal}
+            deleteInvestorModal={deleteInvestorModal}
+            investor={location.state.value}
+          />
           <div className="flex pt-10 justify-between">
             <div className="">
               <h1 className="text-green font-bold text-5xl mb-10">
@@ -71,14 +78,24 @@ const InvestorViewPage = () => {
             </div>
 
             <div className="">
-              <button className="items-center text-white font-medium rounded-lg bg-green px-4 py-3">
+              <button
+                className="items-center text-white font-medium rounded-lg bg-green px-4 py-3"
+                onClick={() => {
+                  setDeleteInvestorModal(true);
+                }}
+              >
                 Delete Investor
               </button>
             </div>
           </div>
 
           <div className="m-4">
-            <button className="items-center text-white font-medium rounded-lg bg-green px-4 py-3">
+            <button
+              className="items-center text-white font-medium rounded-lg bg-green px-4 py-3"
+              onClick={() => {
+                setJobModal(true);
+              }}
+            >
               Create New Job
             </button>
           </div>
@@ -118,7 +135,14 @@ const InvestorViewPage = () => {
                     <td className="px-4 py-2 text-xl font-semibold">
                       Stock Ticker:
                     </td>
-                    <td className="px-4 py-2 text-lg">{stockTicker}</td>
+                    <td className="px-4 py-2 text-lg">
+                      {stockTicker.split(",").map((ticker, index) => (
+                        <span key={index}>
+                          {index > 0 && ", "}
+                          {ticker}
+                        </span>
+                      ))}
+                    </td>
                   </tr>
                   <tr>
                     <td className="px-4 py-2 text-xl font-semibold">
@@ -126,9 +150,10 @@ const InvestorViewPage = () => {
                     </td>
                     <td className="px-4 py-2 text-lg">
                       {indicators.map((indicator, index) => (
-                        <div key={index} className="mb-1">
+                        <span key={index}>
+                          {index > 0 && ", "}
                           {indicator}
-                        </div>
+                        </span>
                       ))}
                     </td>
                   </tr>

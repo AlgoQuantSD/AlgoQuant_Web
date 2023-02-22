@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import {
   BsFillArrowRightCircleFill,
@@ -8,6 +8,16 @@ import {
 } from "react-icons/bs";
 
 const JobGallery = () => {
+  const navigate = useNavigate();
+
+  /* 
+  Function called anytime a user selects View Job in the Job Gallery. Will navigate 
+  a user to the Job page passing in the value. 
+  */
+  const viewJob = (value) => {
+    navigate("/job", { state: { value: value } });
+  };
+
   const jobs = [
     {
       name: "Warren Buffett",
@@ -92,9 +102,13 @@ const JobGallery = () => {
                 alt=""
                 className="h-10 self-center w-8"
               />
-              <Link to="/job">
+              <button
+                onClick={() => {
+                  viewJob(job);
+                }}
+              >
                 <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
-              </Link>
+              </button>
             </div>
           </div>
         </div>
