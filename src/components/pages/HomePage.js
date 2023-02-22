@@ -219,7 +219,7 @@ const HomePage = () => {
           </div>
           <div className="flex mx-auto justify-center w-2/4 mt-8">
             <button
-              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite  ${
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite  ${
                 selectedTabFilter === tabFilters.INVESTOR
                   ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
@@ -229,7 +229,7 @@ const HomePage = () => {
               Investor
             </button>
             <button
-              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite ${
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.JOB
                   ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
@@ -239,7 +239,7 @@ const HomePage = () => {
               Job
             </button>
             <button
-              className={`py-2 px-20 text-green border-b-2 border-cokewhite hover:bg-smokewhite ${
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
                 selectedTabFilter === tabFilters.history
                   ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
@@ -279,6 +279,7 @@ const HomePage = () => {
                       >
                         View all transactions
                       </Link>
+                      <JobGallery />
                     </div>
                   );
                 default:

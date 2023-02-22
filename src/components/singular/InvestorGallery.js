@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Carousel from "react-multi-carousel";
 import InvestorDropdown from "./InvestorDropdown";
 import { BsPersonLinesFill } from "react-icons/bs";
@@ -7,10 +7,8 @@ import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot1 from "../../assets/images/investors/bot1.png";
 
 const InvestorGallery = ({ investorList }) => {
-  // const jsonString = '["RSI","MACD"]';
-  // const myArray = JSON.parse(jsonString);
-  // console.log(JSON.parse(investorList[0]?.indicators));
-  // JSON.parse(investor?.indicators)
+  const [selectedInvestor, setSelectedInvestor] = useState(null);
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -58,8 +56,12 @@ const InvestorGallery = ({ investorList }) => {
               )}
               <p className="font-bold text-xl">{investor.investor_name}</p>
               <InvestorDropdown
-                startJob={() => console.log("Start Job clicked")}
+                startJob={() => {
+                  setSelectedInvestor(investor);
+                }}
                 viewInvestor={() => console.log("View Investor clicked")}
+                deleteInvestor={() => console.log("Delete Investor clicked")}
+                investor={selectedInvestor}
               />
             </div>
             {/* Investor Image */}

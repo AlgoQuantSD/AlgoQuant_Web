@@ -194,7 +194,7 @@ const JobGallery = () => {
                 alt=""
                 className="h-10 self-center w-8"
               />
-              <Link to="/jobview">
+              <Link to="/job">
                 <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
               </Link>
             </div>
