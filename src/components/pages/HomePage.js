@@ -138,9 +138,8 @@ const HomePage = () => {
   const getInvestorList = useCallback(() => {
     if (algoquantApi.token) {
       algoquantApi
-        .getInvestor()
+        .getInvestorList()
         .then((resp) => {
-          console.log(resp.data);
           setInvestorList(resp.data["investors"]);
         })
         .catch((err) => {

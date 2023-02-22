@@ -33,56 +33,6 @@ const InvestorGallery = ({ investorList }) => {
     },
   };
 
-  const investors = [
-    {
-      name: "Warren Buffett",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: [
-        "AMZN",
-        "APPL",
-        "GOOGL",
-        "SPOT",
-        "WHAT",
-        "WOWZ",
-        "YEAH",
-        "BALL",
-        "DEEP",
-        "YUMM",
-        "FUKK",
-      ],
-      id: "investor",
-    },
-    {
-      name: "Money Maker",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
-      id: "bot",
-    },
-    {
-      name: "Jordan Belfort",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
-      id: "investor",
-    },
-    {
-      name: "Jordan Belfort's Cat",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "+ 3 more"],
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett's Left Nut",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett's Left Nut",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
-      id: "investor",
-    },
-  ];
   return (
     <div className="mt-14 p-4">
       <Carousel
