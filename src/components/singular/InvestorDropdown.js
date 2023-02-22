@@ -46,6 +46,7 @@ const InvestorDropdown = ({
       {selectedModal === "delete" && (
         <DeleteInvestorModal
           setDeleteInvestorModal={setSelectedModal}
+          deleteInvestorModal={!!setSelectedModal}
           investor={investor}
         />
       )}
