@@ -10,6 +10,7 @@ import JobGallery from "../singular/JobGallery";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { GraphSpinner } from "../reusable/LoadSpinner";
 import { filters } from "../utils/filtersEnum";
+import { tabFilters } from "../utils/hometabFilterEnum";
 
 const HomePage = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
@@ -45,13 +46,6 @@ const HomePage = () => {
       dateClosed: dateClosed,
     },
   ];
-
-  // ENUMS that represent the tab a user is on
-  const tabFilters = {
-    INVESTOR: "investor",
-    JOB: "job",
-    history: "history",
-  };
 
   // Handles keeping track which tab a user is on
   const handleTabFilterSelection = (filter) => {
@@ -278,7 +272,7 @@ const HomePage = () => {
                 case "job":
                   return (
                     <div>
-                      <JobGallery />
+                      <JobGallery selectedTabFilter={selectedTabFilter} />
                     </div>
                   );
                 case "history":
@@ -290,7 +284,7 @@ const HomePage = () => {
                       >
                         View all transactions
                       </Link>
-                      <JobGallery />
+                      <JobGallery selectedTabFilter={selectedTabFilter} />
                     </div>
                   );
                 default:

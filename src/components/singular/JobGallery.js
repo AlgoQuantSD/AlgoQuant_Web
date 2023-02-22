@@ -14,8 +14,9 @@ import {
 } from "react-icons/bs";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
+import { tabFilters } from "../utils/hometabFilterEnum";
 
-const JobGallery = () => {
+const JobGallery = ({ selectedTabFilter }) => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
 
@@ -36,8 +37,15 @@ const JobGallery = () => {
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
       setIsLoading(true);
+      let jobStatus;
+      if (selectedTabFilter === tabFilters.history) {
+        jobStatus = "complete";
+      } else {
+        jobStatus = "active";
+      }
+
       algoquantApi
-        .getJobList("active", null, lekJobId)
+        .getJobList(jobStatus, null, lekJobId)
         .then((resp) => {
           console.log("job endpoint");
           setlekJobId(resp.data.LEK_job_id);
@@ -64,6 +72,7 @@ const JobGallery = () => {
     setIsLoading,
     jobList,
     lekJobId,
+    selectedTabFilter,
   ]);
 
   // Function to call more data job data (if there is more) once user scrolled to the bottom of the component

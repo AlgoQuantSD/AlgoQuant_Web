@@ -44,13 +44,13 @@ const InvestorGallery = ({ investorList }) => {
         {investorList.map((investor, i) => (
           <div
             className={`h-full w-11/12 text-white bg-green mx-auto p-6 ${
-              investor.id === "B" ? "bg-gold border-4 border-green" : ""
+              investor.type === "B" ? "bg-gold border-4 border-green" : ""
             }`}
-            key={investor.investor_name}
+            key={investor.investor_id}
           >
             {/* Name and logos */}
             <div className="flex justify-between">
-              {investor.id === "bot" ? (
+              {investor.type === "B" ? (
                 <FaBrain className="text-green text-3xl" />
               ) : (
                 <BsPersonLinesFill className="text-cokewhite text-3xl" />
