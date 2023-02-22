@@ -78,7 +78,7 @@ const InvestorGallery = ({ investorList }) => {
               )}
             </div>
             {/* Indicators / Stocks */}
-            {investor.type !== "bot" && (
+            {investor.type !== "A" && (
               <div className="flex flex-col">
                 <div className="flex justify-between pl-16 pr-16">
                   <div className="w-1/4">
