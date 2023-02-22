@@ -1,21 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Chart from "react-apexcharts";
-import { filters } from "../utils/filtersEnum";
 
 /*
 Build the graph based on the data, categories and preset configurations
 */
-const buildGraph = (data, categories, isTrendingUp) => {
-  let lineColor = "#1F302B";
-  if (!isTrendingUp) {
-    lineColor = "#FF0000";
-  }
+const buildGraph = (data, categories) => {
   return {
     series: [
       {
         name: "$",
         data: data,
-        color: lineColor,
+        color: "#1F302B",
       },
     ],
     options: {
@@ -53,7 +48,6 @@ const buildGraph = (data, categories, isTrendingUp) => {
           },
         },
         categories: categories,
-        tickAmount: 10,
       },
       yaxis: {
         markers: {
@@ -67,65 +61,78 @@ const buildGraph = (data, categories, isTrendingUp) => {
           style: {
             colors: "#1F302B",
           },
-          formatter: function (value) {
-            return value.toFixed(2); // Set the label value to have a maximum of 2 decimal points
-          },
         },
       },
     },
   };
 };
 
-const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
-  // conditional variable to indicate whether stock searched is trending up or down
-  const isTrendingUp = stockData[0].priceChange >= 0;
+const Graph = ({ getData, chartData, categories }) => {
   // Create the graph with the data and categories along with the callback to get more data
-  let chart = buildGraph(xValues, yValues, isTrendingUp);
-  // String variable containing the style of what fitler is currently active
-  const ACTIVE_FILTER_STYLE =
-    "text-cokewhite border-b-green bg-green active hover:bg-green";
+  let chart = buildGraph(chartData, categories);
+  const [selectedFilter, setSelectedFilter] = useState("Today");
+
+  const filters = {
+    DAY: "Today",
+    FIVE: "Past 5 days",
+    MONTH: "Past month",
+    YEAR: "Past Year",
+  };
+
+  const handleFilterSelection = (filter) => {
+    getData(filter);
+    setSelectedFilter(filter);
+    // logic to update chart data based on selected filter
+  };
 
   return (
     <div className="relative h-96">
+      <p className="inline text-green font-light"> {selectedFilter}</p>
       <Chart
         options={chart.options}
         series={chart.series}
         type="line"
         width="100%"
         height="100%"
-        className="shadow-md"
       />
-      {/* Tabs for users to interact with and fetch different data based on provided timeframes */}
       <div className="flex mt-4 justify-center">
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.DAY ? ACTIVE_FILTER_STYLE : ""
+            selectedFilter === filters.DAY
+              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+              : "border-b-2 border-b-green "
           }`}
-          onClick={() => getData(filters.DAY)}
+          onClick={() => handleFilterSelection(filters.DAY)}
         >
           D
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.FIVE ? ACTIVE_FILTER_STYLE : ""
+            selectedFilter === filters.FIVE
+              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+              : "border-b-2 border-b-green "
           }`}
-          onClick={() => getData(filters.FIVE)}
+          onClick={() => handleFilterSelection(filters.FIVE)}
         >
           5D
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.MONTH ? ACTIVE_FILTER_STYLE : ""
+            selectedFilter === filters.MONTH
+              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+              : "border-b-2 border-b-green "
           }`}
-          onClick={() => getData(filters.MONTH)}
+          onClick={() => handleFilterSelection(filters.MONTH)}
         >
           M
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.YEAR ? ACTIVE_FILTER_STYLE : ""
+            selectedFilter === filters.YEAR
+              ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+              : "border-b-2 border-b-green"
           }`}
-          onClick={() => getData(filters.YEAR)}
+          onClick={() => handleFilterSelection(filters.YEAR)}
         >
           Y
         </button>

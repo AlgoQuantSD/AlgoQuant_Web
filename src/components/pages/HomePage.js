@@ -145,7 +145,7 @@ const HomePage = () => {
                 case "job":
                   return (
                     <div>
-                      <JobGallery />
+                      <JobGallery type={selectedTabFilter} />
                     </div>
                   );
                 case "history":
@@ -157,7 +157,7 @@ const HomePage = () => {
                       >
                         View all transactions
                       </Link>
-                      <JobGallery />
+                      <JobGallery type={selectedTabFilter} />
                     </div>
                   );
                 default:

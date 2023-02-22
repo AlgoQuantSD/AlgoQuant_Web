@@ -7,7 +7,7 @@ import {
   BsFillCaretUpFill,
 } from "react-icons/bs";
 
-const JobGallery = () => {
+const JobGallery = ({ type }) => {
   const navigate = useNavigate();
 
   /* 
@@ -15,7 +15,9 @@ const JobGallery = () => {
   a user to the Job page passing in the value. 
   */
   const viewJob = (value) => {
-    navigate("/job", { state: { value: value } });
+    if (type === "job") navigate("/job", { state: { value: value } });
+    else if (type === "history")
+      navigate("/jobhistory", { state: { value: value } });
   };
 
   const jobs = [

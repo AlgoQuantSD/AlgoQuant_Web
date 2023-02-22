@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { FaLock } from "react-icons/fa";
 import Navbar from "../reusable/NavBar";
 import Graph from "../reusable/Graph";
 import Table from "../reusable/Table";
 import GraphStats from "../reusable/GraphStats";
 import Sidebar from "../reusable/SideBar";
-import StopJobModal from "../singular/Modals/StopJobModal";
 
-const JobViewPage = () => {
+const JobHistoryPage = () => {
   const location = useLocation();
-  const [stopJobModal, setStopJobModal] = useState(null);
 
   // Currently hardcoded but will eventually come from API
   const [chartData, setChartData] = useState([
@@ -113,23 +112,20 @@ const JobViewPage = () => {
       <div className="flex self-stretch">
         <Sidebar />
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
-          <StopJobModal
-            setStopJobModal={setStopJobModal}
-            stopJobModal={stopJobModal}
-            investor={location.state.value}
-          />
-          <div className="flex pt-10 justify-between items-center">
+          <div className="flex pt-10 justify-between">
             <p className="text-green font-bold text-5xl">
-              {location.state.value.name}'s Job
+              {location.state.value.name}'s Job History
             </p>
-            <button
-              className="rounded bg-red text-white px-4 py-2 mt-3"
-              onClick={() => {
-                setStopJobModal(true);
-              }}
-            >
-              Stop Job
-            </button>
+
+            <div className="flex items-center justify-between text-right">
+              <p className="text-green font-semibold text-lg pr-4">
+                Completed Job
+                <br></br>
+                10/22/2022 - 11/14/2022
+              </p>
+
+              <FaLock className="text-xl text-green" />
+            </div>
           </div>
           <GraphStats stockData={stockData} selectedFilter={selectedFilter} />
           <div className="w-11/12 mx-auto my-10 mb-32">
@@ -149,4 +145,4 @@ const JobViewPage = () => {
   );
 };
 
-export default JobViewPage;
+export default JobHistoryPage;
