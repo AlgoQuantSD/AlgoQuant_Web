@@ -13,119 +13,24 @@ import {
   BsFillCaretUpFill,
 } from "react-icons/bs";
 import AlgoquantApiContext from "../../api/ApiContext";
+import { SaveSpinner } from "../reusable/LoadSpinner";
 
 const JobGallery = () => {
-  const jobs = [
-    {
-      name: "Warren Buffett",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "investor",
-    },
-    {
-      name: "Money Maker",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "bot",
-    },
-    {
-      name: "Jordan Belfort",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "investor",
-    },
-    {
-      name: "Jordan Belfort's Cat",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett's Left Nut",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "130",
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett's Blow",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett1",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "investor",
-    },
-    {
-      name: "Money Maker1",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "bot",
-    },
-    {
-      name: "Jordan Belfort1",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "investor",
-    },
-    {
-      name: "Jordan Belfort's Cat1",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett's Left Nut1",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "130",
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett's Blow1",
-      indicators: ["RSI", "MACD", "OBV"],
-      recentPrice: "128.34",
-      percentChanged: "4.8",
-      open: "50",
-      id: "investor",
-    },
-  ];
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const divRef = useRef();
   const [jobList, setJobList] = useState([]);
   const [lekJobId, setlekJobId] = useState(null);
   const [lastQuery, setLastQuery] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
+      setIsLoading(true);
       algoquantApi
         .getJobList("active", null, lekJobId)
         .then((resp) => {
-          console.log(resp.data);
+          console.log("job endpoint");
           setlekJobId(resp.data.LEK_job_id);
           setJobList(jobList.concat(resp.data.jobs));
 
@@ -134,13 +39,23 @@ const JobGallery = () => {
           } else {
             setlekJobId(resp.data.LEK_job_id);
           }
+
+          setIsLoading(false);
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
           console.log(err.body);
         });
     }
-  }, [algoquantApi, jobList, lekJobId]);
+  }, [
+    algoquantApi,
+    setlekJobId,
+    setLastQuery,
+    setJobList,
+    setIsLoading,
+    jobList,
+    lekJobId,
+  ]);
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
@@ -155,6 +70,7 @@ const JobGallery = () => {
 
   useEffect(() => {
     getjobList();
+    // eslint-disable-next-line
   }, [algoquantApi]);
 
   return (
@@ -201,6 +117,7 @@ const JobGallery = () => {
           </div>
         </div>
       ))}
+      {isLoading && <SaveSpinner />}
     </div>
   );
 };

@@ -27,6 +27,16 @@ const HomePage = () => {
   const [recentPrice, setRecentPrice] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
 
+  const aggregatedStockData = [
+    {
+      recentPrice: recentPrice,
+      priceChange: priceChange,
+      percentChanged: percentChanged,
+      marketClosed: marketClosed,
+      dateClosed: dateClosed,
+    },
+  ];
+
   const [investorList, setInvestorList] = useState([]);
 
   const tabFilters = {
@@ -37,25 +47,16 @@ const HomePage = () => {
 
   const handleTabFilterSelection = (filter) => {
     setSelectedTabFilter(filter);
-    // logic to update chart data based on selected filter
   };
-
-  // const handleFilterSelection = (filter) => {
-  //   getData(filter);
-  //   setSelectedFilter(filter);
-  // };
-
-  /*Callback used to get more data based on the filter. Each time any of the buttons 
-    are clicked this will be called to get more data. This will update the chart data which 
-    will then re-render the graph
-    */
 
   const getGraphData = useCallback(
     (timeframe) => {
+      setGraphLoading(true);
       if (algoquantApi.token) {
         algoquantApi
           .getPerformance(timeframe)
           .then((resp) => {
+            console.log("performance endpoint");
             console.log(resp.data);
             setXValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
@@ -140,6 +141,7 @@ const HomePage = () => {
       algoquantApi
         .getInvestorList()
         .then((resp) => {
+          console.log("investor list endpoint");
           setInvestorList(resp.data["investors"]);
         })
         .catch((err) => {
@@ -147,50 +149,43 @@ const HomePage = () => {
           console.log(err);
         });
     }
-  });
-
-  const aggregatedStockData = [
-    {
-      recentPrice: recentPrice,
-      priceChange: priceChange,
-      percentChanged: percentChanged,
-      marketClosed: marketClosed,
-      dateClosed: dateClosed,
-    },
-  ];
+  }, [setInvestorList, algoquantApi]);
 
   /*
  Function to determine what timeframe of graph data to fetch based on the filter enum (timeframe selected by user)
   calls the getGraphData to retreive data and updates the filter the user has selcted with: setSelectedFilter
   */
-  const getData = useCallback((filter) => {
-    switch (filter) {
-      case filters.DAY:
-        getGraphData("D");
-        setSelectedFilter(filter);
-        break;
-      case filters.FIVE:
-        getGraphData("5D");
-        setSelectedFilter(filter);
-        break;
-      case filters.MONTH:
-        getGraphData("M");
-        setSelectedFilter(filter);
-        break;
-      case filters.YEAR:
-        getGraphData("Y");
-        setSelectedFilter(filter);
-        break;
-      default:
-        break;
-    }
-  });
+  const getData = useCallback(
+    (filter) => {
+      switch (filter) {
+        case filters.DAY:
+          getGraphData("D");
+          setSelectedFilter(filter);
+          break;
+        case filters.FIVE:
+          getGraphData("5D");
+          setSelectedFilter(filter);
+          break;
+        case filters.MONTH:
+          getGraphData("M");
+          setSelectedFilter(filter);
+          break;
+        case filters.YEAR:
+          getGraphData("Y");
+          setSelectedFilter(filter);
+          break;
+        default:
+          break;
+      }
+    },
+    [getGraphData, setSelectedFilter]
+  );
 
   useEffect(() => {
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);
     getInvestorList();
-  }, [algoquantApi, selectedFilter]);
+  }, [algoquantApi, selectedFilter, getData, getInvestorList]);
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
@@ -205,15 +200,19 @@ const HomePage = () => {
             stockData={aggregatedStockData}
             selectedFilter={selectedFilter}
           />
-          <div className="w-11/12 mx-auto my-10 mb-32">
-            <Graph
-              stockData={aggregatedStockData}
-              xValues={xValues}
-              yValues={yValues}
-              getData={getData}
-              selectedFilter={selectedFilter}
-            />
-          </div>
+          {graphLoading ? (
+            <GraphSpinner />
+          ) : (
+            <div className="w-11/12 mx-auto my-10 mb-32">
+              <Graph
+                stockData={aggregatedStockData}
+                xValues={xValues}
+                yValues={yValues}
+                getData={getData}
+                selectedFilter={selectedFilter}
+              />
+            </div>
+          )}
           <div className="w-full">
             <h3 className="text-green font-bold text-4xl">Invest</h3>
           </div>
