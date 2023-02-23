@@ -17,7 +17,9 @@ const HomePage = () => {
   const algoquantApi = useContext(AlgoquantApiContext);
 
   // State variable used to keep track of what tab the user is on
-  const [selectedTabFilter, setSelectedTabFilter] = useState("investor");
+  const [selectedTabFilter, setSelectedTabFilter] = useState(
+    tabFilters.INVESTOR
+  );
 
   // State variables to store the graph data of user's performance
   const [xValues, setXValues] = useState([]);
@@ -37,7 +39,7 @@ const HomePage = () => {
 
   // Aggregated JSON object containing all the related performance stats of the user
   // All combined to a single object - so only need to pass a single prop to children components instead of multiple
-  const aggregatedStockData = [
+  const aggregatedPerformanceData = [
     {
       recentPrice: recentPrice,
       priceChange: priceChange,
@@ -60,8 +62,6 @@ const HomePage = () => {
         algoquantApi
           .getPerformance(timeframe)
           .then((resp) => {
-            console.log("performance endpoint");
-            console.log(resp.data);
             setXValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
@@ -146,7 +146,6 @@ const HomePage = () => {
       algoquantApi
         .getInvestorList()
         .then((resp) => {
-          console.log("investor list endpoint");
           setInvestorList(resp.data["investors"]);
         })
         .catch((err) => {
@@ -203,7 +202,7 @@ const HomePage = () => {
             <h2 className="text-green font-bold text-4xl">Your Assets</h2>
           </div>
           <GraphStats
-            stockData={aggregatedStockData}
+            stockData={aggregatedPerformanceData}
             selectedFilter={selectedFilter}
           />
           {graphLoading ? (
@@ -211,7 +210,7 @@ const HomePage = () => {
           ) : (
             <div className="w-11/12 mx-auto my-10 mb-32">
               <Graph
-                stockData={aggregatedStockData}
+                stockData={aggregatedPerformanceData}
                 xValues={xValues}
                 yValues={yValues}
                 getData={getData}
@@ -245,11 +244,11 @@ const HomePage = () => {
             </button>
             <button
               className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
-                selectedTabFilter === tabFilters.history
+                selectedTabFilter === tabFilters.HISTORY
                   ? "text-cokewhite border-b-green bg-green active hover:bg-green"
                   : ""
               }`}
-              onClick={() => handleTabFilterSelection(tabFilters.history)}
+              onClick={() => handleTabFilterSelection(tabFilters.HISTORY)}
             >
               History
             </button>
@@ -257,7 +256,7 @@ const HomePage = () => {
           <div className=" mt-10">
             {(() => {
               switch (selectedTabFilter) {
-                case "investor":
+                case tabFilters.INVESTOR:
                   return (
                     <div>
                       <Link
@@ -269,13 +268,13 @@ const HomePage = () => {
                       <InvestorGallery investorList={investorList} />
                     </div>
                   );
-                case "job":
+                case tabFilters.JOB:
                   return (
                     <div>
                       <JobGallery selectedTabFilter={selectedTabFilter} />
                     </div>
                   );
-                case "history":
+                case tabFilters.HISTORY:
                   return (
                     <div>
                       <Link
