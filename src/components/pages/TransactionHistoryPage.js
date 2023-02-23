@@ -35,26 +35,24 @@ const TransactionHistoryPage = () => {
     if (!lastPage && pagesSeen < page) {
       if (algoquantApi.token) {
         algoquantApi
-          .getTrades(FETCH_AMOUNT, lastKey)
+          .getTrades(FETCH_AMOUNT, null, lastKey)
           .then((resp) => {
+            console.log(resp.data);
             setPagesSeen(pagesSeen + 1);
-            if (resp.data.LastEvaluatedKey === undefined) {
+            if (resp.data.LEK_timestamp === undefined) {
               setLastPage(true);
             } else {
-              setLastKey({
-                timestamp: resp.data.LastEvaluatedKey.timestamp,
-                user_id: resp.data.LastEvaluatedKey.user_id,
-              });
+              setLastKey(resp.data.LEK_timestamp);
             }
-            for (let i = 0; i < resp.data.Count; i++) {
-              let timestamp = new Date(parseInt(resp.data.Items[i].timestamp));
-              let shares = parseFloat(resp.data.Items[i].qty).toFixed(3);
+            for (let i = 0; i < resp.data.trades_count; i++) {
+              let timestamp = new Date(parseInt(resp.data.trades[i].timestamp));
+              let shares = parseFloat(resp.data.trades[i].qty).toFixed(3);
               historyBuffer.push({
-                jobName: resp.data.Items[i].job_name,
-                buyOrSell: resp.data.Items[i].side === "B" ? "Buy" : "Sell",
-                stockTicker: resp.data.Items[i].symbol,
+                jobName: resp.data.trades[i].job_name,
+                buyOrSell: resp.data.trades[i].side === "B" ? "Buy" : "Sell",
+                stockTicker: resp.data.trades[i].symbol,
                 shares: shares,
-                avgPrice: formatter.format(resp.data.Items[i].avg_price),
+                avgPrice: formatter.format(resp.data.trades[i].avg_price),
                 date: timestamp.toLocaleString(),
               });
             }
