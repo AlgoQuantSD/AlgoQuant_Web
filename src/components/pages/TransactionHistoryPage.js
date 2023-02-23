@@ -141,7 +141,7 @@ const TransactionHistoryPage = () => {
 
                 {transactions.length < 10 ? (
                   <button
-                    className="text-cokewhite rounded-md w-28 h-10 bg-dark-gray py-2 px-6"
+                    className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
                     disabled
                   ></button>
                 ) : (
