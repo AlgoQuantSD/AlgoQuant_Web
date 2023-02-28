@@ -32,7 +32,10 @@ const InvestorDropdown = ({
     <div className="relative" ref={searchRef}>
       <button
         className="flex p-1 rounded-full hover:bg-smokewhite"
-        onClick={() => setShowDropdown(true)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowDropdown(true);
+        }}
       >
         <BsThreeDots className="text-2xl text-cokewhite hover:text-green" />
       </button>
@@ -72,7 +75,6 @@ const InvestorDropdown = ({
           >
             View Investor
           </button>
-
           <button
             className="block px-4 py-2 text-left w-full text-red hover:bg-smokewhite font-bold"
             onClick={() => {

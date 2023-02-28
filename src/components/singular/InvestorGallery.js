@@ -99,14 +99,18 @@ const InvestorGallery = () => {
         infinite={true}
         wipeable={false}
         draggable={false}
-        showDots={false}
+        arrows={true}
+        // centerMode={true}
       >
         {investors.map((investor, i) => (
           <div
-            className={`h-full w-11/12 text-white bg-green mx-auto p-6 ${
-              investor.id === "bot" ? "bg-gold border-4 border-green" : ""
+            className={`h-full w-11/12 text-white bg-green mx-auto p-6 hover:bg-selection-green ${
+              investor.id === "bot"
+                ? "bg-gold border-4 border-green hover:bg-selection-gold"
+                : ""
             }`}
             key={investor.name}
+            onClick={() => viewInvestor(investor)}
           >
             {/* Name and logos */}
             <div className="flex justify-between">
@@ -159,7 +163,7 @@ const InvestorGallery = () => {
                       </p>
                     ))}
                     {investor.stocks.length > 4 && (
-                      <p className="flex justify-left text-green">
+                      <p className="flex justify-left text-cokewhite">
                         + {investor.stocks.length - 4} more
                       </p>
                     )}

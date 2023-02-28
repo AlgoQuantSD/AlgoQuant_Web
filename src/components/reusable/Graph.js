@@ -41,7 +41,6 @@ const buildGraph = (data, categories) => {
         crosshairs: {
           show: false,
         },
-        tooltip: false,
         labels: {
           style: {
             colors: "#1F302B",
@@ -56,11 +55,19 @@ const buildGraph = (data, categories) => {
         crosshairs: {
           show: false,
         },
-        tooltip: false,
         labels: {
           style: {
             colors: "#1F302B",
           },
+        },
+      },
+      tooltip: {
+        enabled: false,
+        fixed: {
+          enabled: false,
+          position: "topRight",
+          offsetX: 0,
+          offsetY: 0,
         },
       },
     },

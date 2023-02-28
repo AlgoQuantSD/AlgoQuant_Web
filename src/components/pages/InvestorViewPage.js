@@ -161,8 +161,10 @@ const InvestorViewPage = () => {
               </table>
             </div>
           </div>
-          <div className="mt-24 w-1/2">
-            <h1 className="text-green font-bold text-5xl mb-10">Jobs</h1>
+          <div className="mt-24 mx-auto w-3/4">
+            <h1 className="text-green font-semibold text-3xl mb-10 flex justify-center">
+              {location.state.value.name}'s Recent Jobs
+            </h1>
             <Table data={data} header={header}></Table>
             <div className="p-6 pt-24 pb-20 overflow-auto	">
               <button
