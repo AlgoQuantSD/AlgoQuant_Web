@@ -16,6 +16,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 
 const JobGallery = ({ type }) => {
+  console.log(type);
   const navigate = useNavigate();
 
   /* 
@@ -23,8 +24,8 @@ const JobGallery = ({ type }) => {
   a user to the Job page passing in the value. 
   */
   const viewJob = (value) => {
-    if (type === "job") navigate("/job", { state: { value: value } });
-    else if (type === "history")
+    if (type === "active") navigate("/job", { state: { value: value } });
+    else if (type === "complete")
       navigate("/jobhistory", { state: { value: value } });
   };
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
@@ -108,7 +109,7 @@ const JobGallery = ({ type }) => {
           <div className="flex justify-between">
             <div className="flex w-1/3">
               <p className="text-cokewhite text-xl font-medium self-center">
-                {job.name}'s Job
+                {job.name}
               </p>
             </div>
 
