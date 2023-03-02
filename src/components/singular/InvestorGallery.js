@@ -7,7 +7,8 @@ import { FaBrain } from "react-icons/fa";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot from "../../assets/images/investors/bot1.png";
 
-const InvestorGallery = () => {
+// investorList: JSON object of investor objects
+const InvestorGallery = ({ investorList }) => {
   const navigate = useNavigate();
   const [selectedInvestor, setSelectedInvestor] = useState(null);
 
@@ -41,57 +42,6 @@ const InvestorGallery = () => {
     },
   };
 
-  const investors = [
-    {
-      name: "Warren Buffett",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: [
-        "AMZN",
-        "APPL",
-        "GOOGL",
-        "SPOT",
-        "WHAT",
-        "WOWZ",
-        "YEAH",
-        "BALL",
-        "DEEP",
-        "YUMM",
-        "FUKK",
-      ],
-      id: "investor",
-    },
-    {
-      name: "Money Maker",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
-      id: "bot",
-    },
-    {
-      name: "Jordan Belfort",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
-      id: "investor",
-    },
-    {
-      name: "Jordan Belfort's Cat",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "+ 3 more"],
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett's Left Nut",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
-      id: "investor",
-    },
-    {
-      name: "Warren Buffett's Left Nut",
-      indicators: ["RSI", "MACD", "OBV"],
-      stocks: ["AMZN", "APPL", "GOOGL", "SPOT"],
-      id: "investor",
-    },
-  ];
-
   return (
     <div className="mt-14 p-4">
       <Carousel
@@ -101,21 +51,21 @@ const InvestorGallery = () => {
         draggable={false}
         showDots={false}
       >
-        {investors.map((investor, i) => (
+        {investorList.map((investor, i) => (
           <div
             className={`h-full w-11/12 text-white bg-green mx-auto p-6 ${
-              investor.id === "bot" ? "bg-gold border-4 border-green" : ""
+              investor.type === "A" ? "bg-gold border-4 border-green" : ""
             }`}
-            key={investor.name}
+            key={investor.investor_id}
           >
             {/* Name and logos */}
             <div className="flex justify-between">
-              {investor.id === "bot" ? (
+              {investor.type === "A" ? (
                 <FaBrain className="text-green text-3xl" />
               ) : (
                 <BsPersonLinesFill className="text-cokewhite text-3xl" />
               )}
-              <p className="font-bold text-xl">{investor.name}</p>
+              <p className="font-bold text-xl">{investor.investor_name}</p>
               <InvestorDropdown
                 startJob={() => {
                   setSelectedInvestor(investor);
@@ -129,7 +79,7 @@ const InvestorGallery = () => {
             </div>
             {/* Investor Image */}
             <div className="flex justify-center">
-              {investor.id === "investor" ? (
+              {investor.type === "I" ? (
                 <img
                   src={investorPhotos[i % investorPhotos.length]}
                   alt=""
@@ -140,11 +90,11 @@ const InvestorGallery = () => {
               )}
             </div>
             {/* Indicators / Stocks */}
-            {investor.id !== "bot" && (
+            {investor.type === "I" && (
               <div className="flex flex-col">
                 <div className="flex justify-between pl-16 pr-16">
                   <div className="w-1/4">
-                    <p className="flex justify-left font-bold">Indicators</p>
+                    <p className="flex justify-left font-bold">Indicators</p>{" "}
                     {investor.indicators.map((indicator, i) => (
                       <p key={i} className="flex justify-left text-cokewhite">
                         {indicator}
@@ -153,14 +103,14 @@ const InvestorGallery = () => {
                   </div>
                   <div className="w-1/4">
                     <p className="flex justify-left font-bold">Stocks</p>
-                    {investor.stocks.slice(0, 4).map((stock, i) => (
+                    {investor.assets_to_track.slice(0, 4).map((stock, i) => (
                       <p key={i} className="flex justify-left text-cokewhite">
                         {stock}
                       </p>
                     ))}
-                    {investor.stocks.length > 4 && (
-                      <p className="flex justify-left text-green">
-                        + {investor.stocks.length - 4} more
+                    {investor.assets_to_track.length > 4 && (
+                      <p className="flex justify-left text-light-gray">
+                        + {investor.assets_to_track.length - 4} more
                       </p>
                     )}
                   </div>
