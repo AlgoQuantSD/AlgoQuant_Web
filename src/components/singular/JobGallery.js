@@ -14,6 +14,7 @@ import {
 } from "react-icons/bs";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
+import { tabFilters } from "../utils/hometabFilterEnum";
 
 const JobGallery = ({ type }) => {
   console.log(type);
@@ -24,8 +25,8 @@ const JobGallery = ({ type }) => {
   a user to the Job page passing in the value. 
   */
   const viewJob = (value) => {
-    if (type === "active") navigate("/job", { state: { value: value } });
-    else if (type === "complete")
+    if (type === tabFilters.JOB) navigate("/job", { state: { value: value } });
+    else if (type === tabFilters.HISTORY)
       navigate("/jobhistory", { state: { value: value } });
   };
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
