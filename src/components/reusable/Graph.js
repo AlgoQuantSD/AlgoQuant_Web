@@ -103,10 +103,12 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
         className="shadow-md"
       />
       {/* Tabs for users to interact with and fetch different data based on provided timeframes */}
-      <div className="flex mt-4 justify-center">
+      <div className="flex mt-7 justify-center">
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.DAY ? ACTIVE_FILTER_STYLE : ""
+            selectedFilter === filters.DAY
+              ? ACTIVE_FILTER_STYLE
+              : "border-b-2 border-b-green"
           }`}
           onClick={() => getData(filters.DAY)}
         >
@@ -114,7 +116,9 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.FIVE ? ACTIVE_FILTER_STYLE : ""
+            selectedFilter === filters.FIVE
+              ? ACTIVE_FILTER_STYLE
+              : "border-b-2 border-b-green"
           }`}
           onClick={() => getData(filters.FIVE)}
         >
@@ -122,7 +126,9 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.MONTH ? ACTIVE_FILTER_STYLE : ""
+            selectedFilter === filters.MONTH
+              ? ACTIVE_FILTER_STYLE
+              : "border-b-2 border-b-green"
           }`}
           onClick={() => getData(filters.MONTH)}
         >
@@ -130,7 +136,9 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
         </button>
         <button
           className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.YEAR ? ACTIVE_FILTER_STYLE : ""
+            selectedFilter === filters.YEAR
+              ? ACTIVE_FILTER_STYLE
+              : "border-b-2 border-b-green"
           }`}
           onClick={() => getData(filters.YEAR)}
         >
