@@ -16,7 +16,7 @@ const JobModal = ({ setJobModal, jobModal, investor }) => {
         <div className="bg-smokewhite p-2 rounded border-4 border-green">
           <div className="p-6 flex items-center justify-between">
             <h3 className="text-2xl font-bold text-green">
-              Start Job for {investor && investor.name}
+              Start Job for {investor && investor.investor_name}
             </h3>
             <button
               className="text-white bg-green px-2 shadow-md"
