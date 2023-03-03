@@ -208,7 +208,7 @@ const HomePage = () => {
           {graphLoading ? (
             <GraphSpinner />
           ) : (
-            <div className="w-11/12 mx-auto my-10 mb-32">
+            <div className="w-11/12 mx-auto my-10 mb-28">
               <Graph
                 stockData={aggregatedPerformanceData}
                 xValues={xValues}
