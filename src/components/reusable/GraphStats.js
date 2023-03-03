@@ -12,8 +12,8 @@ const GraphStats = ({ stockData, selectedFilter }) => {
       <p
         className={`${textColor} font-medium text-md mt-2 py-2 px-4 rounded-full bg-green inline-block`}
       >
-        {isTrendingUp >= 0 ? "+" : "-"} ${Math.abs(stockData[0].priceChange)} (
-        {stockData[0].percentChanged}
+        {stockData[0].priceChange >= 0 ? "+" : "-"} $
+        {Math.abs(stockData[0].priceChange)} ({stockData[0].percentChanged}
         %)
         <p className="inline text-light-gray font-light">
           {" "}
