@@ -199,7 +199,7 @@ const HomePage = () => {
         <Sidebar />
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
           <div className="pt-10">
-            <h2 className="text-green font-bold text-4xl">Your Assets</h2>
+            <h2 className="text-green font-bold text-5xl">Your Assets</h2>
           </div>
           <GraphStats
             stockData={aggregatedPerformanceData}
@@ -208,7 +208,7 @@ const HomePage = () => {
           {graphLoading ? (
             <GraphSpinner />
           ) : (
-            <div className="w-11/12 mx-auto my-10 mb-32">
+            <div className="w-11/12 mx-auto my-10 mb-28">
               <Graph
                 stockData={aggregatedPerformanceData}
                 xValues={xValues}
@@ -219,7 +219,7 @@ const HomePage = () => {
             </div>
           )}
           <div className="w-full">
-            <h3 className="text-green font-bold text-4xl">Invest</h3>
+            <h3 className="text-green font-bold text-5xl">Invest</h3>
           </div>
           <div className="flex mx-auto justify-center w-2/4 mt-8">
             <button
@@ -271,7 +271,7 @@ const HomePage = () => {
                 case tabFilters.JOB:
                   return (
                     <div>
-                      <JobGallery selectedTabFilter={selectedTabFilter} />
+                      <JobGallery type={selectedTabFilter} />
                     </div>
                   );
                 case tabFilters.HISTORY:
@@ -283,7 +283,7 @@ const HomePage = () => {
                       >
                         View all transactions
                       </Link>
-                      <JobGallery selectedTabFilter={selectedTabFilter} />
+                      <JobGallery type={selectedTabFilter} />
                     </div>
                   );
                 default:

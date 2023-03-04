@@ -90,7 +90,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
     case ModalTypes.reset_alpaca:
       return (
         <Modal isVisible={accountModal.visible} onClose={handleClose}>
-          <div className="bg-dark-gray p-2 rounded border border-light-gray">
+          <div className="bg-smokewhite p-2 rounded border border-light-gray">
             <div className="p-6">
               <h3 className="text-3xl font-bold text-light-gray mb-5">
                 Reset Balance

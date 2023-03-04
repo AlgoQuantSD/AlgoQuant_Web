@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { FaLock } from "react-icons/fa";
 import Navbar from "../reusable/NavBar";
 import Graph from "../reusable/Graph";
 import Table from "../reusable/Table";
 import GraphStats from "../reusable/GraphStats";
 import Sidebar from "../reusable/SideBar";
-import StopJobModal from "../singular/Modals/StopJobModal";
 
-const JobViewPage = () => {
+const JobHistoryPage = () => {
   const location = useLocation();
-  const [stopJobModal, setStopJobModal] = useState(null);
-  const [page, setPage] = useState(1);
 
   // Currently hardcoded but will eventually come from API
   const [chartData, setChartData] = useState([
@@ -43,15 +41,6 @@ const JobViewPage = () => {
       percentChanged: 1.5,
     },
   ]);
-
-  // functions to handle a page change
-  const handleNextClick = () => {
-    setPage(page + 1);
-  };
-
-  const handlePreviousClick = () => {
-    setPage(page - 1);
-  };
 
   /*Callback used to get more data based on the filter. Each time any of the buttons 
     are clicked this will be called to get more data. This will update the chart data which 
@@ -123,26 +112,23 @@ const JobViewPage = () => {
       <div className="flex self-stretch">
         <Sidebar />
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
-          <StopJobModal
-            setStopJobModal={setStopJobModal}
-            stopJobModal={stopJobModal}
-            investor={location.state.value}
-          />
-          <div className="flex pt-10 justify-between items-center">
+          <div className="flex pt-10 justify-between">
             <p className="text-green font-bold text-5xl">
-              {location.state.value.name} Job
+              {location.state.value.name} Job History
             </p>
-            <button
-              className="rounded bg-red text-white px-4 py-2 mt-3"
-              onClick={() => {
-                setStopJobModal(true);
-              }}
-            >
-              Stop Job
-            </button>
+
+            <div className="flex items-center justify-between text-right">
+              <p className="text-green font-semibold text-lg pr-4">
+                Completed Job
+                <br></br>
+                10/22/2022 - 11/14/2022
+              </p>
+
+              <FaLock className="text-xl text-green" />
+            </div>
           </div>
           <GraphStats stockData={stockData} selectedFilter={selectedFilter} />
-          <div className="z-10 w-11/12 mx-auto my-10 mb-32">
+          <div className="w-11/12 mx-auto my-10 mb-32">
             <Graph
               stockData={stockData}
               chartData={chartData}
@@ -153,28 +139,10 @@ const JobViewPage = () => {
           </div>
           <p className="text-green font-bold text-5xl mb-8">Recent Trades</p>
           <Table data={data} header={header}></Table>
-          <div className="p-6 pt-24 pb-20 overflow-auto	">
-            <button
-              className="text-cokewhite rounded-md w-28 h-10 bg-green py-2 px-6"
-              onClick={handlePreviousClick}
-            >
-              Previous
-            </button>
-
-            <button
-              className="text-cokewhite w-28 h-10 rounded-md bg-green py-2 px-6 float-right"
-              onClick={handleNextClick}
-            >
-              Next
-            </button>
-            <p className="text-md font-light text-center text-light-gray mt-5">
-              {"Page " + page}
-            </p>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default JobViewPage;
+export default JobHistoryPage;
