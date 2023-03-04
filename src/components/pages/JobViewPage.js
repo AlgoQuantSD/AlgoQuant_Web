@@ -130,7 +130,7 @@ const JobViewPage = () => {
           />
           <div className="flex pt-10 justify-between items-center">
             <p className="text-green font-bold text-5xl">
-              {location.state.value.name}'s Job
+              {location.state.value.name} Job
             </p>
             <button
               className="rounded bg-red text-white px-4 py-2 mt-3"

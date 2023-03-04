@@ -73,7 +73,7 @@ const InvestorViewPage = () => {
           <div className="flex pt-10 justify-between">
             <div className="">
               <h1 className="text-green font-bold text-5xl mb-10">
-                {location.state.value.name}
+                {location.state.value.investor_name}
               </h1>
             </div>
 
@@ -163,7 +163,7 @@ const InvestorViewPage = () => {
           </div>
           <div className="mt-24 mx-auto w-3/4">
             <h1 className="text-green font-semibold text-3xl mb-10 flex justify-center">
-              {location.state.value.name}'s Recent Jobs
+              {location.state.value.investor_name}'s Recent Jobs
             </h1>
             <Table data={data} header={header}></Table>
             <div className="p-6 pt-24 pb-20 overflow-auto	">

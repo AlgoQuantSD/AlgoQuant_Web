@@ -114,7 +114,7 @@ const JobHistoryPage = () => {
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
           <div className="flex pt-10 justify-between">
             <p className="text-green font-bold text-5xl">
-              {location.state.value.name}'s Job History
+              {location.state.value.name} Job History
             </p>
 
             <div className="flex items-center justify-between text-right">
