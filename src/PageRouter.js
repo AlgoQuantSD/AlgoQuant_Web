@@ -13,6 +13,8 @@ import SearchResultsPage from "./components/pages/SearchResultsPage";
 import JobViewPage from "./components/pages/JobViewPage";
 import InvestorViewPage from "./components/pages/InvestorViewPage";
 import JobHistoryPage from "./components/pages/JobHistoryPage";
+import CreateStandardPage from "./components/pages/CreateStandardPage";
+import CreateAIPage from "./components/pages/CreateAIPage";
 
 import AlgoquantApiContext from "./api/ApiContext";
 import initAlgoQuantApi from "../src/api/ApiUtils";
@@ -74,6 +76,22 @@ export function PageRouter() {
             element={
               <RequireAuth>
                 <CreateInvestorPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createstandard"
+            element={
+              <RequireAuth>
+                <CreateStandardPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createai"
+            element={
+              <RequireAuth>
+                <CreateAIPage />
               </RequireAuth>
             }
           />
