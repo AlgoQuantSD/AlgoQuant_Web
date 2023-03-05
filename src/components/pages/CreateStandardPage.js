@@ -1,26 +1,27 @@
 import { React, useContext, useState } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import { useNavigate } from "react-router-dom";
-import Searchbar from "../reusable/SearchBar";
+import StockSelect from "../singular/StockSelect";
 import AlgoquantApiContext from "../../api/ApiContext";
 import NumberInput from "../singular/NumberInput";
 import IndicatorSelect from "../singular/IndicatorSelect";
 
 const CreateStandardPage = () => {
   const [investorName, setInvestorName] = useState(null);
-  const [searchResults, setSearchResults] = useState(["No search yet"]);
-  const navigate = useNavigate();
+  const [searchResults, setSearchResults] = useState([]);
+  const [profitStop, setProfitStop] = useState(null);
+  const [lossStop, setLossStop] = useState(null);
+  const [tradeFrequency, setTradeFrequency] = useState("");
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
 
-  /* 
-  Function called anytime a user selects one of the items in the dropdown. Will navigate 
-  a user to the search page passing in the value. 
+  /*
+  Function called when the user attempts to save changes. Will check all the user values and 
+  attempt to update them.
   */
-  const selectItem = (value) => {
-    navigate("/search", { state: { value: value } });
+  const saveChanges = () => {
+    console.log("Changes Saved!");
   };
 
   /*
@@ -43,14 +44,18 @@ const CreateStandardPage = () => {
     return searchResults;
   };
 
+  const selectItem = (item) => {
+    console.log(item);
+  };
+
   const resetSearch = () => {
     setSearchResults([]);
   };
 
   return (
-    <div className="bg-cokewhite overflow-x-auto overflow-y-auto pb-24">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto pb-6">
       <Navbar />
-      <div className="flex self-stretch overflow-hidden">
+      <div className="flex self-stretch">
         <Sidebar />
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
           <div className="flex pt-10">
@@ -75,17 +80,27 @@ const CreateStandardPage = () => {
               />
             </div>
 
-            {/* Stocks */}
-            <div className="flex flex-col w-1/4 p-3">
+            {/* Trade Frequency */}
+            <div className="flex flex-col p-3 w-3/12">
               <p className="text-green text-2xl font-semibold mb-2">
-                Select stocks to invest
+                Trade Frequency
               </p>
-              <Searchbar
-                selectItem={selectItem}
-                getSearchResults={getSearchResults}
-                searchResults={searchResults}
-                resetSearch={resetSearch}
-              />
+              <p className="text-another-gray text-md font-light mb-2">
+                Choose an investment rate
+              </p>
+              <select
+                id="underline_select"
+                class="block py-2.5 px-0 w-full text-lg text-gray-500 bg-cokewhite border-0 border-b-2 border-green appearance-none"
+                style={{ outline: "none" }}
+              >
+                <option selected>Select</option>
+                <option value="minutes">30 minutes</option>
+                <option value="hour">1 hour</option>
+                <option value="hours">4 hours</option>
+                <option value="day">1 day</option>
+                <option value="week">1 week</option>
+                <option value="month">1 month</option>
+              </select>
             </div>
           </div>
 
@@ -127,30 +142,30 @@ const CreateStandardPage = () => {
               </div>
             </div>
           </div>
-          <div className="p-3 flex flex-col">
-            <p className="text-green text-2xl font-semibold mb-2">
-              Trade Frequency
-            </p>
-            <p className="text-another-gray text-md font-light mb-2">
-              Choose an investment rate
-            </p>
 
-            {/* <label for="underline_select" class="sr-only">
-              Underline select
-            </label> */}
-            <select
-              id="underline_select"
-              class="block w-1/4 py-2.5 px-0 w-full text-lg text-gray-500 bg-cokewhite border-0 border-b-2 border-green appearance-none"
-              style={{ outline: "none" }}
+          {/* Stocks */}
+          <div className="flex flex-col w-4/12 p-3">
+            <p className="text-green text-2xl font-semibold mb-2">
+              Select stocks to invest
+            </p>
+            <StockSelect
+              selectItem={selectItem}
+              getSearchResults={getSearchResults}
+              searchResults={searchResults}
+              resetSearch={resetSearch}
+            />
+          </div>
+
+          {/* Create Investor Button */}
+          <div className="p-3 mt-10">
+            <button
+              className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2"
+              onClick={() => {
+                saveChanges();
+              }}
             >
-              <option selected>Select</option>
-              <option value="minutes">30 minutes</option>
-              <option value="hour">1 hour</option>
-              <option value="hours">4 hours</option>
-              <option value="day">1 day</option>
-              <option value="week">1 week</option>
-              <option value="month">1 month</option>
-            </select>
+              Create Investor
+            </button>
           </div>
         </div>
       </div>

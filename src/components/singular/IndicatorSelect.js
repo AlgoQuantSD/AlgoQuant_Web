@@ -38,11 +38,6 @@ const IndicatorSelect = () => {
           </li>
         ))}
       </ul>
-      {selectedOptions.length > 0 && (
-        <p className="mt-2">
-          Selected indicators: {selectedOptions.join(" - ")}
-        </p>
-      )}
     </div>
   );
 };

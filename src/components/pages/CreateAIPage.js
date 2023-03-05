@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
+import NumberInput from "../singular/NumberInput";
 
 const CreateAIPage = () => {
   const [investorName, setInvestorName] = useState(null);
@@ -14,8 +15,8 @@ const CreateAIPage = () => {
           <div className="flex pt-10">
             <h1 className="text-gold font-bold text-5xl">Create AI Investor</h1>
           </div>
+          {/* Name */}
           <div className="p-3 mt-6">
-            {/* Name */}
             <p className="text-green text-2xl font-semibold mb-2">
               What do you want to call your investor?
             </p>
@@ -27,6 +28,35 @@ const CreateAIPage = () => {
                 setInvestorName(event.target.value);
               }}
             />
+          </div>
+
+          {/* Set Conditions */}
+          <div className="mb-6 p-3 flex flex-col w-1/2">
+            <p className="text-green text-2xl font-semibold mb-2">
+              Set Conditions
+            </p>
+            <div className="flex">
+              <div className="flex flex-col p-4 w-5/12">
+                <p className="text-green text-xl font-medium">Profit Stop</p>
+                <p className="text-another-gray text-md font-light">
+                  The price gain at which you want the strategy to end
+                </p>
+              </div>
+              <div className="flex items-center w-3/4">
+                <NumberInput />
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex flex-col p-4 w-5/12">
+                <p className="text-red text-xl font-medium">Loss Stop</p>
+                <p className="text-another-gray text-md font-light">
+                  The price loss at which you want the strategy to end
+                </p>
+              </div>
+              <div className="flex items-center w-3/4">
+                <NumberInput />
+              </div>
+            </div>
           </div>
         </div>
       </div>
