@@ -4,11 +4,13 @@ const NumberInput = () => {
   const [value, setValue] = useState(50);
 
   const decrement = () => {
-    setValue(Math.floor((value - 5) / 5) * 5);
+    const newValue = Math.floor((value - 5) / 5) * 5;
+    setValue(Math.max(newValue, 0));
   };
 
   const increment = () => {
-    setValue(Math.floor((value + 5) / 5) * 5);
+    const newValue = Math.floor((value + 5) / 5) * 5;
+    setValue(Math.min(newValue, 100));
   };
 
   return (
@@ -25,7 +27,7 @@ const NumberInput = () => {
         <input
           type="number"
           id="custom-input-number"
-          className="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black md:text-base cursor-default flex items-center text-gray-700 outline-none"
+          className="outline-none focus:outline-none text-center w-full bg-cokewhite font-semibold text-md cursor-default flex items-center text-green outline-none"
           name="custom-input-number"
           value={value}
           readOnly
