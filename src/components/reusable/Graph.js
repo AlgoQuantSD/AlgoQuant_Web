@@ -46,6 +46,7 @@ const buildGraph = (data, categories, isTrendingUp) => {
         crosshairs: {
           show: false,
         },
+        tooltip: false,
         labels: {
           style: {
             colors: "#1F302B",
@@ -61,6 +62,7 @@ const buildGraph = (data, categories, isTrendingUp) => {
         crosshairs: {
           show: false,
         },
+        tooltip: false,
         labels: {
           style: {
             colors: "#1F302B",
@@ -68,15 +70,6 @@ const buildGraph = (data, categories, isTrendingUp) => {
           formatter: function (value) {
             return value.toFixed(2); // Set the label value to have a maximum of 2 decimal points
           },
-        },
-      },
-      tooltip: {
-        enabled: false,
-        fixed: {
-          enabled: false,
-          position: "topRight",
-          offsetX: 0,
-          offsetY: 0,
         },
       },
     },
