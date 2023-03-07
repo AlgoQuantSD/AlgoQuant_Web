@@ -3,9 +3,8 @@ import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import StockSelect from "../singular/StockSelect";
 import AlgoquantApiContext from "../../api/ApiContext";
-import NumberInput from "../singular/NumberInput";
 import IndicatorSelect from "../singular/IndicatorSelect";
-// import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CreateStandardPage = () => {
   const [investorName, setInvestorName] = useState(null);
@@ -15,19 +14,13 @@ const CreateStandardPage = () => {
   const [lossStop, setLossStop] = useState(50);
   const [selectedIndicators, setSelectedIndicators] = useState([]);
   const [selectedStocks, setSelectedStocks] = useState([]);
+  const navigate = useNavigate();
 
   const [showError, setShowError] = useState(false);
+  const [showStopError, setShowStopError] = useState(false);
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-
-  const handleProfitStopChange = (newValue) => {
-    setProfitStop(newValue);
-  };
-
-  const handleLossStopChange = (newValue) => {
-    setLossStop(newValue);
-  };
 
   const handleIndicatorSelect = (selectedOptions) => {
     setSelectedIndicators(selectedOptions);
@@ -42,20 +35,36 @@ const CreateStandardPage = () => {
   attempt to update them.
   */
   const saveChanges = () => {
-    // Check if investor name is filled out
     if (
       investorName === null ||
       investorName === "" ||
       tradeFrequency === "Select" ||
       selectedIndicators.length === 0 ||
+      profitStop === 0 ||
+      lossStop === 0 ||
       selectedStocks.length === 0
     ) {
-      // alert("Please enter a name for your investor");
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
       }, 3500); // hide the error message after 3.5 seconds
       return;
+    } else if (profitStop > 100 || lossStop > 100) {
+      setShowStopError(true);
+      setTimeout(() => {
+        setShowStopError(false);
+      }, 3500);
+      return;
+    } else {
+      let value = {
+        investorName: investorName,
+        tradeFrequency: tradeFrequency,
+        profitStop: profitStop,
+        lossStop: lossStop,
+        indicators: selectedIndicators,
+        stocks: selectedStocks,
+      };
+      createInvestor(value);
     }
   };
 
@@ -81,6 +90,12 @@ const CreateStandardPage = () => {
 
   const resetSearch = () => {
     setSearchResults([]);
+  };
+
+  // Function called anytime a user hits Create Investor with all of the fields correctly inputted
+  // This will send all the input data to the backend to create a new investor
+  const createInvestor = (value) => {
+    navigate("/confirmation", { state: { value: value } });
   };
 
   return (
@@ -117,7 +132,7 @@ const CreateStandardPage = () => {
                 Trade Frequency
               </p>
               <p className="text-another-gray text-md font-light mb-2">
-                Choose an investment rate
+                Choose a trader type that best fits your trading style
               </p>
               <select
                 id="underline_select"
@@ -129,12 +144,20 @@ const CreateStandardPage = () => {
                 defaultValue="Select"
               >
                 <option value="Select">Select</option>
-                <option value="minutes">30 minutes</option>
-                <option value="hour">1 hour</option>
-                <option value="hours">4 hours</option>
-                <option value="day">1 day</option>
-                <option value="week">1 week</option>
-                <option value="month">1 month</option>
+                <option value="minutes">
+                  High Frequency Day Trader - 30 minutes
+                </option>
+                <option value="hour">Low Frequency Day Trader - 1 hour</option>
+                <option value="hours">
+                  High Frequency Swing Trader - 4 hours
+                </option>
+                <option value="day">Low Frequency Swing Trader - 1 day</option>
+                <option value="week">
+                  High Frequency Long Trader - 1 week
+                </option>
+                <option value="month">
+                  Low Frequency Long Trader - 1 month
+                </option>
               </select>
             </div>
           </div>
@@ -158,13 +181,17 @@ const CreateStandardPage = () => {
                 <div className="flex flex-col p-4 w-5/12">
                   <p className="text-green text-xl font-medium">Profit Stop</p>
                   <p className="text-another-gray text-md font-light">
-                    The price gain at which you want the strategy to end
+                    The percentage gain at which you want the strategy to end
                   </p>
                 </div>
                 <div className="flex items-center w-3/4">
-                  <NumberInput
-                    value={profitStop}
-                    onChange={handleProfitStopChange}
+                  <input
+                    className="outline-none focus:outline-none text-center w-20 bg-smokewhite font-semibold text-md cursor-default flex items-center text-green outline-none"
+                    type="number"
+                    placeholder={50}
+                    onChange={(event) => {
+                      setProfitStop(event.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -173,13 +200,17 @@ const CreateStandardPage = () => {
                 <div className="flex flex-col p-4 w-5/12">
                   <p className="text-red text-xl font-medium">Loss Stop</p>
                   <p className="text-another-gray text-md font-light">
-                    The price loss at which you want the strategy to end
+                    The percentage loss at which you want the strategy to end
                   </p>
                 </div>
                 <div className="flex items-center w-3/4">
-                  <NumberInput
-                    value={lossStop}
-                    onChange={handleLossStopChange}
+                  <input
+                    className="outline-none focus:outline-none text-center w-20 bg-smokewhite font-semibold text-md cursor-default flex items-center text-green outline-none"
+                    type="number"
+                    placeholder={50}
+                    onChange={(event) => {
+                      setLossStop(event.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -212,6 +243,11 @@ const CreateStandardPage = () => {
             {showError ? (
               <p className="text-red mt-3">
                 Please fill out all fields before creating an investor
+              </p>
+            ) : null}
+            {showStopError ? (
+              <p className="text-red mt-3">
+                Profit / Loss Stop must be a percentage between 0 and 100
               </p>
             ) : null}
           </div>

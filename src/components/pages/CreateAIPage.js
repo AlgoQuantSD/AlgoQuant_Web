@@ -1,10 +1,46 @@
 import React, { useState } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import NumberInput from "../singular/NumberInput";
+import { useNavigate } from "react-router-dom";
 
 const CreateAIPage = () => {
+  const navigate = useNavigate();
   const [investorName, setInvestorName] = useState(null);
+  const [showError, setShowError] = useState(false);
+  const [profitStop, setProfitStop] = useState(50);
+  const [lossStop, setLossStop] = useState(50);
+
+  /*
+  Function called when the user attempts to save changes. Will check all the user values and 
+  attempt to update them.
+  */
+  const saveChanges = () => {
+    if (
+      investorName === null ||
+      investorName === " " ||
+      profitStop === 0 ||
+      lossStop === 0
+    ) {
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3500); // hide the error message after 3.5 seconds
+      return;
+    } else {
+      let value = {
+        investorName: investorName,
+        profitStop: profitStop,
+        lossStop: lossStop,
+      };
+      createInvestor(value);
+    }
+  };
+
+  // Function called anytime a user hits Create Investor with all of the fields correctly inputted
+  // This will send all the input data to the backend to create a new investor
+  const createInvestor = (value) => {
+    navigate("/aiconfirmation", { state: { value: value } });
+  };
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
@@ -35,27 +71,59 @@ const CreateAIPage = () => {
             <p className="text-green text-2xl font-semibold mb-2">
               Set Conditions
             </p>
+            {/* Profit Stop */}
             <div className="flex">
               <div className="flex flex-col p-4 w-5/12">
                 <p className="text-green text-xl font-medium">Profit Stop</p>
                 <p className="text-another-gray text-md font-light">
-                  The price gain at which you want the strategy to end
+                  The percentage gain at which you want the strategy to end
                 </p>
               </div>
               <div className="flex items-center w-3/4">
-                <NumberInput />
+                <input
+                  className="outline-none focus:outline-none text-center w-20 bg-smokewhite font-semibold text-md cursor-default flex items-center text-green outline-none"
+                  type="number"
+                  placeholder={50}
+                  onChange={(event) => {
+                    setProfitStop(event.target.value);
+                  }}
+                />
               </div>
             </div>
+            {/* Loss Stop */}
             <div className="flex">
               <div className="flex flex-col p-4 w-5/12">
                 <p className="text-red text-xl font-medium">Loss Stop</p>
                 <p className="text-another-gray text-md font-light">
-                  The price loss at which you want the strategy to end
+                  The percentage loss at which you want the strategy to end
                 </p>
               </div>
               <div className="flex items-center w-3/4">
-                <NumberInput />
+                <input
+                  className="outline-none focus:outline-none text-center w-20 bg-smokewhite font-semibold text-md cursor-default flex items-center text-green outline-none"
+                  type="number"
+                  placeholder={50}
+                  onChange={(event) => {
+                    setLossStop(event.target.value);
+                  }}
+                />
               </div>
+            </div>
+            {/* Create Investor Button */}
+            <div className="p-3 mt-10">
+              <button
+                className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2"
+                onClick={() => {
+                  saveChanges();
+                }}
+              >
+                Create Investor
+              </button>
+              {showError ? (
+                <p className="text-red mt-3">
+                  Please fill out all fields before creating an investor
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
