@@ -1,16 +1,22 @@
 import { useState } from "react";
 
-const NumberInput = () => {
-  const [value, setValue] = useState(50);
+const NumberInput = ({ value, onChange, step = 1, min = 0, max = 100 }) => {
+  const [inputValue, setInputValue] = useState(value);
 
   const decrement = () => {
-    const newValue = Math.floor((value - 5) / 5) * 5;
-    setValue(Math.max(newValue, 0));
+    const newValue = Math.floor((inputValue - step) / step) * step;
+    setInputValue(Math.max(newValue, min));
   };
 
   const increment = () => {
-    const newValue = Math.floor((value + 5) / 5) * 5;
-    setValue(Math.min(newValue, 100));
+    const newValue = Math.floor((inputValue + step) / step) * step;
+    setInputValue(Math.min(newValue, max));
+  };
+
+  const handleInputChange = (event) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+    onChange(newValue);
   };
 
   return (
@@ -29,7 +35,11 @@ const NumberInput = () => {
           id="custom-input-number"
           className="outline-none focus:outline-none text-center w-full bg-cokewhite font-semibold text-md cursor-default flex items-center text-green outline-none"
           name="custom-input-number"
-          value={value}
+          value={inputValue}
+          onChange={handleInputChange}
+          min={min}
+          max={max}
+          step={step}
           readOnly
         />
         <button

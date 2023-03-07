@@ -9,15 +9,23 @@ const options = [
   { value: "bb", label: "BB" },
 ];
 
-const IndicatorSelect = () => {
+const IndicatorSelect = ({ onOptionsSelect }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleOptionSelect = (option) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option));
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
-    }
+    setSelectedOptions((prevSelectedOptions) => {
+      const isOptionSelected = prevSelectedOptions.includes(option);
+      let updatedSelectedOptions = [...prevSelectedOptions];
+      if (isOptionSelected) {
+        updatedSelectedOptions = updatedSelectedOptions.filter(
+          (selectedOption) => selectedOption !== option
+        );
+      } else {
+        updatedSelectedOptions.push(option);
+      }
+      onOptionsSelect(updatedSelectedOptions);
+      return updatedSelectedOptions;
+    });
   };
 
   return (

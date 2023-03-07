@@ -5,23 +5,58 @@ import StockSelect from "../singular/StockSelect";
 import AlgoquantApiContext from "../../api/ApiContext";
 import NumberInput from "../singular/NumberInput";
 import IndicatorSelect from "../singular/IndicatorSelect";
+// import { Link } from "react-router-dom";
 
 const CreateStandardPage = () => {
   const [investorName, setInvestorName] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
-  const [profitStop, setProfitStop] = useState(null);
-  const [lossStop, setLossStop] = useState(null);
-  const [tradeFrequency, setTradeFrequency] = useState("");
+  const [tradeFrequency, setTradeFrequency] = useState("Select");
+  const [profitStop, setProfitStop] = useState(50);
+  const [lossStop, setLossStop] = useState(50);
+  const [selectedIndicators, setSelectedIndicators] = useState([]);
+  const [selectedStocks, setSelectedStocks] = useState([]);
+
+  const [showError, setShowError] = useState(false);
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+
+  const handleProfitStopChange = (newValue) => {
+    setProfitStop(newValue);
+  };
+
+  const handleLossStopChange = (newValue) => {
+    setLossStop(newValue);
+  };
+
+  const handleIndicatorSelect = (selectedOptions) => {
+    setSelectedIndicators(selectedOptions);
+  };
+
+  const handleStockSelect = (stocks) => {
+    setSelectedStocks(stocks);
+  };
 
   /*
   Function called when the user attempts to save changes. Will check all the user values and 
   attempt to update them.
   */
   const saveChanges = () => {
-    console.log("Changes Saved!");
+    // Check if investor name is filled out
+    if (
+      investorName === null ||
+      investorName === "" ||
+      tradeFrequency === "Select" ||
+      selectedIndicators.length === 0 ||
+      selectedStocks.length === 0
+    ) {
+      // alert("Please enter a name for your investor");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3500); // hide the error message after 3.5 seconds
+      return;
+    }
   };
 
   /*
@@ -44,16 +79,12 @@ const CreateStandardPage = () => {
     return searchResults;
   };
 
-  const selectItem = (item) => {
-    console.log(item);
-  };
-
   const resetSearch = () => {
     setSearchResults([]);
   };
 
   return (
-    <div className="bg-cokewhite overflow-x-auto overflow-y-auto pb-6">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -90,10 +121,14 @@ const CreateStandardPage = () => {
               </p>
               <select
                 id="underline_select"
-                class="block py-2.5 px-0 w-full text-lg text-gray-500 bg-cokewhite border-0 border-b-2 border-green appearance-none"
+                className="block py-2.5 px-0 w-full text-lg text-gray-500 bg-cokewhite border-0 border-b-2 border-green appearance-none"
                 style={{ outline: "none" }}
+                onChange={(event) => {
+                  setTradeFrequency(event.target.value);
+                }}
+                defaultValue="Select"
               >
-                <option selected>Select</option>
+                <option value="Select">Select</option>
                 <option value="minutes">30 minutes</option>
                 <option value="hour">1 hour</option>
                 <option value="hours">4 hours</option>
@@ -110,7 +145,7 @@ const CreateStandardPage = () => {
               <p className="text-2xl font-semibold text-green">
                 Pick your indicators
               </p>
-              <IndicatorSelect />
+              <IndicatorSelect onOptionsSelect={handleIndicatorSelect} />
             </div>
 
             {/* Set Conditions */}
@@ -118,6 +153,7 @@ const CreateStandardPage = () => {
               <p className="text-green text-2xl font-semibold mb-2">
                 Set Conditions
               </p>
+              {/* Profit Stop */}
               <div className="flex">
                 <div className="flex flex-col p-4 w-5/12">
                   <p className="text-green text-xl font-medium">Profit Stop</p>
@@ -126,9 +162,13 @@ const CreateStandardPage = () => {
                   </p>
                 </div>
                 <div className="flex items-center w-3/4">
-                  <NumberInput />
+                  <NumberInput
+                    value={profitStop}
+                    onChange={handleProfitStopChange}
+                  />
                 </div>
               </div>
+              {/* Loss Stop */}
               <div className="flex">
                 <div className="flex flex-col p-4 w-5/12">
                   <p className="text-red text-xl font-medium">Loss Stop</p>
@@ -137,7 +177,10 @@ const CreateStandardPage = () => {
                   </p>
                 </div>
                 <div className="flex items-center w-3/4">
-                  <NumberInput />
+                  <NumberInput
+                    value={lossStop}
+                    onChange={handleLossStopChange}
+                  />
                 </div>
               </div>
             </div>
@@ -149,10 +192,10 @@ const CreateStandardPage = () => {
               Select stocks to invest
             </p>
             <StockSelect
-              selectItem={selectItem}
               getSearchResults={getSearchResults}
               searchResults={searchResults}
               resetSearch={resetSearch}
+              onOptionsSelect={handleStockSelect}
             />
           </div>
 
@@ -166,6 +209,11 @@ const CreateStandardPage = () => {
             >
               Create Investor
             </button>
+            {showError ? (
+              <p className="text-red mt-3">
+                Please fill out all fields before creating an investor
+              </p>
+            ) : null}
           </div>
         </div>
       </div>

@@ -6,10 +6,10 @@ Reusable search component that takes a call back function defining what should b
 this takes in a callback function that will get new search results based on what has been entered
 */
 const StockSelect = ({
-  selectItem,
   getSearchResults,
   searchResults,
   resetSearch,
+  onOptionsSelect,
 }) => {
   // This flag controls rather the drop down will show
   const [showResults, setShowResults] = useState(false);
@@ -20,7 +20,7 @@ const StockSelect = ({
   // Which item in the drop down the user has selected
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
-  // The seelcted items from the drop down
+  // The selected items from the drop down
   const [selectedItems, setSelectedItems] = useState([]);
 
   const searchRef = useRef(null);
@@ -49,6 +49,16 @@ const StockSelect = ({
     }
   };
 
+  function generateUniqueId() {
+    const alphabet =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let id = "";
+    for (let i = 0; i < 8; i++) {
+      id += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+    }
+    return id;
+  }
+
   // Keyboard input in search box
   const handleTextChange = (event) => {
     closeDropdown();
@@ -63,9 +73,12 @@ const StockSelect = ({
 
   // Handles selecting an item from the dropdown
   const handleSelect = (item) => {
-    // Add the selected item to the array of selected items and close the dropdown
     if (!selectedItems.includes(item)) {
-      setSelectedItems([...selectedItems, item]);
+      setSelectedItems((prevSelectedItems) => {
+        const updatedSelectedItems = [...prevSelectedItems, item];
+        onOptionsSelect(updatedSelectedItems);
+        return updatedSelectedItems;
+      });
     }
   };
 
@@ -76,24 +89,26 @@ const StockSelect = ({
   */
   const closeDropdown = useCallback(() => {
     setShowResults(false);
-    setHighlightedIndex(-1);
     setSearchValue("");
-    resetSearch();
-  }, [setShowResults, setHighlightedIndex, setSearchValue, resetSearch]);
+    setHighlightedIndex(-1);
+    resetSearch([]);
+  }, [resetSearch]);
 
   // Reset search results and search value
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setSelectedItems([]);
     setSearchValue("");
     setHighlightedIndex(-1);
-    resetSearch();
-  };
+    resetSearch([]);
+    onOptionsSelect([]);
+  }, [resetSearch, onOptionsSelect]);
 
   const handleRemove = (selectedTicker) => {
     const updatedTickers = selectedItems.filter(
       (ticker) => ticker !== selectedTicker
     );
     setSelectedItems(updatedTickers);
+    onOptionsSelect(updatedTickers);
   };
 
   // Close search upon clicking anywhere outside of the component
@@ -137,7 +152,10 @@ const StockSelect = ({
       {selectedItems.length > 0 && (
         <div className="flex flex-wrap py-2">
           {selectedItems.map((item) => (
-            <div className="bg-cokewhite m-1 p-2 rounded-lg flex items-center justify-between">
+            <div
+              key={generateUniqueId()}
+              className="bg-cokewhite m-1 p-2 rounded-lg flex items-center justify-between"
+            >
               <p className="text-green mr-2">{item}</p>
               <button onClick={() => handleRemove(item)}>
                 <FaTimes className="text-red" />
@@ -151,7 +169,7 @@ const StockSelect = ({
         // only render dropdown if an item hasn't been selected
         !selectedItems.includes(searchValue) && (
           <div className="absolute bg-smokewhite rounded-sm shadow-lg text-green w-1/4 z-50">
-            {searchResults.map((result, index) => (
+            {searchResults.slice(0, 7).map((result, index) => (
               <p
                 className={`px-4 py-2 hover:bg-light-gray cursor-pointer ${
                   highlightedIndex === index
