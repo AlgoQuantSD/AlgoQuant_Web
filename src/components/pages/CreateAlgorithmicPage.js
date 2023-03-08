@@ -58,7 +58,7 @@ const CreateAlgorithmicPage = () => {
       setTimeout(() => {
         setIndicatorError(false);
       }, 3500);
-    } else if (selectedIndicators.length === 0) {
+    } else if (selectedStocks.length === 0) {
       setStocksError(true);
       setTimeout(() => {
         setStocksError(false);
