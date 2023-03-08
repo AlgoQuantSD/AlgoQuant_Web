@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+/* Removes input arrows from input boxes */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

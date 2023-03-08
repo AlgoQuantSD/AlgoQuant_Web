@@ -22,6 +22,11 @@ module.exports = {
       "selection-gold": "#E8CD3D",
       gold: "#E4C419",
     },
+    extend: {
+      borderRadius: {
+        lg: "0.5rem",
+      },
+    },
   },
   plugins: [],
 };
