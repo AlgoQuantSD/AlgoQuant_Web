@@ -8,20 +8,15 @@ const CreateAIPage = () => {
   const navigate = useNavigate();
   const [investorName, setInvestorName] = useState(null);
   const [showError, setShowError] = useState(false);
-  const [profitStop, setProfitStop] = useState(50);
-  const [lossStop, setLossStop] = useState(50);
+  const [profitStop, setProfitStop] = useState(null);
+  const [lossStop, setLossStop] = useState(null);
 
   /*
   Function called when the user attempts to save changes. Will check all the user values and 
   attempt to update them.
   */
   const saveChanges = () => {
-    if (
-      investorName === null ||
-      investorName === " " ||
-      profitStop === 0 ||
-      lossStop === 0
-    ) {
+    if (investorName === null || investorName.trim().length < 2) {
       setShowError(true);
       setTimeout(() => {
         setShowError(false);

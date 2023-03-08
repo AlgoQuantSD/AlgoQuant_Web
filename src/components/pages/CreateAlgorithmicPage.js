@@ -230,7 +230,7 @@ const CreateAlgorithmicPage = () => {
           {/* Stocks */}
           <div className="flex flex-col w-4/12 p-3">
             <p className="text-green text-2xl font-semibold mb-2">
-              Select stocks to invest
+              Select assets to track
             </p>
             <StockSelect
               getSearchResults={getSearchResults}
@@ -266,7 +266,9 @@ const CreateAlgorithmicPage = () => {
               </p>
             ) : null}
             {stocksError ? (
-              <p className="text-red mt-3">Select assets to track</p>
+              <p className="text-red mt-3">
+                Please include at least one asset for your investor
+              </p>
             ) : null}
           </div>
         </div>

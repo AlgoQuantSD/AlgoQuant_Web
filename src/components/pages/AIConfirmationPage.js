@@ -36,11 +36,15 @@ const AIConfirmationPage = () => {
               <p className="text-green text-2xl font-medium mb-5">
                 {location.state.value.investorName}
               </p>
-              <p className="text-green text-2xl font-medium mb-5">
-                {location.state.value.profitStop}%
+              <p className="text-green text-2xl font-medium mb-2">
+                {location.state.value.profitStop === null
+                  ? "N/A"
+                  : `${location.state.value.profitStop}%`}
               </p>
-              <p className="text-green text-2xl font-medium mb-5">
-                {location.state.value.lossStop}%
+              <p className="text-green text-2xl font-medium mb-2">
+                {location.state.value.lossStop === null
+                  ? "N/A"
+                  : `${location.state.value.lossStop}%`}
               </p>
             </div>
           </div>
