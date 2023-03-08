@@ -3,7 +3,7 @@ import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useLocation } from "react-router-dom";
 
-const InvestorConfirmationPage = () => {
+const AIConfirmationPage = () => {
   const location = useLocation();
 
   return (
@@ -44,6 +44,7 @@ const InvestorConfirmationPage = () => {
               </p>
             </div>
           </div>
+
           {/* Create Investor Button */}
           <div className="mt-10">
             <button className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2">
@@ -56,4 +57,4 @@ const InvestorConfirmationPage = () => {
   );
 };
 
-export default InvestorConfirmationPage;
+export default AIConfirmationPage;

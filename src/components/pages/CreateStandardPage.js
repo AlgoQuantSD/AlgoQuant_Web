@@ -7,6 +7,12 @@ import IndicatorSelect from "../singular/IndicatorSelect";
 import { useNavigate } from "react-router-dom";
 
 const CreateStandardPage = () => {
+  const navigate = useNavigate();
+
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+
+  // State variables used to keep track of user input
   const [investorName, setInvestorName] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [tradeFrequency, setTradeFrequency] = useState("Select");
@@ -14,18 +20,19 @@ const CreateStandardPage = () => {
   const [lossStop, setLossStop] = useState(50);
   const [selectedIndicators, setSelectedIndicators] = useState([]);
   const [selectedStocks, setSelectedStocks] = useState([]);
-  const navigate = useNavigate();
 
-  const [showError, setShowError] = useState(false);
-  const [showStopError, setShowStopError] = useState(false);
+  // State variables used to display error messages to the user
+  const [nameError, setNameError] = useState(false);
+  const [tradeFrequencyError, setTradeFrequencyError] = useState(false);
+  const [indicatorError, setIndicatorError] = useState(false);
+  const [stocksError, setStocksError] = useState(false);
 
-  // State variables used to access algoquant SDK API and display/ keep state of user data from database
-  const algoquantApi = useContext(AlgoquantApiContext);
-
+  // Function called anytime a user selects an indicator
   const handleIndicatorSelect = (selectedOptions) => {
     setSelectedIndicators(selectedOptions);
   };
 
+  // Function called anytime a user selects a stock
   const handleStockSelect = (stocks) => {
     setSelectedStocks(stocks);
   };
@@ -35,27 +42,29 @@ const CreateStandardPage = () => {
   attempt to update them.
   */
   const saveChanges = () => {
-    if (
-      investorName === null ||
-      investorName === "" ||
-      tradeFrequency === "Select" ||
-      selectedIndicators.length === 0 ||
-      profitStop === 0 ||
-      lossStop === 0 ||
-      selectedStocks.length === 0
-    ) {
-      setShowError(true);
+    if (investorName === null || investorName === "") {
+      setNameError(true);
       setTimeout(() => {
-        setShowError(false);
+        setNameError(false);
       }, 3500); // hide the error message after 3.5 seconds
       return;
-    } else if (profitStop > 100 || lossStop > 100) {
-      setShowStopError(true);
+    } else if (tradeFrequency === "Select") {
+      setTradeFrequencyError(true);
       setTimeout(() => {
-        setShowStopError(false);
+        setTradeFrequencyError(false);
       }, 3500);
-      return;
+    } else if (selectedIndicators.length === 0) {
+      setIndicatorError(true);
+      setTimeout(() => {
+        setIndicatorError(false);
+      }, 3500);
+    } else if (selectedIndicators.length === 0) {
+      setStocksError(true);
+      setTimeout(() => {
+        setStocksError(false);
+      }, 3500);
     } else {
+      // If all the user values are valid, create the investor
       let value = {
         investorName: investorName,
         tradeFrequency: tradeFrequency,
@@ -66,6 +75,12 @@ const CreateStandardPage = () => {
       };
       createInvestor(value);
     }
+  };
+
+  // Navigates the user to the confirmation page and passes the user values to the page
+  const createInvestor = (value) => {
+    sessionStorage.setItem("formData", JSON.stringify(value));
+    navigate("/confirmation", { state: { value: value } });
   };
 
   /*
@@ -92,12 +107,6 @@ const CreateStandardPage = () => {
     setSearchResults([]);
   };
 
-  // Function called anytime a user hits Create Investor with all of the fields correctly inputted
-  // This will send all the input data to the backend to create a new investor
-  const createInvestor = (value) => {
-    navigate("/confirmation", { state: { value: value } });
-  };
-
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
@@ -110,8 +119,8 @@ const CreateStandardPage = () => {
             </h1>
           </div>
 
+          {/* Name */}
           <div className="flex mt-6">
-            {/* Name */}
             <div className="flex flex-col w-1/2 p-3">
               <p className="text-green text-2xl font-semibold mb-2">
                 What do you want to call your investor?
@@ -176,6 +185,7 @@ const CreateStandardPage = () => {
               <p className="text-green text-2xl font-semibold mb-2">
                 Set Conditions
               </p>
+
               {/* Profit Stop */}
               <div className="flex">
                 <div className="flex flex-col p-4 w-5/12">
@@ -188,13 +198,14 @@ const CreateStandardPage = () => {
                   <input
                     className="outline-none focus:outline-none text-center w-20 bg-smokewhite font-semibold text-md cursor-default flex items-center text-green outline-none"
                     type="number"
-                    placeholder={50}
+                    placeholder={null}
                     onChange={(event) => {
                       setProfitStop(event.target.value);
                     }}
                   />
                 </div>
               </div>
+
               {/* Loss Stop */}
               <div className="flex">
                 <div className="flex flex-col p-4 w-5/12">
@@ -207,7 +218,7 @@ const CreateStandardPage = () => {
                   <input
                     className="outline-none focus:outline-none text-center w-20 bg-smokewhite font-semibold text-md cursor-default flex items-center text-green outline-none"
                     type="number"
-                    placeholder={50}
+                    placeholder={null}
                     onChange={(event) => {
                       setLossStop(event.target.value);
                     }}
@@ -240,14 +251,24 @@ const CreateStandardPage = () => {
             >
               Create Investor
             </button>
-            {showError ? (
+            {nameError ? (
               <p className="text-red mt-3">
-                Please fill out all fields before creating an investor
+                Please include a name for your investor
               </p>
             ) : null}
-            {showStopError ? (
+            {tradeFrequencyError ? (
               <p className="text-red mt-3">
-                Profit / Loss Stop must be a percentage between 0 and 100
+                Please include a trade frequency for your investor
+              </p>
+            ) : null}
+            {indicatorError ? (
+              <p className="text-red mt-3">
+                Please include at least one indicator for your investor
+              </p>
+            ) : null}
+            {stocksError ? (
+              <p className="text-red mt-3">
+                Please include at least one stock for your investor
               </p>
             ) : null}
           </div>

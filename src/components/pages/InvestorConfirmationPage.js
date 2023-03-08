@@ -20,60 +20,68 @@ const InvestorConfirmationPage = () => {
               Please review over the information and confirm that it is correct.
             </p>
           </div>
-          <ul className="grid gap-8 mt-5">
-            <li className="flex">
+          <div className="grid grid-cols-2 gap-8 mt-5 w-1/2">
+            <div className="flex flex-col">
               <p className="text-green text-2xl font-semibold mb-2">
                 Investor Name:
               </p>
               <p className="text-green text-2xl font-semibold mb-2">
-                {location.state.value.investorName}
-              </p>
-            </li>
-            <li className="flex">
-              <p className="text-green text-2xl font-semibold mb-2">
                 Trade Frequency:
               </p>
-              <p className="text-green text-2xl font-semibold mb-2">
-                {location.state.value.tradeFrequency}
-              </p>
-            </li>
-
-            <li className="flex">
               <p className="text-green text-2xl font-semibold mb-2">
                 Profit Stop:
               </p>
               <p className="text-green text-2xl font-semibold mb-2">
-                {location.state.value.profitStop}%
-              </p>
-            </li>
-
-            <li className="flex">
-              <p className="text-green text-2xl font-semibold mb-2">
                 Loss Stop:
               </p>
-              <p className="text-green text-2xl font-semibold mb-2">
-                {location.state.value.lossStop}%
-              </p>
-            </li>
-
-            <li className="flex">
               <p className="text-green text-2xl font-semibold mb-2">
                 Selected Indicators:
               </p>
               <p className="text-green text-2xl font-semibold mb-2">
-                {location.state.value.indicators.join(", ")}
-              </p>
-            </li>
-
-            <li className="flex">
-              <p className="text-green text-2xl font-semibold mb-2">
                 Stock Tickers:
               </p>
-              <p className="text-green text-2xl font-semibold mb-2">
+            </div>
+            <div className="flex flex-col w-screen">
+              <p className="text-green text-2xl font-medium mb-2">
+                {location.state.value.investorName}
+              </p>
+              <p className="text-green text-2xl font-medium mb-2">
+                {location.state.value.tradeFrequency === "minutes"
+                  ? "High Frequency Day Trader - 30 minutes"
+                  : location.state.value.tradeFrequency === "hour"
+                  ? "Low Frequency Day Trader - 1 hour"
+                  : location.state.value.tradeFrequency === "hours"
+                  ? "High Frequency Swing Trader - 4 hours"
+                  : location.state.value.tradeFrequency === "day"
+                  ? "Low Frequency Swing Trader - 1 day"
+                  : location.state.value.tradeFrequency === "week"
+                  ? "High Frequency Long Trader - 1 week"
+                  : location.state.value.tradeFrequency === "month"
+                  ? "Low Frequency Long Trader - 1 month"
+                  : ""}
+              </p>
+              <p className="text-green text-2xl font-medium mb-2">
+                {location.state.value.profitStop}%
+              </p>
+              <p className="text-green text-2xl font-medium mb-2">
+                {location.state.value.lossStop}%
+              </p>
+              <p className="text-green text-2xl font-medium mb-2">
+                {location.state.value.indicators
+                  .map((indicator) => indicator.toUpperCase())
+                  .join(", ")}
+              </p>
+              <p className="text-green text-2xl font-medium mb-2">
                 {location.state.value.stocks.join(", ")}
               </p>
-            </li>
-          </ul>
+            </div>
+            {/* Create Investor Button */}
+            <div className="mt-10">
+              <button className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2">
+                Confirm
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

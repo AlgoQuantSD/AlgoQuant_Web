@@ -29,10 +29,10 @@ const IndicatorSelect = ({ onOptionsSelect }) => {
   };
 
   return (
-    <div className="p-3">
+    <div className="p-1">
       <ul>
         {options.map(({ value, label }) => (
-          <li key={value} className="pl-6 text-green text-lg font-bold m-4">
+          <li key={value} className=" text-green text-lg font-bold m-3">
             <label className="inline-flex items-center cursor-pointer">
               <input
                 className="form-checkbox text-green-500 mr-2 h-6 w-6"
