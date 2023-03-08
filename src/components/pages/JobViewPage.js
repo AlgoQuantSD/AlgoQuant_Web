@@ -13,12 +13,6 @@ import { GraphSpinner } from "../reusable/LoadSpinner";
 // The amount of data (trade history for a user) that is being fetched for each api call
 const FETCH_AMOUNT = 5;
 
-// Enum to show the state of the button used for trades on this page - either to call active trades or past trades
-const BUTTONSTATE = {
-  ACTIVE: 0,
-  PAST: 1,
-};
-
 const JobViewPage = () => {
   // used to get the passed job_id from the navigation routing
   const location = useLocation();
@@ -146,6 +140,7 @@ const JobViewPage = () => {
         algoquantApi
           .getPerformance(timeframe)
           .then((resp) => {
+            console.log(resp.data);
             setXValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
@@ -292,7 +287,7 @@ const JobViewPage = () => {
     { key: "buyOrSell", title: "Buy or Sell" },
     { key: "stockTicker", title: "Stock Ticker" },
     { key: "shares", title: "Shares" },
-    { key: "amount", title: "Amount" },
+    { key: "avgPrice", title: "Amount" },
     { key: "date", title: "Date" },
   ];
 
@@ -339,9 +334,6 @@ const JobViewPage = () => {
           </div>
           <div class="flex justify-between items-center mb-4">
             <p className="text-green font-bold text-5xl">Recent Trades</p>
-            <button class="bg-green hover:bg-gold text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded mr-4">
-              View Job's previous trades
-            </button>
           </div>
           <Table data={transactions} header={header}></Table>
           <div className="p-6 pt-24 pb-20 overflow-auto	">
