@@ -30,7 +30,7 @@ const CreateInvestorPage = () => {
               </div>
             </Link>
             <Link
-              to="/createstandard"
+              to="/createalgo"
               className="flex flex-col justify-center items-center w-1/2 h-full bg-green hover:bg-selection-green relative"
             >
               <div>

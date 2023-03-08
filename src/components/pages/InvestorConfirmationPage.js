@@ -61,10 +61,14 @@ const InvestorConfirmationPage = () => {
                   : ""}
               </p>
               <p className="text-green text-2xl font-medium mb-2">
-                {location.state.value.profitStop}%
+                {location.state.value.profitStop === null
+                  ? "N/A"
+                  : `${location.state.value.profitStop}%`}
               </p>
               <p className="text-green text-2xl font-medium mb-2">
-                {location.state.value.lossStop}%
+                {location.state.value.lossStop === null
+                  ? "N/A"
+                  : `${location.state.value.lossStop}%`}
               </p>
               <p className="text-green text-2xl font-medium mb-2">
                 {location.state.value.indicators

@@ -6,7 +6,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import IndicatorSelect from "../singular/IndicatorSelect";
 import { useNavigate } from "react-router-dom";
 
-const CreateStandardPage = () => {
+const CreateAlgorithmicPage = () => {
   const navigate = useNavigate();
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
@@ -16,8 +16,8 @@ const CreateStandardPage = () => {
   const [investorName, setInvestorName] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [tradeFrequency, setTradeFrequency] = useState("Select");
-  const [profitStop, setProfitStop] = useState(50);
-  const [lossStop, setLossStop] = useState(50);
+  const [profitStop, setProfitStop] = useState(null);
+  const [lossStop, setLossStop] = useState(null);
   const [selectedIndicators, setSelectedIndicators] = useState([]);
   const [selectedStocks, setSelectedStocks] = useState([]);
 
@@ -42,7 +42,7 @@ const CreateStandardPage = () => {
   attempt to update them.
   */
   const saveChanges = () => {
-    if (investorName === null || investorName === "") {
+    if (investorName === null || investorName.trim().length < 2) {
       setNameError(true);
       setTimeout(() => {
         setNameError(false);
@@ -79,7 +79,6 @@ const CreateStandardPage = () => {
 
   // Navigates the user to the confirmation page and passes the user values to the page
   const createInvestor = (value) => {
-    sessionStorage.setItem("formData", JSON.stringify(value));
     navigate("/confirmation", { state: { value: value } });
   };
 
@@ -253,7 +252,7 @@ const CreateStandardPage = () => {
             </button>
             {nameError ? (
               <p className="text-red mt-3">
-                Please include a name for your investor
+                Investor name must be at least 2 characters long
               </p>
             ) : null}
             {tradeFrequencyError ? (
@@ -267,9 +266,7 @@ const CreateStandardPage = () => {
               </p>
             ) : null}
             {stocksError ? (
-              <p className="text-red mt-3">
-                Please include at least one stock for your investor
-              </p>
+              <p className="text-red mt-3">Select assets to track</p>
             ) : null}
           </div>
         </div>
@@ -278,4 +275,4 @@ const CreateStandardPage = () => {
   );
 };
 
-export default CreateStandardPage;
+export default CreateAlgorithmicPage;

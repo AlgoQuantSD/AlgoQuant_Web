@@ -13,7 +13,7 @@ import SearchResultsPage from "./components/pages/SearchResultsPage";
 import JobViewPage from "./components/pages/JobViewPage";
 import InvestorViewPage from "./components/pages/InvestorViewPage";
 import JobHistoryPage from "./components/pages/JobHistoryPage";
-import CreateStandardPage from "./components/pages/CreateStandardPage";
+import CreateAlgorithmicPage from "./components/pages/CreateAlgorithmicPage";
 import CreateAIPage from "./components/pages/CreateAIPage";
 import InvestorConfirmationPage from "./components/pages/InvestorConfirmationPage";
 import AIConfirmationPage from "./components/pages/AIConfirmationPage";
@@ -82,10 +82,10 @@ export function PageRouter() {
             }
           />
           <Route
-            path="/createstandard"
+            path="/createalgo"
             element={
               <RequireAuth>
-                <CreateStandardPage />
+                <CreateAlgorithmicPage />
               </RequireAuth>
             }
           />
