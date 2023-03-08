@@ -53,8 +53,8 @@ const CreateAIPage = () => {
             <h1 className="text-gold font-bold text-5xl">Create AI Investor</h1>
           </div>
           <div className="flex w-full">
+            {/* Name */}
             <div className="flex flex-col w-1/2">
-              {/* Name */}
               <div className="p-3 mt-6">
                 <p className="text-green text-2xl font-semibold mb-2">
                   What do you want to call your investor?
@@ -74,6 +74,7 @@ const CreateAIPage = () => {
                 <p className="text-green text-2xl font-semibold mb-2">
                   Set Conditions
                 </p>
+
                 {/* Profit Stop */}
                 <div className="flex">
                   <div className="flex flex-col p-4 w-5/12">
@@ -95,6 +96,7 @@ const CreateAIPage = () => {
                     />
                   </div>
                 </div>
+
                 {/* Loss Stop */}
                 <div className="flex">
                   <div className="flex flex-col p-4 w-5/12">
@@ -114,6 +116,7 @@ const CreateAIPage = () => {
                     />
                   </div>
                 </div>
+
                 {/* Create Investor Button */}
                 <div className="p-3 mt-10">
                   <button

@@ -25,16 +25,10 @@ const CreateInvestorPage = () => {
               <div>
                 <img src={bot1} alt="bot" className="h-72 mt-12" />
                 <p className="mb-1 text-white font-semibold flex justify-center">
-                  P R E M I U M
+                  A R T I F I C I A L &nbsp; I N T E L L I G E N C E
                 </p>
               </div>
             </Link>
-            <div className="hidden absolute bottom-full left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md text-white bg-black">
-              <p>
-                Premium investors have access to advanced features and exclusive
-                support.
-              </p>
-            </div>
             <Link
               to="/createstandard"
               className="flex flex-col justify-center items-center w-1/2 h-full bg-green hover:bg-selection-green relative"
@@ -42,16 +36,10 @@ const CreateInvestorPage = () => {
               <div>
                 <img src={investor1} alt="investor" className="h-72 mt-12" />
                 <p className="mb-1 text-white font-semibold flex justify-center">
-                  S T A N D A R D
+                  A L G O R I T H M I C
                 </p>
               </div>
             </Link>
-            <div className="hidden absolute bottom-full left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md text-white bg-black">
-              <p>
-                Standard investors have access to basic features and standard
-                support.
-              </p>
-            </div>
           </div>
         </div>
       </div>
