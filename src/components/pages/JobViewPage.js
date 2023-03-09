@@ -321,7 +321,7 @@ const JobViewPage = () => {
           <StopJobModal
             setStopJobModal={setStopJobModal}
             stopJobModal={stopJobModal}
-            investor={location.state.value}
+            jobObj={job}
           />
           <div class="flex justify-between items-center mb-8">
             <p className="text-green font-bold text-5xl">{job?.name} Job</p>
@@ -366,13 +366,7 @@ const JobViewPage = () => {
           <div class="flex justify-between items-center mb-4">
             <p className="text-green font-bold text-5xl">Recent Trades</p>
           </div>
-          {transactions.length > 0 ? (
-            <Table data={transactions} header={header}></Table>
-          ) : (
-            <p className="text-green font-bold text-xl">
-              No trades have been performed on this job
-            </p>
-          )}
+          <Table data={transactions} header={header}></Table>
           <div className="p-6 pt-24 pb-20 overflow-auto	">
             {page === 1 ? (
               <button
