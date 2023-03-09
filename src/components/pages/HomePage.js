@@ -283,7 +283,7 @@ const HomePage = () => {
                       >
                         View all transactions
                       </Link>
-                      <JobGallery type={selectedTabFilter} />
+                      <JobGallery type={selectedTabFilter} jobID={null} />
                     </div>
                   );
                 default:

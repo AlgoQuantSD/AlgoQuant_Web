@@ -16,7 +16,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
 
-const JobGallery = ({ type }) => {
+const JobGallery = ({ type, jobID }) => {
   const navigate = useNavigate();
 
   /*
@@ -46,14 +46,14 @@ const JobGallery = ({ type }) => {
     type === tabFilters.JOB
       ? "Currently there are no active jobs..."
       : "Currently there are no past jobs...";
-
+  console.log(jobList);
   // CallBack function that fetchs for job list data in a paginiated manner
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
       setIsLoading(true);
 
       algoquantApi
-        .getJobList(type, null, lekJobId)
+        .getJobList(type, jobID, lekJobId)
         .then((resp) => {
           setlekJobId(resp.data.LEK_job_id);
           setJobList(jobList.concat(resp.data.jobs));
@@ -80,6 +80,7 @@ const JobGallery = ({ type }) => {
     jobList,
     lekJobId,
     type,
+    jobID,
   ]);
 
   // Function to call more data job data (if there is more) once user scrolled to the bottom of the component
@@ -121,11 +122,10 @@ const JobGallery = ({ type }) => {
 
               <div className="flex w-1/3 justify-center py-2">
                 <p className="text-cokewhite text-xl font-medium self-center">
-                  {job.percentage_change >= 0 ? "+" : "-"} $
-                  {Math.abs(job.percentage_change).toFixed(2)} (
-                  {job.percentChanged}%)
+                  ${Math.abs(job.total_job_val).toFixed(2)} (
+                  {job.percentage_change}%)
                 </p>
-                {job.recentPrice - job.open >= 0 ? (
+                {job.percentage_change >= 0 ? (
                   <BsFillCaretUpFill className="ml-2 self-center text-md text-bright-green" />
                 ) : (
                   <BsCaretDownFill className="ml-2 self-center text-md text-red" />
