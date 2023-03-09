@@ -24,10 +24,8 @@ const JobGallery = ({ type }) => {
   Function called anytime a user selects View Job in the Job Gallery. Will navigate
   a user to the Job page passing in the value.
   */
-  const viewJob = (value) => {
-    if (type === tabFilters.JOB) navigate("/job", { state: { value: value } });
-    else if (type === tabFilters.HISTORY)
-      navigate("/jobhistory", { state: { value: value } });
+  const viewJob = (value, type) => {
+    navigate("/job", { state: { value: value, type: type } });
   };
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
@@ -143,7 +141,7 @@ const JobGallery = ({ type }) => {
                 />
                 <button
                   onClick={() => {
-                    viewJob(job.job_id);
+                    viewJob(job.job_id, type);
                   }}
                 >
                   <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />

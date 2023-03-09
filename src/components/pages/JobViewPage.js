@@ -10,6 +10,10 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import formatter from "../utils/CurrencyFormatter";
 import { filters } from "../utils/filtersEnum";
 import { GraphSpinner } from "../reusable/LoadSpinner";
+import { TableSpinner } from "../reusable/LoadSpinner";
+import { tabFilters } from "../utils/hometabFilterEnum";
+import { FaLock } from "react-icons/fa";
+
 // The amount of data (trade history for a user) that is being fetched for each api call
 const FETCH_AMOUNT = 5;
 
@@ -47,10 +51,12 @@ const JobViewPage = () => {
   const [graphLoading, setGraphLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState(null);
 
-  const [stopJobModal, setStopJobModal] = useState(null);
+  // state variable to hold the job (active or past) object or used for get-job related endpoint
+  const [job, setJob] = useState(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
-  // State variable to track the state of the trades active or past trades
-  const [ButtonState, SetButtonState] = useState();
+  const [stopJobModal, setStopJobModal] = useState(null);
 
   // Aggregated JSON object containing all the related performance stats of the user
   // All combined to a single object - so only need to pass a single prop to children components instead of multiple
@@ -65,6 +71,8 @@ const JobViewPage = () => {
   ];
 
   console.log("job " + location.state.value);
+  console.log("type:" + location.state.type);
+  console.log("job object: ", job);
 
   // functions to handle a page change
   const handleNextClick = () => {
@@ -84,7 +92,22 @@ const JobViewPage = () => {
       algoquantApi
         .getJob(location.state.value)
         .then((resp) => {
-          console.log(resp.data);
+          setJob(resp.data);
+          setStartDate(
+            new Date(parseInt(resp.data?.start_time)).toLocaleString("en-US", {
+              month: "numeric",
+              day: "numeric",
+              year: "numeric",
+            })
+          );
+
+          setEndDate(
+            new Date(parseInt(resp.data?.end_time)).toLocaleString("en-US", {
+              month: "numeric",
+              day: "numeric",
+              year: "numeric",
+            })
+          );
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
@@ -101,7 +124,6 @@ const JobViewPage = () => {
         algoquantApi
           .getTrades(FETCH_AMOUNT, location.state.value, lastKey)
           .then((resp) => {
-            console.log(resp.data);
             setPagesSeen(pagesSeen + 1);
             if (resp.data.LEK_timestamp === undefined) {
               setLastPage(true);
@@ -140,7 +162,6 @@ const JobViewPage = () => {
         algoquantApi
           .getPerformance(timeframe)
           .then((resp) => {
-            console.log(resp.data);
             setXValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
@@ -274,7 +295,7 @@ const JobViewPage = () => {
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);
     // eslint-disable-next-line
-  }, [getData]);
+  }, [selectedFilter, getData]);
 
   // get the job once
   useEffect(() => {
@@ -303,17 +324,27 @@ const JobViewPage = () => {
             investor={location.state.value}
           />
           <div class="flex justify-between items-center mb-8">
-            <p className="text-green font-bold text-5xl">
-              {location.state.value.name} Job
-            </p>
-            <button
-              className="rounded bg-red text-white px-4 py-2 mt-3"
-              onClick={() => {
-                setStopJobModal(true);
-              }}
-            >
-              Stop Job
-            </button>
+            <p className="text-green font-bold text-5xl">{job?.name} Job</p>
+            {location.state.type === tabFilters.JOB ? (
+              <button
+                className="rounded bg-red text-white px-4 py-2 mt-3"
+                onClick={() => {
+                  setStopJobModal(true);
+                }}
+              >
+                Stop Job
+              </button>
+            ) : (
+              <div className="flex items-center justify-between text-right">
+                <p className="text-green font-semibold text-lg pr-4">
+                  Completed Job
+                  <br></br>
+                  {startDate} - {endDate}
+                </p>
+
+                <FaLock className="text-xl text-green" />
+              </div>
+            )}
           </div>
           <GraphStats
             stockData={aggregatedPerformanceData}
@@ -335,7 +366,13 @@ const JobViewPage = () => {
           <div class="flex justify-between items-center mb-4">
             <p className="text-green font-bold text-5xl">Recent Trades</p>
           </div>
-          <Table data={transactions} header={header}></Table>
+          {transactions.length > 0 ? (
+            <Table data={transactions} header={header}></Table>
+          ) : (
+            <p className="text-green font-bold text-xl">
+              No trades have been performed on this job
+            </p>
+          )}
           <div className="p-6 pt-24 pb-20 overflow-auto	">
             {page === 1 ? (
               <button
