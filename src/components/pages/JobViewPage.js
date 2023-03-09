@@ -160,7 +160,7 @@ const JobViewPage = () => {
       setGraphLoading(true);
       if (algoquantApi.token) {
         algoquantApi
-          .getPerformance(timeframe)
+          .getPerformance(timeframe, location.state.value)
           .then((resp) => {
             setXValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
@@ -237,7 +237,7 @@ const JobViewPage = () => {
           });
       }
     },
-    [algoquantApi]
+    [algoquantApi, location]
   );
 
   /*
