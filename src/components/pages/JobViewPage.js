@@ -76,7 +76,7 @@ const JobViewPage = () => {
 
   // functions to handle a page change
   const handleNextClick = () => {
-    if (pagesSeen <= page) {
+    if (pagesSeen <= page && !lastPage) {
       setIsLoading(true);
     }
     setPage(page + 1);
@@ -277,7 +277,7 @@ const JobViewPage = () => {
     const newTransactions = [];
     let itemCounter = 0;
 
-    fetchTrades(FETCH_AMOUNT);
+    fetchTrades();
 
     //  this is whats gonna handle what shows on screen
     for (let i = (page - 1) * FETCH_AMOUNT; i < history.length; i++) {
@@ -366,7 +366,11 @@ const JobViewPage = () => {
           <div class="flex justify-between items-center mb-4">
             <p className="text-green font-bold text-5xl">Recent Trades</p>
           </div>
-          <Table data={transactions} header={header}></Table>
+          {isLoading ? (
+            <TableSpinner />
+          ) : (
+            <Table data={transactions} header={header} />
+          )}
           <div className="p-6 pt-24 pb-20 overflow-auto	">
             {page === 1 ? (
               <button

@@ -17,7 +17,6 @@ import { SaveSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
 
 const JobGallery = ({ type }) => {
-  console.log(type);
   const navigate = useNavigate();
 
   /*

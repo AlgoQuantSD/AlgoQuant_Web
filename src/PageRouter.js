@@ -12,6 +12,10 @@ import SignInPage from "./components/pages/SignInPage";
 import SearchResultsPage from "./components/pages/SearchResultsPage";
 import JobViewPage from "./components/pages/JobViewPage";
 import InvestorViewPage from "./components/pages/InvestorViewPage";
+import CreateAlgorithmicPage from "./components/pages/CreateAlgorithmicPage";
+import CreateAIPage from "./components/pages/CreateAIPage";
+import InvestorConfirmationPage from "./components/pages/InvestorConfirmationPage";
+import AIConfirmationPage from "./components/pages/AIConfirmationPage";
 
 import AlgoquantApiContext from "./api/ApiContext";
 import initAlgoQuantApi from "../src/api/ApiUtils";
@@ -73,6 +77,38 @@ export function PageRouter() {
             element={
               <RequireAuth>
                 <CreateInvestorPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createalgo"
+            element={
+              <RequireAuth>
+                <CreateAlgorithmicPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createai"
+            element={
+              <RequireAuth>
+                <CreateAIPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/confirmation"
+            element={
+              <RequireAuth>
+                <InvestorConfirmationPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/aiconfirmation"
+            element={
+              <RequireAuth>
+                <AIConfirmationPage />
               </RequireAuth>
             }
           />
