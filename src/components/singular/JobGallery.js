@@ -80,6 +80,7 @@ const JobGallery = ({ type, jobID }) => {
     jobList,
     lekJobId,
     type,
+    jobID,
   ]);
 
   // Function to call more data job data (if there is more) once user scrolled to the bottom of the component
