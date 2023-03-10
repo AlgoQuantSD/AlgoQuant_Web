@@ -46,7 +46,7 @@ const JobGallery = ({ type, jobID }) => {
     type === tabFilters.JOB
       ? "Currently there are no active jobs..."
       : "Currently there are no past jobs...";
-  console.log(jobList);
+
   // CallBack function that fetchs for job list data in a paginiated manner
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
@@ -103,7 +103,7 @@ const JobGallery = ({ type, jobID }) => {
     <div
       ref={divRef}
       onScroll={handleScroll}
-      className="mt-14 p-4 h-96 overflow-auto"
+      className="mt-8 p-4 h-96 overflow-auto"
     >
       {jobList.length === 0 && !isLoading ? (
         <p className="text-center font-medium text-green">{NoDataString}</p>
