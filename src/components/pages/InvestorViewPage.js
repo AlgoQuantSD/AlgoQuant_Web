@@ -70,7 +70,7 @@ const InvestorViewPage = () => {
           />
           <div className="flex pt-10 justify-between">
             <div className="">
-              <h1 className="text-white font-bold text-5xl mb-10 p-4 bg-green rounded-2xl">
+              <h1 className="text-green font-bold text-5xl mb-10 p-4">
                 {investor?.investor_name} Investor
               </h1>
             </div>
