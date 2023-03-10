@@ -74,7 +74,7 @@ const TransactionHistoryPage = () => {
     const newTransactions = [];
     let itemCounter = 0;
 
-    fetchTrades(FETCH_AMOUNT);
+    fetchTrades();
 
     //  this is whats gonna handle what shows on screen
     for (let i = (page - 1) * FETCH_AMOUNT; i < history.length; i++) {
