@@ -4,7 +4,6 @@ import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot from "../../assets/images/investors/bot1.png";
-import Table from "../reusable/Table";
 import JobModal from "../singular/Modals/JobModal";
 import DeleteInvestorModal from "../singular/Modals/DeleteInvestorModal";
 import AlgoquantApiContext from "../../api/ApiContext";
@@ -20,17 +19,6 @@ const InvestorViewPage = () => {
 
   // State variable to hold investor object returned from get-investor endpoint
   const [investor, setInvestor] = useState(null);
-
-  // State variables for an investors job list
-  // State variable to hold array of job objects
-  const [jobList, setJobList] = useState([]);
-  // Loading stop when switching from viewing active jobs to past jobs
-  const [isJobListLoading, setIsJobListLoading] = useState(false);
-  // Used for pagination of the job list data
-  // last evaluated key - used for the api to know if there is more data to fetch
-  // lastQUery - true if last evaluated key comes back undefined, aka no more queries
-  const [lekJobId, setlekJobId] = useState(null);
-  const [lastQuery, setLastQuery] = useState(false);
 
   // used to keep track of what jobs to pull either active or past jobs, uses the tabFilter enum
   const [buttonStatus, setButtonStatus] = useState(tabFilters.JOB);
@@ -51,77 +39,18 @@ const InvestorViewPage = () => {
     }
   }, [algoquantApi, location, setInvestor]);
 
-  // CallBack function that fetchs for job list data in a paginiated manner
-  // FetchType: "active" or "complete"
-  // UPDATE: USE THE INVESTOR OF FROM THE SECOND API CALL !!!
-  const getJobList = useCallback(
-    (fetchType) => {
-      setIsJobListLoading(true);
-      if (!lastQuery) {
-        if (algoquantApi.token) {
-          algoquantApi
-            .getJobList(fetchType, location.state.value, lekJobId)
-            .then((resp) => {
-              console.log("getJobList", resp.data);
-              setlekJobId(resp.data.LEK_job_id);
-              setJobList(jobList.concat(resp.data.jobs));
-
-              if (resp.data.LEK_job_id === undefined) {
-                setLastQuery(true);
-              } else {
-                setlekJobId(resp.data.LEK_job_id);
-              }
-              setIsJobListLoading(false);
-            })
-            .catch((err) => {
-              setIsJobListLoading(false);
-              // TODO: Need to implement better error handling
-              console.log(err);
-            });
-        }
-      }
-    },
-    [
-      lastQuery,
-      algoquantApi,
-      setlekJobId,
-      setJobList,
-      setLastQuery,
-      location,
-      lekJobId,
-      jobList,
-    ]
-  );
+  // if button is clicked switch between active or past jobs
+  const handleTradeButton = () => {
+    console.log("pressed");
+    buttonStatus === tabFilters.JOB
+      ? setButtonStatus(tabFilters.HISTORY)
+      : setButtonStatus(tabFilters.JOB);
+  };
 
   useEffect(() => {
     console.log("investorview useeffect");
     getInvestor();
-    getJobList("active");
-  }, [getInvestor, getJobList]);
-  // header used for the columns on the table
-  const header = [
-    { key: "jobName", title: "Job Name" },
-    { key: "balance", title: "Balance" },
-  ];
-
-  const data = [
-    {
-      jobName: "Job 1",
-      balance: "$128.34 (4.8%)",
-    },
-    {
-      jobName: "Job 2",
-      balance: "$128.34 (4.8%)",
-    },
-    {
-      jobName: "Job 3",
-      balance: "$128.34 (4.8%)",
-    },
-    {
-      jobName: "Job 4",
-      balance: "$128.34 (4.8%)",
-    },
-  ];
+  }, [getInvestor]);
 
   return (
     <div className="bg-cokewhite ">
@@ -176,7 +105,7 @@ const InvestorViewPage = () => {
                 <img
                   src={investorPhotos[10 % investorPhotos.length]}
                   alt=""
-                  className="h-52 mt-6 mb-6"
+                  className="h-80 mt-6 mb-6"
                 />
               ) : (
                 <img src={bot} alt="bot" className="h-72 mt-12" />
@@ -255,8 +184,13 @@ const InvestorViewPage = () => {
               <h1 className="text-green font-bold text-3xl ">
                 {investor?.investor_name}'s Recent Jobs
               </h1>
-              <button className="bg-green hover:bg-gold items-center text-white font-medium rounded-lg bg-green px-4 py-3">
-                View past trades
+              <button
+                className="bg-green hover:bg-gold items-center text-white font-medium rounded-lg bg-green px-4 py-3"
+                onClick={handleTradeButton}
+              >
+                {buttonStatus === tabFilters.JOB
+                  ? "View past jobs"
+                  : "View active jobs"}
               </button>
             </div>
             <JobGallery type={buttonStatus} investorID={location.state.value} />

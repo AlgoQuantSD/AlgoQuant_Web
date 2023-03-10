@@ -47,6 +47,7 @@ const JobGallery = ({ type, investorID }) => {
       ? "Currently there are no active jobs..."
       : "Currently there are no past jobs...";
   console.log(jobList);
+  console.log(type);
   // CallBack function that fetchs for job list data in a paginiated manner
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
@@ -99,6 +100,16 @@ const JobGallery = ({ type, investorID }) => {
     // eslint-disable-next-line
   }, [algoquantApi]);
 
+  // useeffect to clear out previous data
+  useEffect(() => {
+    setJobList([]);
+    setlekJobId(null);
+    setLastQuery(false);
+    if (jobList.length === 0) {
+      getjobList();
+    }
+    // eslint-disable-next-line
+  }, [type]);
   return (
     <div
       ref={divRef}
