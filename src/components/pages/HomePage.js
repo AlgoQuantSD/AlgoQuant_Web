@@ -283,10 +283,7 @@ const HomePage = () => {
                       >
                         View all transactions
                       </Link>
-                      <JobGallery
-                        type={"selectedTabFilter"}
-                        investorID={null}
-                      />
+                      <JobGallery type={selectedTabFilter} investorID={null} />
                     </div>
                   );
                 default:

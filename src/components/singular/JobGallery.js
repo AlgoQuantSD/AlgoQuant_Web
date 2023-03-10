@@ -46,13 +46,11 @@ const JobGallery = ({ type, investorID }) => {
     type === tabFilters.JOB || type === null
       ? "Currently there are no active jobs..."
       : "Currently there are no past jobs...";
-  console.log(jobList);
-  console.log(type);
+  console.log(investorID);
   // CallBack function that fetchs for job list data in a paginiated manner
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
       setIsLoading(true);
-
       algoquantApi
         .getJobList(type, investorID, lekJobId)
         .then((resp) => {
@@ -96,18 +94,17 @@ const JobGallery = ({ type, investorID }) => {
 
   // Used to call the initial job list when the user switches to job tab
   useEffect(() => {
-    getjobList();
+    if (jobList.length === 0 && lekJobId === null && !lastQuery) {
+      getjobList();
+    }
     // eslint-disable-next-line
-  }, [algoquantApi]);
+  }, [algoquantApi, jobList, lekJobId, lastQuery]);
 
   // useeffect to clear out previous data
   useEffect(() => {
     setJobList([]);
     setlekJobId(null);
     setLastQuery(false);
-    if (jobList.length === 0) {
-      getjobList();
-    }
     // eslint-disable-next-line
   }, [type]);
   return (
