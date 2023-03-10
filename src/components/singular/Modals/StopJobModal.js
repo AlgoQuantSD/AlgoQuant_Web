@@ -15,7 +15,7 @@ const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
   const handleClose = () => {
     setStopJobModal(null);
   };
-  console.log("from stop modal", jobObj);
+
   // This function will implement the Stop Job function. For now it just
   // closes the modal.
   const handleStop = () => {
