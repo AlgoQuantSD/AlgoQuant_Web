@@ -1,12 +1,46 @@
-import { React } from "react";
+import { React, useState, useContext } from "react";
 import Modal from "../Modal";
+import AlgoquantApiContext from "../../../api/ApiContext";
 
 const JobModal = ({ setJobModal, jobModal, investor }) => {
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+
   /*
   Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
   attributes of the Modal
   */
   const handleClose = () => {
+    setJobModal(null);
+  };
+
+  // State variables used to keep track and hold the values a user enters into the input box
+  const [jobName, setJobName] = useState(null);
+  const [initInvestment, setInitInvestment] = useState(null);
+
+  // Function to update the jobName variable with what the user enters when input is changed/used
+  const handleJobNameInput = (event) => {
+    setJobName(event.target.value);
+  };
+
+  // Function to update the initInvestment variable with what the user enters when input is changed/used
+  const handleInitInvestmentInput = (event) => {
+    setInitInvestment(event.target.value);
+  };
+
+  // Function to start a job based on investor and input from user, attached to a button and close modal
+  const handleSubmitStartJob = () => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .createJob(parseInt(initInvestment), investor?.investor_id, jobName)
+        .then((resp) => {
+          console.log(resp.data);
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log("Create-Job:", err);
+        });
+    }
     setJobModal(null);
   };
 
@@ -16,7 +50,7 @@ const JobModal = ({ setJobModal, jobModal, investor }) => {
         <div className="bg-smokewhite p-2 rounded border-4 border-green">
           <div className="p-6 flex items-center justify-between">
             <h3 className="text-2xl font-bold text-green">
-              Start Job for {investor && investor.investor_name}
+              Start Job for {investor && investor.investor_name} Investor
             </h3>
             <button
               className="text-white bg-green px-2 shadow-md"
@@ -40,16 +74,23 @@ const JobModal = ({ setJobModal, jobModal, investor }) => {
               className="bg-light-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-lg caret-green text-green"
               type="text"
               placeholder="Job 1"
+              value={jobName}
+              onChange={handleJobNameInput}
             />
             <p className="text-green text-sm text-left">Initial Investment</p>
             <input
               className="bg-light-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-full appearance-none leading-normal shadow-lg caret-green text-green"
-              type="text"
-              placeholder="$100"
+              type="number"
+              placeholder="100"
+              value={initInvestment}
+              onChange={handleInitInvestmentInput}
             />
           </div>
           <div className="p-6 flex justify-end">
-            <button className="text-white bg-green py-2 px-6 rounded shadow-md">
+            <button
+              className="text-white bg-green py-2 px-6 rounded shadow-md"
+              onClick={handleSubmitStartJob}
+            >
               Start Job
             </button>
           </div>

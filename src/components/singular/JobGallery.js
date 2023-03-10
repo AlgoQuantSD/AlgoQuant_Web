@@ -66,7 +66,7 @@ const JobGallery = ({ type, investorID }) => {
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
-          console.log(err.body);
+          console.log(err);
         });
     }
   }, [
