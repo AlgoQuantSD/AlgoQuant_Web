@@ -8,12 +8,13 @@ import Table from "../reusable/Table";
 import JobModal from "../singular/Modals/JobModal";
 import DeleteInvestorModal from "../singular/Modals/DeleteInvestorModal";
 import AlgoquantApiContext from "../../api/ApiContext";
+import JobGallery from "../singular/JobGallery";
+import { tabFilters } from "../utils/hometabFilterEnum";
 
 const InvestorViewPage = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const location = useLocation();
-  const [page, setPage] = useState(1);
   const [jobModal, setJobModal] = useState(null);
   const [deleteInvestorModal, setDeleteInvestorModal] = useState(null);
 
@@ -30,6 +31,9 @@ const InvestorViewPage = () => {
   // lastQUery - true if last evaluated key comes back undefined, aka no more queries
   const [lekJobId, setlekJobId] = useState(null);
   const [lastQuery, setLastQuery] = useState(false);
+
+  // used to keep track of what jobs to pull either active or past jobs, uses the tabFilter enum
+  const [buttonStatus, setButtonStatus] = useState(tabFilters.JOB);
 
   // CallBack function that fetchs for job list data in a paginiated manner
   const getInvestor = useCallback(() => {
@@ -119,17 +123,8 @@ const InvestorViewPage = () => {
     },
   ];
 
-  // functions to handle a page change
-  const handleNextClick = () => {
-    setPage(page + 1);
-  };
-
-  const handlePreviousClick = () => {
-    setPage(page - 1);
-  };
-
   return (
-    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+    <div className="bg-cokewhite ">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -174,7 +169,7 @@ const InvestorViewPage = () => {
             </button>
           </div>
 
-          <div className="flex h-1/4">
+          <div className="flex h-2/5">
             <div className="flex justify-center w-1/2">
               {investor?.type === "I" ? (
                 // Find out how to receive the photo associated with the selected investor
@@ -187,14 +182,14 @@ const InvestorViewPage = () => {
                 <img src={bot} alt="bot" className="h-72 mt-12" />
               )}
             </div>
-            <div class="flex justify-center">
-              <div class="block max-w-sm w-full md:max-w-md lg:max-w-lg rounded-lg bg-green text-center shadow-lg dark:bg-neutral-700">
-                <div class="border-b-2 border-white py-3 px-6 dark:border-neutral-600 dark:text-neutral-50">
-                  <p className="text-green text-3xl  text-white font-semibold">
+            <div className="flex justify-center">
+              <div className="block max-w-sm w-full md:max-w-md lg:max-w-lg  h-5/6 rounded-lg bg-green text-center shadow-lg dark:bg-neutral-700">
+                <div className="border-b-2 border-white py-3 px-6 dark:border-neutral-600 dark:text-neutral-50">
+                  <p className="text-green text-3xl text-white font-semibold">
                     Investor Configuration
                   </p>
                 </div>
-                <div class="p-4">
+                <div className="p-4">
                   <table className="table-auto md:table-fixed w-full">
                     <tbody>
                       <tr>
@@ -243,7 +238,7 @@ const InvestorViewPage = () => {
                         <td className="px-4 py-2 text-xl font-semibold text-white pb-10">
                           Type:
                         </td>
-                        <td className="px-4 py-2 text-lg text-white pb-10">
+                        <td className="px-4 py-2 text-lg text-white pb">
                           {investor?.type === "I"
                             ? "Algorithmic"
                             : "Artifical Intelligence"}
@@ -255,37 +250,16 @@ const InvestorViewPage = () => {
               </div>
             </div>
           </div>
-          <div className="mt-24 mx-auto w-3/4 ">
-            <div className="flex justify-between items-center mb-10">
-              <h1 className="text-green font-semibold text-3xl">
+          <div className="mt-4 mx-auto w-full">
+            <div className="flex justify-between items-center">
+              <h1 className="text-green font-bold text-3xl ">
                 {investor?.investor_name}'s Recent Jobs
               </h1>
-              <button className="bg-green hover:bg-gold text-white font-semibold py-2 px-4 border border-gray-400 rounded-md shadow">
+              <button className="bg-green hover:bg-gold items-center text-white font-medium rounded-lg bg-green px-4 py-3">
                 View past trades
               </button>
             </div>
-
-            <Table data={data} header={header}></Table>
-
-            <div className="p-6 pt-24 pb-20 overflow-auto	">
-              <button
-                className="text-cokewhite rounded-md w-28 h-10 bg-green py-2 px-6"
-                onClick={handlePreviousClick}
-              >
-                Previous
-              </button>
-
-              <button
-                className="text-cokewhite w-28 h-10 rounded-md bg-green py-2 px-6 float-right"
-                onClick={handleNextClick}
-              >
-                Next
-              </button>
-
-              <p className="text-md font-light text-center text-light-gray mt-5">
-                {"Page " + page}
-              </p>
-            </div>
+            <JobGallery type={buttonStatus} investorID={location.state.value} />
           </div>
         </div>
       </div>

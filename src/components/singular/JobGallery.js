@@ -16,7 +16,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
 
-const JobGallery = ({ type, jobID }) => {
+const JobGallery = ({ type, investorID }) => {
   const navigate = useNavigate();
 
   /*
@@ -43,7 +43,7 @@ const JobGallery = ({ type, jobID }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const NoDataString =
-    type === tabFilters.JOB
+    type === tabFilters.JOB || type === null
       ? "Currently there are no active jobs..."
       : "Currently there are no past jobs...";
   console.log(jobList);
@@ -53,7 +53,7 @@ const JobGallery = ({ type, jobID }) => {
       setIsLoading(true);
 
       algoquantApi
-        .getJobList(type, jobID, lekJobId)
+        .getJobList(type, investorID, lekJobId)
         .then((resp) => {
           setlekJobId(resp.data.LEK_job_id);
           setJobList(jobList.concat(resp.data.jobs));
@@ -80,7 +80,7 @@ const JobGallery = ({ type, jobID }) => {
     jobList,
     lekJobId,
     type,
-    jobID,
+    investorID,
   ]);
 
   // Function to call more data job data (if there is more) once user scrolled to the bottom of the component
@@ -103,7 +103,7 @@ const JobGallery = ({ type, jobID }) => {
     <div
       ref={divRef}
       onScroll={handleScroll}
-      className="mt-14 p-4 h-96 overflow-auto"
+      className="mt-4 p-4 h-96 overflow-auto"
     >
       {jobList.length === 0 && !isLoading ? (
         <p className="text-center font-medium text-green">{NoDataString}</p>
