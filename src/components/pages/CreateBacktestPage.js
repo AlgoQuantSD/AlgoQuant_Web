@@ -1,11 +1,21 @@
-import React from 'react';
+import React from "react";
+import Navbar from "../reusable/NavBar";
+import Sidebar from "../reusable/SideBar";
 
 const CreateBacktestPage = () => {
   return (
-    <div className="flex bg-dark-gray overflow-x-scroll">
-      <h1 className='font-semibold text-5xl text-white text-center pt-32'>Create Backtest Page</h1>
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      <Navbar />
+      <div className="flex self-stretch">
+        <Sidebar />
+        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
+          <div className="flex pt-10">
+            <h1 className="text-green font-bold text-5xl">Create a Backtest</h1>
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default CreateBacktestPage;

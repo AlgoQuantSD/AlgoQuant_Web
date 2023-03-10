@@ -17,6 +17,7 @@ import CreateAlgorithmicPage from "./components/pages/CreateAlgorithmicPage";
 import CreateAIPage from "./components/pages/CreateAIPage";
 import InvestorConfirmationPage from "./components/pages/InvestorConfirmationPage";
 import AIConfirmationPage from "./components/pages/AIConfirmationPage";
+import CreateBacktestPage from "./components/pages/CreateBacktestPage";
 
 import AlgoquantApiContext from "./api/ApiContext";
 import initAlgoQuantApi from "../src/api/ApiUtils";
@@ -134,6 +135,14 @@ export function PageRouter() {
             element={
               <RequireAuth>
                 <BacktestingPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createbacktest"
+            element={
+              <RequireAuth>
+                <CreateBacktestPage />
               </RequireAuth>
             }
           />
