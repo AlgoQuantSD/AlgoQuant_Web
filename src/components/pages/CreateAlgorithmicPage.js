@@ -152,22 +152,20 @@ const CreateAlgorithmicPage = () => {
                 defaultValue="Select"
               >
                 <option value="Select">Select</option>
-                <option value="minutes">
+                <option value="30_min">
                   High Frequency Day Trader - 30 minutes
                 </option>
-                <option value="1_hour">
-                  Low Frequency Day Trader - 1 hour
-                </option>
-                <option value="4_hours">
+                <option value="1_hr">Low Frequency Day Trader - 1 hour</option>
+                <option value="4_hr">
                   High Frequency Swing Trader - 4 hours
                 </option>
                 <option value="1_day">
                   Low Frequency Swing Trader - 1 day
                 </option>
-                <option value="1_week">
+                <option value="1_wk">
                   High Frequency Long Trader - 1 week
                 </option>
-                <option value="1_month">
+                <option value="1_mo">
                   Low Frequency Long Trader - 1 month
                 </option>
               </select>
