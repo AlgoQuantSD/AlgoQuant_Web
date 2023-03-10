@@ -70,7 +70,7 @@ const InvestorViewPage = () => {
           />
           <div className="flex pt-10 justify-between">
             <div className="">
-              <h1 className="text-green font-bold text-5xl mb-10 p-4">
+              <h1 className="text-green font-bold text-5xl mb-10">
                 {investor?.investor_name} Investor
               </h1>
             </div>
@@ -112,7 +112,7 @@ const InvestorViewPage = () => {
               )}
             </div>
             <div className="flex justify-center">
-              <div className="block max-w-sm w-full md:max-w-md lg:max-w-lg  h-5/6 rounded-lg bg-green text-center shadow-lg dark:bg-neutral-700">
+              <div className="block max-w-sm w-full md:max-w-md lg:max-w-lg   rounded-lg bg-green text-center shadow-lg dark:bg-neutral-700">
                 <div className="border-b-2 border-white py-3 px-6 dark:border-neutral-600 dark:text-neutral-50">
                   <p className="text-green text-3xl text-white font-semibold">
                     Investor Configuration
@@ -173,6 +173,14 @@ const InvestorViewPage = () => {
                             : "Artifical Intelligence"}
                         </td>
                       </tr>
+                      <tr>
+                        <td className="px-4 py-2 text-xl font-semibold text-white pb-10">
+                          Frequency:
+                        </td>
+                        <td className="px-4 py-2 text-lg text-white pb">
+                          {investor?.frequency}
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -180,7 +188,7 @@ const InvestorViewPage = () => {
             </div>
           </div>
           <div className="mt-4 mx-auto w-full">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center pt-8">
               <h1 className="text-green font-bold text-3xl ">
                 {investor?.investor_name}'s Recent Jobs
               </h1>
