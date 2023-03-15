@@ -11,6 +11,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { GraphSpinner } from "../reusable/LoadSpinner";
 import { filters } from "../utils/filtersEnum";
 import { tabFilters } from "../utils/hometabFilterEnum";
+import { Auth } from "aws-amplify";
 
 const HomePage = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
@@ -56,8 +57,10 @@ const HomePage = () => {
 
   // CallBack function used to obtain user's performance information
   const getGraphData = useCallback(
-    (timeframe) => {
+    async (timeframe) => {
       setGraphLoading(true);
+      const accessToken = await Auth.currentSession();
+      console.log(accessToken.getAccessToken().getExpiration());
       if (algoquantApi.token) {
         algoquantApi
           .getPerformance(timeframe)
