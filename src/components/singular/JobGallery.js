@@ -16,7 +16,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
 
-const JobGallery = ({ type, jobID }) => {
+const JobGallery = ({ type, investorID }) => {
   const navigate = useNavigate();
 
   /*
@@ -43,17 +43,15 @@ const JobGallery = ({ type, jobID }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const NoDataString =
-    type === tabFilters.JOB
+    type === tabFilters.JOB || type === null
       ? "Currently there are no active jobs..."
       : "Currently there are no past jobs...";
-
   // CallBack function that fetchs for job list data in a paginiated manner
   const getjobList = useCallback(() => {
     if (algoquantApi.token) {
       setIsLoading(true);
-
       algoquantApi
-        .getJobList(type, jobID, lekJobId)
+        .getJobList(type, investorID, lekJobId)
         .then((resp) => {
           setlekJobId(resp.data.LEK_job_id);
           setJobList(jobList.concat(resp.data.jobs));
@@ -68,7 +66,7 @@ const JobGallery = ({ type, jobID }) => {
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
-          console.log(err.body);
+          console.log(err);
         });
     }
   }, [
@@ -80,7 +78,7 @@ const JobGallery = ({ type, jobID }) => {
     jobList,
     lekJobId,
     type,
-    jobID,
+    investorID,
   ]);
 
   // Function to call more data job data (if there is more) once user scrolled to the bottom of the component
@@ -95,15 +93,24 @@ const JobGallery = ({ type, jobID }) => {
 
   // Used to call the initial job list when the user switches to job tab
   useEffect(() => {
-    getjobList();
+    if (jobList.length === 0 && lekJobId === null && !lastQuery) {
+      getjobList();
+    }
     // eslint-disable-next-line
-  }, [algoquantApi]);
+  }, [algoquantApi, jobList, lekJobId, lastQuery]);
 
+  // useeffect to clear out previous data
+  useEffect(() => {
+    setJobList([]);
+    setlekJobId(null);
+    setLastQuery(false);
+    // eslint-disable-next-line
+  }, [type]);
   return (
     <div
       ref={divRef}
       onScroll={handleScroll}
-      className="mt-8 p-4 h-96 overflow-auto"
+      className="mt-4 p-4 h-96 overflow-auto"
     >
       {jobList.length === 0 && !isLoading ? (
         <p className="text-center font-medium text-green">{NoDataString}</p>
