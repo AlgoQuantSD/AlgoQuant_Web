@@ -7,6 +7,7 @@ const InvestorDropdown = ({
   startJob,
   viewInvestor,
   deleteInvestor,
+  startBacktest,
   investor,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -75,7 +76,13 @@ const InvestorDropdown = ({
           >
             View Investor
           </button>
-          <button className="block px-4 py-2 text-left w-full text-green hover:bg-smokewhite border-b border-light-gray">
+          <button
+            className="block px-4 py-2 text-left w-full text-green hover:bg-smokewhite border-b border-light-gray"
+            onClick={() => {
+              setShowDropdown(false);
+              startBacktest(investor);
+            }}
+          >
             Start a Backtest
           </button>
           <button
