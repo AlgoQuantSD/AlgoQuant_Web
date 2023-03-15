@@ -16,18 +16,15 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
 
-const JobGallery = ({ type }) => {
-  console.log(type);
+const JobGallery = ({ type, jobID }) => {
   const navigate = useNavigate();
 
   /*
   Function called anytime a user selects View Job in the Job Gallery. Will navigate
   a user to the Job page passing in the value.
   */
-  const viewJob = (value) => {
-    if (type === tabFilters.JOB) navigate("/job", { state: { value: value } });
-    else if (type === tabFilters.HISTORY)
-      navigate("/jobhistory", { state: { value: value } });
+  const viewJob = (value, type) => {
+    navigate("/job", { state: { value: value, type: type } });
   };
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
@@ -56,7 +53,7 @@ const JobGallery = ({ type }) => {
       setIsLoading(true);
 
       algoquantApi
-        .getJobList(type, null, lekJobId)
+        .getJobList(type, jobID, lekJobId)
         .then((resp) => {
           setlekJobId(resp.data.LEK_job_id);
           setJobList(jobList.concat(resp.data.jobs));
@@ -83,6 +80,7 @@ const JobGallery = ({ type }) => {
     jobList,
     lekJobId,
     type,
+    jobID,
   ]);
 
   // Function to call more data job data (if there is more) once user scrolled to the bottom of the component
@@ -105,7 +103,7 @@ const JobGallery = ({ type }) => {
     <div
       ref={divRef}
       onScroll={handleScroll}
-      className="mt-14 p-4 h-96 overflow-auto"
+      className="mt-8 p-4 h-96 overflow-auto"
     >
       {jobList.length === 0 && !isLoading ? (
         <p className="text-center font-medium text-green">{NoDataString}</p>
@@ -124,11 +122,10 @@ const JobGallery = ({ type }) => {
 
               <div className="flex w-1/3 justify-center py-2">
                 <p className="text-cokewhite text-xl font-medium self-center">
-                  {job.percentage_change >= 0 ? "+" : "-"} $
-                  {Math.abs(job.percentage_change).toFixed(2)} (
-                  {job.percentChanged}%)
+                  ${Math.abs(job.total_job_val).toFixed(2)} (
+                  {job.percentage_change}%)
                 </p>
-                {job.recentPrice - job.open >= 0 ? (
+                {job.percentage_change >= 0 ? (
                   <BsFillCaretUpFill className="ml-2 self-center text-md text-bright-green" />
                 ) : (
                   <BsCaretDownFill className="ml-2 self-center text-md text-red" />
@@ -143,7 +140,7 @@ const JobGallery = ({ type }) => {
                 />
                 <button
                   onClick={() => {
-                    viewJob(job);
+                    viewJob(job.job_id, type);
                   }}
                 >
                   <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
