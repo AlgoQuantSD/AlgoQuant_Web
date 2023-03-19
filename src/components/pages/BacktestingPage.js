@@ -1,13 +1,10 @@
 import { React, useState } from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import Table from "../reusable/Table";
 
 const BacktestingPage = () => {
   const [page, setPage] = useState(1);
-  const [pagesSeen, setPagesSeen] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
 
   // header used for the columns on the table
   const header = [
@@ -19,46 +16,40 @@ const BacktestingPage = () => {
     { key: "dateRange", title: "Date Range" },
   ];
 
-  const transactions = [
-    {
-      backtestName: "Backtest 1",
-      investor: "Investor 1",
-      initialInvestment: "$100,000",
-      finalBalance: "$120,000",
-      profitLoss: "$20,000",
-      dateRange: "01/01/2020 - 01/01/2021",
-    },
-    {
-      backtestName: "Backtest 2",
-      investor: "Investor 2",
-      initialInvestment: "$100,000",
-      finalBalance: "$120,000",
-      profitLoss: "$20,000",
-      dateRange: "01/01/2020 - 01/01/2021",
-    },
-    {
-      backtestName: "Backtest 3",
-      investor: "Investor 3",
-      initialInvestment: "$100,000",
-      finalBalance: "$120,000",
-      profitLoss: "$20,000",
-      dateRange: "01/01/2020 - 01/01/2021",
-    },
-    {
-      backtestName: "Backtest 4",
-      investor: "Investor 4",
-      initialInvestment: "$100,000",
-      finalBalance: "$120,000",
-      profitLoss: "$20,000",
-      dateRange: "01/01/2020 - 01/01/2021",
-    },
-  ];
+  // generate dummy data
+  const generateData = (numTransactions) => {
+    const data = [];
+    for (let i = 1; i <= numTransactions; i++) {
+      const backtestName = `Backtest ${i}`;
+      const investor = `Investor ${i}`;
+      const initialInvestment = `$${Math.floor(
+        Math.random() * 100000 + 100000
+      )}`;
+      const finalBalance = `$${Math.floor(Math.random() * 20000 + 100000)}`;
+      const profitLoss = `$${Math.floor(Math.random() * 10000 + 10000)}`;
+      const dateRange = `01/01/2020 - 01/01/2021`;
+      data.push({
+        backtestName,
+        investor,
+        initialInvestment,
+        finalBalance,
+        profitLoss,
+        dateRange,
+      });
+    }
+    return data;
+  };
+
+  const numTransactions = 25; // number of dummy transactions to generate
+  const transactions = generateData(numTransactions);
+
+  const transactionsPerPage = 10; // number of transactions to show per page
+  const startIndex = (page - 1) * transactionsPerPage;
+  const endIndex = startIndex + transactionsPerPage;
+  const visibleTransactions = transactions.slice(startIndex, endIndex);
 
   // functions to handle a page change
   const handleNextClick = () => {
-    if (pagesSeen <= page) {
-      setIsLoading(true);
-    }
     setPage(page + 1);
   };
 
@@ -74,12 +65,6 @@ const BacktestingPage = () => {
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
           <div className="flex pt-10">
             <h1 className="text-green font-bold text-5xl">Backtesting</h1>
-            <Link
-              to={"/createbacktest"}
-              className="relative text-white bg-green rounded-lg px-4 py-3 font-medium ml-10"
-            >
-              Create New Backtest
-            </Link>
           </div>
           <p className="text-faded-green text-2xl font-light w-1/2 mt-5">
             AlgoQuant allows you to backtest your investors against historical
@@ -91,45 +76,39 @@ const BacktestingPage = () => {
               Completed Backtests
             </h1>
           </div>
-          {/* {isLoading ? (
-            <TableSpinner />
-          ) : ( */}
-          <>
-            <Table data={transactions} header={header}></Table>
-            <div className="p-6 pt-24 pb-20 overflow-auto	">
-              {page === 1 ? (
-                <button
-                  className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
-                  disabled
-                ></button>
-              ) : (
-                <button
-                  className="text-cokewhite rounded-md w-28 h-10 bg-green py-2 px-6"
-                  onClick={handlePreviousClick}
-                >
-                  Previous
-                </button>
-              )}
+          <Table data={visibleTransactions} header={header}></Table>
+          <div className="p-6 pt-24 pb-20 overflow-auto	">
+            {page === 1 ? (
+              <button
+                className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
+                disabled
+              ></button>
+            ) : (
+              <button
+                className="text-cokewhite rounded-md w-28 h-10 bg-green py-2 px-6"
+                onClick={handlePreviousClick}
+              >
+                Previous
+              </button>
+            )}
 
-              {transactions.length < 10 ? (
-                <button
-                  className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
-                  disabled
-                ></button>
-              ) : (
-                <button
-                  className="text-cokewhite w-28 h-10 rounded-md bg-green py-2 px-6 float-right"
-                  onClick={handleNextClick}
-                >
-                  Next
-                </button>
-              )}
-              <p className="text-md font-light text-center text-light-gray mt-5">
-                {"Page " + page}
-              </p>
-            </div>
-          </>
-          {/* )} */}
+            {endIndex >= transactions.length ? (
+              <button
+                className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
+                disabled
+              ></button>
+            ) : (
+              <button
+                className="text-cokewhite w-28 h-10 rounded-md bg-green py-2 px-6 float-right"
+                onClick={handleNextClick}
+              >
+                Next
+              </button>
+            )}
+            <p className="text-md font-light text-center text-light-gray mt-5">
+              {"Page " + page}
+            </p>
+          </div>
         </div>
       </div>
     </div>
