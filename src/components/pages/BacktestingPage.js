@@ -69,7 +69,7 @@ const BacktestingPage = () => {
           <p className="text-faded-green text-2xl font-light w-1/2 mt-5">
             AlgoQuant allows you to backtest your investors against historical
             data so you can see how your investors would have performed in the
-            past
+            past.
           </p>
           <div className="flex pt-10">
             <h1 className="text-green font-bold sm:text-3xl md:text-4xl mb-10">
