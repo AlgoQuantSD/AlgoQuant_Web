@@ -1,61 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot from "../../assets/images/investors/bot1.png";
-import Table from "../reusable/Table";
 import JobModal from "../singular/Modals/JobModal";
 import DeleteInvestorModal from "../singular/Modals/DeleteInvestorModal";
+import AlgoquantApiContext from "../../api/ApiContext";
+import JobGallery from "../singular/JobGallery";
+import { tabFilters } from "../utils/hometabFilterEnum";
 
 const InvestorViewPage = () => {
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
   const location = useLocation();
-  const [page, setPage] = useState(1);
   const [jobModal, setJobModal] = useState(null);
   const [deleteInvestorModal, setDeleteInvestorModal] = useState(null);
 
-  // dummy data for the table
-  const profitStop = "$50";
-  const lossStop = "$30";
-  const stockTicker = "AAPL";
-  const indicators = ["RSI", "MACD", "SMA"];
+  // State variable to hold investor object returned from get-investor endpoint
+  const [investor, setInvestor] = useState(null);
 
-  // header used for the columns on the table
-  const header = [
-    { key: "jobName", title: "Job Name" },
-    { key: "balance", title: "Balance" },
-  ];
+  // used to keep track of what jobs to pull either active or past jobs, uses the tabFilter enum
+  const [buttonStatus, setButtonStatus] = useState(tabFilters.JOB);
 
-  const data = [
-    {
-      jobName: "Job 1",
-      balance: "$128.34 (4.8%)",
-    },
-    {
-      jobName: "Job 2",
-      balance: "$128.34 (4.8%)",
-    },
-    {
-      jobName: "Job 3",
-      balance: "$128.34 (4.8%)",
-    },
-    {
-      jobName: "Job 4",
-      balance: "$128.34 (4.8%)",
-    },
-  ];
+  // CallBack function that fetchs for job list data in a paginiated manner
+  const getInvestor = useCallback(() => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .getInvestor(location.state.value)
+        .then((resp) => {
+          console.log(resp.data);
+          setInvestor(resp.data);
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log(err.body);
+        });
+    }
+  }, [algoquantApi, location, setInvestor]);
 
-  // functions to handle a page change
-  const handleNextClick = () => {
-    setPage(page + 1);
+  // if button is clicked switch between active or past jobs
+  const handleTradeButton = () => {
+    console.log("pressed");
+    buttonStatus === tabFilters.JOB
+      ? setButtonStatus(tabFilters.HISTORY)
+      : setButtonStatus(tabFilters.JOB);
   };
 
-  const handlePreviousClick = () => {
-    setPage(page - 1);
-  };
+  useEffect(() => {
+    console.log("investorview useeffect");
+    getInvestor();
+  }, [getInvestor]);
 
   return (
-    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+    <div className="bg-cokewhite ">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -63,17 +61,17 @@ const InvestorViewPage = () => {
           <JobModal
             setJobModal={setJobModal}
             jobModal={jobModal}
-            investor={location.state.value}
+            investor={investor}
           />
           <DeleteInvestorModal
             setDeleteInvestorModal={setDeleteInvestorModal}
             deleteInvestorModal={deleteInvestorModal}
-            investor={location.state.value}
+            investor={investor}
           />
           <div className="flex pt-10 justify-between">
             <div className="">
               <h1 className="text-green font-bold text-5xl mb-10">
-                {location.state.value.investor_name}
+                {investor?.investor_name} Investor
               </h1>
             </div>
 
@@ -100,90 +98,110 @@ const InvestorViewPage = () => {
             </button>
           </div>
 
-          <div className="flex h-1/4">
+          <div className="flex h-2/5">
             <div className="flex justify-center w-1/2">
-              {location.state.value.id === "investor" ? (
+              {investor?.type === "I" ? (
                 // Find out how to receive the photo associated with the selected investor
                 <img
                   src={investorPhotos[10 % investorPhotos.length]}
                   alt=""
-                  className="h-52 mt-6 mb-6"
+                  className="h-80 mt-6 mb-6"
                 />
               ) : (
                 <img src={bot} alt="bot" className="h-72 mt-12" />
               )}
             </div>
-            <div className="justify-center w-1/2 bg-cokewhite">
-              <p className="text-green text-3xl font-semibold">
-                Investor Configuration
-              </p>
-              <table className="table-auto mt-5">
-                <tbody>
-                  <tr>
-                    <td className="px-4 py-2 text-xl font-semibold">
-                      Profit Stop:
-                    </td>
-                    <td className="px-4 py-2 text-lg">{profitStop}</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 text-xl font-semibold">
-                      Loss Stop:
-                    </td>
-                    <td className="px-4 py-2 text-lg">{lossStop}</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 text-xl font-semibold">
-                      Stock Ticker:
-                    </td>
-                    <td className="px-4 py-2 text-lg">
-                      {stockTicker.split(",").map((ticker, index) => (
-                        <span key={index}>
-                          {index > 0 && ", "}
-                          {ticker}
-                        </span>
-                      ))}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 text-xl font-semibold">
-                      Indicators:
-                    </td>
-                    <td className="px-4 py-2 text-lg">
-                      {indicators.map((indicator, index) => (
-                        <span key={index}>
-                          {index > 0 && ", "}
-                          {indicator}
-                        </span>
-                      ))}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="flex justify-center">
+              <div className="block max-w-sm w-full md:max-w-md lg:max-w-lg   rounded-lg bg-green text-center shadow-lg dark:bg-neutral-700">
+                <div className="border-b-2 border-white py-3 px-6 dark:border-neutral-600 dark:text-neutral-50">
+                  <p className="text-green text-3xl text-white font-semibold">
+                    Investor Configuration
+                  </p>
+                </div>
+                <div className="p-4">
+                  <table className="table-auto md:table-fixed w-full">
+                    <tbody>
+                      <tr>
+                        <td className="px-4 py-2 text-xl text-white font-semibold">
+                          Profit Stop:
+                        </td>
+                        <td className="px-4 py-2 text-lg text-white">
+                          {investor?.profit_stop * 100}%
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 text-xl text-white font-semibold">
+                          Loss Stop:
+                        </td>
+                        <td className="px-4 py-2 text-lg text-white">
+                          {investor?.loss_stop * 100}%
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 text-xl font-semibold text-white">
+                          Stock Ticker:
+                        </td>
+                        <td className="px-4 py-2 text-lg text-white">
+                          {investor?.assets_to_track.map((ticker, index) => (
+                            <span key={index}>
+                              {index > 0 && ", "}
+                              {ticker}
+                            </span>
+                          ))}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 text-xl font-semibold text-white">
+                          Indicators:
+                        </td>
+                        <td className="px-4 py-2 text-lg text-white">
+                          {investor?.indicators.map((indicator, index) => (
+                            <span key={index}>
+                              {index > 0 && ", "}
+                              {indicator}
+                            </span>
+                          ))}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 text-xl font-semibold text-white pb-10">
+                          Type:
+                        </td>
+                        <td className="px-4 py-2 text-lg text-white pb">
+                          {investor?.type === "I"
+                            ? "Algorithmic"
+                            : "Artifical Intelligence"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-2 text-xl font-semibold text-white pb-10">
+                          Frequency:
+                        </td>
+                        <td className="px-4 py-2 text-lg text-white pb">
+                          {investor?.frequency}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="mt-24 mx-auto w-3/4">
-            <h1 className="text-green font-semibold text-3xl mb-10 flex justify-center">
-              {location.state.value.investor_name}'s Recent Jobs
-            </h1>
-            <Table data={data} header={header}></Table>
-            <div className="p-6 pt-24 pb-20 overflow-auto	">
+          <div className="mt-4 mx-auto w-full">
+            <div className="flex justify-between items-center pt-8">
+              <h1 className="text-green font-bold text-3xl ">
+                {investor?.investor_name}'s Recent Jobs
+              </h1>
               <button
-                className="text-cokewhite rounded-md w-28 h-10 bg-green py-2 px-6"
-                onClick={handlePreviousClick}
+                className="bg-green hover:bg-gold items-center text-white font-medium rounded-lg bg-green px-4 py-3"
+                onClick={handleTradeButton}
               >
-                Previous
+                {buttonStatus === tabFilters.JOB
+                  ? "View past jobs"
+                  : "View active jobs"}
               </button>
-
-              <button
-                className="text-cokewhite w-28 h-10 rounded-md bg-green py-2 px-6 float-right"
-                onClick={handleNextClick}
-              >
-                Next
-              </button>
-              <p className="text-md font-light text-center text-light-gray mt-5">
-                {"Page " + page}
-              </p>
             </div>
+            <JobGallery type={buttonStatus} investorID={location.state.value} />
           </div>
         </div>
       </div>

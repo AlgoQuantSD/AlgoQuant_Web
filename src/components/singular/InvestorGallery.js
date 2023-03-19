@@ -76,7 +76,7 @@ const InvestorGallery = ({ investorList }) => {
                 startJob={() => {
                   setSelectedInvestor(investor);
                 }}
-                viewInvestor={() => viewInvestor(investor)}
+                viewInvestor={() => viewInvestor(investor.investor_id)}
                 deleteInvestor={() => {
                   setSelectedInvestor(investor);
                 }}

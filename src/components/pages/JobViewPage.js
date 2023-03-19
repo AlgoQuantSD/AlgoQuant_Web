@@ -273,7 +273,7 @@ const JobViewPage = () => {
   // controls when fetchTrades functin will be called
   // uses transaction to show at most a FETCH_AMOUNT of history data on a page, uses a paginated approach to target the values from history. transaction variable changes with each page change to show new and the correct data on each page
   useEffect(() => {
-    console.log("useeffect otherone ");
+    console.log("useeffect otherone 1");
     const newTransactions = [];
     let itemCounter = 0;
 

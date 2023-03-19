@@ -1,11 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import AlgoquantApiContext from "../../api/ApiContext";
 
 const InvestorConfirmationPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+  console.log(location.state.value);
+  const handleConfirmButton = () => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .createInvestor(
+          location.state.value.stocks,
+          location.state.value.indicators,
+          2, // UPDATE NEED TO PUT IMAGE ID HERE
+          location.state.value.investorName,
+          parseFloat(location.state.value.lossStop) / 100, // will need to update this so we dont do this here
+          location.state.value.tradeFrequency,
+          parseFloat(location.state.value.profitStop) / 100, // will need to update this so we dont do this here
+          "I"
+        )
+        .then((resp) => {
+          console.log(resp.data);
+          navigate("/home");
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log(err);
+        });
+    }
+  };
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
@@ -81,7 +110,10 @@ const InvestorConfirmationPage = () => {
             </div>
             {/* Create Investor Button */}
             <div className="mt-10">
-              <button className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2">
+              <button
+                className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2"
+                onClick={handleConfirmButton}
+              >
                 Confirm
               </button>
             </div>

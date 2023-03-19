@@ -1,10 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import AlgoquantApiContext from "../../api/ApiContext";
 
 const AIConfirmationPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+  console.log(location.state.value);
+
+  const handleConfirmButton = () => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .createInvestor(
+          null,
+          null,
+          null, // UPDATE NEED TO PUT IMAGE ID HERE
+          location.state.value.investorName,
+          parseFloat(location.state.value.lossStop) / 100, // will need to update this so we dont do this here
+          null,
+          parseFloat(location.state.value.profitStop) / 100, // will need to update this so we dont do this here
+          "A"
+        )
+        .then((resp) => {
+          console.log(resp.data);
+          navigate("/home");
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log(err);
+        });
+    }
+  };
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
@@ -51,7 +82,10 @@ const AIConfirmationPage = () => {
 
           {/* Create Investor Button */}
           <div className="mt-10">
-            <button className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2">
+            <button
+              className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2"
+              onClick={handleConfirmButton}
+            >
               Confirm
             </button>
           </div>
