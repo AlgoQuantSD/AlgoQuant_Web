@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-
+import AlgoquantApiContext from "../../api/ApiContext";
 const CreateBacktestPage = () => {
   const location = useLocation();
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
 
   // State variables used to keep track of user input
   const [backtestName, setBacktestName] = useState(null);
@@ -16,6 +18,9 @@ const CreateBacktestPage = () => {
   const [nameError, setNameError] = useState(false);
   const [timeframeError, setTimeframeError] = useState(false);
   const [initialInvestmentError, setInitialInvestmentError] = useState(false);
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   // State variable used to display a success message to the user
   const [success, setSuccess] = useState(false);
@@ -40,6 +45,8 @@ const CreateBacktestPage = () => {
     const options = { year: "numeric", month: "short", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
+
+  // console.log("date: ", selectedDayRange);
 
   // Update the selectedDayRangeString state variable whenever the selectedDayRange state variable changes
   useEffect(() => {
@@ -100,6 +107,23 @@ const CreateBacktestPage = () => {
     } else {
       // If all the user input is valid, display a success message
       setSuccess(true);
+      // if (algoquantApi.token) {
+      //   algoquantApi
+      //     .createBacktest(
+      //       location.state.value.investor_id,
+      //       startDateUnixTimestamp,
+      //       endDateUnixTimestamp,
+      //       backtestName,
+      //       initialInvestment
+      //     )
+      //     .then((resp) => {
+      //       console.log(resp.data);
+      //     })
+      //     .catch((err) => {
+      //       // TODO: Need to implement better error handling
+      //       console.log(err);
+      //     });
+      // }
       setTimeout(() => {
         setSuccess(false);
       }, 3500);
@@ -179,6 +203,7 @@ const CreateBacktestPage = () => {
               className="text-green font-medium rounded-lg bg-cokewhite hover:bg-smokewhite border-2 border-green px-4 py-2"
               onClick={() => {
                 saveChanges();
+                console.log("pressed");
               }}
             >
               Start Backtest
