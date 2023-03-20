@@ -235,7 +235,7 @@ const ProfilePage = () => {
           ) : (
             <>
               <div className="m-10">
-                <div className="rounded-full w-32 h-32 bg-light-gray flex justify-center items-center mx-auto">
+                <div className="rounded-full w-32 h-32 bg-smokewhite flex justify-center items-center mx-auto">
                   <p
                     className="text- text-center font-light text-6xl flex"
                     data-testid="user-initials"

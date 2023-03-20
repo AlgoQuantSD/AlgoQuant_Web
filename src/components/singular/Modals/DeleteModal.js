@@ -4,7 +4,6 @@ import Modal from "../Modal";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const DeleteModal = ({ setDeleteModal, deleteModal }) => {
-
   const { user } = useAuthenticator((context) => [context.user]);
 
   const [password, setPassword] = useState(null);
@@ -18,7 +17,7 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
   const confirmDelete = async () => {
     // Attempt to signin using the provided username and password
     Auth.signIn(user?.attributes?.email, password.value)
-    // On sucessful sign in , the user can be deleted
+      // On sucessful sign in , the user can be deleted
       .then(() => {
         Auth.deleteUser()
           .then(() => {
@@ -33,28 +32,28 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
       });
   };
 
-    /*
+  /*
   Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
   attributes of the Modal
   */
   const handleClose = () => {
-    setError("")
-    setDeleteModal(false)
-  }
+    setError("");
+    setDeleteModal(false);
+  };
 
   return (
     <Modal isVisible={deleteModal} onClose={handleClose}>
-      <div className="bg-dark-gray p-2 rounded border border-red">
+      <div className="bg-cokewhite p-2 rounded border border-red">
         <div className="p-6">
           <h3 className="text-3xl font-bold text-red mb-5">Delete Account</h3>
-          <p className="text-light-gray font-medium mb-5 text-xl">
+          <p className="text-green font-medium mb-5 text-xl">
             Are you sure you want to delete your account?
           </p>
-          <p className="text-light-gray font-light mb-5">
+          <p className="text-green font-light mb-5">
             Please enter your password to confirm.
           </p>
           <input
-            className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="Password"
             onChange={handlePassword}
@@ -66,7 +65,7 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
         </div>
         <div className="p-6 flex justify-between">
           <button
-            className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
+            className="text-green bg-smokewhite py-2 px-6 rounded shadow-md"
             onClick={handleClose}
           >
             Cancel
