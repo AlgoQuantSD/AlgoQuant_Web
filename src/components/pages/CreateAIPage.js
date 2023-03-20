@@ -130,13 +130,7 @@ const CreateAIPage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col w-1/2 h-full">
-              <img
-                src={doggy}
-                alt="doggy"
-                className="h-full items-center flex justify-center"
-              />
-            </div>
+            <div className="flex flex-col w-1/2 h-full"></div>
           </div>
         </div>
       </div>
