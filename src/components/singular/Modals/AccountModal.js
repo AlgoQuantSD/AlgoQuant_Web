@@ -175,13 +175,13 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
             </div>
             <div className="p-6 flex justify-between">
               <button
-                className="text-green bg-smokewhite py-2 px-6 rounded shadow-md"
+                className="text-green bg-smokewhite py-2 px-4 rounded shadow-md"
                 onClick={handleClose}
               >
                 Cancel
               </button>
               <button
-                className="text-white bg-green py-2 px-6 rounded shadow-md"
+                className="text-white bg-green hover:bg-selection-green py-2 px-4 rounded shadow-md"
                 onClick={() => {
                   submitRequest();
                 }}
@@ -198,9 +198,9 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
     case ModalTypes.disconnect:
       return (
         <Modal isVisible={accountModal.visible} onClose={handleClose}>
-          <div className="bg-cokewhite p-2 rounded border border-red">
+          <div className="bg-cokewhite p-2 rounded border-2 border-another-gray">
             <div className="p-6">
-              <h3 className="text-3xl font-bold text-red mb-5">
+              <h3 className="text-3xl font-bold text-another-gray mb-5">
                 {" "}
                 {modalType === ModalTypes.disconnect
                   ? "Disconnect Alpaca"
@@ -215,14 +215,14 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
             <p className="text-red">{error}</p>
             <div className="p-6 flex justify-between">
               <button
-                className="text-green bg-smokewhite py-2 px-6 rounded shadow-md"
+                className="text-green bg-smokewhite py-2 px-4 rounded shadow-md"
                 onClick={handleClose}
                 data-testid="submit-button"
               >
                 Cancel
               </button>
               <button
-                className="text-white bg-red py-2 px-6 rounded shadow-md"
+                className="text-green bg-light-gray hover:bg-another-gray hover:text-smokewhite py-2 px-4 rounded shadow-md"
                 onClick={submitRequest}
               >
                 Confirm

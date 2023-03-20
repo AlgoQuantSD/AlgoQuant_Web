@@ -218,7 +218,7 @@ const ProfilePage = () => {
               My Account
             </h1>
             <button
-              className="text-cokewhite font-medium rounded-lg bg-green p-3 ml-auto"
+              className="text-green font-medium border-2 border-light-gray hover:bg-smokewhite rounded-lg p-3 ml-auto"
               onClick={() => {
                 // Either will reset and ask the user for new API keys are just reset simualted balance
                 alpacaConnection
@@ -362,9 +362,9 @@ const ProfilePage = () => {
                   </ul>
                 </li>
                 {/* Div for Save Changes and Signout Button*/}
-                <div className="flex">
+                <div className="flex justify-between items-center">
                   <button
-                    className="text-cokewhite font-medium rounded-lg bg-green p-4"
+                    className="text-cokewhite font-medium rounded-lg bg-green hover:bg-selection-green px-4 py-3"
                     onClick={() => {
                       setSaving(true);
                       saveChanges();
@@ -373,7 +373,7 @@ const ProfilePage = () => {
                     Save changes
                   </button>
                   <button
-                    className="text-cokewhite font-medium rounded-lg bg-red ml-auto p-4"
+                    className="text-cokewhite font-medium rounded-lg bg-red ml-auto px-4 py-3"
                     onClick={signOut}
                   >
                     Sign out

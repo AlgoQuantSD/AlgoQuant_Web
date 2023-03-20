@@ -43,7 +43,7 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
 
   return (
     <Modal isVisible={deleteModal} onClose={handleClose}>
-      <div className="bg-cokewhite p-2 rounded border border-red">
+      <div className="bg-cokewhite p-2 rounded border-2 border-red">
         <div className="p-6">
           <h3 className="text-3xl font-bold text-red mb-5">Delete Account</h3>
           <p className="text-green font-medium mb-5 text-xl">
@@ -65,13 +65,13 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
         </div>
         <div className="p-6 flex justify-between">
           <button
-            className="text-green bg-smokewhite py-2 px-6 rounded shadow-md"
+            className="text-green bg-smokewhite py-2 px-4 rounded shadow-md"
             onClick={handleClose}
           >
             Cancel
           </button>
           <button
-            className="text-white bg-red py-2 px-6 rounded shadow-md"
+            className="text-white bg-red py-2 px-4 rounded shadow-md"
             onClick={confirmDelete}
           >
             Delete

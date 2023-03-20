@@ -261,7 +261,7 @@ const HomePage = () => {
                     <div>
                       <Link
                         to="/createinvestor"
-                        className="relative text-white font-medium rounded-lg bg-green px-4 py-3"
+                        className="relative text-green border-2 border-green font-medium rounded-lg bg-cokewhite hover:bg-smokewhite px-4 py-3"
                       >
                         Create Investor
                       </Link>

@@ -56,7 +56,7 @@ const BacktestingResultsPage = () => {
               </h1>
               <Link
                 to="/backtesting"
-                className="bg-light-gray rounded-lg text-white font-medium px-4 py-3 mt-2"
+                className="bg-cokewhite hover:bg-smokewhite border-2 border-light-gray rounded-lg text-green font-medium px-4 py-3 mt-2"
               >
                 View Full History
               </Link>

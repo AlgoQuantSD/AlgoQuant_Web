@@ -98,7 +98,7 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
             Cancel
           </button>
           <button
-            className="text-white bg-green py-2 px-6 rounded shadow-md"
+            className="text-cokewhite bg-green hover:bg-selection-green py-2 px-4 rounded shadow-md"
             onClick={submitChange}
           >
             Change Password

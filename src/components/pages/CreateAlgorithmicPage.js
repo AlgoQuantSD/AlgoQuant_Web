@@ -245,7 +245,7 @@ const CreateAlgorithmicPage = () => {
           {/* Create Investor Button */}
           <div className="p-3 mt-10">
             <button
-              className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2"
+              className="text-green font-medium rounded-lg border-2 border-green bg-cokewhite hover:bg-smokewhite px-4 py-2"
               onClick={() => {
                 saveChanges();
               }}

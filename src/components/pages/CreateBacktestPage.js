@@ -119,14 +119,14 @@ const CreateBacktestPage = () => {
           </div>
           <div className="flex flex-col pt-3">
             {/* Backtest Name */}
-            <h1 className="text-green font-bold text-4xl mt-10">
+            <h1 className="text-green font-medium text-4xl mt-10">
               Backtest Name
             </h1>
-            <p className="text-green text-2xl font-medium mb-2">
+            <p className="text-green text-2xl font-light m-3">
               What would you like to call your backtest?
             </p>
             <input
-              className="bg-smokewhite focus:outline-none focus:shadow-outline py-2 px-4 block w-1/2 font-normal text-xl appearance-none leading-normal shadow-md caret-green text-green mb-10"
+              className="bg-smokewhite focus:outline-none focus:shadow-outline py-2 px-4 block w-1/2 font-normal text-xl appearance-none leading-normal shadow-md caret-green text-green mb-10 ml-3"
               type="text"
               placeholder={"Backtest #1"}
               onChange={(event) => {
@@ -134,8 +134,8 @@ const CreateBacktestPage = () => {
               }}
             />
             {/* Timeframe */}
-            <h1 className="text-green font-bold text-4xl">Timeframe</h1>
-            <p className="text-green text-2xl font-medium mb-2">
+            <h1 className="text-green font-medium text-4xl">Timeframe</h1>
+            <p className="text-green text-2xl font-light m-3">
               Select the period of time that you would like to test your
               investor against.
             </p>
@@ -156,15 +156,15 @@ const CreateBacktestPage = () => {
             </div>
 
             {/* Initial Investment */}
-            <h1 className="text-green font-bold text-4xl">
+            <h1 className="text-green font-medium text-4xl">
               Initial Investment
             </h1>
-            <p className="text-green text-2xl font-medium mb-2">
+            <p className="text-green text-2xl font-light m-3">
               Provide the amount that you would like to use to test your
               investor.
             </p>
             <input
-              className="bg-smokewhite focus:outline-none focus:shadow-outline py-2 px-4 block w-1/2 font-normal text-xl appearance-none leading-normal shadow-md caret-green text-green mb-10"
+              className="bg-smokewhite focus:outline-none focus:shadow-outline py-2 px-4 block w-1/2 font-normal text-xl appearance-none leading-normal shadow-md caret-green text-green mb-10 ml-3"
               type="text"
               placeholder={"$0"}
               onChange={(event) => {
@@ -176,7 +176,7 @@ const CreateBacktestPage = () => {
           {/* Create Backtest Button */}
           <div className="mt-10">
             <button
-              className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2"
+              className="text-green font-medium rounded-lg bg-cokewhite hover:bg-smokewhite border-2 border-green px-4 py-2"
               onClick={() => {
                 saveChanges();
               }}

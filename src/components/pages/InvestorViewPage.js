@@ -206,7 +206,7 @@ const InvestorViewPage = () => {
                 {investor?.investor_name}'s Recent Jobs
               </h1>
               <button
-                className="bg-cokewhite hover:bg-gold items-center text-green font-medium rounded-lg border-2 border-green px-4 py-3 mt-3"
+                className="bg-cokewhite hover:bg-smokewhite items-center text-green font-medium rounded-lg border-2 border-green px-4 py-3 mt-3"
                 onClick={handleTradeButton}
               >
                 {buttonStatus === tabFilters.JOB
