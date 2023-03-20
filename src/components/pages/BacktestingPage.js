@@ -25,7 +25,7 @@ const BacktestingPage = () => {
   // Filler table data until we connect to backend
   const backtestData = [
     {
-      backtestName: "Sample backtest",
+      backtestName: "Freaky Franc",
       investor: "James Franco",
       status: "running",
       profitLoss: 89,
@@ -33,9 +33,9 @@ const BacktestingPage = () => {
       endDate: "3/10/2023",
     },
     {
-      backtestName: "Sample backtest2g",
+      backtestName: "Testme Testes",
       investor: "Warren Buffett",
-      status: "completed",
+      status: "running",
       profitLoss: -15,
       startDate: "5/16/2020",
       endDate: "3/10/2023",
@@ -43,7 +43,7 @@ const BacktestingPage = () => {
     {
       backtestName: "Random",
       investor: "Elon Musk",
-      status: "completed",
+      status: "running",
       profitLoss: 33,
       startDate: "5/16/2020",
       endDate: "3/10/2023",
@@ -52,6 +52,30 @@ const BacktestingPage = () => {
       status: "completed",
       backtestName: "Musk",
       investor: "Elephant",
+      profitLoss: 57,
+      startDate: "5/16/2020",
+      endDate: "3/10/2023",
+    },
+    {
+      status: "completed",
+      backtestName: "Neckahh",
+      investor: "Giraffe",
+      profitLoss: 57,
+      startDate: "5/16/2020",
+      endDate: "3/10/2023",
+    },
+    {
+      status: "completed",
+      backtestName: "Headahhhh",
+      investor: "Hammerhead Shark",
+      profitLoss: 57,
+      startDate: "5/16/2020",
+      endDate: "3/10/2023",
+    },
+    {
+      status: "completed",
+      backtestName: "No Faceahh",
+      investor: "Jellyfish",
       profitLoss: 57,
       startDate: "5/16/2020",
       endDate: "3/10/2023",
