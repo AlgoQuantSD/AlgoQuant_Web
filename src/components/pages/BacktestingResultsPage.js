@@ -4,6 +4,7 @@ import Graph from "../reusable/Graph";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 // import BacktestAnalysis from "../singular/BacktestAnalysis";
+import { Link } from "react-router-dom";
 
 const BacktestingResultsPage = () => {
   const location = useLocation();
@@ -36,7 +37,7 @@ const BacktestingResultsPage = () => {
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
           <div className="flex flex-col pt-10">
             <h1 className="text-green font-bold text-5xl">
-              "{location.state.value.backtestName}" Backtest Results
+              {location.state.value.backtestName} Backtest Results
             </h1>
             <div className="flex p-3 mb-7 w-1/2">
               <p className="flex text-green font-normal text-3xl">
@@ -47,11 +48,21 @@ const BacktestingResultsPage = () => {
                 the course of 1,150 days.
               </p>
             </div>
-            <div className="w-10/12 mx-auto p-10">
+            <div className="w-10/12 mx-auto">
               <Graph stockData={data} selectedFilter={selectedFilter} />
             </div>
-            <h1 className="text-green font-bold text-5xl pt-3">Analysis</h1>
-            <div className="grid grid-cols-2 gap-8 mt-5 w-1/2 mx-auto">
+            <div className="flex items-center pt-10">
+              <h1 className="text-green font-bold text-5xl pt-3 pr-5">
+                Analysis
+              </h1>
+              <Link
+                to="/backtesting"
+                className="bg-light-gray rounded-lg text-white font-medium px-4 py-3 mt-2"
+              >
+                View Full History
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-8 mt-5 w-1/2 p-3">
               <div className="flex flex-col">
                 <p className="text-green text-2xl font-semibold mb-2">
                   Backtest Name:
