@@ -18,7 +18,7 @@ import InvestorConfirmationPage from "./components/pages/InvestorConfirmationPag
 import AIConfirmationPage from "./components/pages/AIConfirmationPage";
 
 import AlgoquantApiContext from "./api/ApiContext";
-import initAlgoQuantApi from "../src/api/ApiUtils";
+import { initAlgoQuantApi } from "../src/api/ApiUtils";
 
 /*
 This Component is used to wrap each Route and ensure that they cannot 
