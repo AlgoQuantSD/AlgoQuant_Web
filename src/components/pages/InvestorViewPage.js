@@ -60,7 +60,7 @@ const InvestorViewPage = () => {
   }, [getInvestor]);
 
   return (
-    <div className="bg-cokewhite ">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

@@ -1,14 +1,21 @@
 import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import Table from "../reusable/Table";
 
 const BacktestingPage = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
+
+  const viewBacktest = (value) => {
+    navigate("/backtestresults", { state: { value: value } });
+  };
 
   // header used for the columns on the table
   const header = [
     { key: "status", title: "Status" },
+    { key: "investor", title: "Investor" },
     { key: "backtestName", title: "Backtest Name" },
     { key: "profitLoss", title: "Profit / Loss" },
     { key: "startDate", title: "Start Date" },
@@ -19,30 +26,43 @@ const BacktestingPage = () => {
   const backtestData = [
     {
       status: "running",
+      investor: "James Franco",
       backtestName: "Sample backtest",
-      profitLoss: "$3200",
+      profitLoss: 89,
       startDate: "3/13/2019",
       endDate: "3/10/2023",
     },
     {
       status: "completed",
+      investor: "Warren Buffett",
       backtestName: "Sample backtest2g",
-      profitLoss: "-$200",
+      profitLoss: -15,
       startDate: "5/16/2020",
       endDate: "3/10/2023",
     },
     {
       status: "completed",
+      investor: "Elon Musk",
       backtestName: "Random",
-      profitLoss: "$600",
+      profitLoss: 33,
+      startDate: "5/16/2020",
+      endDate: "3/10/2023",
+    },
+    {
+      status: "completed",
+      investor: "Elephant",
+      backtestName: "Musk",
+      profitLoss: 57,
       startDate: "5/16/2020",
       endDate: "3/10/2023",
     },
   ];
 
-  const transactions = backtestData.map((transaction) => {
+  const transactions = backtestData.map((transaction, index) => {
     return {
+      id: index,
       status: transaction.status,
+      investor: transaction.investor,
       backtestName: transaction.backtestName,
       profitLoss: transaction.profitLoss,
       startDate: transaction.startDate,
@@ -83,7 +103,11 @@ const BacktestingPage = () => {
               Completed Backtests
             </h1>
           </div>
-          <Table data={visibleTransactions} header={header}></Table>
+          <Table
+            data={visibleTransactions}
+            header={header}
+            viewBacktest={viewBacktest}
+          ></Table>
           <div className="p-6 pt-24 pb-20 overflow-auto	">
             {page === 1 ? (
               <button

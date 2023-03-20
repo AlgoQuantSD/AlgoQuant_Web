@@ -6,6 +6,7 @@ import HomePage from "./components/pages/HomePage";
 import WelcomePage from "./components/pages/WelcomePage";
 import CreateInvestorPage from "./components/pages/CreateInvestorPage";
 import BacktestingPage from "./components/pages/BacktestingPage";
+import BacktestingResultsPage from "./components/pages/BacktestingResultsPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import SignInPage from "./components/pages/SignInPage";
@@ -142,6 +143,14 @@ export function PageRouter() {
             element={
               <RequireAuth>
                 <CreateBacktestPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/backtestresults"
+            element={
+              <RequireAuth>
+                <BacktestingResultsPage />
               </RequireAuth>
             }
           />
