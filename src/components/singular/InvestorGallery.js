@@ -20,6 +20,11 @@ const InvestorGallery = ({ investorList }) => {
     navigate("/investor", { state: { value: value } });
   };
 
+  // Function called anytime a user selects Start Backtest in the dropdown. Will navigate a user to the Backtest page passing in the value.
+  const startBacktest = (value) => {
+    navigate("/createbacktest", { state: { value: value } });
+  };
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -74,6 +79,9 @@ const InvestorGallery = ({ investorList }) => {
                 viewInvestor={() => viewInvestor(investor.investor_id)}
                 deleteInvestor={() => {
                   setSelectedInvestor(investor);
+                }}
+                startBacktest={() => {
+                  startBacktest(investor);
                 }}
                 investor={selectedInvestor}
               />

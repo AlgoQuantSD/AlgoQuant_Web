@@ -123,7 +123,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
             </div>
             <div className="p-6 flex justify-between">
               <button
-                className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
+                className="text-green bg-smokewhite py-2 px-6 rounded shadow-md"
                 onClick={handleClose}
               >
                 Cancel
@@ -144,25 +144,25 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
     case ModalTypes.connect:
       return (
         <Modal isVisible={accountModal.visible} onClose={handleClose}>
-          <div className="bg-dark-gray p-2 rounded border border-light-gray">
+          <div className="bg-cokewhite p-2 rounded border-2 border-green">
             <div className="p-6">
-              <h3 className="text-3xl font-bold text-light-gray mb-5">
+              <h3 className="text-3xl font-bold text-green mb-5">
                 Please provide your Alpaca Keys
               </h3>
-              <p className="text-light-gray font-medium mb-5 text-xl">
+              <p className="text-green font-medium mb-5 text-xl">
                 Please enter Alpaca API Key
               </p>
               <input
-                className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder="Alpaca Key"
                 onChange={handleAlpacaKey}
               />
-              <p className="text-light-gray font-medium mb-5 text-xl">
+              <p className="text-green font-medium mb-5 text-xl">
                 Please enter Alpaca Secret Key
               </p>
               <input
-                className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
                 type="text"
                 placeholder="Secret Key"
                 onChange={handleSecretKey}
@@ -175,13 +175,13 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
             </div>
             <div className="p-6 flex justify-between">
               <button
-                className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
+                className="text-green bg-smokewhite py-2 px-4 rounded shadow-md"
                 onClick={handleClose}
               >
                 Cancel
               </button>
               <button
-                className="text-white bg-green py-2 px-6 rounded shadow-md"
+                className="text-white bg-green hover:bg-selection-green py-2 px-4 rounded shadow-md"
                 onClick={() => {
                   submitRequest();
                 }}
@@ -198,15 +198,15 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
     case ModalTypes.disconnect:
       return (
         <Modal isVisible={accountModal.visible} onClose={handleClose}>
-          <div className="bg-dark-gray p-2 rounded border border-red">
+          <div className="bg-cokewhite p-2 rounded border-2 border-another-gray">
             <div className="p-6">
-              <h3 className="text-3xl font-bold text-red mb-5">
+              <h3 className="text-3xl font-bold text-another-gray mb-5">
                 {" "}
                 {modalType === ModalTypes.disconnect
                   ? "Disconnect Alpaca"
                   : "Reset Balance"}
               </h3>
-              <p className="text-light-gray font-medium mb-5 text-xl">
+              <p className="text-green font-medium mb-5 text-xl">
                 {modalType === ModalTypes.disconnect
                   ? "Are you sure you want to disconnect from Alpaca? Doing this will terminate all jobs and reset account to a simulated balance of $100,000."
                   : "Are you sure you want to reset your balance? Doing this will terminate all jobs and reset account to $100,000."}
@@ -215,14 +215,14 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
             <p className="text-red">{error}</p>
             <div className="p-6 flex justify-between">
               <button
-                className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
+                className="text-green bg-smokewhite py-2 px-4 rounded shadow-md"
                 onClick={handleClose}
                 data-testid="submit-button"
               >
                 Cancel
               </button>
               <button
-                className="text-white bg-red py-2 px-6 rounded shadow-md"
+                className="text-green bg-light-gray hover:bg-another-gray hover:text-smokewhite py-2 px-4 rounded shadow-md"
                 onClick={submitRequest}
               >
                 Confirm

@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import investorPhotos from "../../assets/images/investors/InvestorPhotos";
@@ -11,6 +11,8 @@ import JobGallery from "../singular/JobGallery";
 import { tabFilters } from "../utils/hometabFilterEnum";
 
 const InvestorViewPage = () => {
+  const navigate = useNavigate();
+
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const location = useLocation();
@@ -22,6 +24,11 @@ const InvestorViewPage = () => {
 
   // used to keep track of what jobs to pull either active or past jobs, uses the tabFilter enum
   const [buttonStatus, setButtonStatus] = useState(tabFilters.JOB);
+
+  // Function called anytime a user selects Start Backtest in the dropdown. Will navigate a user to the Backtest page passing in the value.
+  const startBacktest = (value) => {
+    navigate("/createbacktest", { state: { value: value } });
+  };
 
   // CallBack function that fetchs for job list data in a paginiated manner
   const getInvestor = useCallback(() => {
@@ -53,7 +60,7 @@ const InvestorViewPage = () => {
   }, [getInvestor]);
 
   return (
-    <div className="bg-cokewhite ">
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -77,7 +84,7 @@ const InvestorViewPage = () => {
 
             <div className="">
               <button
-                className="items-center text-white font-medium rounded-lg bg-green px-4 py-3"
+                className="items-center text-white font-medium rounded-lg bg-red px-4 py-3"
                 onClick={() => {
                   setDeleteInvestorModal(true);
                 }}
@@ -87,16 +94,22 @@ const InvestorViewPage = () => {
             </div>
           </div>
 
-          <div className="m-4">
-            <button
-              className="items-center text-white font-medium rounded-lg bg-green px-4 py-3"
-              onClick={() => {
-                setJobModal(true);
-              }}
-            >
-              Create New Job
-            </button>
-          </div>
+          <button
+            className="items-center text-white font-medium rounded-lg bg-green px-4 py-3 hover:bg-selection-green"
+            onClick={() => {
+              setJobModal(true);
+            }}
+          >
+            Create New Job
+          </button>
+          <button
+            className="px-4 py-3 text-green font-medium hover:bg-smokewhite rounded-lg border-2 border-green ml-4"
+            onClick={() => {
+              startBacktest(investor);
+            }}
+          >
+            Start a Backtest
+          </button>
 
           <div className="flex h-2/5">
             <div className="flex justify-center w-1/2">
@@ -193,7 +206,7 @@ const InvestorViewPage = () => {
                 {investor?.investor_name}'s Recent Jobs
               </h1>
               <button
-                className="bg-green hover:bg-gold items-center text-white font-medium rounded-lg bg-green px-4 py-3"
+                className="bg-cokewhite hover:bg-smokewhite items-center text-green font-medium rounded-lg border-2 border-green px-4 py-3 mt-3"
                 onClick={handleTradeButton}
               >
                 {buttonStatus === tabFilters.JOB

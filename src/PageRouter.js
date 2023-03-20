@@ -6,6 +6,7 @@ import HomePage from "./components/pages/HomePage";
 import WelcomePage from "./components/pages/WelcomePage";
 import CreateInvestorPage from "./components/pages/CreateInvestorPage";
 import BacktestingPage from "./components/pages/BacktestingPage";
+import BacktestingResultsPage from "./components/pages/BacktestingResultsPage";
 import TransactionHistoryPage from "./components/pages/TransactionHistoryPage";
 import ProfilePage from "./components/pages/ProfilePage";
 import SignInPage from "./components/pages/SignInPage";
@@ -16,6 +17,7 @@ import CreateAlgorithmicPage from "./components/pages/CreateAlgorithmicPage";
 import CreateAIPage from "./components/pages/CreateAIPage";
 import InvestorConfirmationPage from "./components/pages/InvestorConfirmationPage";
 import AIConfirmationPage from "./components/pages/AIConfirmationPage";
+import CreateBacktestPage from "./components/pages/CreateBacktestPage";
 
 import AlgoquantApiContext from "./api/ApiContext";
 import initAlgoQuantApi from "../src/api/ApiUtils";
@@ -133,6 +135,22 @@ export function PageRouter() {
             element={
               <RequireAuth>
                 <BacktestingPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/createbacktest"
+            element={
+              <RequireAuth>
+                <CreateBacktestPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/backtestresults"
+            element={
+              <RequireAuth>
+                <BacktestingResultsPage />
               </RequireAuth>
             }
           />

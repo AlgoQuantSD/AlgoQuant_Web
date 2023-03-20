@@ -95,49 +95,51 @@ const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
         height="100%"
         className="shadow-md"
       />
-      {/* Tabs for users to interact with and fetch different data based on provided timeframes */}
-      <div className="flex mt-7 justify-center">
-        <button
-          className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.DAY
-              ? ACTIVE_FILTER_STYLE
-              : "border-b-2 border-b-green"
-          }`}
-          onClick={() => getData(filters.DAY)}
-        >
-          D
-        </button>
-        <button
-          className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.FIVE
-              ? ACTIVE_FILTER_STYLE
-              : "border-b-2 border-b-green"
-          }`}
-          onClick={() => getData(filters.FIVE)}
-        >
-          5D
-        </button>
-        <button
-          className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.MONTH
-              ? ACTIVE_FILTER_STYLE
-              : "border-b-2 border-b-green"
-          }`}
-          onClick={() => getData(filters.MONTH)}
-        >
-          M
-        </button>
-        <button
-          className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
-            selectedFilter === filters.YEAR
-              ? ACTIVE_FILTER_STYLE
-              : "border-b-2 border-b-green"
-          }`}
-          onClick={() => getData(filters.YEAR)}
-        >
-          Y
-        </button>
-      </div>
+      {/* Conditional rendering to show the filter tabs only when selectedFilter is not null */}
+      {selectedFilter !== null && (
+        <div className="flex mt-7 justify-center">
+          <button
+            className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
+              selectedFilter === filters.DAY
+                ? ACTIVE_FILTER_STYLE
+                : "border-b-2 border-b-green"
+            }`}
+            onClick={() => getData(filters.DAY)}
+          >
+            D
+          </button>
+          <button
+            className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
+              selectedFilter === filters.FIVE
+                ? ACTIVE_FILTER_STYLE
+                : "border-b-2 border-b-green"
+            }`}
+            onClick={() => getData(filters.FIVE)}
+          >
+            5D
+          </button>
+          <button
+            className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
+              selectedFilter === filters.MONTH
+                ? ACTIVE_FILTER_STYLE
+                : "border-b-2 border-b-green"
+            }`}
+            onClick={() => getData(filters.MONTH)}
+          >
+            M
+          </button>
+          <button
+            className={`py-2 px-4 text-green font-semibold hover:bg-smokewhite ${
+              selectedFilter === filters.YEAR
+                ? ACTIVE_FILTER_STYLE
+                : "border-b-2 border-b-green"
+            }`}
+            onClick={() => getData(filters.YEAR)}
+          >
+            Y
+          </button>
+        </div>
+      )}
     </div>
   );
 };

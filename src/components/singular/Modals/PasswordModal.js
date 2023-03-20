@@ -56,34 +56,34 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
 
   return (
     <Modal isVisible={passwordModal} onClose={handleClose}>
-      <div className="bg-dark-gray p-2 rounded border border-light-gray">
+      <div className="bg-cokewhite p-2 rounded-md border-2 border-green">
         <div className="p-6">
-          <h3 className="text-3xl font-bold text-light-gray mb-5">
+          <h3 className="text-3xl font-bold text-green mb-5">
             Change Password
           </h3>
-          <p className="text-light-gray font-light mb-2 text-md">
+          <p className="text-green font-light mb-2 text-md">
             Please enter your old password
           </p>
           <input
-            className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="Old Password"
             onChange={handleOldPassword}
           />
-          <p className="text-light-gray font-light mb-2 text-md">
+          <p className="text-green font-light mb-2 text-md">
             Please enter your new password
           </p>
           <input
-            className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="New Password"
             onChange={handleNewPassword}
           />
-          <p className="text-light-gray font-light mb-2 text-md">
+          <p className="text-green font-light mb-2 text-md">
             Confirm your new password
           </p>
           <input
-            className="bg-faded-dark-gray focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            className="bg-smokewhite focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
             type="text"
             placeholder="Confirm Password"
             onChange={handleConfirmNewPassword}
@@ -92,13 +92,13 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
         </div>
         <div className="p-6 flex justify-between">
           <button
-            className="text-white bg-another-gray py-2 px-6 rounded shadow-md"
+            className="text-green bg-smokewhite py-2 px-6 rounded shadow-md"
             onClick={handleClose}
           >
             Cancel
           </button>
           <button
-            className="text-white bg-green py-2 px-6 rounded shadow-md"
+            className="text-cokewhite bg-green hover:bg-selection-green py-2 px-4 rounded shadow-md"
             onClick={submitChange}
           >
             Change Password
