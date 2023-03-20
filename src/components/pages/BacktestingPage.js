@@ -10,8 +10,7 @@ const BacktestingPage = () => {
   const header = [
     { key: "status", title: "Status" },
     { key: "backtestName", title: "Backtest Name" },
-    { key: "initialInvestment", title: "Initial Investment" },
-    { key: "finalBalance", title: "Final Balance" },
+    { key: "profitLoss", title: "Profit / Loss" },
     { key: "startDate", title: "Start Date" },
     { key: "endDate", title: "End Date" },
   ];
@@ -21,24 +20,21 @@ const BacktestingPage = () => {
     {
       status: "running",
       backtestName: "Sample backtest",
-      initialInvestment: "$2400",
-      finalBalance: "$3800",
+      profitLoss: "$3200",
       startDate: "3/13/2019",
       endDate: "3/10/2023",
     },
     {
       status: "completed",
       backtestName: "Sample backtest2g",
-      initialInvestment: "$3200",
-      finalBalance: "$6000",
+      profitLoss: "-$200",
       startDate: "5/16/2020",
       endDate: "3/10/2023",
     },
     {
       status: "completed",
       backtestName: "Random",
-      initialInvestment: "$3200",
-      finalBalance: "$6000",
+      profitLoss: "$600",
       startDate: "5/16/2020",
       endDate: "3/10/2023",
     },
@@ -48,8 +44,7 @@ const BacktestingPage = () => {
     return {
       status: transaction.status,
       backtestName: transaction.backtestName,
-      initialInvestment: transaction.initialInvestment,
-      finalBalance: transaction.finalBalance,
+      profitLoss: transaction.profitLoss,
       startDate: transaction.startDate,
       endDate: transaction.endDate,
     };
