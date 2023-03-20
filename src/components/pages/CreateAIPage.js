@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useNavigate } from "react-router-dom";
-import doggy from "../../assets/images/doggy.jpg";
 
 const CreateAIPage = () => {
   const navigate = useNavigate();
