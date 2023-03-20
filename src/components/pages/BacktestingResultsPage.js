@@ -14,7 +14,7 @@ const BacktestingResultsPage = () => {
   // State variables to store the graph data of selected backtest graph data
   const [xValues, setXValues] = useState([]);
   const [yValues, setYValues] = useState([]);
-  const [priceChange, setPriceChange] = useState();
+  const [priceChange, setPriceChange] = useState([]);
   // store the backtest data
   const [backtestDataObject, setBacktestDataObject] = useState(null);
 

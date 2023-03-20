@@ -78,7 +78,7 @@ const buildGraph = (data, categories, isTrendingUp) => {
 
 const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
   // conditional variable to indicate whether stock searched is trending up or down
-  const isTrendingUp = true;
+  const isTrendingUp = stockData[0]?.priceChange >= 0;
   // Create the graph with the data and categories along with the callback to get more data
   let chart = buildGraph(xValues, yValues, isTrendingUp);
   // String variable containing the style of what fitler is currently active
