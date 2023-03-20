@@ -8,42 +8,54 @@ const BacktestingPage = () => {
 
   // header used for the columns on the table
   const header = [
+    { key: "status", title: "Status" },
     { key: "backtestName", title: "Backtest Name" },
-    { key: "investor", title: "Investor" },
     { key: "initialInvestment", title: "Initial Investment" },
     { key: "finalBalance", title: "Final Balance" },
-    { key: "profitLoss", title: "Profit / Loss" },
-    { key: "dateRange", title: "Date Range" },
+    { key: "startDate", title: "Start Date" },
+    { key: "endDate", title: "End Date" },
   ];
 
-  // generate dummy data
-  const generateData = (numTransactions) => {
-    const data = [];
-    for (let i = 1; i <= numTransactions; i++) {
-      const backtestName = `Backtest ${i}`;
-      const investor = `Investor ${i}`;
-      const initialInvestment = `$${Math.floor(
-        Math.random() * 100000 + 100000
-      )}`;
-      const finalBalance = `$${Math.floor(Math.random() * 20000 + 100000)}`;
-      const profitLoss = `$${Math.floor(Math.random() * 10000 + 10000)}`;
-      const dateRange = `01/01/2020 - 01/01/2021`;
-      data.push({
-        backtestName,
-        investor,
-        initialInvestment,
-        finalBalance,
-        profitLoss,
-        dateRange,
-      });
-    }
-    return data;
-  };
+  // Filler table data until we connect to backend
+  const backtestData = [
+    {
+      status: "running",
+      backtestName: "Sample backtest",
+      initialInvestment: "$2400",
+      finalBalance: "$3800",
+      startDate: "3/13/2019",
+      endDate: "3/10/2023",
+    },
+    {
+      status: "completed",
+      backtestName: "Sample backtest2g",
+      initialInvestment: "$3200",
+      finalBalance: "$6000",
+      startDate: "5/16/2020",
+      endDate: "3/10/2023",
+    },
+    {
+      status: "completed",
+      backtestName: "Random",
+      initialInvestment: "$3200",
+      finalBalance: "$6000",
+      startDate: "5/16/2020",
+      endDate: "3/10/2023",
+    },
+  ];
 
-  const numTransactions = 25; // number of dummy transactions to generate
-  const transactions = generateData(numTransactions);
+  const transactions = backtestData.map((transaction) => {
+    return {
+      status: transaction.status,
+      backtestName: transaction.backtestName,
+      initialInvestment: transaction.initialInvestment,
+      finalBalance: transaction.finalBalance,
+      startDate: transaction.startDate,
+      endDate: transaction.endDate,
+    };
+  });
 
-  const transactionsPerPage = 10; // number of transactions to show per page
+  const transactionsPerPage = 10;
   const startIndex = (page - 1) * transactionsPerPage;
   const endIndex = startIndex + transactionsPerPage;
   const visibleTransactions = transactions.slice(startIndex, endIndex);

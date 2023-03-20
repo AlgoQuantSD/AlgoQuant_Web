@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Calendar } from "@hassanmojab/react-modern-calendar-datepicker";
+import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
@@ -142,6 +142,7 @@ const CreateBacktestPage = () => {
             <div className="flex flex-col px-24 py-12 font-semibold">
               <Calendar
                 value={selectedDayRange}
+                maximumDate={utils().getToday()}
                 onChange={(value) => {
                   console.log("Selected day range:", value);
                   setSelectedDayRange(value);
