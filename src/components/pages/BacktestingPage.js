@@ -14,9 +14,9 @@ const BacktestingPage = () => {
 
   // header used for the columns on the table
   const header = [
-    { key: "status", title: "Status" },
-    { key: "investor", title: "Investor" },
     { key: "backtestName", title: "Backtest Name" },
+    { key: "investor", title: "Investor" },
+    { key: "status", title: "Status" },
     { key: "profitLoss", title: "Profit / Loss" },
     { key: "startDate", title: "Start Date" },
     { key: "endDate", title: "End Date" },
@@ -25,33 +25,33 @@ const BacktestingPage = () => {
   // Filler table data until we connect to backend
   const backtestData = [
     {
-      status: "running",
-      investor: "James Franco",
       backtestName: "Sample backtest",
+      investor: "James Franco",
+      status: "running",
       profitLoss: 89,
       startDate: "3/13/2019",
       endDate: "3/10/2023",
     },
     {
-      status: "completed",
-      investor: "Warren Buffett",
       backtestName: "Sample backtest2g",
+      investor: "Warren Buffett",
+      status: "completed",
       profitLoss: -15,
       startDate: "5/16/2020",
       endDate: "3/10/2023",
     },
     {
-      status: "completed",
-      investor: "Elon Musk",
       backtestName: "Random",
+      investor: "Elon Musk",
+      status: "completed",
       profitLoss: 33,
       startDate: "5/16/2020",
       endDate: "3/10/2023",
     },
     {
       status: "completed",
-      investor: "Elephant",
       backtestName: "Musk",
+      investor: "Elephant",
       profitLoss: 57,
       startDate: "5/16/2020",
       endDate: "3/10/2023",
@@ -61,9 +61,9 @@ const BacktestingPage = () => {
   const transactions = backtestData.map((transaction, index) => {
     return {
       id: index,
-      status: transaction.status,
-      investor: transaction.investor,
       backtestName: transaction.backtestName,
+      investor: transaction.investor,
+      status: transaction.status,
       profitLoss: transaction.profitLoss,
       startDate: transaction.startDate,
       endDate: transaction.endDate,

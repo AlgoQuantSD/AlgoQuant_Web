@@ -30,7 +30,7 @@ const BacktestingResultsPage = () => {
   }
 
   return (
-    <div className="bg-cokewhite overflow-x-scroll">
+    <div className="bg-cokewhite overflow-y-auto overflow-x-hidden">
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -52,7 +52,7 @@ const BacktestingResultsPage = () => {
               <Graph stockData={data} selectedFilter={selectedFilter} />
             </div>
             <div className="flex items-center pt-10">
-              <h1 className="text-green font-bold text-5xl pt-3 pr-5">
+              <h1 className="text-green font-bold sm:text-3xl md:text-4xl pt-3 pr-5">
                 Analysis
               </h1>
               <Link
