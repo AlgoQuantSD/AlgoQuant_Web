@@ -19,6 +19,7 @@ const BacktestingResultsPage = () => {
   const [backtestDataObject, setBacktestDataObject] = useState(null);
 
   // // API call to get backtest based on the clicked backtest from the backtestScreen using the backtest ID
+  // eslint-disable-next-line
   const getBacktestData = useCallback(() => {
     if (algoquantApi.token) {
       algoquantApi
@@ -47,6 +48,7 @@ const BacktestingResultsPage = () => {
   useEffect(() => {
     getBacktestData();
     console.log("effect from backtesting result page");
+    // eslint-disable-next-line
   }, [location.state.value, algoquantApi]);
 
   // Conditional rendering logic

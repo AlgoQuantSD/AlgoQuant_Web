@@ -5,8 +5,12 @@ import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import AlgoquantApiContext from "../../api/ApiContext";
+import { useNavigate } from "react-router-dom";
+
 const CreateBacktestPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
 
@@ -47,6 +51,8 @@ const CreateBacktestPage = () => {
   };
 
   // console.log("date: ", selectedDayRange);
+  console.log(startDate);
+  console.log(endDate);
 
   // Update the selectedDayRangeString state variable whenever the selectedDayRange state variable changes
   useEffect(() => {
@@ -63,6 +69,15 @@ const CreateBacktestPage = () => {
         selectedDayRange.to.day
       );
       const rangeString = `${formatDate(fromDate)} - ${formatDate(toDate)}`; // Format the date range string
+      // format start
+      const startTimeMs = fromDate.getTime();
+      const starttimeUnix = Math.floor(startTimeMs / 1000);
+      setStartDate(starttimeUnix);
+      // format end
+      const endTimeMs = toDate.getTime();
+      const endtimeUnix = Math.floor(endTimeMs / 1000);
+      setEndDate(endtimeUnix);
+
       setSelectedDayRangeString(rangeString);
     } else if (selectedDayRange && selectedDayRange.from) {
       // If the user has only selected a start date
@@ -106,25 +121,26 @@ const CreateBacktestPage = () => {
       return;
     } else {
       // If all the user input is valid, display a success message
-      setSuccess(true);
-      // if (algoquantApi.token) {
-      //   algoquantApi
-      //     .createBacktest(
-      //       location.state.value.investor_id,
-      //       startDateUnixTimestamp,
-      //       endDateUnixTimestamp,
-      //       backtestName,
-      //       initialInvestment
-      //     )
-      //     .then((resp) => {
-      //       console.log(resp.data);
-      //     })
-      //     .catch((err) => {
-      //       // TODO: Need to implement better error handling
-      //       console.log(err);
-      //     });
-      // }
+      if (algoquantApi.token) {
+        algoquantApi
+          .createBacktest(
+            location.state.value.investor_id,
+            startDate,
+            endDate,
+            backtestName,
+            parseInt(initialInvestment)
+          )
+          .then((resp) => {
+            console.log(resp.data);
+            setSuccess(true);
+          })
+          .catch((err) => {
+            // TODO: Need to implement better error handling
+            console.log(err);
+          });
+      }
       setTimeout(() => {
+        navigate("/home");
         setSuccess(false);
       }, 3500);
     }
