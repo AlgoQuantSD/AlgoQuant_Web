@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import Graph from "../reusable/Graph";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-// import BacktestAnalysis from "../singular/BacktestAnalysis";
 import { Link } from "react-router-dom";
 
 const BacktestingResultsPage = () => {

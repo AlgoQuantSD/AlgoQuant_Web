@@ -1,7 +1,7 @@
 import React from "react";
 import { BsCaretDownFill, BsFillCaretUpFill } from "react-icons/bs";
 
-const Table = ({ data, header, viewBacktest }) => {
+const Table = ({ data, header, onItemPress }) => {
   const hasStatus = header.some((h) => h.key === "status");
   const hasProfitLoss = header.some((h) => h.key === "profitLoss");
 
@@ -31,7 +31,7 @@ const Table = ({ data, header, viewBacktest }) => {
             }`}
             onClick={() =>
               hasStatus && row.status === "completed"
-                ? viewBacktest(row)
+                ? onItemPress(row)
                 : console.log(row)
             }
           >

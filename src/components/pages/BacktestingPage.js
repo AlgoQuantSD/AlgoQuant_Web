@@ -130,7 +130,7 @@ const BacktestingPage = () => {
           <Table
             data={visibleTransactions}
             header={header}
-            viewBacktest={viewBacktest}
+            onItemPress={viewBacktest}
           ></Table>
           <div className="p-6 pt-24 pb-20 overflow-auto	">
             {page === 1 ? (
