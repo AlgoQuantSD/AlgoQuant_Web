@@ -16,6 +16,9 @@ const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
     setStopJobModal(null);
   };
 
+  function refreshPage() {
+    window.location.reload();
+  }
   // This function will implement the Stop Job function. For now it just
   // closes the modal.
   const handleStop = () => {
@@ -25,6 +28,7 @@ const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
         .stopJob(jobObj.job_id)
         .then((resp) => {
           console.log(resp.data);
+          refreshPage();
         })
         .catch((err) => {
           // TODO: Need to implement better error handling

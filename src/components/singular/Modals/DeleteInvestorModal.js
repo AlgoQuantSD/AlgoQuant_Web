@@ -16,7 +16,9 @@ const DeleteInvestorModal = ({
   const handleClose = () => {
     setDeleteInvestorModal(null);
   };
-
+  function refreshPage() {
+    window.location.reload();
+  }
   // This function will implement the delete Investor function. For now it just
   // closes the modal.
   const handleDelete = () => {
@@ -26,6 +28,7 @@ const DeleteInvestorModal = ({
         .deleteInvestor(investor?.investor_id)
         .then((resp) => {
           console.log(resp.data);
+          refreshPage();
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
