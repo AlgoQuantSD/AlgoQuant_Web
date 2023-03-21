@@ -105,8 +105,9 @@ const BacktestingResultsPage = () => {
                 {backtestDataObject?.backtest_name} performed {statement}{" "}
                 according to AlgoQuant metrics, yielding a{" "}
                 {profitLoss.toFixed(3)}%{" "}
-                {profitLoss.toFixed(3) > 0 ? "profit" : "loss"} over the course
-                of 1,150 days.
+                {profitLoss.toFixed(3) > 0 ? "profit" : "loss"}.
+                {/* over the course */}
+                {/* of 1,150 days. */}
               </p>
             </div>
             <div className="w-10/12 mx-auto">
