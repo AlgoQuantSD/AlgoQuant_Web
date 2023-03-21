@@ -42,7 +42,7 @@ const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
             Are you sure you want to stop {jobObj && jobObj.name}'s Job?
           </p>
           <p className="text-lg text-another-gray mb-3">
-            NOTE: All of your investor's trades will be permanently deleted
+            NOTE: All the assets tracked by this job will be sold
           </p>
         </div>
         <div className="p-6">

@@ -1,23 +1,85 @@
-import React from "react";
+import React, { useContext, useCallback, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Graph from "../reusable/Graph";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { Link } from "react-router-dom";
+import AlgoquantApiContext from "../../api/ApiContext";
 
 const BacktestingResultsPage = () => {
   const location = useLocation();
-  const selectedFilter = null;
-  const data = [
-    {
-      x: new Date(1538778600000),
-      y: [6629.81, 6650.5, 6623.04, 6633.33],
-    },
-  ];
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+
+  // State variables to store the graph data of selected backtest graph data
+  const [xValues, setXValues] = useState([]);
+  const [yValues, setYValues] = useState([]);
+  const [priceChange, setPriceChange] = useState([]);
+  // store the backtest data
+  const [backtestDataObject, setBacktestDataObject] = useState(null);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+
+  // // API call to get backtest based on the clicked backtest from the backtestScreen using the backtest ID
+  // eslint-disable-next-line
+  const getBacktestData = useCallback(() => {
+    if (algoquantApi.token) {
+      algoquantApi
+        .getBacktest(location.state.value)
+        .then((resp) => {
+          setBacktestDataObject(resp.data);
+          console.log(resp.data);
+          setXValues(resp.data["portfolio_value_history"]);
+          setYValues(
+            resp.data["value_timestamps"].map((timestamp) =>
+              new Date(timestamp * 1000).toLocaleDateString("en-US", {
+                month: "numeric",
+                day: "numeric",
+              })
+            )
+          );
+
+          let startTimeDate = new Date(parseInt(resp.data.start_time) * 1000);
+          let endTimeDate = new Date(parseInt(resp.data.end_time) * 1000);
+          const options = {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          };
+          const formattedStartTime = startTimeDate.toLocaleString([], options);
+          const formattedEndTime = endTimeDate.toLocaleString([], options);
+          setStartDate(formattedStartTime);
+          setEndDate(formattedEndTime);
+          setPriceChange([
+            {
+              priceChange:
+                ((parseFloat(resp.data.final_portfolio_value) -
+                  parseFloat(resp.data.initial_investment)) /
+                  parseFloat(resp.data.initial_investment)) *
+                100,
+            },
+          ]);
+        })
+        .catch((err) => {
+          // TODO: Need to implement better error handling
+          console.log(err);
+        });
+    }
+  });
+
+  useEffect(() => {
+    getBacktestData();
+    console.log("effect from backtesting result page");
+    // eslint-disable-next-line
+  }, [location.state.value, algoquantApi]);
 
   // Conditional rendering logic
   let statement;
-  let profitLoss = location.state.value.profitLoss;
+  let profitLoss =
+    ((backtestDataObject?.final_portfolio_value -
+      backtestDataObject?.initial_investment) /
+      backtestDataObject?.initial_investment) *
+    100;
   if (profitLoss < 0) {
     statement = "poorly";
   } else if (profitLoss > 0 && profitLoss < 20) {
@@ -40,15 +102,21 @@ const BacktestingResultsPage = () => {
             </h1>
             <div className="flex p-3 mb-7 w-1/2">
               <p className="flex text-green font-normal text-3xl">
-                {location.state.value.investor} performed {statement} according
-                to AlgoQuant metrics, yielding a{" "}
-                {location.state.value.profitLoss}%{" "}
-                {location.state.value.profitLoss > 0 ? "profit" : "loss"} over
-                the course of 1,150 days.
+                {backtestDataObject?.backtest_name} performed {statement}{" "}
+                according to AlgoQuant metrics, yielding a{" "}
+                {profitLoss.toFixed(3)}%{" "}
+                {profitLoss.toFixed(3) > 0 ? "profit" : "loss"}.
+                {/* over the course */}
+                {/* of 1,150 days. */}
               </p>
             </div>
             <div className="w-10/12 mx-auto">
-              <Graph stockData={data} selectedFilter={selectedFilter} />
+              <Graph
+                stockData={priceChange}
+                xValues={xValues}
+                yValues={yValues}
+                selectedFilter={null}
+              />
             </div>
             <div className="flex items-center pt-10">
               <h1 className="text-green font-bold sm:text-3xl md:text-4xl pt-3 pr-5">
@@ -111,26 +179,50 @@ const BacktestingResultsPage = () => {
               </div>
               <div className="flex flex-col w-screen">
                 <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.backtestName}
+                  {backtestDataObject?.backtest_name}
                 </p>
                 <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.startDate}
+                  {startDate}
                 </p>
                 <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.endDate}
+                  {endDate}
                 </p>
-                <p className="text-green text-2xl font-medium mb-2">$1000000</p>
-                <p className="text-green text-2xl font-medium mb-2">$1000000</p>
-                <p className="text-green text-2xl font-medium mb-2">$1000000</p>
-                <p className="text-green text-2xl font-medium mb-2">0</p>
-                <p className="text-green text-2xl font-medium mb-2">$1000000</p>
-                <p className="text-green text-2xl font-medium mb-2">$1000000</p>
-                <p className="text-green text-2xl font-medium mb-2">0</p>
-                <p className="text-green text-2xl font-medium mb-2">0</p>
-                <p className="text-green text-2xl font-medium mb-2">0</p>
-                <p className="text-green text-2xl font-medium mb-2">0</p>
-                <p className="text-green text-2xl font-medium mb-2">0</p>
-                <p className="text-green text-2xl font-medium mb-2">0</p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  ${backtestDataObject?.initial_investment}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  ${backtestDataObject?.final_portfolio_value}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  ${backtestDataObject?.net_returns}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  {backtestDataObject?.num_trades}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  ${backtestDataObject?.portfolio_min_value}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  ${backtestDataObject?.portfolio_max_value}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  {backtestDataObject?.avg_win}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  {backtestDataObject?.avg_loss}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  {backtestDataObject?.avg_return}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  {backtestDataObject?.max_drawdown}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  {backtestDataObject?.portfolio_volatility}
+                </p>
+                <p className="text-green text-2xl font-medium mb-2">
+                  {backtestDataObject?.sharpe_ratio}
+                </p>
               </div>
             </div>
           </div>

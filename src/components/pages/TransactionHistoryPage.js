@@ -139,7 +139,7 @@ const TransactionHistoryPage = () => {
                   </button>
                 )}
 
-                {transactions.length < 10 ? (
+                {transactions.length < FETCH_AMOUNT ? (
                   <button
                     className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
                     disabled

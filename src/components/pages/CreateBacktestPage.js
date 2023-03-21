@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { Calendar, utils } from "@hassanmojab/react-modern-calendar-datepicker";
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
+import AlgoquantApiContext from "../../api/ApiContext";
+import { useNavigate } from "react-router-dom";
 
 const CreateBacktestPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
 
   // State variables used to keep track of user input
   const [backtestName, setBacktestName] = useState(null);
@@ -16,6 +22,9 @@ const CreateBacktestPage = () => {
   const [nameError, setNameError] = useState(false);
   const [timeframeError, setTimeframeError] = useState(false);
   const [initialInvestmentError, setInitialInvestmentError] = useState(false);
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   // State variable used to display a success message to the user
   const [success, setSuccess] = useState(false);
@@ -41,6 +50,10 @@ const CreateBacktestPage = () => {
     return date.toLocaleDateString(undefined, options);
   };
 
+  // console.log("date: ", selectedDayRange);
+  console.log(startDate);
+  console.log(endDate);
+
   // Update the selectedDayRangeString state variable whenever the selectedDayRange state variable changes
   useEffect(() => {
     if (selectedDayRange && selectedDayRange.from && selectedDayRange.to) {
@@ -56,6 +69,15 @@ const CreateBacktestPage = () => {
         selectedDayRange.to.day
       );
       const rangeString = `${formatDate(fromDate)} - ${formatDate(toDate)}`; // Format the date range string
+      // format start
+      const startTimeMs = fromDate.getTime();
+      const starttimeUnix = Math.floor(startTimeMs / 1000);
+      setStartDate(starttimeUnix);
+      // format end
+      const endTimeMs = toDate.getTime();
+      const endtimeUnix = Math.floor(endTimeMs / 1000);
+      setEndDate(endtimeUnix);
+
       setSelectedDayRangeString(rangeString);
     } else if (selectedDayRange && selectedDayRange.from) {
       // If the user has only selected a start date
@@ -99,8 +121,26 @@ const CreateBacktestPage = () => {
       return;
     } else {
       // If all the user input is valid, display a success message
-      setSuccess(true);
+      if (algoquantApi.token) {
+        algoquantApi
+          .createBacktest(
+            location.state.value.investor_id,
+            startDate,
+            endDate,
+            backtestName,
+            parseInt(initialInvestment)
+          )
+          .then((resp) => {
+            console.log(resp.data);
+            setSuccess(true);
+          })
+          .catch((err) => {
+            // TODO: Need to implement better error handling
+            console.log(err);
+          });
+      }
       setTimeout(() => {
+        navigate("/home");
         setSuccess(false);
       }, 3500);
     }
@@ -179,6 +219,7 @@ const CreateBacktestPage = () => {
               className="text-green font-medium rounded-lg bg-cokewhite hover:bg-smokewhite border-2 border-green px-4 py-2"
               onClick={() => {
                 saveChanges();
+                console.log("pressed");
               }}
             >
               Start Backtest

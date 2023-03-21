@@ -31,7 +31,7 @@ const Table = ({ data, header, onItemPress }) => {
             }`}
             onClick={() =>
               hasStatus && row.status === "completed"
-                ? onItemPress(row)
+                ? onItemPress(row.id)
                 : console.log(row)
             }
           >

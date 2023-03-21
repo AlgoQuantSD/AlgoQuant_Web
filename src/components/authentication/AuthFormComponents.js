@@ -9,7 +9,7 @@ import {
   Heading,
 } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import algoquantLogo from "../../assets/images/logo-color.svg";
+import algoquantLogo from "../../assets/images/logo-color.png";
 const components = {
   Header() {
     const { tokens } = useTheme();

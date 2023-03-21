@@ -17,6 +17,10 @@ const DeleteInvestorModal = ({
     setDeleteInvestorModal(null);
   };
 
+  function refreshPage() {
+    window.location.reload();
+  }
+
   // This function will implement the delete Investor function. For now it just
   // closes the modal.
   const handleDelete = () => {
@@ -26,6 +30,7 @@ const DeleteInvestorModal = ({
         .deleteInvestor(investor?.investor_id)
         .then((resp) => {
           console.log(resp.data);
+          refreshPage();
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
@@ -43,7 +48,7 @@ const DeleteInvestorModal = ({
             {investor && investor?.investor_name}?
           </p>
           <p className="text-lg text-another-gray mb-3">
-            NOTE: All of your investor's jobs will subsequently be deleted
+            NOTE: All of your investors jobs must be stopped before deleting
           </p>
         </div>
         <div className="p-6">
