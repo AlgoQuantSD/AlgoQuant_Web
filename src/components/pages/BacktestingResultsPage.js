@@ -50,7 +50,15 @@ const BacktestingResultsPage = () => {
           const formattedEndTime = endTimeDate.toLocaleString([], options);
           setStartDate(formattedStartTime);
           setEndDate(formattedEndTime);
-          setPriceChange([{ priceChange: parseFloat(resp.data.avg_loss) }]);
+          setPriceChange([
+            {
+              priceChange:
+                ((parseFloat(resp.data.final_portfolio_value) -
+                  parseFloat(resp.data.initial_investment)) /
+                  parseFloat(resp.data.initial_investment)) *
+                100,
+            },
+          ]);
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
@@ -67,7 +75,11 @@ const BacktestingResultsPage = () => {
 
   // Conditional rendering logic
   let statement;
-  let profitLoss = 50;
+  let profitLoss =
+    ((backtestDataObject?.final_portfolio_value -
+      backtestDataObject?.initial_investment) /
+      backtestDataObject?.initial_investment) *
+    100;
   if (profitLoss < 0) {
     statement = "poorly";
   } else if (profitLoss > 0 && profitLoss < 20) {
@@ -92,9 +104,9 @@ const BacktestingResultsPage = () => {
               <p className="flex text-green font-normal text-3xl">
                 {backtestDataObject?.backtest_name} performed {statement}{" "}
                 according to AlgoQuant metrics, yielding a{" "}
-                {location.state.value.profitLoss}%{" "}
-                {location.state.value.profitLoss > 0 ? "profit" : "loss"} over
-                the course of 1,150 days.
+                {profitLoss.toFixed(3)}%{" "}
+                {profitLoss.toFixed(3) > 0 ? "profit" : "loss"} over the course
+                of 1,150 days.
               </p>
             </div>
             <div className="w-10/12 mx-auto">
