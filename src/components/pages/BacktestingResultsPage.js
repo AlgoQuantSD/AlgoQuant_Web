@@ -17,6 +17,8 @@ const BacktestingResultsPage = () => {
   const [priceChange, setPriceChange] = useState([]);
   // store the backtest data
   const [backtestDataObject, setBacktestDataObject] = useState(null);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
   // // API call to get backtest based on the clicked backtest from the backtestScreen using the backtest ID
   // eslint-disable-next-line
@@ -36,6 +38,18 @@ const BacktestingResultsPage = () => {
               })
             )
           );
+
+          let startTimeDate = new Date(parseInt(resp.data.start_time) * 1000);
+          let endTimeDate = new Date(parseInt(resp.data.end_time) * 1000);
+          const options = {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric",
+          };
+          const formattedStartTime = startTimeDate.toLocaleString([], options);
+          const formattedEndTime = endTimeDate.toLocaleString([], options);
+          setStartDate(formattedStartTime);
+          setEndDate(formattedEndTime);
           setPriceChange([{ priceChange: parseFloat(resp.data.avg_loss) }]);
         })
         .catch((err) => {
@@ -53,7 +67,7 @@ const BacktestingResultsPage = () => {
 
   // Conditional rendering logic
   let statement;
-  let profitLoss = location.state.value.profitLoss;
+  let profitLoss = 50;
   if (profitLoss < 0) {
     statement = "poorly";
   } else if (profitLoss > 0 && profitLoss < 20) {
@@ -76,8 +90,8 @@ const BacktestingResultsPage = () => {
             </h1>
             <div className="flex p-3 mb-7 w-1/2">
               <p className="flex text-green font-normal text-3xl">
-                {location.state.value.investor} performed {statement} according
-                to AlgoQuant metrics, yielding a{" "}
+                {backtestDataObject?.backtest_name} performed {statement}{" "}
+                according to AlgoQuant metrics, yielding a{" "}
                 {location.state.value.profitLoss}%{" "}
                 {location.state.value.profitLoss > 0 ? "profit" : "loss"} over
                 the course of 1,150 days.
@@ -155,10 +169,10 @@ const BacktestingResultsPage = () => {
                   {backtestDataObject?.backtest_name}
                 </p>
                 <p className="text-green text-2xl font-medium mb-2">
-                  {backtestDataObject?.start_time}
+                  {startDate}
                 </p>
                 <p className="text-green text-2xl font-medium mb-2">
-                  {backtestDataObject?.end_time}
+                  {endDate}
                 </p>
                 <p className="text-green text-2xl font-medium mb-2">
                   ${backtestDataObject?.initial_investment}

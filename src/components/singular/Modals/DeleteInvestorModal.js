@@ -16,9 +16,11 @@ const DeleteInvestorModal = ({
   const handleClose = () => {
     setDeleteInvestorModal(null);
   };
+
   function refreshPage() {
     window.location.reload();
   }
+
   // This function will implement the delete Investor function. For now it just
   // closes the modal.
   const handleDelete = () => {
