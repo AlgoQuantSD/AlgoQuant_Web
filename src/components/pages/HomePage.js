@@ -9,6 +9,7 @@ import GraphStats from "../reusable/GraphStats";
 import JobGallery from "../singular/JobGallery";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { GraphSpinner } from "../reusable/LoadSpinner";
+import { SaveSpinner } from "../reusable/LoadSpinner";
 import { filters } from "../utils/filtersEnum";
 import { tabFilters } from "../utils/hometabFilterEnum";
 
@@ -36,7 +37,7 @@ const HomePage = () => {
 
   // State variable to store an array of investor objects
   const [investorList, setInvestorList] = useState([]);
-
+  const [investorListLoading, setInvestorListLoading] = useState(true);
   // Aggregated JSON object containing all the related performance stats of the user
   // All combined to a single object - so only need to pass a single prop to children components instead of multiple
   const aggregatedPerformanceData = [
@@ -143,12 +144,15 @@ const HomePage = () => {
   // CallBack function to get list of investors in bulk
   const getInvestorList = useCallback(() => {
     if (algoquantApi.token) {
+      setInvestorListLoading(true);
       algoquantApi
         .getInvestorList()
         .then((resp) => {
           setInvestorList(resp.data["investors"]);
+          setInvestorListLoading(false);
         })
         .catch((err) => {
+          setInvestorListLoading(false);
           // TODO: Need to implement better error handling
           console.log(err);
         });
@@ -185,12 +189,16 @@ const HomePage = () => {
     [getGraphData, setSelectedFilter]
   );
 
-  // Useeffect that is called to render the days performance and investor list as those are the first two shown on screen
+  // Useeffect that is called to render the days performance
   useEffect(() => {
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);
+  }, [algoquantApi, selectedFilter, getData]);
+
+  useEffect(() => {
+    console.log("blah");
     getInvestorList();
-  }, [algoquantApi, selectedFilter, getData, getInvestorList]);
+  }, [getInvestorList]);
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
@@ -265,7 +273,11 @@ const HomePage = () => {
                       >
                         Create Investor
                       </Link>
-                      <InvestorGallery investorList={investorList} />
+                      {investorListLoading ? (
+                        <SaveSpinner />
+                      ) : (
+                        <InvestorGallery investorList={investorList} />
+                      )}
                     </div>
                   );
                 case tabFilters.JOB:
