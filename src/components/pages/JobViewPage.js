@@ -13,6 +13,7 @@ import { GraphSpinner } from "../reusable/LoadSpinner";
 import { TableSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
 import { FaLock } from "react-icons/fa";
+import Banner from "../reusable/Banner";
 
 // The amount of data (trade history for a user) that is being fetched for each api call
 const FETCH_AMOUNT = 5;
@@ -58,6 +59,9 @@ const JobViewPage = () => {
 
   const [stopJobModal, setStopJobModal] = useState(null);
 
+  // store error and show on banner
+  const [errorMsg, setErrorMsg] = useState("");
+
   // Aggregated JSON object containing all the related performance stats of the user
   // All combined to a single object - so only need to pass a single prop to children components instead of multiple
   const aggregatedPerformanceData = [
@@ -69,10 +73,6 @@ const JobViewPage = () => {
       dateClosed: dateClosed,
     },
   ];
-
-  console.log("job " + location.state.value);
-  console.log("type:" + location.state.type);
-  console.log("job object: ", job);
 
   // functions to handle a page change
   const handleNextClick = () => {
@@ -111,7 +111,8 @@ const JobViewPage = () => {
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
-          console.log(err);
+          console.log(err.message);
+          setErrorMsg(err.message);
         });
     }
   }, [algoquantApi, location]);
@@ -314,6 +315,7 @@ const JobViewPage = () => {
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      <Banner message={errorMsg} />
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

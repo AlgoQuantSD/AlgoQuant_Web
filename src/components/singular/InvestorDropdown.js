@@ -9,6 +9,7 @@ const InvestorDropdown = ({
   deleteInvestor,
   startBacktest,
   investor,
+  setDeleted,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedModal, setSelectedModal] = useState(null);
@@ -52,6 +53,7 @@ const InvestorDropdown = ({
           setDeleteInvestorModal={setSelectedModal}
           deleteInvestorModal={!!setSelectedModal}
           investor={investor}
+          setDeleted={setDeleted}
         />
       )}
       {showDropdown && (

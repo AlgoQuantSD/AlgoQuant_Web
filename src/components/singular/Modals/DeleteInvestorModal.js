@@ -1,14 +1,19 @@
 import { React, useContext } from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
+import { ToastContext } from "../../reusable/ToastContext";
 
 const DeleteInvestorModal = ({
   setDeleteInvestorModal,
   deleteInvestorModal,
   investor,
+  setDeleted,
 }) => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+  // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
+  const { showToast } = useContext(ToastContext);
+
   /*
   Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
   attributes of the Modal
@@ -16,10 +21,6 @@ const DeleteInvestorModal = ({
   const handleClose = () => {
     setDeleteInvestorModal(null);
   };
-
-  function refreshPage() {
-    window.location.reload();
-  }
 
   // This function will implement the delete Investor function. For now it just
   // closes the modal.
@@ -30,11 +31,14 @@ const DeleteInvestorModal = ({
         .deleteInvestor(investor?.investor_id)
         .then((resp) => {
           console.log(resp.data);
-          refreshPage();
+          console.log("investor deleted");
+          showToast("Investor sucessfully deleted.");
+          setDeleted(true);
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
           console.log("from handleDelete: ", err);
+          showToast(err.message);
         });
     }
   };
