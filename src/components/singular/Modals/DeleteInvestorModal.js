@@ -32,13 +32,13 @@ const DeleteInvestorModal = ({
         .then((resp) => {
           console.log(resp.data);
           console.log("investor deleted");
-          showToast("Investor sucessfully deleted.");
+          showToast("Investor sucessfully deleted.", "success");
           setDeleted(true);
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
           console.log("from handleDelete: ", err);
-          showToast(err.message);
+          showToast(err.message, "error");
         });
     }
   };

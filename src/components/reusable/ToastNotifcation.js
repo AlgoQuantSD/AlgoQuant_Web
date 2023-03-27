@@ -11,7 +11,7 @@ function ToastNotification({ isOpen, type, message, icon, handleClose }) {
       case "error":
         return "text-red-500";
       default:
-        return "text-gray-500";
+        return "text-purple-500";
     }
   };
 

@@ -20,10 +20,12 @@ const HomePage = () => {
 
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState();
 
-  const showToast = (message) => {
+  const showToast = (message, type = "") => {
     setIsToastOpen(true);
     setToastMessage(message);
+    setToastType(type);
   };
 
   const hideToast = () => {
@@ -197,7 +199,7 @@ const HomePage = () => {
             <ToastNotification
               isOpen={isToastOpen}
               message={toastMessage}
-              type="success"
+              type={toastType}
               handleClose={hideToast}
             />
             <div className="pt-10">
