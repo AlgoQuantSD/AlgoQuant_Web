@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import AlgoquantApiContext from "../../api/ApiContext";
+import Banner from "../reusable/Banner";
 
 const AIConfirmationPage = () => {
   const location = useLocation();
@@ -11,7 +12,9 @@ const AIConfirmationPage = () => {
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  console.log(location.state.value);
+
+  // store error and show on banner
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleConfirmButton = () => {
     if (algoquantApi.token) {
@@ -33,12 +36,14 @@ const AIConfirmationPage = () => {
         .catch((err) => {
           // TODO: Need to implement better error handling
           console.log(err);
+          setErrorMsg("Error: Failed to create AI investor. Try again later.");
         });
     }
   };
-
+  console.log("error:", errorMsg);
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? <></> : <Banner message={errorMsg} />}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

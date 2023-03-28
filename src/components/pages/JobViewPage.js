@@ -110,9 +110,8 @@ const JobViewPage = () => {
           );
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
           console.log(err.message);
-          setErrorMsg(err.message);
+          setErrorMsg("Error: Failed to load job.");
         });
     }
   }, [algoquantApi, location]);
@@ -148,8 +147,8 @@ const JobViewPage = () => {
             setIsLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
             console.log(err);
+            setErrorMsg("Erorr: Failed to get job's trade data.");
           });
       }
     }
@@ -233,8 +232,8 @@ const JobViewPage = () => {
             setGraphLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
             console.log(err);
+            setErrorMsg("Erorr: Failed to get job's graph data.");
           });
       }
     },
@@ -315,7 +314,7 @@ const JobViewPage = () => {
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
-      <Banner message={errorMsg} />
+      {errorMsg === "" ? <></> : <Banner message={errorMsg} />}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
