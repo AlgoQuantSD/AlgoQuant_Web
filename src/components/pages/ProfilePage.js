@@ -19,6 +19,7 @@ import AccountModal from "../singular/Modals/AccountModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { LoadSpinner } from "../reusable/LoadSpinner";
+import Banner from "../reusable/Banner";
 
 // Uitlity fuction used to format numbers
 const formatter = new Intl.NumberFormat("en-US", {
@@ -56,6 +57,8 @@ const ProfilePage = () => {
 
   // State variable used to track when loading screen should be shown
   const [isLoading, setIsLoading] = useState(true);
+  // store error and show on banner
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Utility method to clear the state of each attribute, used after changes are saved
   const clearState = () => {
@@ -90,8 +93,10 @@ const ProfilePage = () => {
           setIsLoading(false);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log(err);
+          setIsLoading(false);
+          setErrorMsg(
+            "Erorr: Failed to get profile information. Please try again later."
+          );
         });
     }
   }, [algoquantApi]);
@@ -191,6 +196,11 @@ const ProfilePage = () => {
   return (
     // Main Div Container
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} />
+      )}
       <Navbar />
       {/* Main Div for the side bar and all the page content */}
       <div className="flex self-stretch">

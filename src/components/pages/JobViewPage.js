@@ -148,7 +148,7 @@ const JobViewPage = () => {
           })
           .catch((err) => {
             console.log(err);
-            setErrorMsg("Erorr: Failed to get job's trade data.");
+            setErrorMsg("Error: Failed to get job's trade data.");
           });
       }
     }
@@ -233,7 +233,7 @@ const JobViewPage = () => {
           })
           .catch((err) => {
             console.log(err);
-            setErrorMsg("Erorr: Failed to get job's graph data.");
+            setErrorMsg("Error: Failed to get job's graph data.");
           });
       }
     },
@@ -314,7 +314,11 @@ const JobViewPage = () => {
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
-      {errorMsg === "" ? <></> : <Banner message={errorMsg} />}
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

@@ -1,7 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiFillAlert, AiOutlineClose } from "react-icons/ai";
-const Banner = ({ message }) => {
+const Banner = ({ message, setMessage }) => {
   const [showBanner, setShowBanner] = useState(true);
+
+  const handleClose = () => {
+    setShowBanner(false);
+    setMessage("");
+  };
+  useEffect(() => {
+    if (showBanner) {
+      setTimeout(() => {
+        handleClose();
+      }, 8000);
+    }
+    // eslint-disable-next-line
+  }, [showBanner]);
+
   return (
     <div className="bg-red-500">
       {showBanner ? (
@@ -21,7 +35,7 @@ const Banner = ({ message }) => {
             <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
               <button
                 type="button"
-                onClick={() => setShowBanner(false)}
+                onClick={() => handleClose()}
                 className="-mr-1 flex rounded-md p-2 hover:bg-faded-dark-gray focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
               >
                 <span className="sr-only">Dismiss</span>

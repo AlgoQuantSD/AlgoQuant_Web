@@ -6,6 +6,7 @@ import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { useNavigate } from "react-router-dom";
+import Banner from "../reusable/Banner";
 
 const CreateBacktestPage = () => {
   const location = useLocation();
@@ -13,6 +14,8 @@ const CreateBacktestPage = () => {
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+  // store error and show on banner
+  const [errorMsg, setErrorMsg] = useState("");
 
   // State variables used to keep track of user input
   const [backtestName, setBacktestName] = useState(null);
@@ -133,21 +136,25 @@ const CreateBacktestPage = () => {
           .then((resp) => {
             console.log(resp.data);
             setSuccess(true);
+            setTimeout(() => {
+              navigate("/home");
+              setSuccess(false);
+            }, 3500);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
-            console.log(err);
+            setErrorMsg("Error: Failed to create backtest. Try again later.");
           });
       }
-      setTimeout(() => {
-        navigate("/home");
-        setSuccess(false);
-      }, 3500);
     }
   };
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

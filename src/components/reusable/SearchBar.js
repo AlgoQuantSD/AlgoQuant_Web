@@ -125,6 +125,17 @@ const Searchbar = ({
           ))}
         </div>
       )}
+      {showResults && searchResults.length === 0 && (
+        <div className="absolute bg-smokewhite rounded-sm shadow-lg text-green w-full">
+          <p
+            className={`px-4 py-2 hover:bg-light-gray cursor-pointer 
+                 "bg-another-gray border-l border-light-gray"
+        `}
+          >
+            Stock can not be found.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

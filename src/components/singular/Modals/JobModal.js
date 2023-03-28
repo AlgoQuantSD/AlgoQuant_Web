@@ -1,11 +1,12 @@
 import { React, useState, useContext } from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
-
+import { ToastContext } from "../../reusable/ToastContext";
 const JobModal = ({ setJobModal, jobModal, investor }) => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-
+  // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
+  const { showToast } = useContext(ToastContext);
   /*
   Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
   attributes of the Modal
@@ -35,9 +36,10 @@ const JobModal = ({ setJobModal, jobModal, investor }) => {
         .createJob(parseInt(initInvestment), investor?.investor_id, jobName)
         .then((resp) => {
           console.log(resp.data);
+          showToast(jobName + " job has successfully started", "success");
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
+          showToast(jobName + " job has failed to start", "error");
           console.log("Create-Job:", err);
         });
     }

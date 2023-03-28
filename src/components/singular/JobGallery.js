@@ -15,9 +15,12 @@ import {
 import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
+import { ToastContext } from "../reusable/ToastContext";
 
 const JobGallery = ({ type, investorID }) => {
   const navigate = useNavigate();
+  // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
+  const { showToast } = useContext(ToastContext);
 
   /*
   Function called anytime a user selects View Job in the Job Gallery. Will navigate
@@ -65,7 +68,8 @@ const JobGallery = ({ type, investorID }) => {
           setIsLoading(false);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
+          showToast("Active job list did not load correctly", "error");
+          setIsLoading(false);
           console.log(err);
         });
     }
@@ -79,6 +83,7 @@ const JobGallery = ({ type, investorID }) => {
     lekJobId,
     type,
     investorID,
+    showToast,
   ]);
 
   // Function to call more data job data (if there is more) once user scrolled to the bottom of the component

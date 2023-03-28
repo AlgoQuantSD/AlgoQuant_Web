@@ -9,6 +9,7 @@ import { SaveSpinner } from "../reusable/LoadSpinner";
 import { GraphSpinner } from "../reusable/LoadSpinner";
 import GraphStats from "../reusable/GraphStats";
 import { filters } from "../utils/filtersEnum";
+import Banner from "../reusable/Banner";
 
 const SearchResultsPage = () => {
   const location = useLocation();
@@ -38,6 +39,8 @@ const SearchResultsPage = () => {
   // used to determine when to show a loading component when data is being fetched
   const [graphLoading, setGraphLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
+  // store error and show on banner
+  const [errorMsg, setErrorMsg] = useState("");
 
   // header used for the columns on the table
   const header = [
@@ -169,8 +172,8 @@ const SearchResultsPage = () => {
             setGraphLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
             console.log(err);
+            setErrorMsg("Error: Failed to get stock's graph data.");
           });
       }
     },
@@ -213,7 +216,7 @@ const SearchResultsPage = () => {
           setStatsLoading(false);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
+          setErrorMsg("Error: Failed to get stock's statistics.");
           console.log(err);
         });
     }
@@ -222,6 +225,11 @@ const SearchResultsPage = () => {
 
   return (
     <div className="bg-cokewhite">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

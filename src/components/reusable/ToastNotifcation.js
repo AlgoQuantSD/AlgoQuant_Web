@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 function ToastNotification({ isOpen, type, message, icon, handleClose }) {
@@ -14,6 +14,15 @@ function ToastNotification({ isOpen, type, message, icon, handleClose }) {
         return "text-purple-500";
     }
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        handleClose();
+      }, 3500);
+    }
+    // eslint-disable-next-line
+  }, [isOpen]);
 
   return (
     <div

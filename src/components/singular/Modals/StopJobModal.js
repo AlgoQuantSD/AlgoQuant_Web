@@ -25,13 +25,13 @@ const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
         .stopJob(jobObj.job_id)
         .then((resp) => {
           console.log(resp.data);
+          navigate("/home");
         })
         .catch((err) => {
           // TODO: Need to implement better error handling
           console.log(err);
         });
     }
-    navigate("/home");
   };
 
   return (

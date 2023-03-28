@@ -8,12 +8,15 @@ import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot from "../../assets/images/investors/bot1.png";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
+import { ToastContext } from "../reusable/ToastContext";
 
 const InvestorGallery = () => {
   const navigate = useNavigate();
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const [selectedInvestor, setSelectedInvestor] = useState(null);
+  // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
+  const { showToast } = useContext(ToastContext);
 
   // State variable to store an array of investor objects
   const [investorList, setInvestorList] = useState([]);
@@ -34,14 +37,14 @@ const InvestorGallery = () => {
         })
         .catch((err) => {
           setInvestorListLoading(false);
-          // TODO: Need to implement better error handling
+          showToast("Investor list did not load correctly", "error");
           console.log(err);
         });
     }
+    // eslint-disable-next-line
   }, [setInvestorList, algoquantApi]);
 
   useEffect(() => {
-    console.log("blah");
     getInvestorList();
     setSuccessfulDelete(false);
   }, [getInvestorList, successfulDelete]);

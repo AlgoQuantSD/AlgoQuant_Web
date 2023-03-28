@@ -10,6 +10,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import JobGallery from "../singular/JobGallery";
 import { tabFilters } from "../utils/hometabFilterEnum";
 import { LoadSpinner } from "../reusable/LoadSpinner";
+import Banner from "../reusable/Banner";
 
 const InvestorViewPage = () => {
   const navigate = useNavigate();
@@ -25,9 +26,10 @@ const InvestorViewPage = () => {
 
   // used to keep track of what jobs to pull either active or past jobs, uses the tabFilter enum
   const [buttonStatus, setButtonStatus] = useState(tabFilters.JOB);
-
   // loading
   const [isLoading, setIsLoading] = useState(true);
+
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Function called anytime a user selects Start Backtest in the dropdown. Will navigate a user to the Backtest page passing in the value.
   const startBacktest = (value) => {
@@ -46,8 +48,8 @@ const InvestorViewPage = () => {
           setInvestor(resp.data);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log(err.body);
+          setIsLoading(false);
+          setErrorMsg("Failed to load investor. Please try again later.");
         });
     }
   }, [algoquantApi, location, setInvestor]);
@@ -67,6 +69,11 @@ const InvestorViewPage = () => {
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

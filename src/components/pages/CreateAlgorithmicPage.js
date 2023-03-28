@@ -5,12 +5,15 @@ import StockSelect from "../singular/StockSelect";
 import AlgoquantApiContext from "../../api/ApiContext";
 import IndicatorSelect from "../singular/IndicatorSelect";
 import { useNavigate } from "react-router-dom";
+import Banner from "../reusable/Banner";
 
 const CreateAlgorithmicPage = () => {
   const navigate = useNavigate();
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+  // store error and show on banner
+  const [errorMsg, setErrorMsg] = useState("");
 
   // State variables used to keep track of user input
   const [investorName, setInvestorName] = useState(null);
@@ -95,8 +98,7 @@ const CreateAlgorithmicPage = () => {
           setSearchResults(resp.data["stock-tickers"]);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log(err);
+          setErrorMsg("Error: Failed to find stock.");
         });
     }
     return searchResults;
@@ -108,6 +110,11 @@ const CreateAlgorithmicPage = () => {
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

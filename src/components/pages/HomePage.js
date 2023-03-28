@@ -13,6 +13,7 @@ import { filters } from "../utils/filtersEnum";
 import { tabFilters } from "../utils/hometabFilterEnum";
 import { ToastContext } from "../reusable/ToastContext";
 import ToastNotification from "../reusable/ToastNotifcation";
+import Banner from "../reusable/Banner";
 
 const HomePage = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
@@ -49,6 +50,7 @@ const HomePage = () => {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [recentPrice, setRecentPrice] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Aggregated JSON object containing all the related performance stats of the user
   // All combined to a single object - so only need to pass a single prop to children components instead of multiple
@@ -145,8 +147,8 @@ const HomePage = () => {
             setGraphLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
-            console.log(err);
+            setGraphLoading(false);
+            setErrorMsg("Failed to load performance. Please try again later.");
           });
       }
     },
@@ -192,6 +194,11 @@ const HomePage = () => {
   return (
     <ToastContext.Provider value={{ showToast: showToast, toastMessage }}>
       <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+        {errorMsg === "" ? (
+          <></>
+        ) : (
+          <Banner message={errorMsg} setMessage={setErrorMsg} />
+        )}
         <Navbar />
         <div className="flex self-stretch">
           <Sidebar />
