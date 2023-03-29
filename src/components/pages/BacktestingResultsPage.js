@@ -113,7 +113,7 @@ const BacktestingResultsPage = () => {
             <div className="w-10/12 mx-auto">
               <Graph
                 stockData={priceChange}
-                xValues={xValues}
+                lines={[{"data": xValues, "name": "Investor Performance"}, {"data": xValues, "name": "Buy/Hold Performance", "color": "#0000FF"}]}
                 yValues={yValues}
                 selectedFilter={null}
               />

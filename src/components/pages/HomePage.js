@@ -211,7 +211,7 @@ const HomePage = () => {
             <div className="w-11/12 mx-auto my-10 mb-28">
               <Graph
                 stockData={aggregatedPerformanceData}
-                xValues={xValues}
+                lines={[{"data": xValues, "name": "$"}]}
                 yValues={yValues}
                 getData={getData}
                 selectedFilter={selectedFilter}

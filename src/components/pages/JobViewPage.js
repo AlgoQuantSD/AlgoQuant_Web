@@ -356,7 +356,7 @@ const JobViewPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedPerformanceData}
-                xValues={xValues}
+                lines={[{"data": xValues, "name": "$"}]}
                 yValues={yValues}
                 getData={getData}
                 selectedFilter={selectedFilter}

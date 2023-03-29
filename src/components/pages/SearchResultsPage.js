@@ -241,7 +241,7 @@ const SearchResultsPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedStockData}
-                xValues={xValues}
+                lines={[{"data": xValues, "name": "$"}]}
                 yValues={yValues}
                 getData={getData}
                 selectedFilter={selectedFilter}
