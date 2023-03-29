@@ -1,6 +1,7 @@
 import { React, useState, useContext } from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
+import { SaveSpinner } from "../../reusable/LoadSpinner";
 
 /*
 The different types of Modals that will be displayed
@@ -25,6 +26,8 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
 
   // Used to dispaly error messages for the modals
   const [error, setError] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const modalType = accountModal.type;
 
@@ -69,13 +72,16 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
 
     // Create the API request
     if (algoquantApi.token) {
+      setIsLoading(true);
       algoquantApi
         .resetBalance(requestBody)
         .then((resp) => {
+          setIsLoading(false);
           handleAccountModals();
           console.log(resp);
         })
         .catch((err) => {
+          setIsLoading(false);
           setError("Keys provided are invalid. try again.");
           console.log(err);
         });
@@ -120,6 +126,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
               <p className="text-faded-dark-gray">
                 NOTE: Your active jobs will be terminated.
               </p>
+              {isLoading ? SaveSpinner : <></>}
             </div>
             <div className="p-6 flex justify-between">
               <button
@@ -172,6 +179,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 NOTE: Connecting to Alpaca will terminate any progress with your
                 simulated account
               </p>
+              {isLoading ? SaveSpinner : <></>}
             </div>
             <div className="p-6 flex justify-between">
               <button
@@ -213,6 +221,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
               </p>
             </div>
             <p className="text-red">{error}</p>
+            {isLoading ? SaveSpinner : <></>}
             <div className="p-6 flex justify-between">
               <button
                 className="text-green bg-smokewhite py-2 px-4 rounded shadow-md"
