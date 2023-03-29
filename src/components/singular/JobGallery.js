@@ -139,17 +139,24 @@ const JobGallery = ({ type, investorID }) => {
                 )}
               </div>
 
+              {job.status === 'stopping' ? ( <p>Stopping</p>) : (<p></p>)}
+
               <div className="flex w-1/3 justify-center">
                 <img
                   src={investorPhotos[i % investorPhotos.length]}
                   alt=""
                   className="h-10 self-center w-8"
                 />
+
                 <button
                   onClick={() => {
-                    viewJob(job.job_id, type);
+                    // Dont want to click on jobs stopping
+                    if (job.status !== 'stopping'){
+                      viewJob(job.job_id, type);
+                    }
                   }}
                 >
+    
                   <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
                 </button>
               </div>
