@@ -59,6 +59,8 @@ const InvestorViewPage = () => {
     getInvestor();
   }, [getInvestor]);
 
+  let image_id = 'image_test'
+
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       <Navbar />
@@ -110,13 +112,14 @@ const InvestorViewPage = () => {
           >
             Start a Backtest
           </button>
-
+          
           <div className="flex h-2/5">
             <div className="flex justify-center w-1/2">
               {investor?.type === "I" ? (
+
                 // Find out how to receive the photo associated with the selected investor
                 <img
-                  src={investorPhotos[10 % investorPhotos.length]}
+                  src={`https://algoquant-resources.s3.amazonaws.com/images/${image_id}.jpeg`}
                   alt=""
                   className="h-80 mt-6 mb-6"
                 />
