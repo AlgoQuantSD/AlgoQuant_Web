@@ -2,7 +2,6 @@ import React, { useState, useContext, useCallback, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import bot from "../../assets/images/investors/bot1.png";
 import JobModal from "../singular/Modals/JobModal";
 import DeleteInvestorModal from "../singular/Modals/DeleteInvestorModal";
 import AlgoquantApiContext from "../../api/ApiContext";
@@ -130,14 +129,17 @@ const InvestorViewPage = () => {
               <div className="flex h-2/5">
                 <div className="flex justify-center w-1/2">
                   {investor?.type === "I" ? (
-                    // Find out how to receive the photo associated with the selected investor
                     <img
                       src={investor.image_id}
-                      alt=""
+                      alt="investor"
                       className="h-80 mt-6 mb-6"
                     />
                   ) : (
-                    <img src={bot} alt="bot" className="h-72 mt-12" />
+                    <img
+                      src={investor.image_id}
+                      alt="AI"
+                      className="h-72 mt-12"
+                    />
                   )}
                 </div>
                 <div className="flex justify-center">
@@ -171,14 +173,15 @@ const InvestorViewPage = () => {
                               Stock Ticker:
                             </td>
                             <td className="px-4 py-2 text-lg text-white">
-                              {investor?.assets_to_track.map(
-                                (ticker, index) => (
-                                  <span key={index}>
-                                    {index > 0 && ", "}
-                                    {ticker}
-                                  </span>
-                                )
-                              )}
+                              {investor?.assets_to_track &&
+                                investor.assets_to_track.map(
+                                  (ticker, index) => (
+                                    <span key={index}>
+                                      {index > 0 && ", "}
+                                      {ticker}
+                                    </span>
+                                  )
+                                )}
                             </td>
                           </tr>
                           <tr>
@@ -186,12 +189,13 @@ const InvestorViewPage = () => {
                               Indicators:
                             </td>
                             <td className="px-4 py-2 text-lg text-white">
-                              {investor?.indicators.map((indicator, index) => (
-                                <span key={index}>
-                                  {index > 0 && ", "}
-                                  {indicator}
-                                </span>
-                              ))}
+                              {investor?.indicators &&
+                                investor.investor.map((indicator, index) => (
+                                  <span key={index}>
+                                    {index > 0 && ", "}
+                                    {indicator}
+                                  </span>
+                                ))}
                             </td>
                           </tr>
                           <tr>

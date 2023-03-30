@@ -24,7 +24,7 @@ const AIConfirmationPage = () => {
         .createInvestor(
           null,
           null,
-          location.state.value.image_id, // UPDATE NEED TO PUT IMAGE ID HERE
+          location.state.value.image_id,
           location.state.value.investorName,
           parseFloat(location.state.value.lossStop) / 100, // will need to update this so we dont do this here
           null,

@@ -131,11 +131,15 @@ const InvestorGallery = () => {
                 {investor.type === "I" ? (
                   <img
                     src={investor.image_id}
-                    alt=""
+                    alt="investor"
                     className="h-52 mt-6 mb-6"
                   />
                 ) : (
-                  <img src={bot} alt="bot" className="h-72 mt-12" />
+                  <img
+                    src={investor.image_id}
+                    alt="AI"
+                    className="h-72 mt-12"
+                  />
                 )}
               </div>
               {/* Indicators / Stocks */}

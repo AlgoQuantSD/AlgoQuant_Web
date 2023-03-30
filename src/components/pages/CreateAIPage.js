@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useNavigate } from "react-router-dom";
@@ -9,14 +9,17 @@ const CreateAIPage = () => {
   const [showError, setShowError] = useState(false);
   const [profitStop, setProfitStop] = useState(null);
   const [lossStop, setLossStop] = useState(null);
+  const [imageID, setImageID] = useState(null);
 
-  // Randomly select an image from the S3 bucket
-  // const randomIndex = Math.floor(Math.random() * 3) + 1;
-  // let imageID =
-  //   "https://algoquant-resources.s3.amazonaws.com/InvestorImages/bot" +
-  //   "/" +
-  //   randomIndex +
-  //   ".png";
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * 3) + 1;
+    const id =
+      "https://algoquant-resources.s3.amazonaws.com/InvestorImages/AI" +
+      "/" +
+      randomIndex +
+      ".png";
+    setImageID(id);
+  }, []);
 
   /*
   Function called when the user attempts to save changes. Will check all the user values and 
@@ -34,6 +37,7 @@ const CreateAIPage = () => {
         investorName: investorName,
         profitStop: profitStop,
         lossStop: lossStop,
+        image_id: imageID,
       };
       createInvestor(value);
     }
@@ -137,7 +141,21 @@ const CreateAIPage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col w-1/2 h-full"></div>
+            <div className="flex flex-col w-1/2 h-full">
+              <img
+                src={imageID}
+                alt="investor"
+                className="h-72 mt-12 mx-auto"
+              />
+              <div>
+                <p className="text-left text-another-gray text-md font-light mt-4 w-10/12 mx-auto">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
