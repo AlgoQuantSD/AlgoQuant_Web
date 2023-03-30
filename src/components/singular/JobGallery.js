@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import {
   BsFillArrowRightCircleFill,
   BsCaretDownFill,

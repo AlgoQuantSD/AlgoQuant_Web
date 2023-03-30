@@ -190,7 +190,7 @@ const InvestorViewPage = () => {
                             </td>
                             <td className="px-4 py-2 text-lg text-white">
                               {investor?.indicators &&
-                                investor.investor.map((indicator, index) => (
+                                investor.indicators.map((indicator, index) => (
                                   <span key={index}>
                                     {index > 0 && ", "}
                                     {indicator}
