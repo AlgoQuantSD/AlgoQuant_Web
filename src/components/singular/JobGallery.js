@@ -153,6 +153,7 @@ const JobGallery = ({ type, investorID }) => {
                 <button
                   onClick={() => {
                     viewJob(job.job_id, type);
+                    console.log(job);
                   }}
                 >
                   <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />

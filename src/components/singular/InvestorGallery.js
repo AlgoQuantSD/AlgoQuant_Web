@@ -4,7 +4,6 @@ import Carousel from "react-multi-carousel";
 import InvestorDropdown from "./InvestorDropdown";
 import { BsPersonLinesFill } from "react-icons/bs";
 import { FaBrain } from "react-icons/fa";
-import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot from "../../assets/images/investors/bot1.png";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
@@ -14,7 +13,7 @@ const InvestorGallery = () => {
   const navigate = useNavigate();
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  const [selectedInvestor, setSelectedInvestor] = useState(null);
+  const [setSelectedInvestor] = useState(null);
   // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
   const { showToast } = useContext(ToastContext);
 
@@ -124,14 +123,14 @@ const InvestorGallery = () => {
                     startBacktest(investor);
                   }}
                   setDeleted={setSuccessfulDelete}
-                  investor={selectedInvestor}
+                  investor={investor}
                 />
               </div>
               {/* Investor Image */}
               <div className="flex justify-center">
                 {investor.type === "I" ? (
                   <img
-                    src={investorPhotos[i % investorPhotos.length]}
+                    src={investor.image_id}
                     alt=""
                     className="h-52 mt-6 mb-6"
                   />

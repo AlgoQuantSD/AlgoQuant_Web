@@ -6,14 +6,25 @@ import { useNavigate } from "react-router-dom";
 import AlgoquantApiContext from "../../api/ApiContext";
 import Banner from "../reusable/Banner";
 import { LoadSpinner } from "../reusable/LoadSpinner";
+
 const InvestorConfirmationPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Randomly select an image from the S3 bucket
+  const randomIndex = Math.floor(Math.random() * 3) + 1;
+  let imageID =
+    "https://algoquant-resources.s3.amazonaws.com/InvestorImages/" +
+    location.state.value.tradeFrequency +
+    "/" +
+    randomIndex +
+    ".png";
+
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  console.log(location.state.value);
+
   const handleConfirmButton = () => {
     if (algoquantApi.token) {
       setIsLoading(true);
@@ -21,7 +32,7 @@ const InvestorConfirmationPage = () => {
         .createInvestor(
           location.state.value.stocks,
           location.state.value.indicators,
-          2, // UPDATE NEED TO PUT IMAGE ID HERE
+          imageID, // UPDATE NEED TO PUT IMAGE ID HERE
           location.state.value.investorName,
           parseFloat(location.state.value.lossStop) / 100, // will need to update this so we dont do this here
           location.state.value.tradeFrequency,
@@ -39,6 +50,7 @@ const InvestorConfirmationPage = () => {
         });
     }
   };
+
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
       {errorMsg === "" ? (
@@ -64,74 +76,87 @@ const InvestorConfirmationPage = () => {
                 correct.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-8 mt-5 w-1/2">
+
+            <img src={imageID} alt="investor" className="h-72 mt-12 mx-auto" />
+
+            <div className="grid grid-cols-2 gap-8 mt-5 w-screen">
               <div className="flex flex-col">
-                <p className="text-green text-2xl font-semibold mb-2">
-                  Investor Name:
-                </p>
-                <p className="text-green text-2xl font-semibold mb-2">
-                  Trade Frequency:
-                </p>
-                <p className="text-green text-2xl font-semibold mb-2">
-                  Profit Stop:
-                </p>
-                <p className="text-green text-2xl font-semibold mb-2">
-                  Loss Stop:
-                </p>
-                <p className="text-green text-2xl font-semibold mb-2">
-                  Selected Indicators:
-                </p>
-                <p className="text-green text-2xl font-semibold mb-2">
-                  Stock Tickers:
-                </p>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Investor Name:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.investorName}
+                  </p>
+                </div>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Trade Frequency:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.tradeFrequency === "30_min"
+                      ? "High Frequency Day Trader (30 minutes)"
+                      : location.state.value.tradeFrequency === "1_hr"
+                      ? "Low Frequency Day Trader (1 hour)"
+                      : location.state.value.tradeFrequency === "4_hr"
+                      ? "High Frequency Swing Trader (4 hours)"
+                      : location.state.value.tradeFrequency === "1_day"
+                      ? "Low Frequency Swing Trader (1 day)"
+                      : location.state.value.tradeFrequency === "1_wk"
+                      ? "High Frequency Long Trader (1 week)"
+                      : location.state.value.tradeFrequency === "1_mo"
+                      ? "Low Frequency Long Trader (1 month)"
+                      : ""}
+                  </p>
+                </div>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Profit Stop:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.profitStop === null
+                      ? "N/A"
+                      : `${location.state.value.profitStop}%`}
+                  </p>
+                </div>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Loss Stop:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.lossStop === null
+                      ? "N/A"
+                      : `${location.state.value.lossStop}%`}
+                  </p>
+                </div>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Selected Indicators:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.indicators
+                      .map((indicator) => indicator.toUpperCase())
+                      .join(", ")}
+                  </p>
+                </div>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Stock Tickers:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.stocks.join(", ")}
+                  </p>
+                </div>
               </div>
-              <div className="flex flex-col w-screen">
-                <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.investorName}
-                </p>
-                <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.tradeFrequency === "minutes"
-                    ? "High Frequency Day Trader - 30 minutes"
-                    : location.state.value.tradeFrequency === "hour"
-                    ? "Low Frequency Day Trader - 1 hour"
-                    : location.state.value.tradeFrequency === "hours"
-                    ? "High Frequency Swing Trader - 4 hours"
-                    : location.state.value.tradeFrequency === "day"
-                    ? "Low Frequency Swing Trader - 1 day"
-                    : location.state.value.tradeFrequency === "week"
-                    ? "High Frequency Long Trader - 1 week"
-                    : location.state.value.tradeFrequency === "month"
-                    ? "Low Frequency Long Trader - 1 month"
-                    : ""}
-                </p>
-                <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.profitStop === null
-                    ? "N/A"
-                    : `${location.state.value.profitStop}%`}
-                </p>
-                <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.lossStop === null
-                    ? "N/A"
-                    : `${location.state.value.lossStop}%`}
-                </p>
-                <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.indicators
-                    .map((indicator) => indicator.toUpperCase())
-                    .join(", ")}
-                </p>
-                <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.stocks.join(", ")}
-                </p>
-              </div>
-              {/* Create Investor Button */}
-              <div className="mt-10">
-                <button
-                  className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2"
-                  onClick={handleConfirmButton}
-                >
-                  Confirm
-                </button>
-              </div>
+            </div>
+            {/* Create Investor Button */}
+            <div className="mt-10">
+              <button
+                className="text-cokewhite font-medium rounded-lg bg-green px-4 py-2"
+                onClick={handleConfirmButton}
+              >
+                Confirm
+              </button>
             </div>
           </div>
         )}

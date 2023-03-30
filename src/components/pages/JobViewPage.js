@@ -304,7 +304,6 @@ const JobViewPage = () => {
 
   // header used for the columns on the table
   const header = [
-    { key: "jobName", title: "Job Name" },
     { key: "buyOrSell", title: "Buy or Sell" },
     { key: "stockTicker", title: "Stock Ticker" },
     { key: "shares", title: "Shares" },

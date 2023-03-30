@@ -2,7 +2,6 @@ import React, { useState, useContext, useCallback, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import bot from "../../assets/images/investors/bot1.png";
 import JobModal from "../singular/Modals/JobModal";
 import DeleteInvestorModal from "../singular/Modals/DeleteInvestorModal";
@@ -95,7 +94,7 @@ const InvestorViewPage = () => {
               <div className="flex pt-10 justify-between">
                 <div className="">
                   <h1 className="text-green font-bold text-5xl mb-10">
-                    {investor?.investor_name} Investor
+                    {investor?.investor_name}
                   </h1>
                 </div>
 
@@ -133,7 +132,7 @@ const InvestorViewPage = () => {
                   {investor?.type === "I" ? (
                     // Find out how to receive the photo associated with the selected investor
                     <img
-                      src={investorPhotos[10 % investorPhotos.length]}
+                      src={investor.image_id}
                       alt=""
                       className="h-80 mt-6 mb-6"
                     />

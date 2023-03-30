@@ -160,7 +160,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 Please enter Alpaca API Key
               </p>
               <input
-                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-green"
                 type="text"
                 placeholder="Alpaca Key"
                 onChange={handleAlpacaKey}
@@ -169,7 +169,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 Please enter Alpaca Secret Key
               </p>
               <input
-                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-green"
                 type="text"
                 placeholder="Secret Key"
                 onChange={handleSecretKey}

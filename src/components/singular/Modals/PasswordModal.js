@@ -68,7 +68,7 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
             Please enter your old password
           </p>
           <input
-            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-green"
             type="text"
             placeholder="Old Password"
             onChange={handleOldPassword}
@@ -77,7 +77,7 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
             Please enter your new password
           </p>
           <input
-            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-green"
             type="text"
             placeholder="New Password"
             onChange={handleNewPassword}
@@ -86,7 +86,7 @@ const PasswordModal = ({ setPasswordModal, passwordModal }) => {
             Confirm your new password
           </p>
           <input
-            className="bg-smokewhite focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            className="bg-smokewhite focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-green"
             type="text"
             placeholder="Confirm Password"
             onChange={handleConfirmNewPassword}

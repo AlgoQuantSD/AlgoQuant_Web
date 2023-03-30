@@ -10,6 +10,14 @@ const CreateAIPage = () => {
   const [profitStop, setProfitStop] = useState(null);
   const [lossStop, setLossStop] = useState(null);
 
+  // Randomly select an image from the S3 bucket
+  // const randomIndex = Math.floor(Math.random() * 3) + 1;
+  // let imageID =
+  //   "https://algoquant-resources.s3.amazonaws.com/InvestorImages/bot" +
+  //   "/" +
+  //   randomIndex +
+  //   ".png";
+
   /*
   Function called when the user attempts to save changes. Will check all the user values and 
   attempt to update them.
