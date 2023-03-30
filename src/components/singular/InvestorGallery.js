@@ -13,7 +13,7 @@ const InvestorGallery = () => {
   const navigate = useNavigate();
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  const [setSelectedInvestor] = useState(null);
+  const [selectedInvestor, setSelectedInvestor] = useState(null);
   // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
   const { showToast } = useContext(ToastContext);
 

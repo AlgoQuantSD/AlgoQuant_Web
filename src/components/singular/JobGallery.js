@@ -146,14 +146,13 @@ const JobGallery = ({ type, investorID }) => {
 
               <div className="flex w-1/3 justify-center">
                 <img
-                  src={investorPhotos[i % investorPhotos.length]}
+                  src={job.image_id}
                   alt=""
                   className="h-10 self-center w-8"
                 />
                 <button
                   onClick={() => {
                     viewJob(job.job_id, type);
-                    console.log(job);
                   }}
                 >
                   <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
