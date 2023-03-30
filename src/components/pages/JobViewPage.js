@@ -70,10 +70,6 @@ const JobViewPage = () => {
     },
   ];
 
-  console.log("job " + location.state.value);
-  console.log("type:" + location.state.type);
-  console.log("job object: ", job);
-
   // functions to handle a page change
   const handleNextClick = () => {
     if (pagesSeen <= page && !lastPage) {
@@ -225,6 +221,7 @@ const JobViewPage = () => {
                   )
                 );
                 break;
+                
               default:
                 break;
             }
@@ -273,7 +270,7 @@ const JobViewPage = () => {
   // controls when fetchTrades functin will be called
   // uses transaction to show at most a FETCH_AMOUNT of history data on a page, uses a paginated approach to target the values from history. transaction variable changes with each page change to show new and the correct data on each page
   useEffect(() => {
-    console.log("useeffect otherone 1");
+
     const newTransactions = [];
     let itemCounter = 0;
 
@@ -291,8 +288,13 @@ const JobViewPage = () => {
 
   // initial data is shown on screen
   useEffect(() => {
-    console.log("useEffect");
-    setSelectedFilter(filters.DAY);
+    
+    if(location.state.value.includes("completed")){
+      setSelectedFilter(filters.FIVE);
+    } else{ 
+      setSelectedFilter(filters.DAY);
+    }
+
     getData(selectedFilter);
     // eslint-disable-next-line
   }, [selectedFilter, getData]);
@@ -348,7 +350,7 @@ const JobViewPage = () => {
           </div>
           <GraphStats
             stockData={aggregatedPerformanceData}
-            selectedFilter={selectedFilter}
+            selectedFilter={location.state.type === tabFilters.JOB ?  selectedFilter: null}
           />
           <div className="z-10 w-11/12 mx-auto my-10 mb-32">
             {graphLoading ? (
@@ -359,7 +361,7 @@ const JobViewPage = () => {
                 lines={[{"data": xValues, "name": "$"}]}
                 yValues={yValues}
                 getData={getData}
-                selectedFilter={selectedFilter}
+                selectedFilter={location.state.type === tabFilters.JOB ?  selectedFilter: null}
               />
             )}
           </div>
