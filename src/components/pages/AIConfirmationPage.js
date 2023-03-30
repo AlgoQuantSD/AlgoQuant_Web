@@ -70,32 +70,41 @@ const AIConfirmationPage = () => {
                 correct.
               </p>
             </div>
-            <div className="grid grid-cols-2 mt-5 w-1/3">
+            <img
+              src={location.state.value.image_id}
+              alt="AI"
+              className="h-72 mt-12 mx-auto"
+            />
+            <div className="grid grid-cols-2 mt-5 w-1/2">
               <div className="flex flex-col">
-                <p className="text-green text-2xl font-semibold mb-5">
-                  Investor Name:
-                </p>
-                <p className="text-green text-2xl font-semibold mb-5">
-                  Profit Stop:
-                </p>
-                <p className="text-green text-2xl font-semibold mb-5">
-                  Loss Stop:
-                </p>
-              </div>
-              <div className="flex flex-col">
-                <p className="text-green text-2xl font-medium mb-5">
-                  {location.state.value.investorName}
-                </p>
-                <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.profitStop === null
-                    ? "N/A"
-                    : `${location.state.value.profitStop}%`}
-                </p>
-                <p className="text-green text-2xl font-medium mb-2">
-                  {location.state.value.lossStop === null
-                    ? "N/A"
-                    : `${location.state.value.lossStop}%`}
-                </p>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Investor Name:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.investorName}
+                  </p>
+                </div>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Profit Stop:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.profitStop === null
+                      ? "N/A"
+                      : `${location.state.value.profitStop}%`}
+                  </p>
+                </div>
+                <div className="flex flex-row items-start mb-2">
+                  <p className="text-green text-2xl font-semibold mr-4">
+                    Loss Stop:
+                  </p>
+                  <p className="text-green text-2xl font-medium">
+                    {location.state.value.lossStop === null
+                      ? "N/A"
+                      : `${location.state.value.lossStop}%`}
+                  </p>
+                </div>
               </div>
             </div>
 
