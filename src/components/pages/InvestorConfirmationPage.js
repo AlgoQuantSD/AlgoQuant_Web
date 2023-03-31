@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import AlgoquantApiContext from "../../api/ApiContext";
 import Banner from "../reusable/Banner";
 import { LoadSpinner } from "../reusable/LoadSpinner";
+import { ToastContext } from "../reusable/ToastContext";
+
 const InvestorConfirmationPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -13,7 +15,8 @@ const InvestorConfirmationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-  console.log(location.state.value);
+  const { showToast } = useContext(ToastContext);
+
   const handleConfirmButton = () => {
     if (algoquantApi.token) {
       setIsLoading(true);
@@ -31,6 +34,7 @@ const InvestorConfirmationPage = () => {
         .then((resp) => {
           console.log(resp.data);
           navigate("/home");
+          showToast(resp.data.message, "success");
           setIsLoading(false);
         })
         .catch((err) => {
