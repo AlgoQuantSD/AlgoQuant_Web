@@ -18,20 +18,8 @@ import Banner from "../reusable/Banner";
 const HomePage = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
-
-  const [isToastOpen, setIsToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState();
-
-  const showToast = (message, type = "") => {
-    setIsToastOpen(true);
-    setToastMessage(message);
-    setToastType(type);
-  };
-
-  const hideToast = () => {
-    setIsToastOpen(false);
-  };
+  const { isToastOpen, toastMessage, toastType, hideToast } =
+    useContext(ToastContext);
 
   // State variable used to keep track of what tab the user is on
   const [selectedTabFilter, setSelectedTabFilter] = useState(
@@ -187,130 +175,127 @@ const HomePage = () => {
 
   // Useeffect that is called to render the days performance
   useEffect(() => {
+    console.log("poop: 1");
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);
-  }, [algoquantApi, selectedFilter, getData]);
+    // eslint-disable-next-line
+  }, [selectedFilter]);
 
   return (
-    <ToastContext.Provider value={{ showToast: showToast, toastMessage }}>
-      <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
-        {errorMsg === "" ? (
-          <></>
-        ) : (
-          <Banner message={errorMsg} setMessage={setErrorMsg} />
-        )}
-        <Navbar />
-        <div className="flex self-stretch">
-          <Sidebar />
-          <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
-            <ToastNotification
-              isOpen={isToastOpen}
-              message={toastMessage}
-              type={toastType}
-              handleClose={hideToast}
-            />
-            <div className="pt-10">
-              <h2 className="text-green font-bold text-5xl">Your Assets</h2>
+    <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} />
+      )}
+      <Navbar />
+      <div className="flex self-stretch">
+        <Sidebar />
+        <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
+          <ToastNotification
+            isOpen={isToastOpen}
+            message={toastMessage}
+            type={toastType}
+            handleClose={hideToast}
+          />
+          <div className="pt-10">
+            <h2 className="text-green font-bold text-5xl">Your Assets</h2>
+          </div>
+          <GraphStats
+            stockData={aggregatedPerformanceData}
+            selectedFilter={selectedFilter}
+          />
+          {graphLoading ? (
+            <GraphSpinner />
+          ) : (
+            <div className="w-11/12 mx-auto my-10 mb-28">
+              <Graph
+                stockData={aggregatedPerformanceData}
+                xValues={xValues}
+                yValues={yValues}
+                getData={getData}
+                selectedFilter={selectedFilter}
+              />
             </div>
-            <GraphStats
-              stockData={aggregatedPerformanceData}
-              selectedFilter={selectedFilter}
-            />
-            {graphLoading ? (
-              <GraphSpinner />
-            ) : (
-              <div className="w-11/12 mx-auto my-10 mb-28">
-                <Graph
-                  stockData={aggregatedPerformanceData}
-                  xValues={xValues}
-                  yValues={yValues}
-                  getData={getData}
-                  selectedFilter={selectedFilter}
-                />
-              </div>
-            )}
-            <div className="w-full">
-              <h3 className="text-green font-bold text-5xl">Invest</h3>
-            </div>
-            <div className="flex mx-auto justify-center w-2/4 mt-8">
-              <button
-                className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite  ${
-                  selectedTabFilter === tabFilters.INVESTOR
-                    ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-                    : ""
-                }`}
-                onClick={() => handleTabFilterSelection(tabFilters.INVESTOR)}
-              >
-                Investor
-              </button>
-              <button
-                className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
-                  selectedTabFilter === tabFilters.JOB
-                    ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-                    : ""
-                }`}
-                onClick={() => handleTabFilterSelection(tabFilters.JOB)}
-              >
-                Job
-              </button>
-              <button
-                className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
-                  selectedTabFilter === tabFilters.HISTORY
-                    ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-                    : ""
-                }`}
-                onClick={() => handleTabFilterSelection(tabFilters.HISTORY)}
-              >
-                History
-              </button>
-            </div>
-            <div className=" mt-10">
-              {(() => {
-                switch (selectedTabFilter) {
-                  case tabFilters.INVESTOR:
-                    return (
+          )}
+          <div className="w-full">
+            <h3 className="text-green font-bold text-5xl">Invest</h3>
+          </div>
+          <div className="flex mx-auto justify-center w-2/4 mt-8">
+            <button
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite  ${
+                selectedTabFilter === tabFilters.INVESTOR
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+                  : ""
+              }`}
+              onClick={() => handleTabFilterSelection(tabFilters.INVESTOR)}
+            >
+              Investor
+            </button>
+            <button
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
+                selectedTabFilter === tabFilters.JOB
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+                  : ""
+              }`}
+              onClick={() => handleTabFilterSelection(tabFilters.JOB)}
+            >
+              Job
+            </button>
+            <button
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
+                selectedTabFilter === tabFilters.HISTORY
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+                  : ""
+              }`}
+              onClick={() => handleTabFilterSelection(tabFilters.HISTORY)}
+            >
+              History
+            </button>
+          </div>
+          <div className=" mt-10">
+            {(() => {
+              switch (selectedTabFilter) {
+                case tabFilters.INVESTOR:
+                  return (
+                    <div>
+                      <Link
+                        to="/createinvestor"
+                        className="relative text-green border-2 border-green font-medium rounded-lg bg-cokewhite hover:bg-smokewhite px-4 py-3"
+                      >
+                        Create Investor
+                      </Link>
                       <div>
-                        <Link
-                          to="/createinvestor"
-                          className="relative text-green border-2 border-green font-medium rounded-lg bg-cokewhite hover:bg-smokewhite px-4 py-3"
-                        >
-                          Create Investor
-                        </Link>
-                        <div>
-                          <InvestorGallery />
-                        </div>
+                        <InvestorGallery />
                       </div>
-                    );
-                  case tabFilters.JOB:
-                    return (
-                      <div>
-                        <JobGallery type={selectedTabFilter} />
-                      </div>
-                    );
-                  case tabFilters.HISTORY:
-                    return (
-                      <div>
-                        <Link
-                          to="/history"
-                          className="relative text-white font-medium rounded-lg bg-green px-4 py-3"
-                        >
-                          View all transactions
-                        </Link>
-                        <JobGallery
-                          type={selectedTabFilter}
-                          investorID={null}
-                        />
-                      </div>
-                    );
-                  default:
-                    return null;
-                }
-              })()}
-            </div>
+                    </div>
+                  );
+                case tabFilters.JOB:
+                  return (
+                    <div>
+                      <JobGallery type={selectedTabFilter} />
+                    </div>
+                  );
+                case tabFilters.HISTORY:
+                  return (
+                    <div>
+                      <Link
+                        to="/history"
+                        className="relative text-white font-medium rounded-lg bg-green px-4 py-3"
+                      >
+                        View all transactions
+                      </Link>
+                      <JobGallery type={selectedTabFilter} investorID={null} />
+                    </div>
+                  );
+                default:
+                  return null;
+              }
+            })()}
           </div>
         </div>
       </div>
-    </ToastContext.Provider>
+    </div>
   );
 };
 

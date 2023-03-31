@@ -17,7 +17,12 @@ export const ModalTypes = {
 This modal is responsible for the different interactions with the users account. This involves resetting an alpaca and simualted account, 
 connecting an alpaca account, and disconnecting an alpaca account. 
 */
-const AccountModal = ({ handleAccountModals, accountModal }) => {
+const AccountModal = ({
+  handleAccountModals,
+  accountModal,
+  setMessage,
+  setSuccessfulBalanceReset,
+}) => {
   const algoquantApi = useContext(AlgoquantApiContext);
 
   // Keep track of the input for the alpaca key and secret key
@@ -77,11 +82,14 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
         .resetBalance(requestBody)
         .then((resp) => {
           setIsLoading(false);
+          setMessage(resp.data.message);
           handleAccountModals();
+          setSuccessfulBalanceReset(true);
           console.log(resp);
         })
         .catch((err) => {
           setIsLoading(false);
+          setSuccessfulBalanceReset(false);
           setError("Keys provided are invalid. try again.");
           console.log(err);
         });
@@ -126,7 +134,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
               <p className="text-faded-dark-gray">
                 NOTE: Your active jobs will be terminated.
               </p>
-              {isLoading ? SaveSpinner : <></>}
+              {isLoading ? <SaveSpinner /> : <></>}
             </div>
             <div className="p-6 flex justify-between">
               <button
@@ -179,7 +187,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 NOTE: Connecting to Alpaca will terminate any progress with your
                 simulated account
               </p>
-              {isLoading ? SaveSpinner : <></>}
+              {isLoading ? <SaveSpinner /> : <></>}
             </div>
             <div className="p-6 flex justify-between">
               <button
@@ -221,7 +229,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
               </p>
             </div>
             <p className="text-red">{error}</p>
-            {isLoading ? SaveSpinner : <></>}
+            {isLoading ? <SaveSpinner /> : <></>}
             <div className="p-6 flex justify-between">
               <button
                 className="text-green bg-smokewhite py-2 px-4 rounded shadow-md"

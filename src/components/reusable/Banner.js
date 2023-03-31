@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AiFillAlert, AiOutlineClose } from "react-icons/ai";
-const Banner = ({ message, setMessage }) => {
+const Banner = ({ message, setMessage, type }) => {
   const [showBanner, setShowBanner] = useState(true);
 
   const handleClose = () => {
@@ -16,19 +16,32 @@ const Banner = ({ message, setMessage }) => {
     // eslint-disable-next-line
   }, [showBanner]);
 
+  const getIconClass = () => {
+    switch (type) {
+      case "success":
+        return "text-green-500";
+      case "warning":
+        return "text-yellow-500";
+      case "error":
+        return "text-red-500";
+      default:
+        return "text-purple-500";
+    }
+  };
+
   return (
-    <div className="bg-red-500">
+    <div className="bg-green">
       {showBanner ? (
         <div className="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between">
             <div className="flex w-0 flex-1 items-center">
-              <span className="flex rounded-lg bg-indigo-800 p-2">
+              <span className="flex rounded-lg p-2">
                 <AiFillAlert
-                  className="h-6 w-6 text-white"
+                  className={`h-6 w-6 ${getIconClass()}`}
                   aria-hidden="true"
                 />
               </span>
-              <p className="ml-3 truncate font-medium text-white">
+              <p className={`ml-3 truncate font-medium ${getIconClass()}`}>
                 <span className="hidden md:inline">{message}</span>
               </p>
             </div>
