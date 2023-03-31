@@ -45,10 +45,12 @@ const JobModal = ({
         .then((resp) => {
           console.log(resp.data);
           showToast(jobName + " job has successfully started", "success");
+          setSuccessfulStartJob(true);
           setJobModal(null);
           setIsLoading(false);
         })
         .catch((err) => {
+          setSuccessfulStartJob(false);
           setIsLoading(false);
           showToast(jobName + " job has failed to start", "error");
           console.log("Create-Job:", err);
