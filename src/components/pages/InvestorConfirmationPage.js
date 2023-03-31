@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useLocation } from "react-router-dom";
@@ -12,15 +12,19 @@ const InvestorConfirmationPage = () => {
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [imageID, setImageID] = useState("");
 
   // Randomly select an image from the S3 bucket
-  const randomIndex = Math.floor(Math.random() * 3) + 1;
-  let imageID =
-    "https://algoquant-resources.s3.amazonaws.com/InvestorImages/" +
-    location.state.value.tradeFrequency +
-    "/" +
-    randomIndex +
-    ".png";
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * 3) + 1;
+    const id =
+      "https://algoquant-resources.s3.amazonaws.com/InvestorImages/" +
+      location.state.value.tradeFrequency +
+      "/" +
+      randomIndex +
+      ".png";
+    setImageID(id);
+  }, [location.state.value.tradeFrequency]);
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
@@ -63,7 +67,7 @@ const InvestorConfirmationPage = () => {
         <Sidebar />
         {isLoading ? (
           <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
-            <LoadSpinner />{" "}
+            <LoadSpinner />
           </div>
         ) : (
           <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
@@ -76,9 +80,7 @@ const InvestorConfirmationPage = () => {
                 correct.
               </p>
             </div>
-
             <img src={imageID} alt="investor" className="h-72 mt-12 mx-auto" />
-
             <div className="grid grid-cols-2 gap-8 mt-5 w-screen">
               <div className="flex flex-col">
                 <div className="flex flex-row items-start mb-2">

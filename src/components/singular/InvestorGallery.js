@@ -4,7 +4,6 @@ import Carousel from "react-multi-carousel";
 import InvestorDropdown from "./InvestorDropdown";
 import { BsPersonLinesFill } from "react-icons/bs";
 import { FaBrain } from "react-icons/fa";
-import bot from "../../assets/images/investors/bot1.png";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { ToastContext } from "../reusable/ToastContext";
@@ -114,6 +113,7 @@ const InvestorGallery = () => {
                 <InvestorDropdown
                   startJob={() => {
                     setSelectedInvestor(investor);
+                    console.log(selectedInvestor);
                   }}
                   viewInvestor={() => viewInvestor(investor.investor_id)}
                   deleteInvestor={() => {
