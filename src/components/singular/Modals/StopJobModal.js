@@ -22,7 +22,7 @@ const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
   const handleStop = () => {
     if (algoquantApi.token) {
       algoquantApi
-        .stopJob(jobObj.job_idsss)
+        .stopJob(jobObj.job_id)
         .then((resp) => {
           console.log(resp.data);
           navigate("/home");
