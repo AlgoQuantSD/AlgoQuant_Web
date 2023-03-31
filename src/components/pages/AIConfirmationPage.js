@@ -53,7 +53,7 @@ const AIConfirmationPage = () => {
       {errorMsg === "" ? (
         <></>
       ) : (
-        <Banner message={errorMsg} setMessage={setErrorMsg} />
+        <Banner message={errorMsg} setMessage={setErrorMsg} type="error" />
       )}
       <Navbar />
       <div className="flex self-stretch">

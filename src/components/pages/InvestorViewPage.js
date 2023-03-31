@@ -85,7 +85,7 @@ const InvestorViewPage = () => {
       {bannerMsg === "" ? (
         <></>
       ) : (
-        <Banner message={bannerMsg} setMessage={setBannerMsg} />
+        <Banner message={bannerMsg} setMessage={setBannerMsg} type="error" />
       )}
       <Navbar />
       <div className="flex self-stretch">

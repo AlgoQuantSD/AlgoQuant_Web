@@ -59,6 +59,7 @@ const ProfilePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   // store error and show on banner
   const [bannerMsg, setBannerMsg] = useState("");
+  const [bannerType, setBannerType] = useState();
 
   const [successfulBalanceReset, setSuccessfulBalanceReset] = useState(null);
   // Utility method to clear the state of each attribute, used after changes are saved
@@ -97,6 +98,7 @@ const ProfilePage = () => {
           setBannerMsg(
             "Erorr: Failed to get profile information. Please try again later."
           );
+          setBannerType("error");
         });
     }
   });
@@ -113,6 +115,7 @@ const ProfilePage = () => {
     if (successfulBalanceReset) {
       getUser();
       setSuccessfulBalanceReset(false);
+      setBannerType("success");
     }
     // eslint-disable-next-line
   }, [successfulBalanceReset]);
@@ -215,7 +218,11 @@ const ProfilePage = () => {
       {bannerMsg === "" ? (
         <></>
       ) : (
-        <Banner message={bannerMsg} setMessage={setBannerMsg} />
+        <Banner
+          message={bannerMsg}
+          setMessage={setBannerMsg}
+          type={bannerType}
+        />
       )}
       <Navbar />
       {/* Main Div for the side bar and all the page content */}
