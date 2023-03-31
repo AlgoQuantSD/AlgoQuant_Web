@@ -121,7 +121,9 @@ const JobGallery = ({ type, investorID }) => {
       ) : (
         jobList.map((job, i) => (
           <div
-            className="w-11/12 text-white bg-green mx-auto mb-5 p-4"
+            className={`w-11/12 text-white mx-auto mb-5 p-4 ${
+              job.status === "stopping" ? "bg-red" : "bg-green"
+            }`}
             key={job.job_id}
           >
             <div className="flex justify-between">
@@ -143,19 +145,21 @@ const JobGallery = ({ type, investorID }) => {
                 )}
               </div>
 
-              <div className="flex w-1/3 justify-center">
+              <div className="flex w-1/3 justify-end items-center ">
                 <img
                   src={job.image_id}
                   alt=""
                   className="h-10 self-center w-8"
                 />
-                <button
-                  onClick={() => {
-                    viewJob(job.job_id, type);
-                  }}
-                >
-                  <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
-                </button>
+                {job.status !== "stopping" && (
+                  <button
+                    onClick={() => {
+                      viewJob(job.job_id, type);
+                    }}
+                  >
+                    <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
+                  </button>
+                )}
               </div>
             </div>
           </div>

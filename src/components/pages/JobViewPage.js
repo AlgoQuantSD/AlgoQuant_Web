@@ -225,6 +225,7 @@ const JobViewPage = () => {
                   )
                 );
                 break;
+
               default:
                 break;
             }
@@ -290,7 +291,11 @@ const JobViewPage = () => {
 
   // initial data is shown on screen
   useEffect(() => {
-    setSelectedFilter(filters.DAY);
+    if (location.state.value.includes("completed")) {
+      setSelectedFilter(filters.FIVE);
+    } else {
+      setSelectedFilter(filters.DAY);
+    }
     getData(selectedFilter);
     // eslint-disable-next-line
   }, [selectedFilter, getData]);
@@ -350,7 +355,9 @@ const JobViewPage = () => {
           </div>
           <GraphStats
             stockData={aggregatedPerformanceData}
-            selectedFilter={selectedFilter}
+            selectedFilter={
+              location.state.type === tabFilters.JOB ? selectedFilter : null
+            }
           />
           <div className="z-10 w-11/12 mx-auto my-10 mb-32">
             {graphLoading ? (
@@ -358,10 +365,12 @@ const JobViewPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedPerformanceData}
-                xValues={xValues}
+                lines={[{ data: xValues, name: "$" }]}
                 yValues={yValues}
                 getData={getData}
-                selectedFilter={selectedFilter}
+                selectedFilter={
+                  location.state.type === tabFilters.JOB ? selectedFilter : null
+                }
               />
             )}
           </div>

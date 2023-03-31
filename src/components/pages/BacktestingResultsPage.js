@@ -13,7 +13,9 @@ const BacktestingResultsPage = () => {
   const algoquantApi = useContext(AlgoquantApiContext);
 
   // State variables to store the graph data of selected backtest graph data
-  const [xValues, setXValues] = useState([]);
+  const [investorPerformance, setInvestorPerformance] = useState([]);
+  const [buyHoldPerformance, setBuyHoldPerformance] = useState([]);
+
   const [yValues, setYValues] = useState([]);
   const [priceChange, setPriceChange] = useState([]);
   // store the backtest data
@@ -33,7 +35,8 @@ const BacktestingResultsPage = () => {
           setIsLoading(false);
           setBacktestDataObject(resp.data);
           console.log(resp.data);
-          setXValues(resp.data["portfolio_value_history"]);
+          setInvestorPerformance(resp.data["portfolio_value_history"]);
+          setBuyHoldPerformance(resp.data["portfolio_value_history_hold"]);
           setYValues(
             resp.data["value_timestamps"].map((timestamp) =>
               new Date(timestamp * 1000).toLocaleDateString("en-US", {
@@ -123,7 +126,14 @@ const BacktestingResultsPage = () => {
               <div className="w-10/12 mx-auto">
                 <Graph
                   stockData={priceChange}
-                  xValues={xValues}
+                  lines={[
+                    { data: investorPerformance, name: "Investor Performance" },
+                    {
+                      data: buyHoldPerformance,
+                      name: "Buy/Hold Performance",
+                      color: "#0000FF",
+                    },
+                  ]}
                   yValues={yValues}
                   selectedFilter={null}
                 />
