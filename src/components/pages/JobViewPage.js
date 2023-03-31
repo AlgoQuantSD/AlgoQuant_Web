@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Graph from "../reusable/Graph";
 import Table from "../reusable/Table";
@@ -21,6 +21,7 @@ const FETCH_AMOUNT = 5;
 const JobViewPage = () => {
   // used to get the passed job_id from the navigation routing
   const location = useLocation();
+  const navigate = useNavigate();
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
 
@@ -73,6 +74,10 @@ const JobViewPage = () => {
       dateClosed: dateClosed,
     },
   ];
+
+  const viewInvestor = (value) => {
+    navigate("/investor", { state: { value: value } });
+  };
 
   // functions to handle a page change
   const handleNextClick = () => {
@@ -348,10 +353,19 @@ const JobViewPage = () => {
                   <br></br>
                   {startDate} - {endDate}
                 </p>
-
                 <FaLock className="text-xl text-green" />
               </div>
             )}
+          </div>
+          <div className="flex mb-8">
+            <button
+              className="items-center text-white font-medium rounded-lg bg-green px-4 py-3 hover:bg-selection-green"
+              onClick={() => {
+                viewInvestor(job.investor_id);
+              }}
+            >
+              View Investor
+            </button>
           </div>
           <GraphStats
             stockData={aggregatedPerformanceData}

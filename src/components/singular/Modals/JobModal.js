@@ -49,7 +49,7 @@ const JobModal = ({ setJobModal, jobModal, investor }) => {
   return (
     <Modal isVisible={jobModal} onClose={handleClose}>
       <div className="flex justify-center">
-        <div className="bg-smokewhite p-2 rounded border-4 border-green">
+        <div className="bg-smokewhite p-2 rounded border-2 border-green">
           <div className="p-6 flex items-center justify-between">
             <h3 className="text-2xl font-bold text-green">
               Start Job for {investor && investor.investor_name} Investor
