@@ -7,8 +7,11 @@ const Banner = ({ message, setMessage, type }) => {
     setShowBanner(false);
     setMessage("");
   };
+
+  // if the banner is visable then go to top of screen where banner is and after 8 seconds close the banner
   useEffect(() => {
     if (showBanner) {
+      window.scrollTo(0, 0);
       setTimeout(() => {
         handleClose();
       }, 8000);
