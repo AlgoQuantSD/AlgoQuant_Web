@@ -7,6 +7,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import Banner from "../reusable/Banner";
 import { LoadSpinner } from "../reusable/LoadSpinner";
 import { ToastContext } from "../reusable/ToastContext";
+import {GetAlgoImage} from "../utils/ImageFactory"
 
 const InvestorConfirmationPage = () => {
   const location = useLocation();
@@ -17,14 +18,7 @@ const InvestorConfirmationPage = () => {
 
   // Randomly select an image from the S3 bucket
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * 3) + 1;
-    const id =
-      "https://algoquant-resources.s3.amazonaws.com/InvestorImages/" +
-      location.state.value.tradeFrequency +
-      "/" +
-      randomIndex +
-      ".png";
-    setImageID(id);
+    setImageID(GetAlgoImage(location.state.value.tradeFrequency));
   }, [location.state.value.tradeFrequency]);
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useNavigate } from "react-router-dom";
+import {GetAIImage} from "../utils/ImageFactory"
 
 const CreateAIPage = () => {
   const navigate = useNavigate();
@@ -12,13 +13,7 @@ const CreateAIPage = () => {
   const [imageID, setImageID] = useState(null);
 
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * 3) + 1;
-    const id =
-      "https://algoquant-resources.s3.amazonaws.com/InvestorImages/AI" +
-      "/" +
-      randomIndex +
-      ".png";
-    setImageID(id);
+    setImageID(GetAIImage());
   }, []);
 
   /*
