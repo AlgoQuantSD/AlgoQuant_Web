@@ -1,17 +1,43 @@
 import React, { useEffect } from "react";
+import { FaRegSadCry } from "react-icons/fa";
+import { BiHappyHeartEyes } from "react-icons/bi";
 import { AiOutlineClose } from "react-icons/ai";
+import { GiDoctorFace } from "react-icons/gi";
 
 function ToastNotification({ isOpen, type, message, icon, handleClose }) {
-  const getIconClass = () => {
+  const getbackgroundColor = () => {
     switch (type) {
       case "success":
-        return "text-green-500";
+        return "bg-green-500";
       case "warning":
-        return "text-yellow-500";
+        return "bg-yellow-500";
       case "error":
-        return "text-red-500";
+        return "bg-red-500";
       default:
-        return "text-purple-500";
+        return "bg-purple-500";
+    }
+  };
+
+  const getIcon = () => {
+    switch (type) {
+      case "success":
+        return (
+          <div className="mr-2">
+            <BiHappyHeartEyes />
+          </div>
+        );
+      case "error":
+        return (
+          <div className="mr-2">
+            <FaRegSadCry />
+          </div>
+        );
+      default:
+        return (
+          <div className="mr-2">
+            <GiDoctorFace />
+          </div>
+        );
     }
   };
 
@@ -28,11 +54,11 @@ function ToastNotification({ isOpen, type, message, icon, handleClose }) {
     <div
       className={`${
         isOpen ? "block" : "hidden"
-      } fixed bottom-0 right-0 mb-4 mr-4 z-50 px-4 py-3 rounded-md ${getIconClass()} border border-solid border-opacity-60 border-current bg-white shadow-md`}
+      } fixed bottom-0 right-0 mb-4 mr-4 z-50 px-4 py-3 rounded-md text-white border border-solid border-opacity-60 border-current ${getbackgroundColor()} shadow-md`}
       role="alert"
     >
       <div className="flex items-center">
-        {icon && <div className="mr-2">{icon}</div>}
+        {getIcon()}
         <div className="flex-grow">{message}</div>
         <div className="ml-2">
           <button onClick={handleClose}>
