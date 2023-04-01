@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import investorPhotos from "../../assets/images/investors/InvestorPhotos";
 import {
   BsFillArrowRightCircleFill,
   BsCaretDownFill,
@@ -15,9 +14,12 @@ import {
 import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
+import { ToastContext } from "../reusable/ToastContext";
 
 const JobGallery = ({ type, investorID }) => {
   const navigate = useNavigate();
+  // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
+  const { showToast } = useContext(ToastContext);
 
   /*
   Function called anytime a user selects View Job in the Job Gallery. Will navigate
@@ -65,7 +67,8 @@ const JobGallery = ({ type, investorID }) => {
           setIsLoading(false);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
+          showToast(err.toString(), "error");
+          setIsLoading(false);
           console.log(err);
         });
     }
@@ -79,6 +82,7 @@ const JobGallery = ({ type, investorID }) => {
     lekJobId,
     type,
     investorID,
+    showToast,
   ]);
 
   // Function to call more data job data (if there is more) once user scrolled to the bottom of the component
@@ -117,7 +121,9 @@ const JobGallery = ({ type, investorID }) => {
       ) : (
         jobList.map((job, i) => (
           <div
-            className="w-11/12 text-white bg-green mx-auto mb-5 p-4"
+            className={`w-11/12 text-white mx-auto mb-5 p-4 ${
+              job.status === "stopping" ? "bg-red" : "bg-green"
+            }`}
             key={job.job_id}
           >
             <div className="flex justify-between">
@@ -139,19 +145,21 @@ const JobGallery = ({ type, investorID }) => {
                 )}
               </div>
 
-              <div className="flex w-1/3 justify-center">
+              <div className="flex w-1/3 justify-end items-center ">
                 <img
-                  src={investorPhotos[i % investorPhotos.length]}
+                  src={job.image_id}
                   alt=""
                   className="h-10 self-center w-8"
                 />
-                <button
-                  onClick={() => {
-                    viewJob(job.job_id, type);
-                  }}
-                >
-                  <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
-                </button>
+                {job.status !== "stopping" && (
+                  <button
+                    onClick={() => {
+                      viewJob(job.job_id, type);
+                    }}
+                  >
+                    <BsFillArrowRightCircleFill className="mt-3 ml-4 text-2xl text-cokewhite hover:text-light-gray" />
+                  </button>
+                )}
               </div>
             </div>
           </div>

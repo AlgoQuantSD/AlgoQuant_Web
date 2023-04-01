@@ -1,4 +1,4 @@
-import { React, useContext, useEffect, useState } from "react";
+import { React, useCallback, useContext, useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { FaArrowRight } from "react-icons/fa";
 import ProfileSaving from "../singular/ProfileSaving";
@@ -19,6 +19,7 @@ import AccountModal from "../singular/Modals/AccountModal";
 import DeleteModal from "../singular/Modals/DeleteModal";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { LoadSpinner } from "../reusable/LoadSpinner";
+import Banner from "../reusable/Banner";
 
 // Uitlity fuction used to format numbers
 const formatter = new Intl.NumberFormat("en-US", {
@@ -56,7 +57,11 @@ const ProfilePage = () => {
 
   // State variable used to track when loading screen should be shown
   const [isLoading, setIsLoading] = useState(true);
+  // store error and show on banner
+  const [bannerMsg, setBannerMsg] = useState("");
+  const [bannerType, setBannerType] = useState();
 
+  const [successfulBalanceReset, setSuccessfulBalanceReset] = useState(null);
   // Utility method to clear the state of each attribute, used after changes are saved
   const clearState = () => {
     setFirstName(null);
@@ -78,9 +83,8 @@ const ProfilePage = () => {
     }
   };
 
-  // When the page is loaded the user object must be fetched
-  // runs the getUser axios request to receive user information from the database
-  useEffect(() => {
+  // eslint-disable-next-line
+  const getUser = useCallback(() => {
     if (algoquantApi.token) {
       algoquantApi
         .getUser()
@@ -90,11 +94,31 @@ const ProfilePage = () => {
           setIsLoading(false);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log(err);
+          setIsLoading(false);
+          setBannerMsg(
+            "Erorr: Failed to get profile information. Please try again later."
+          );
+          setBannerType("error");
         });
     }
+  });
+
+  // When the page is loaded the user object must be fetched
+  // runs the getUser axios request to receive user information from the database
+  useEffect(() => {
+    getUser();
+    // eslint-disable-next-line
   }, [algoquantApi]);
+
+  useEffect(() => {
+    console.log("here");
+    if (successfulBalanceReset) {
+      getUser();
+      setSuccessfulBalanceReset(false);
+      setBannerType("success");
+    }
+    // eslint-disable-next-line
+  }, [successfulBalanceReset]);
 
   /*
   Function called when the user attempts to save changes. Will check all the user values and 
@@ -191,6 +215,15 @@ const ProfilePage = () => {
   return (
     // Main Div Container
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {bannerMsg === "" ? (
+        <></>
+      ) : (
+        <Banner
+          message={bannerMsg}
+          setMessage={setBannerMsg}
+          type={bannerType}
+        />
+      )}
       <Navbar />
       {/* Main Div for the side bar and all the page content */}
       <div className="flex self-stretch">
@@ -202,6 +235,8 @@ const ProfilePage = () => {
           <AccountModal
             handleAccountModals={handleAccountModals}
             accountModal={accountModal}
+            setMessage={setBannerMsg}
+            setSuccessfulBalanceReset={setSuccessfulBalanceReset}
           />
           <EmailModal setEmailModal={setEmailModal} emailModal={emailModal} />
           <PasswordModal

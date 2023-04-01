@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
@@ -18,10 +18,9 @@ import CreateAIPage from "./components/pages/CreateAIPage";
 import InvestorConfirmationPage from "./components/pages/InvestorConfirmationPage";
 import AIConfirmationPage from "./components/pages/AIConfirmationPage";
 import CreateBacktestPage from "./components/pages/CreateBacktestPage";
-
 import AlgoquantApiContext from "./api/ApiContext";
 import initAlgoQuantApi from "../src/api/ApiUtils";
-
+import { ToastContext } from "./components/reusable/ToastContext";
 /*
 This Component is used to wrap each Route and ensure that they cannot 
 be acessed unless the user is authenticated. If the user is authenticated
@@ -60,134 +59,159 @@ export function PageRouter() {
     // TO-DO: handle this error and show error on screen
     console.log(err);
   }
+
+  const [isToastOpen, setIsToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState();
+
+  const showToast = (message, type = "") => {
+    setIsToastOpen(true);
+    setToastMessage(message);
+    setToastType(type);
+  };
+
+  const hideToast = () => {
+    setIsToastOpen(false);
+  };
+
   return (
     // Context Provider to make the algoquant object global for child components of this Provider
     <AlgoquantApiContext.Provider value={algoquant}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<WelcomePage />} />
-          <Route
-            path="/home"
-            element={
-              <RequireAuth>
-                <HomePage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/createinvestor"
-            element={
-              <RequireAuth>
-                <CreateInvestorPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/createalgo"
-            element={
-              <RequireAuth>
-                <CreateAlgorithmicPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/createai"
-            element={
-              <RequireAuth>
-                <CreateAIPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/confirmation"
-            element={
-              <RequireAuth>
-                <InvestorConfirmationPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/aiconfirmation"
-            element={
-              <RequireAuth>
-                <AIConfirmationPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/job"
-            element={
-              <RequireAuth>
-                <JobViewPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/investor"
-            element={
-              <RequireAuth>
-                <InvestorViewPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/backtesting"
-            element={
-              <RequireAuth>
-                <BacktestingPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/createbacktest"
-            element={
-              <RequireAuth>
-                <CreateBacktestPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/backtestresults"
-            element={
-              <RequireAuth>
-                <BacktestingResultsPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/history"
-            element={
-              <RequireAuth>
-                <TransactionHistoryPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <RequireAuth>
-                <ProfilePage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <RequireAuth>
-                <SearchResultsPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <ProtectLogin>
-                <SignInPage />
-              </ProtectLogin>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+      <ToastContext.Provider
+        value={{
+          showToast: showToast,
+          hideToast: hideToast,
+          toastMessage,
+          isToastOpen,
+          toastType,
+        }}
+      >
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<WelcomePage />} />
+            <Route
+              path="/home"
+              element={
+                <RequireAuth>
+                  <HomePage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/createinvestor"
+              element={
+                <RequireAuth>
+                  <CreateInvestorPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/createalgo"
+              element={
+                <RequireAuth>
+                  <CreateAlgorithmicPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/createai"
+              element={
+                <RequireAuth>
+                  <CreateAIPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/confirmation"
+              element={
+                <RequireAuth>
+                  <InvestorConfirmationPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/aiconfirmation"
+              element={
+                <RequireAuth>
+                  <AIConfirmationPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/job"
+              element={
+                <RequireAuth>
+                  <JobViewPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/investor"
+              element={
+                <RequireAuth>
+                  <InvestorViewPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/backtesting"
+              element={
+                <RequireAuth>
+                  <BacktestingPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/createbacktest"
+              element={
+                <RequireAuth>
+                  <CreateBacktestPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/backtestresults"
+              element={
+                <RequireAuth>
+                  <BacktestingResultsPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/history"
+              element={
+                <RequireAuth>
+                  <TransactionHistoryPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <ProfilePage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <RequireAuth>
+                  <SearchResultsPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <ProtectLogin>
+                  <SignInPage />
+                </ProtectLogin>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </ToastContext.Provider>
     </AlgoquantApiContext.Provider>
   );
 }

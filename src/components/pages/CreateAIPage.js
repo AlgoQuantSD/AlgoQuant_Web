@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useNavigate } from "react-router-dom";
+import {GetAIImage} from "../utils/ImageFactory"
 
 const CreateAIPage = () => {
   const navigate = useNavigate();
@@ -9,6 +10,11 @@ const CreateAIPage = () => {
   const [showError, setShowError] = useState(false);
   const [profitStop, setProfitStop] = useState(null);
   const [lossStop, setLossStop] = useState(null);
+  const [imageID, setImageID] = useState(null);
+
+  useEffect(() => {
+    setImageID(GetAIImage());
+  }, []);
 
   /*
   Function called when the user attempts to save changes. Will check all the user values and 
@@ -26,6 +32,7 @@ const CreateAIPage = () => {
         investorName: investorName,
         profitStop: profitStop,
         lossStop: lossStop,
+        image_id: imageID,
       };
       createInvestor(value);
     }
@@ -129,7 +136,23 @@ const CreateAIPage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col w-1/2 h-full"></div>
+            <div className="flex flex-col w-1/2 h-full">
+              <img
+                src={imageID}
+                alt="investor"
+                className="h-72 mt-12 mx-auto"
+              />
+              <div>
+                <p className="text-left text-another-gray text-md font-light mt-4 w-10/12 mx-auto">
+                The underlying Machine Learning models used by the AI Investor have been taught how to optimally 
+                allocate money across a set of assets through a process known as Deep Reinforcement Learning (DRL).
+                The Investor uses the fundamental daily candle data (Open, High, Low, Close) over the previous 50 days
+                for each asset to determine how much money should be allocated to each asset along with what should be retained as cash. 
+                Each day new predictions will be obtained from the model and all the jobs for this investor will be evaluated to determine
+                if the holdings of the job should be reallocated. 
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

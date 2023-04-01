@@ -1,6 +1,7 @@
 import { React, useState, useContext } from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
+import { SaveSpinner } from "../../reusable/LoadSpinner";
 
 /*
 The different types of Modals that will be displayed
@@ -16,7 +17,12 @@ export const ModalTypes = {
 This modal is responsible for the different interactions with the users account. This involves resetting an alpaca and simualted account, 
 connecting an alpaca account, and disconnecting an alpaca account. 
 */
-const AccountModal = ({ handleAccountModals, accountModal }) => {
+const AccountModal = ({
+  handleAccountModals,
+  accountModal,
+  setMessage,
+  setSuccessfulBalanceReset,
+}) => {
   const algoquantApi = useContext(AlgoquantApiContext);
 
   // Keep track of the input for the alpaca key and secret key
@@ -25,6 +31,8 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
 
   // Used to dispaly error messages for the modals
   const [error, setError] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const modalType = accountModal.type;
 
@@ -69,13 +77,19 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
 
     // Create the API request
     if (algoquantApi.token) {
+      setIsLoading(true);
       algoquantApi
         .resetBalance(requestBody)
         .then((resp) => {
+          setIsLoading(false);
+          setMessage(resp.data.message);
           handleAccountModals();
+          setSuccessfulBalanceReset(true);
           console.log(resp);
         })
         .catch((err) => {
+          setIsLoading(false);
+          setSuccessfulBalanceReset(false);
           setError("Keys provided are invalid. try again.");
           console.log(err);
         });
@@ -120,6 +134,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
               <p className="text-faded-dark-gray">
                 NOTE: Your active jobs will be terminated.
               </p>
+              {isLoading ? <SaveSpinner /> : <></>}
             </div>
             <div className="p-6 flex justify-between">
               <button
@@ -153,7 +168,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 Please enter Alpaca API Key
               </p>
               <input
-                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-green"
                 type="text"
                 placeholder="Alpaca Key"
                 onChange={handleAlpacaKey}
@@ -162,7 +177,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 Please enter Alpaca Secret Key
               </p>
               <input
-                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-green"
                 type="text"
                 placeholder="Secret Key"
                 onChange={handleSecretKey}
@@ -172,6 +187,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
                 NOTE: Connecting to Alpaca will terminate any progress with your
                 simulated account
               </p>
+              {isLoading ? <SaveSpinner /> : <></>}
             </div>
             <div className="p-6 flex justify-between">
               <button
@@ -213,6 +229,7 @@ const AccountModal = ({ handleAccountModals, accountModal }) => {
               </p>
             </div>
             <p className="text-red">{error}</p>
+            {isLoading ? <SaveSpinner /> : <></>}
             <div className="p-6 flex justify-between">
               <button
                 className="text-green bg-smokewhite py-2 px-4 rounded shadow-md"

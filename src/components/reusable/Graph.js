@@ -5,19 +5,30 @@ import { filters } from "../utils/filtersEnum";
 /*
 Build the graph based on the data, categories and preset configurations
 */
-const buildGraph = (data, categories, isTrendingUp) => {
+const buildGraph = (lines, categories, isTrendingUp) => {
   let lineColor = "#1F302B";
   if (!isTrendingUp) {
     lineColor = "#FF0000";
   }
+
+  // Create the lines for each line passed in
+  let series = []
+
+  lines.forEach(
+    function(line){
+      // If there is a color then it should be shown
+      if(line.color){
+        lineColor = line.color
+      }
+      series.push({
+        name: line.name,
+        data: line.data,
+        color: lineColor
+      })
+    })
+
   return {
-    series: [
-      {
-        name: "$",
-        data: data,
-        color: lineColor,
-      },
-    ],
+    series: series,
     options: {
       grid: {
         show: true,
@@ -76,11 +87,11 @@ const buildGraph = (data, categories, isTrendingUp) => {
   };
 };
 
-const Graph = ({ stockData, getData, xValues, yValues, selectedFilter }) => {
+const Graph = ({ stockData, getData, lines, yValues, selectedFilter }) => {
   // conditional variable to indicate whether stock searched is trending up or down
   const isTrendingUp = stockData[0]?.priceChange >= 0;
   // Create the graph with the data and categories along with the callback to get more data
-  let chart = buildGraph(xValues, yValues, isTrendingUp);
+  let chart = buildGraph(lines, yValues, isTrendingUp);
   // String variable containing the style of what fitler is currently active
   const ACTIVE_FILTER_STYLE =
     "text-cokewhite border-b-green bg-green active hover:bg-green";

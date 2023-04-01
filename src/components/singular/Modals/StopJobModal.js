@@ -1,37 +1,43 @@
-import { React, useContext } from "react";
+import { React, useContext, useState } from "react";
 import Modal from "../Modal";
 import { useNavigate } from "react-router-dom";
 import AlgoquantApiContext from "../../../api/ApiContext";
+import { SaveSpinner } from "../../reusable/LoadSpinner";
 
 const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(null);
 
   /*
   Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
   attributes of the Modal
   */
   const handleClose = () => {
+    setErrorMsg("");
     setStopJobModal(null);
   };
 
   // This function will implement the Stop Job function. For now it just
   // closes the modal.
   const handleStop = () => {
-    setStopJobModal(null);
     if (algoquantApi.token) {
+      setIsLoading(true);
       algoquantApi
         .stopJob(jobObj.job_id)
         .then((resp) => {
           console.log(resp.data);
+          navigate("/home");
+          setStopJobModal(null);
+          setIsLoading(false);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log(err);
+          setIsLoading(false);
+          setErrorMsg(err.toString());
         });
     }
-    navigate("/home");
   };
 
   return (
@@ -44,6 +50,8 @@ const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
           <p className="text-lg text-another-gray mb-3">
             NOTE: All the assets tracked by this job will be sold
           </p>
+          <p className="text-red">{errorMsg}</p>
+          {isLoading ? <SaveSpinner /> : <></>}
         </div>
         <div className="p-6">
           <div className="flex justify-between w-full">

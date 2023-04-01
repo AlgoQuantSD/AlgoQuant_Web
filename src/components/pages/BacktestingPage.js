@@ -5,6 +5,7 @@ import Sidebar from "../reusable/SideBar";
 import Table from "../reusable/Table";
 import AlgoquantApiContext from "../../api/ApiContext";
 import { TableSpinner } from "../reusable/LoadSpinner";
+import Banner from "../reusable/Banner";
 
 // The amount of data (backtestfor a user) that is being fetched for each api call
 const FETCH_AMOUNT = 10;
@@ -43,6 +44,7 @@ const BacktestingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // function that that queries users trades and stores them into history in a paginated manner
   const fetchBacktestList = useCallback(() => {
@@ -101,8 +103,10 @@ const BacktestingPage = () => {
             setIsLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
-            console.log(err);
+            setIsLoading(false);
+            setErrorMsg(
+              "Failed to load all completed Backtest. Please try again later."
+            );
           });
       }
     }
@@ -139,6 +143,11 @@ const BacktestingPage = () => {
   };
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} type="error" />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

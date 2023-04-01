@@ -1,16 +1,20 @@
-import { React, useState, useEffect, useRef, useCallback } from "react";
+import {
+  React,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useContext,
+} from "react";
 import { FaSearch } from "react-icons/fa";
+import AlgoquantApiContext from "../../api/ApiContext";
+import { useNavigate } from "react-router-dom";
 
 /*
 Reusable search component that takes a call back function defining what should be done when a search is done. Additionally,
 this takes in a callback function that will get new search results based on what has been entered
 */
-const Searchbar = ({
-  selectItem,
-  getSearchResults,
-  searchResults,
-  resetSearch,
-}) => {
+const Searchbar = () => {
   // This flag controls rather the drop down will show
   const [showResults, setShowResults] = useState(false);
 
@@ -20,7 +24,47 @@ const Searchbar = ({
   // Which item in the drop down the user has selected
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
+  const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const searchRef = useRef(null);
+
+  const navigate = useNavigate();
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
+
+  /* 
+  Function called anytime a user selects one of the items in the dropdown. Will navigate 
+  a user to the search page passing in the value. 
+  */
+  const selectItem = (value) => {
+    navigate("/search", { state: { value: value } });
+  };
+
+  /*
+  Function called anytime a user hits search using the searchbar. This will make an API 
+  call to get a list of search results that max the search value. The searchbar will then use 
+  these results in creating the dropdown
+  */
+  const getSearchResults = (value) => {
+    if (algoquantApi.token) {
+      setIsLoading(true);
+      algoquantApi
+        .searchStock(value)
+        .then((resp) => {
+          setIsLoading(false);
+          setSearchResults(resp.data["stock-tickers"]);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log(err);
+        });
+    }
+    return searchResults;
+  };
+
+  const resetSearch = useCallback(() => {
+    setSearchResults([]);
+  }, [setSearchResults]);
 
   // Handles traversing and choosing dropdown options
   const handleKey = (event) => {
@@ -106,6 +150,19 @@ const Searchbar = ({
           value={searchValue}
         />
       </div>
+      {isLoading ? (
+        <div className="absolute bg-smokewhite rounded-sm shadow-lg text-green w-full">
+          <p
+            className={`px-4 py-2 hover:bg-light-gray 
+                 "bg-another-gray border-l border-light-gray"
+        `}
+          >
+            Searching...
+          </p>
+        </div>
+      ) : (
+        <></>
+      )}
       {showResults && searchValue.length > 0 && (
         <div className="absolute bg-smokewhite rounded-sm shadow-lg text-green w-full">
           {searchResults.map((result, index) => (

@@ -1,9 +1,8 @@
 import React from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
-import bot1 from "../../assets/images/investors/bot1.png";
-import investor1 from "../../assets/images/investors/investor1.png";
 import { Link } from "react-router-dom";
+import {GetAIImage,GetAlgoImage} from "../utils/ImageFactory"
 
 const CreateInvestorPage = () => {
   return (
@@ -23,7 +22,7 @@ const CreateInvestorPage = () => {
               className="flex flex-col justify-center items-center w-1/2 h-full bg-gold hover:bg-selection-gold relative"
             >
               <div>
-                <img src={bot1} alt="bot" className="h-72 mt-12" />
+                <img src={GetAIImage()} alt="bot" className="h-72 mt-12" />
                 <p className="mb-1 text-white font-semibold flex justify-center">
                   A R T I F I C I A L &nbsp; I N T E L L I G E N C E
                 </p>
@@ -34,7 +33,7 @@ const CreateInvestorPage = () => {
               className="flex flex-col justify-center items-center w-1/2 h-full bg-green hover:bg-selection-green relative"
             >
               <div>
-                <img src={investor1} alt="investor" className="h-72 mt-12" />
+                <img src={GetAlgoImage()} alt="investor" className="h-72 mt-12" />
                 <p className="mb-1 text-white font-semibold flex justify-center">
                   A L G O R I T H M I C
                 </p>

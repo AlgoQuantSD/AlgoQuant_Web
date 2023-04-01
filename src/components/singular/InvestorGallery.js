@@ -1,16 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import InvestorDropdown from "./InvestorDropdown";
 import { BsPersonLinesFill } from "react-icons/bs";
 import { FaBrain } from "react-icons/fa";
-import investorPhotos from "../../assets/images/investors/InvestorPhotos";
-import bot from "../../assets/images/investors/bot1.png";
+import AlgoquantApiContext from "../../api/ApiContext";
+import { SaveSpinner } from "../reusable/LoadSpinner";
+import { ToastContext } from "../reusable/ToastContext";
 
-// investorList: JSON object of investor objects
-const InvestorGallery = ({ investorList }) => {
+const InvestorGallery = () => {
   const navigate = useNavigate();
+  // State variables used to access algoquant SDK API and display/ keep state of user data from database
+  const algoquantApi = useContext(AlgoquantApiContext);
   const [selectedInvestor, setSelectedInvestor] = useState(null);
+  // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
+  const { showToast } = useContext(ToastContext);
+
+  // State variable to store an array of investor objects
+  const [investorList, setInvestorList] = useState([]);
+  const [investorListLoading, setInvestorListLoading] = useState(true);
+
+  // variable to determine if rerender / fetching the api is needed when deletion is sucessful
+  // so we can grab new list of investors to not show the deleted one on screen anymore
+  const [successfulDelete, setSuccessfulDelete] = useState(false);
+  // CallBack function to get list of investors in bulk
+  const getInvestorList = useCallback(() => {
+    if (algoquantApi.token) {
+      setInvestorListLoading(true);
+      algoquantApi
+        .getInvestorList()
+        .then((resp) => {
+          setInvestorList(resp.data["investors"]);
+          setInvestorListLoading(false);
+        })
+        .catch((err) => {
+          setInvestorListLoading(false);
+          showToast(err.toString(), "error");
+          console.log(err);
+        });
+    }
+    // eslint-disable-next-line
+  }, [setInvestorList, algoquantApi]);
+
+  // if a investor is deleted through the home screen, this will trigger the investor gallery component to reload to show the investor is gone
+  useEffect(() => {
+    getInvestorList();
+    setSuccessfulDelete(false);
+    // eslint-disable-next-line
+  }, [successfulDelete]);
 
   /* 
   Function called anytime a user selects View Investor in the dropdown. Will navigate 
@@ -49,86 +86,96 @@ const InvestorGallery = ({ investorList }) => {
 
   return (
     <div className="mt-14 p-4">
-      <Carousel
-        responsive={responsive}
-        infinite={true}
-        wipeable={false}
-        draggable={false}
-        arrows={true}
-        // centerMode={true}
-      >
-        {investorList.map((investor, i) => (
-          <div
-            className={`h-full w-11/12 text-white bg-green mx-auto p-6 ${
-              investor.type === "A" ? "bg-gold border-4 border-green" : ""
-            }`}
-            key={investor.investor_id}
-          >
-            {/* Name and logos */}
-            <div className="flex justify-between">
-              {investor.type === "A" ? (
-                <FaBrain className="text-green text-3xl" />
-              ) : (
-                <BsPersonLinesFill className="text-cokewhite text-3xl" />
-              )}
-              <p className="font-bold text-xl">{investor.investor_name}</p>
-              <InvestorDropdown
-                startJob={() => {
-                  setSelectedInvestor(investor);
-                }}
-                viewInvestor={() => viewInvestor(investor.investor_id)}
-                deleteInvestor={() => {
-                  setSelectedInvestor(investor);
-                }}
-                startBacktest={() => {
-                  startBacktest(investor);
-                }}
-                investor={selectedInvestor}
-              />
-            </div>
-            {/* Investor Image */}
-            <div className="flex justify-center">
-              {investor.type === "I" ? (
-                <img
-                  src={investorPhotos[i % investorPhotos.length]}
-                  alt=""
-                  className="h-52 mt-6 mb-6"
+      {investorListLoading ? (
+        <SaveSpinner />
+      ) : (
+        <Carousel
+          responsive={responsive}
+          infinite={true}
+          wipeable={false}
+          draggable={false}
+          arrows={true}
+          // centerMode={true}
+        >
+          {investorList.map((investor, i) => (
+            <div
+              className={`h-full w-11/12 text-white bg-green mx-auto p-6 ${
+                investor.type === "A" ? "bg-gold border-4 border-green" : ""
+              }`}
+              key={investor.investor_id}
+            >
+              {/* Name and logos */}
+              <div className="flex justify-between">
+                {investor.type === "A" ? (
+                  <FaBrain className="text-green text-3xl" />
+                ) : (
+                  <BsPersonLinesFill className="text-cokewhite text-3xl" />
+                )}
+                <p className="font-bold text-xl">{investor.investor_name}</p>
+                <InvestorDropdown
+                  startJob={() => {
+                    setSelectedInvestor(investor);
+                    console.log(selectedInvestor);
+                  }}
+                  viewInvestor={() => viewInvestor(investor.investor_id)}
+                  deleteInvestor={() => {
+                    setSelectedInvestor(investor);
+                  }}
+                  startBacktest={() => {
+                    startBacktest(investor);
+                  }}
+                  setDeleted={setSuccessfulDelete}
+                  investor={investor}
                 />
-              ) : (
-                <img src={bot} alt="bot" className="h-72 mt-12" />
-              )}
-            </div>
-            {/* Indicators / Stocks */}
-            {investor.type === "I" && (
-              <div className="flex flex-col">
-                <div className="flex justify-between pl-16 pr-16">
-                  <div className="w-1/4">
-                    <p className="flex justify-left font-bold">Indicators</p>{" "}
-                    {investor.indicators.map((indicator, i) => (
-                      <p key={i} className="flex justify-left text-cokewhite">
-                        {indicator}
-                      </p>
-                    ))}
-                  </div>
-                  <div className="w-1/4">
-                    <p className="flex justify-left font-bold">Stocks</p>
-                    {investor.assets_to_track.slice(0, 4).map((stock, i) => (
-                      <p key={i} className="flex justify-left text-cokewhite">
-                        {stock}
-                      </p>
-                    ))}
-                    {investor.assets_to_track.length > 4 && (
-                      <p className="flex justify-left text-light-gray">
-                        + {investor.assets_to_track.length - 4} more
-                      </p>
-                    )}
+              </div>
+              {/* Investor Image */}
+              <div className="flex justify-center">
+                {investor.type === "I" ? (
+                  <img
+                    src={investor.image_id}
+                    alt="investor"
+                    className="h-52 mt-6 mb-6"
+                  />
+                ) : (
+                  <img
+                    src={investor.image_id}
+                    alt="AI"
+                    className="h-72 mt-12"
+                  />
+                )}
+              </div>
+              {/* Indicators / Stocks */}
+              {investor.type === "I" && (
+                <div className="flex flex-col">
+                  <div className="flex justify-between pl-16 pr-16">
+                    <div className="w-1/4">
+                      <p className="flex justify-left font-bold">Indicators</p>{" "}
+                      {investor.indicators.map((indicator, i) => (
+                        <p key={i} className="flex justify-left text-cokewhite">
+                          {indicator}
+                        </p>
+                      ))}
+                    </div>
+                    <div className="w-1/4">
+                      <p className="flex justify-left font-bold">Stocks</p>
+                      {investor.assets_to_track.slice(0, 4).map((stock, i) => (
+                        <p key={i} className="flex justify-left text-cokewhite">
+                          {stock}
+                        </p>
+                      ))}
+                      {investor.assets_to_track.length > 4 && (
+                        <p className="flex justify-left text-light-gray">
+                          + {investor.assets_to_track.length - 4} more
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </Carousel>
+              )}
+            </div>
+          ))}
+        </Carousel>
+      )}
     </div>
   );
 };

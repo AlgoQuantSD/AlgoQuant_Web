@@ -5,7 +5,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import Table from "../reusable/Table";
 import formatter from "../utils/CurrencyFormatter";
 import { TableSpinner } from "../reusable/LoadSpinner";
-
+import Banner from "../reusable/Banner";
 // The amount of data (trade history for a user) that is being fetched for each api call
 const FETCH_AMOUNT = 10;
 
@@ -28,6 +28,8 @@ const TransactionHistoryPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+  // store error and show on banner
+  const [errorMsg, setErrorMsg] = useState("");
 
   // function that that queries users trades and stores them into history in a paginated manner
   const fetchTrades = useCallback(() => {
@@ -61,8 +63,9 @@ const TransactionHistoryPage = () => {
             setIsLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
+            setIsLoading(false);
             console.log(err);
+            setErrorMsg(err.toString());
           });
       }
     }
@@ -110,6 +113,11 @@ const TransactionHistoryPage = () => {
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} type="error" />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />

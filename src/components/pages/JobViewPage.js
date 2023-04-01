@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../reusable/NavBar";
 import Graph from "../reusable/Graph";
 import Table from "../reusable/Table";
@@ -13,6 +13,7 @@ import { GraphSpinner } from "../reusable/LoadSpinner";
 import { TableSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
 import { FaLock } from "react-icons/fa";
+import Banner from "../reusable/Banner";
 
 // The amount of data (trade history for a user) that is being fetched for each api call
 const FETCH_AMOUNT = 5;
@@ -20,6 +21,7 @@ const FETCH_AMOUNT = 5;
 const JobViewPage = () => {
   // used to get the passed job_id from the navigation routing
   const location = useLocation();
+  const navigate = useNavigate();
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
 
@@ -58,6 +60,9 @@ const JobViewPage = () => {
 
   const [stopJobModal, setStopJobModal] = useState(null);
 
+  // store error and show on banner
+  const [errorMsg, setErrorMsg] = useState("");
+
   // Aggregated JSON object containing all the related performance stats of the user
   // All combined to a single object - so only need to pass a single prop to children components instead of multiple
   const aggregatedPerformanceData = [
@@ -70,9 +75,9 @@ const JobViewPage = () => {
     },
   ];
 
-  console.log("job " + location.state.value);
-  console.log("type:" + location.state.type);
-  console.log("job object: ", job);
+  const viewInvestor = (value) => {
+    navigate("/investor", { state: { value: value } });
+  };
 
   // functions to handle a page change
   const handleNextClick = () => {
@@ -110,8 +115,8 @@ const JobViewPage = () => {
           );
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log(err);
+          console.log(err.message);
+          setErrorMsg(err.toString());
         });
     }
   }, [algoquantApi, location]);
@@ -147,8 +152,8 @@ const JobViewPage = () => {
             setIsLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
             console.log(err);
+            setErrorMsg(err.toString());
           });
       }
     }
@@ -225,6 +230,7 @@ const JobViewPage = () => {
                   )
                 );
                 break;
+
               default:
                 break;
             }
@@ -232,8 +238,8 @@ const JobViewPage = () => {
             setGraphLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
             console.log(err);
+            setErrorMsg(err.toString());
           });
       }
     },
@@ -273,7 +279,6 @@ const JobViewPage = () => {
   // controls when fetchTrades functin will be called
   // uses transaction to show at most a FETCH_AMOUNT of history data on a page, uses a paginated approach to target the values from history. transaction variable changes with each page change to show new and the correct data on each page
   useEffect(() => {
-    console.log("useeffect otherone 1");
     const newTransactions = [];
     let itemCounter = 0;
 
@@ -291,8 +296,11 @@ const JobViewPage = () => {
 
   // initial data is shown on screen
   useEffect(() => {
-    console.log("useEffect");
-    setSelectedFilter(filters.DAY);
+    if (location.state.value.includes("completed")) {
+      setSelectedFilter(filters.FIVE);
+    } else {
+      setSelectedFilter(filters.DAY);
+    }
     getData(selectedFilter);
     // eslint-disable-next-line
   }, [selectedFilter, getData]);
@@ -304,7 +312,6 @@ const JobViewPage = () => {
 
   // header used for the columns on the table
   const header = [
-    { key: "jobName", title: "Job Name" },
     { key: "buyOrSell", title: "Buy or Sell" },
     { key: "stockTicker", title: "Stock Ticker" },
     { key: "shares", title: "Shares" },
@@ -314,6 +321,11 @@ const JobViewPage = () => {
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} type="error" />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
@@ -341,14 +353,25 @@ const JobViewPage = () => {
                   <br></br>
                   {startDate} - {endDate}
                 </p>
-
                 <FaLock className="text-xl text-green" />
               </div>
             )}
           </div>
+          <div className="flex mb-8">
+            <button
+              className="items-center text-white font-medium rounded-lg bg-green px-4 py-3 hover:bg-selection-green"
+              onClick={() => {
+                viewInvestor(job.investor_id);
+              }}
+            >
+              View Investor
+            </button>
+          </div>
           <GraphStats
             stockData={aggregatedPerformanceData}
-            selectedFilter={selectedFilter}
+            selectedFilter={
+              location.state.type === tabFilters.JOB ? selectedFilter : null
+            }
           />
           <div className="z-10 w-11/12 mx-auto my-10 mb-32">
             {graphLoading ? (
@@ -356,10 +379,12 @@ const JobViewPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedPerformanceData}
-                xValues={xValues}
+                lines={[{ data: xValues, name: "$" }]}
                 yValues={yValues}
                 getData={getData}
-                selectedFilter={selectedFilter}
+                selectedFilter={
+                  location.state.type === tabFilters.JOB ? selectedFilter : null
+                }
               />
             )}
           </div>

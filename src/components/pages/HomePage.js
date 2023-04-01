@@ -11,10 +11,15 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { GraphSpinner } from "../reusable/LoadSpinner";
 import { filters } from "../utils/filtersEnum";
 import { tabFilters } from "../utils/hometabFilterEnum";
+import { ToastContext } from "../reusable/ToastContext";
+import ToastNotification from "../reusable/ToastNotifcation";
+import Banner from "../reusable/Banner";
 
 const HomePage = () => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+  const { isToastOpen, toastMessage, toastType, hideToast } =
+    useContext(ToastContext);
 
   // State variable used to keep track of what tab the user is on
   const [selectedTabFilter, setSelectedTabFilter] = useState(
@@ -33,9 +38,7 @@ const HomePage = () => {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [recentPrice, setRecentPrice] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
-
-  // State variable to store an array of investor objects
-  const [investorList, setInvestorList] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Aggregated JSON object containing all the related performance stats of the user
   // All combined to a single object - so only need to pass a single prop to children components instead of multiple
@@ -132,28 +135,13 @@ const HomePage = () => {
             setGraphLoading(false);
           })
           .catch((err) => {
-            // TODO: Need to implement better error handling
-            console.log(err);
+            setGraphLoading(false);
+            setErrorMsg(err.toString());
           });
       }
     },
     [algoquantApi]
   );
-
-  // CallBack function to get list of investors in bulk
-  const getInvestorList = useCallback(() => {
-    if (algoquantApi.token) {
-      algoquantApi
-        .getInvestorList()
-        .then((resp) => {
-          setInvestorList(resp.data["investors"]);
-        })
-        .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log(err);
-        });
-    }
-  }, [setInvestorList, algoquantApi]);
 
   /*
  Function to determine what timeframe of graph data to fetch based on the filter enum (timeframe selected by user)
@@ -185,19 +173,31 @@ const HomePage = () => {
     [getGraphData, setSelectedFilter]
   );
 
-  // Useeffect that is called to render the days performance and investor list as those are the first two shown on screen
+  // Useeffect that is called to render the days performance
   useEffect(() => {
+    console.log("poop: 1");
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);
-    getInvestorList();
-  }, [algoquantApi, selectedFilter, getData, getInvestorList]);
+    // eslint-disable-next-line
+  }, [selectedFilter]);
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
+      {errorMsg === "" ? (
+        <></>
+      ) : (
+        <Banner message={errorMsg} setMessage={setErrorMsg} type="error" />
+      )}
       <Navbar />
       <div className="flex self-stretch">
         <Sidebar />
         <div className="sm:w-3/4 md:w-5/6 lg:w-7/8 p-5">
+          <ToastNotification
+            isOpen={isToastOpen}
+            message={toastMessage}
+            type={toastType}
+            handleClose={hideToast}
+          />
           <div className="pt-10">
             <h2 className="text-green font-bold text-5xl">Your Assets</h2>
           </div>
@@ -211,7 +211,7 @@ const HomePage = () => {
             <div className="w-11/12 mx-auto my-10 mb-28">
               <Graph
                 stockData={aggregatedPerformanceData}
-                xValues={xValues}
+                lines={[{ data: xValues, name: "$" }]}
                 yValues={yValues}
                 getData={getData}
                 selectedFilter={selectedFilter}
@@ -265,7 +265,9 @@ const HomePage = () => {
                       >
                         Create Investor
                       </Link>
-                      <InvestorGallery investorList={investorList} />
+                      <div>
+                        <InvestorGallery />
+                      </div>
                     </div>
                   );
                 case tabFilters.JOB:

@@ -1,14 +1,20 @@
-import { React, useContext } from "react";
+import { React, useContext, useState } from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
+import { ToastContext } from "../../reusable/ToastContext";
+import { SaveSpinner } from "../../reusable/LoadSpinner";
 
 const DeleteInvestorModal = ({
   setDeleteInvestorModal,
   deleteInvestorModal,
   investor,
+  setDeleted,
 }) => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+  // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
+  const { showToast } = useContext(ToastContext);
+  const [isLoading, setIsLoading] = useState(null);
   /*
   Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
   attributes of the Modal
@@ -17,24 +23,24 @@ const DeleteInvestorModal = ({
     setDeleteInvestorModal(null);
   };
 
-  function refreshPage() {
-    window.location.reload();
-  }
-
   // This function will implement the delete Investor function. For now it just
   // closes the modal.
   const handleDelete = () => {
-    setDeleteInvestorModal(null);
     if (algoquantApi.token) {
+      setIsLoading(true);
       algoquantApi
         .deleteInvestor(investor?.investor_id)
         .then((resp) => {
-          console.log(resp.data);
-          refreshPage();
+          setIsLoading(false);
+          showToast("Investor sucessfully deleted.", "success");
+          setDeleted(true);
+          setDeleteInvestorModal(null);
         })
         .catch((err) => {
-          // TODO: Need to implement better error handling
-          console.log("from handleDelete: ", err);
+          setDeleted(false);
+          setIsLoading(false);
+          setDeleteInvestorModal(null);
+          showToast(err.toString(), "error");
         });
     }
   };
@@ -50,6 +56,7 @@ const DeleteInvestorModal = ({
           <p className="text-lg text-another-gray mb-3">
             NOTE: All of your investors jobs must be stopped before deleting
           </p>
+          {isLoading ? <SaveSpinner /> : <></>}
         </div>
         <div className="p-6">
           <div className="flex justify-between w-full">

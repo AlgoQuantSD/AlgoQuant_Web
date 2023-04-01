@@ -9,12 +9,13 @@ const InvestorDropdown = ({
   deleteInvestor,
   startBacktest,
   investor,
+  setDeleted,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedModal, setSelectedModal] = useState(null);
 
   const searchRef = useRef(null);
-
+  console.log(selectedModal);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -45,6 +46,7 @@ const InvestorDropdown = ({
           setJobModal={setSelectedModal}
           jobModal={!!setSelectedModal}
           investor={investor}
+          setSuccessfulStartJob={() => {}}
         />
       )}
       {selectedModal === "delete" && (
@@ -52,6 +54,7 @@ const InvestorDropdown = ({
           setDeleteInvestorModal={setSelectedModal}
           deleteInvestorModal={!!setSelectedModal}
           investor={investor}
+          setDeleted={setDeleted}
         />
       )}
       {showDropdown && (
@@ -76,15 +79,17 @@ const InvestorDropdown = ({
           >
             View Investor
           </button>
-          <button
-            className="block px-4 py-2 text-left w-full text-green hover:bg-smokewhite border-b border-light-gray"
-            onClick={() => {
-              setShowDropdown(false);
-              startBacktest(investor);
-            }}
-          >
-            Start a Backtest
-          </button>
+          {investor.type !== "A" && (
+            <button
+              className="block px-4 py-2 text-left w-full text-green hover:bg-smokewhite border-b border-light-gray"
+              onClick={() => {
+                setShowDropdown(false);
+                startBacktest(investor);
+              }}
+            >
+              Start a Backtest
+            </button>
+          )}
           <button
             className="block px-4 py-2 text-left w-full text-red hover:bg-smokewhite font-bold"
             onClick={() => {

@@ -2,6 +2,7 @@ import { Auth } from "aws-amplify";
 import { React, useState } from "react";
 import Modal from "../Modal";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { SaveSpinner } from "../../reusable/LoadSpinner";
 
 const DeleteModal = ({ setDeleteModal, deleteModal }) => {
   const { user } = useAuthenticator((context) => [context.user]);
@@ -9,25 +10,29 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
   const [password, setPassword] = useState(null);
 
   const [error, setError] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const handlePassword = (event) => {
     setPassword({ value: event.target.value });
   };
 
   const confirmDelete = async () => {
     // Attempt to signin using the provided username and password
+    setIsLoading(true);
     Auth.signIn(user?.attributes?.email, password.value)
       // On sucessful sign in , the user can be deleted
       .then(() => {
         Auth.deleteUser()
           .then(() => {
+            setIsLoading(false);
             Auth.signOut();
           })
           .catch((err) => {
+            setIsLoading(false);
             setError("Error occured while deleting user: " + err.message);
           });
       })
       .catch((err) => {
+        setIsLoading(false);
         setError("Error occured while deleting user: " + err.message);
       });
   };
@@ -53,7 +58,7 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
             Please enter your password to confirm.
           </p>
           <input
-            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+            className="bg-smokewhite mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-green"
             type="text"
             placeholder="Password"
             onChange={handlePassword}
@@ -61,6 +66,7 @@ const DeleteModal = ({ setDeleteModal, deleteModal }) => {
           <p className="text-faded-dark-gray">
             NOTE: You will not be able to recover your account upon deletion.
           </p>
+          {isLoading ? <SaveSpinner /> : <></>}
           <p className="text-red">{error}</p>
         </div>
         <div className="p-6 flex justify-between">
