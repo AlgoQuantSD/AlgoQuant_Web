@@ -2,11 +2,18 @@ import { React, useState, useContext } from "react";
 import Modal from "../Modal";
 import AlgoquantApiContext from "../../../api/ApiContext";
 import { ToastContext } from "../../reusable/ToastContext";
-const JobModal = ({ setJobModal, jobModal, investor }) => {
+import { SaveSpinner } from "../../reusable/LoadSpinner";
+const JobModal = ({
+  setJobModal,
+  jobModal,
+  investor,
+  setSuccessfulStartJob,
+}) => {
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
   // Context to to show if deletion of the investor was sucessful or not from the home screen toast notifications
   const { showToast } = useContext(ToastContext);
+  const [isLoading, setIsLoading] = useState(null);
   /*
   Callback for whenever the modal is closed either by clicking a cancel button or the onClose 
   attributes of the Modal
@@ -32,18 +39,24 @@ const JobModal = ({ setJobModal, jobModal, investor }) => {
   // Function to start a job based on investor and input from user, attached to a button and close modal
   const handleSubmitStartJob = () => {
     if (algoquantApi.token) {
+      setIsLoading(true);
       algoquantApi
         .createJob(parseInt(initInvestment), investor?.investor_id, jobName)
         .then((resp) => {
           console.log(resp.data);
           showToast(jobName + " job has successfully started", "success");
+          setSuccessfulStartJob(true);
+          setJobModal(null);
+          setIsLoading(false);
         })
         .catch((err) => {
+          setSuccessfulStartJob(false);
+          setIsLoading(false);
           showToast(jobName + " job has failed to start", "error");
           console.log("Create-Job:", err);
+          setJobModal(null);
         });
     }
-    setJobModal(null);
   };
 
   return (
@@ -87,6 +100,7 @@ const JobModal = ({ setJobModal, jobModal, investor }) => {
               value={initInvestment}
               onChange={handleInitInvestmentInput}
             />
+            {isLoading ? <SaveSpinner /> : <></>}
           </div>
           <div className="p-6 flex justify-end">
             <button

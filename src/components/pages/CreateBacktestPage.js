@@ -8,13 +8,15 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { useNavigate } from "react-router-dom";
 import Banner from "../reusable/Banner";
 import { BacktestSpinner } from "../reusable/LoadSpinner";
-
+import { ToastContext } from "../reusable/ToastContext";
 const CreateBacktestPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
+  const { showToast } = useContext(ToastContext);
+
   // store error and show on banner
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -143,9 +145,10 @@ const CreateBacktestPage = () => {
             setIsLoading(false);
             navigate("/home");
             setSuccess(false);
+            showToast(resp.data.message, "success");
           })
           .catch((err) => {
-            setSuccess(true);
+            setSuccess(false);
             setIsLoading(false);
             setErrorMsg("Error: Failed to create backtest. Try again later.");
           });
@@ -158,7 +161,7 @@ const CreateBacktestPage = () => {
       {errorMsg === "" ? (
         <></>
       ) : (
-        <Banner message={errorMsg} setMessage={setErrorMsg} />
+        <Banner message={errorMsg} setMessage={setErrorMsg} type="error" />
       )}
       <Navbar />
       <div className="flex self-stretch">

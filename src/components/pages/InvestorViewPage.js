@@ -27,7 +27,12 @@ const InvestorViewPage = () => {
   // loading
   const [isLoading, setIsLoading] = useState(true);
 
-  const [errorMsg, setErrorMsg] = useState("");
+  const [bannerMsg, setBannerMsg] = useState("");
+
+  // used to trigger banner/toast if the delete was successful or not
+  const [successfulDelete, setSuccessfulDelete] = useState(null);
+  // used to signify if the investors's job was created/started properly.
+  const [successfulStartJob, setSuccessfulStartJob] = useState(null);
 
   // Function called anytime a user selects Start Backtest in the dropdown. Will navigate a user to the Backtest page passing in the value.
   const startBacktest = (value) => {
@@ -47,7 +52,7 @@ const InvestorViewPage = () => {
         })
         .catch((err) => {
           setIsLoading(false);
-          setErrorMsg("Failed to load investor. Please try again later.");
+          setBannerMsg(err.toString());
         });
     }
   }, [algoquantApi, location, setInvestor]);
@@ -65,12 +70,20 @@ const InvestorViewPage = () => {
     getInvestor();
   }, [getInvestor]);
 
+  useEffect(() => {
+    // when rendered successfulDelet/successfulStartJobe is set to null, if it is set to falae or true go back to homepage to display confirmation or error
+    if (successfulDelete !== null || successfulStartJob != null) {
+      navigate("/home");
+    }
+    // eslint-disable-next-line
+  }, [successfulDelete, successfulStartJob]);
+
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">
-      {errorMsg === "" ? (
+      {bannerMsg === "" ? (
         <></>
       ) : (
-        <Banner message={errorMsg} setMessage={setErrorMsg} />
+        <Banner message={bannerMsg} setMessage={setBannerMsg} type="error" />
       )}
       <Navbar />
       <div className="flex self-stretch">
@@ -84,11 +97,13 @@ const InvestorViewPage = () => {
                 setJobModal={setJobModal}
                 jobModal={jobModal}
                 investor={investor}
+                setSuccessfulStartJob={setSuccessfulStartJob}
               />
               <DeleteInvestorModal
                 setDeleteInvestorModal={setDeleteInvestorModal}
                 deleteInvestorModal={deleteInvestorModal}
                 investor={investor}
+                setDeleted={setSuccessfulDelete}
               />
               <div className="flex pt-10 justify-between">
                 <div className="">
@@ -157,7 +172,10 @@ const InvestorViewPage = () => {
                               Profit Stop:
                             </td>
                             <td className="px-4 py-2 text-lg text-white">
-                              {investor?.profit_stop * 100}%
+                              {(
+                                parseFloat(investor?.profit_stop) * 100
+                              ).toFixed(2)}
+                              %
                             </td>
                           </tr>
                           <tr>
@@ -165,7 +183,10 @@ const InvestorViewPage = () => {
                               Loss Stop:
                             </td>
                             <td className="px-4 py-2 text-lg text-white">
-                              {investor?.loss_stop * 100}%
+                              {(parseFloat(investor?.loss_stop) * 100).toFixed(
+                                2
+                              )}
+                              %
                             </td>
                           </tr>
                           <tr>

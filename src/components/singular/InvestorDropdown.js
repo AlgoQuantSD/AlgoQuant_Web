@@ -15,7 +15,7 @@ const InvestorDropdown = ({
   const [selectedModal, setSelectedModal] = useState(null);
 
   const searchRef = useRef(null);
-
+  console.log(selectedModal);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -46,6 +46,7 @@ const InvestorDropdown = ({
           setJobModal={setSelectedModal}
           jobModal={!!setSelectedModal}
           investor={investor}
+          setSuccessfulStartJob={() => {}}
         />
       )}
       {selectedModal === "delete" && (

@@ -42,10 +42,12 @@ const InvestorGallery = () => {
     // eslint-disable-next-line
   }, [setInvestorList, algoquantApi]);
 
+  // if a investor is deleted through the home screen, this will trigger the investor gallery component to reload to show the investor is gone
   useEffect(() => {
     getInvestorList();
     setSuccessfulDelete(false);
-  }, [getInvestorList, successfulDelete]);
+    // eslint-disable-next-line
+  }, [successfulDelete]);
 
   /* 
   Function called anytime a user selects View Investor in the dropdown. Will navigate 
