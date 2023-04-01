@@ -136,7 +136,7 @@ const HomePage = () => {
           })
           .catch((err) => {
             setGraphLoading(false);
-            setErrorMsg("Failed to load performance. Please try again later.");
+            setErrorMsg(err.toString());
           });
       }
     },
@@ -208,53 +208,53 @@ const HomePage = () => {
           {graphLoading ? (
             <GraphSpinner />
           ) : (
-              <div className="w-11/12 mx-auto my-10 mb-28">
-                <Graph
-                  stockData={aggregatedPerformanceData}
-                  lines={[{ data: xValues, name: "$" }]}
-                  yValues={yValues}
-                  getData={getData}
-                  selectedFilter={selectedFilter}
-                />
-              </div>
-            )}
-            <div className="w-full">
-              <h3 className="text-green font-bold text-5xl">Invest</h3>
+            <div className="w-11/12 mx-auto my-10 mb-28">
+              <Graph
+                stockData={aggregatedPerformanceData}
+                lines={[{ data: xValues, name: "$" }]}
+                yValues={yValues}
+                getData={getData}
+                selectedFilter={selectedFilter}
+              />
             </div>
-            <div className="flex mx-auto justify-center w-2/4 mt-8">
-              <button
-                className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite  ${
-                  selectedTabFilter === tabFilters.INVESTOR
-                    ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-                    : ""
-                }`}
-                onClick={() => handleTabFilterSelection(tabFilters.INVESTOR)}
-              >
-                Investor
-              </button>
-              <button
-                className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
-                  selectedTabFilter === tabFilters.JOB
-                    ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-                    : ""
-                }`}
-                onClick={() => handleTabFilterSelection(tabFilters.JOB)}
-              >
-                Job
-              </button>
-              <button
-                className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
-                  selectedTabFilter === tabFilters.HISTORY
-                    ? "text-cokewhite border-b-green bg-green active hover:bg-green"
-                    : ""
-                }`}
-                onClick={() => handleTabFilterSelection(tabFilters.HISTORY)}
-              >
-                History
-              </button>
-            </div>
-            <div className=" mt-10">
-              {(() => {
+          )}
+          <div className="w-full">
+            <h3 className="text-green font-bold text-5xl">Invest</h3>
+          </div>
+          <div className="flex mx-auto justify-center w-2/4 mt-8">
+            <button
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite  ${
+                selectedTabFilter === tabFilters.INVESTOR
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+                  : ""
+              }`}
+              onClick={() => handleTabFilterSelection(tabFilters.INVESTOR)}
+            >
+              Investor
+            </button>
+            <button
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
+                selectedTabFilter === tabFilters.JOB
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+                  : ""
+              }`}
+              onClick={() => handleTabFilterSelection(tabFilters.JOB)}
+            >
+              Job
+            </button>
+            <button
+              className={`py-2 px-20 text-green border-b-2 border-b-green border-cokewhite hover:bg-smokewhite ${
+                selectedTabFilter === tabFilters.HISTORY
+                  ? "text-cokewhite border-b-green bg-green active hover:bg-green"
+                  : ""
+              }`}
+              onClick={() => handleTabFilterSelection(tabFilters.HISTORY)}
+            >
+              History
+            </button>
+          </div>
+          <div className=" mt-10">
+            {(() => {
               switch (selectedTabFilter) {
                 case tabFilters.INVESTOR:
                   return (

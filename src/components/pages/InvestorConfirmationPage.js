@@ -47,7 +47,7 @@ const InvestorConfirmationPage = () => {
         })
         .catch((err) => {
           setIsLoading(false);
-          setErrorMsg("Failed to create investor. Please try again later.");
+          setErrorMsg(err.toString());
         });
     }
   };

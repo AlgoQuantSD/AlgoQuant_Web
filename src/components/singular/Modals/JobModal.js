@@ -52,7 +52,7 @@ const JobModal = ({
         .catch((err) => {
           setSuccessfulStartJob(false);
           setIsLoading(false);
-          showToast(jobName + " job has failed to start", "error");
+          showToast(err.toString(), "error");
           console.log("Create-Job:", err);
           setJobModal(null);
         });

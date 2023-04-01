@@ -116,7 +116,7 @@ const JobViewPage = () => {
         })
         .catch((err) => {
           console.log(err.message);
-          setErrorMsg("Error: Failed to load job.");
+          setErrorMsg(err.toString());
         });
     }
   }, [algoquantApi, location]);
@@ -153,7 +153,7 @@ const JobViewPage = () => {
           })
           .catch((err) => {
             console.log(err);
-            setErrorMsg("Error: Failed to get job's trade data.");
+            setErrorMsg(err.toString());
           });
       }
     }
@@ -239,7 +239,7 @@ const JobViewPage = () => {
           })
           .catch((err) => {
             console.log(err);
-            setErrorMsg("Error: Failed to get job's graph data.");
+            setErrorMsg(err.toString());
           });
       }
     },

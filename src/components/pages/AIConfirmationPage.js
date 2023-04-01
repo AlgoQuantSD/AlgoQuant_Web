@@ -43,7 +43,7 @@ const AIConfirmationPage = () => {
           // TODO: Need to implement better error handling
           console.log(err);
           setIsLoading(false);
-          setErrorMsg("Error: Failed to create AI investor. Try again later.");
+          setErrorMsg(err.toString());
         });
     }
   };

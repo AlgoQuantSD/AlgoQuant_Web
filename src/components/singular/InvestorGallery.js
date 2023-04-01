@@ -35,7 +35,7 @@ const InvestorGallery = () => {
         })
         .catch((err) => {
           setInvestorListLoading(false);
-          showToast("Investor list did not load correctly", "error");
+          showToast(err.toString(), "error");
           console.log(err);
         });
     }

@@ -67,7 +67,7 @@ const JobGallery = ({ type, investorID }) => {
           setIsLoading(false);
         })
         .catch((err) => {
-          showToast("Active job list did not load correctly", "error");
+          showToast(err.toString(), "error");
           setIsLoading(false);
           console.log(err);
         });

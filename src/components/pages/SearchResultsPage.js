@@ -173,7 +173,7 @@ const SearchResultsPage = () => {
           })
           .catch((err) => {
             console.log(err);
-            setErrorMsg("Error: Failed to get stock's graph data.");
+            setErrorMsg(err.toString());
           });
       }
     },
@@ -216,7 +216,7 @@ const SearchResultsPage = () => {
           setStatsLoading(false);
         })
         .catch((err) => {
-          setErrorMsg("Error: Failed to get stock's statistics.");
+          setErrorMsg(err.toString());
           console.log(err);
         });
     }
@@ -249,7 +249,7 @@ const SearchResultsPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedStockData}
-                lines={[{"data": xValues, "name": "$"}]}
+                lines={[{ data: xValues, name: "$" }]}
                 yValues={yValues}
                 getData={getData}
                 selectedFilter={selectedFilter}
