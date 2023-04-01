@@ -65,9 +65,7 @@ const TransactionHistoryPage = () => {
           .catch((err) => {
             setIsLoading(false);
             console.log(err);
-            setErrorMsg(
-              "Error: Failed to get transaction history. Please try again later."
-            );
+            setErrorMsg(err.toString());
           });
       }
     }

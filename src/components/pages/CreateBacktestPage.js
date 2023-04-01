@@ -150,7 +150,7 @@ const CreateBacktestPage = () => {
           .catch((err) => {
             setSuccess(false);
             setIsLoading(false);
-            setErrorMsg("Error: Failed to create backtest. Try again later.");
+            setErrorMsg(err.toString());
           });
       }
     }

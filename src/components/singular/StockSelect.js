@@ -10,6 +10,7 @@ const StockSelect = ({
   searchResults,
   resetSearch,
   onOptionsSelect,
+  isLoading,
 }) => {
   // This flag controls rather the drop down will show
   const [showResults, setShowResults] = useState(false);
@@ -148,6 +149,7 @@ const StockSelect = ({
           </button>
         </div>
       </div>
+
       {/* conditionally render selected item text */}
       {selectedItems.length > 0 && (
         <div className="flex flex-wrap py-2">
@@ -186,6 +188,19 @@ const StockSelect = ({
             ))}
           </div>
         )}
+      {isLoading ? (
+        <div className="absolute bg-smokewhite rounded-sm shadow-lg text-green w-1/4 z-50">
+          <p
+            className={`px-4 py-2 hover:bg-light-gray 
+                 "bg-another-gray border-l border-light-gray"
+        `}
+          >
+            Searching...
+          </p>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

@@ -14,6 +14,7 @@ const CreateAlgorithmicPage = () => {
   const algoquantApi = useContext(AlgoquantApiContext);
   // store error and show on banner
   const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // State variables used to keep track of user input
   const [investorName, setInvestorName] = useState(null);
@@ -92,13 +93,16 @@ const CreateAlgorithmicPage = () => {
   */
   const getSearchResults = (value) => {
     if (algoquantApi.token) {
+      setIsLoading(true);
       algoquantApi
         .searchStock(value)
         .then((resp) => {
+          setIsLoading(false);
           setSearchResults(resp.data["stock-tickers"]);
         })
         .catch((err) => {
-          setErrorMsg("Error: Failed to find stock.");
+          setIsLoading(false);
+          setErrorMsg(err.toString());
         });
     }
     return searchResults;
@@ -246,6 +250,7 @@ const CreateAlgorithmicPage = () => {
               searchResults={searchResults}
               resetSearch={resetSearch}
               onOptionsSelect={handleStockSelect}
+              isLoading={isLoading}
             />
           </div>
 
