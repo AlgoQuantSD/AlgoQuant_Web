@@ -158,87 +158,92 @@ const InvestorViewPage = () => {
                   )}
                 </div>
                 <div className="flex justify-center">
-                  <div className="block max-w-sm w-full md:max-w-md lg:max-w-lg   rounded-lg bg-green text-center shadow-lg dark:bg-neutral-700">
-                    <div className="border-b-2 border-white py-3 px-6 dark:border-neutral-600 dark:text-neutral-50">
-                      <p className="text-green text-3xl text-white font-semibold">
+                  <div className="block max-w-sm w-full md:max-w-md lg:max-w-lg rounded-lg bg-green shadow-lg">
+                    <div className="border-b-2 border-white py-3 px-6">
+                      <p className="text-center text-3xl text-white font-semibold">
                         Investor Configuration
                       </p>
                     </div>
-                    <div className="p-4">
-                      <table className="table-auto md:table-fixed w-full">
-                        <tbody>
-                          <tr>
-                            <td className="px-4 py-2 text-xl text-white font-semibold">
-                              Profit Stop:
-                            </td>
-                            <td className="px-4 py-2 text-lg text-white">
-                              {(
-                                parseFloat(investor?.profit_stop) * 100
-                              ).toFixed(2)}
-                              %
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-4 py-2 text-xl text-white font-semibold">
-                              Loss Stop:
-                            </td>
-                            <td className="px-4 py-2 text-lg text-white">
-                              {(parseFloat(investor?.loss_stop) * 100).toFixed(
-                                2
-                              )}
-                              %
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-4 py-2 text-xl font-semibold text-white">
-                              Stock Ticker:
-                            </td>
-                            <td className="px-4 py-2 text-lg text-white">
-                              {investor?.assets_to_track &&
-                                investor.assets_to_track.map(
-                                  (ticker, index) => (
-                                    <span key={index}>
-                                      {index > 0 && ", "}
-                                      {ticker}
-                                    </span>
-                                  )
-                                )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-4 py-2 text-xl font-semibold text-white">
-                              Indicators:
-                            </td>
-                            <td className="px-4 py-2 text-lg text-white">
-                              {investor?.indicators &&
-                                investor.indicators.map((indicator, index) => (
-                                  <span key={index}>
-                                    {index > 0 && ", "}
-                                    {indicator}
-                                  </span>
-                                ))}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-4 py-2 text-xl font-semibold text-white pb-10">
-                              Type:
-                            </td>
-                            <td className="px-4 py-2 text-lg text-white pb">
-                              {investor?.type === "I"
-                                ? "Algorithmic"
-                                : "Artifical Intelligence"}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-4 py-2 text-xl font-semibold text-white pb-10">
-                              Frequency:
-                            </td>
-                            <td className="px-4 py-2 text-lg text-white pb">
-                              {investor?.frequency}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    <div className="p-4 justify-between">
+                      <div className="flex flex-col">
+                        <div className="flex flex-row mb-2 justify-between">
+                          <p className="text-white text-xl font-semibold">
+                            Profit Stop:
+                          </p>
+                          <div className="flex-grow"></div>
+                          <p className="text-white text-lg font-medium">
+                            {(parseFloat(investor?.profit_stop) * 100).toFixed(
+                              2
+                            )}
+                            %
+                          </p>
+                        </div>
+
+                        <div className="flex flex-row mb-2">
+                          <p className="text-white text-xl font-semibold">
+                            Loss Stop:
+                          </p>
+                          <div className="flex-grow"></div>
+                          <p className="text-white text-lg font-medium">
+                            {(parseFloat(investor?.loss_stop) * 100).toFixed(2)}
+                            %
+                          </p>
+                        </div>
+
+                        <div className="flex flex-row mb-2 items-center justify-between">
+                          <p className="text-white text-xl font-semibold">
+                            Stock Ticker:
+                          </p>
+                          <div className="flex-grow"></div>
+                          <p className="text-white text-lg font-medium flex-shrink-0 flex-wrap max-w-[50%]">
+                            {investor?.assets_to_track &&
+                              investor.assets_to_track.map((ticker, index) => (
+                                <span key={index}>
+                                  {index > 0 && ", "}
+                                  {ticker}
+                                </span>
+                              ))}
+                          </p>
+                        </div>
+
+                        <div className="flex flex-row mb-2 items-center justify-between">
+                          <p className="text-white text-xl font-semibold">
+                            Indicators:
+                          </p>
+                          <div className="flex-grow"></div>
+                          <p className="text-white text-lg font-medium flex-shrink-0">
+                            {investor?.indicators &&
+                              investor.indicators.map((indicator, index) => (
+                                <span key={index}>
+                                  {index > 0 && ", "}
+                                  {indicator}
+                                </span>
+                              ))}
+                          </p>
+                        </div>
+
+                        <div className="flex flex-row mb-2">
+                          <p className="text-white text-xl font-semibold">
+                            Type:
+                          </p>
+                          <div className="flex-grow"></div>
+                          <p className="text-white text-lg font-medium">
+                            {investor?.type === "I"
+                              ? "Algorithmic"
+                              : "Artifical Intelligence"}
+                          </p>
+                        </div>
+
+                        <div className="flex flex-row items-start mb-2">
+                          <p className="text-white text-xl font-semibold">
+                            Frequency:
+                          </p>
+                          <div className="flex-grow"></div>
+                          <p className="text-white text-lg font-medium">
+                            {investor?.frequency}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
