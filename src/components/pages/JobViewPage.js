@@ -411,46 +411,6 @@ const JobViewPage = () => {
             )}
           </div>
           <div className="flex justify-between items-center mb-4">
-            <p className="text-green font-bold text-5xl">Recent Trades</p>
-          </div>
-          {isLoading ? (
-            <TableSpinner />
-          ) : (
-            <Table data={transactions} header={header} />
-          )}
-          <div className="p-6 pt-24 pb-20 overflow-auto	">
-            {page === 1 ? (
-              <button
-                className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
-                disabled
-              ></button>
-            ) : (
-              <button
-                className="text-cokewhite rounded-md w-28 h-10 bg-green py-2 px-6"
-                onClick={handlePreviousClick}
-              >
-                Previous
-              </button>
-            )}
-
-            {transactions.length < 5 ? (
-              <button
-                className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
-                disabled
-              ></button>
-            ) : (
-              <button
-                className="text-cokewhite w-28 h-10 rounded-md bg-green py-2 px-6 float-right"
-                onClick={handleNextClick}
-              >
-                Next
-              </button>
-            )}
-            <p className="text-md font-light text-center text-light-gray mt-2">
-              {"Page " + page}
-            </p>
-          </div>
-          <div className="flex justify-between items-center mb-4">
             <p className="text-green font-bold text-5xl">
               Buying Power and Holdings
             </p>
@@ -458,7 +418,7 @@ const JobViewPage = () => {
           {pieLoading ? (
             <LoadSpinner />
           ) : (
-            <div className="max-w-full mx-4 py-6 sm:mx-auto sm:px-6 lg:px-8 flex flex-col sm:flex-row">
+            <div className="max-w-full mx-4 py-6 sm:mx-auto sm:px-6 lg:px-8 flex flex-col sm:flex-row mb-4">
               <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
                 {JSON.stringify(job?.assets) === "{}" ? (
                   <p className="text-2xl font-bold text-black">
@@ -505,6 +465,46 @@ const JobViewPage = () => {
               </div>
             </div>
           )}
+          <div className="flex justify-between items-center mb-4">
+            <p className="text-green font-bold text-5xl">Recent Trades</p>
+          </div>
+          {isLoading ? (
+            <TableSpinner />
+          ) : (
+            <Table data={transactions} header={header} />
+          )}
+          <div className="p-6 pt-24 pb-20 overflow-auto	">
+            {page === 1 ? (
+              <button
+                className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
+                disabled
+              ></button>
+            ) : (
+              <button
+                className="text-cokewhite rounded-md w-28 h-10 bg-green py-2 px-6"
+                onClick={handlePreviousClick}
+              >
+                Previous
+              </button>
+            )}
+
+            {transactions.length < 5 ? (
+              <button
+                className="text-green rounded-md w-28 h-10 bg-cokewhite py-2 px-6"
+                disabled
+              ></button>
+            ) : (
+              <button
+                className="text-cokewhite w-28 h-10 rounded-md bg-green py-2 px-6 float-right"
+                onClick={handleNextClick}
+              >
+                Next
+              </button>
+            )}
+            <p className="text-md font-light text-center text-light-gray mt-2">
+              {"Page " + page}
+            </p>
+          </div>
         </div>
       </div>
     </div>
