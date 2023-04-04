@@ -174,7 +174,7 @@ const InvestorViewPage = () => {
                             Profit Stop:
                           </p>
                           <div className="flex-grow"></div>
-                          <p className="text-white text-lg font-medium">
+                          <p className="text-white text-lg font-normal">
                             {(parseFloat(investor?.profit_stop) * 100).toFixed(
                               2
                             )}
@@ -187,7 +187,7 @@ const InvestorViewPage = () => {
                             Loss Stop:
                           </p>
                           <div className="flex-grow"></div>
-                          <p className="text-white text-lg font-medium">
+                          <p className="text-white text-lg font-normal">
                             {(parseFloat(investor?.loss_stop) * 100).toFixed(2)}
                             %
                           </p>
@@ -198,7 +198,7 @@ const InvestorViewPage = () => {
                             Stock Ticker:
                           </p>
                           <div className="flex-grow"></div>
-                          <p className="text-white text-lg font-medium flex-shrink-0 flex-wrap max-w-[50%]">
+                          <p className="text-white text-lg font-normal flex-shrink-0 flex-wrap max-w-[50%] text-right">
                             {investor?.assets_to_track &&
                               investor.assets_to_track.map((ticker, index) => (
                                 <span key={index}>
@@ -214,7 +214,7 @@ const InvestorViewPage = () => {
                             Indicators:
                           </p>
                           <div className="flex-grow"></div>
-                          <p className="text-white text-lg font-medium flex-shrink-0">
+                          <p className="text-white text-lg font-normal flex-shrink-0">
                             {investor?.indicators &&
                               investor.indicators.map((indicator, index) => (
                                 <span key={index}>
@@ -230,7 +230,7 @@ const InvestorViewPage = () => {
                             Type:
                           </p>
                           <div className="flex-grow"></div>
-                          <p className="text-white text-lg font-medium">
+                          <p className="text-white text-lg font-normal">
                             {investor?.type === "I"
                               ? "Algorithmic"
                               : "Artifical Intelligence"}
@@ -242,7 +242,7 @@ const InvestorViewPage = () => {
                             Frequency:
                           </p>
                           <div className="flex-grow"></div>
-                          <p className="text-white text-lg font-medium">
+                          <p className="text-white text-lg font-normal">
                             {investor?.frequency}
                           </p>
                         </div>
