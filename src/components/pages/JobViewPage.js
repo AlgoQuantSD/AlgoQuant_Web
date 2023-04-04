@@ -11,10 +11,11 @@ import formatter from "../utils/CurrencyFormatter";
 import { filters } from "../utils/filtersEnum";
 import { GraphSpinner } from "../reusable/LoadSpinner";
 import { TableSpinner } from "../reusable/LoadSpinner";
+import { LoadSpinner } from "../reusable/LoadSpinner";
 import { tabFilters } from "../utils/hometabFilterEnum";
 import { FaLock } from "react-icons/fa";
 import Banner from "../reusable/Banner";
-
+import DonutPieChart from "../reusable/DonutPieChart";
 // The amount of data (trade history for a user) that is being fetched for each api call
 const FETCH_AMOUNT = 5;
 
@@ -57,6 +58,10 @@ const JobViewPage = () => {
   const [job, setJob] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  // pie graph data
+  const [pieLabel, setPieLabel] = useState([]);
+  const [assetData, setAssetData] = useState([]);
+  const [pieLoading, setPieLoading] = useState(true);
 
   const [stopJobModal, setStopJobModal] = useState(null);
 
@@ -94,9 +99,29 @@ const JobViewPage = () => {
   // Function to get the job clicked by the user using the jobID passed from the getJobList endpoint
   const getJob = useCallback(() => {
     if (algoquantApi.token) {
+      setPieLoading(true);
       algoquantApi
         .getJob(location.state.value)
         .then((resp) => {
+          // resp returns a js object where the key is the asset name
+          const assetKeys = Object.keys(resp.data?.assets);
+          // set pie label is format of "stock name" break "Total shares: "
+          setPieLabel(
+            assetKeys.map((key) => {
+              return (
+                key +
+                "<br />" +
+                "Total shares: " +
+                resp.data?.assets[key].shares
+              );
+            })
+          );
+          setPieLoading(false);
+          setAssetData(
+            assetKeys.map((key) => {
+              return resp.data?.assets[key].holdings;
+            })
+          );
           setJob(resp.data);
           setStartDate(
             new Date(parseInt(resp.data?.start_time)).toLocaleString("en-US", {
@@ -115,7 +140,7 @@ const JobViewPage = () => {
           );
         })
         .catch((err) => {
-          console.log(err.message);
+          setPieLoading(false);
           setErrorMsg(err.toString());
         });
     }
@@ -152,7 +177,6 @@ const JobViewPage = () => {
             setIsLoading(false);
           })
           .catch((err) => {
-            console.log(err);
             setErrorMsg(err.toString());
           });
       }
@@ -238,14 +262,12 @@ const JobViewPage = () => {
             setGraphLoading(false);
           })
           .catch((err) => {
-            console.log(err);
             setErrorMsg(err.toString());
           });
       }
     },
     [algoquantApi, location]
   );
-
   /*
  Function to determine what timeframe of graph data to fetch based on the filter enum (timeframe selected by user)
   calls the getGraphData to retreive data and updates the filter the user has selcted with: setSelectedFilter
@@ -335,7 +357,7 @@ const JobViewPage = () => {
             stopJobModal={stopJobModal}
             jobObj={job}
           />
-          <div class="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-8">
             <p className="text-green font-bold text-5xl">{job?.name} Job</p>
             {location.state.type === tabFilters.JOB ? (
               <button
@@ -388,7 +410,62 @@ const JobViewPage = () => {
               />
             )}
           </div>
-          <div class="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4">
+            <p className="text-green font-bold text-5xl">
+              Buying Power and Holdings
+            </p>
+          </div>
+          {pieLoading ? (
+            <LoadSpinner />
+          ) : (
+            <div className="max-w-full mx-4 py-6 sm:mx-auto sm:px-6 lg:px-8 flex flex-col sm:flex-row mb-4">
+              <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
+                {JSON.stringify(job?.assets) === "{}" ? (
+                  <p className="text-2xl font-bold text-black">
+                    Nothing to display here ....
+                  </p>
+                ) : (
+                  <DonutPieChart
+                    series={assetData}
+                    labels={pieLabel}
+                    height={300}
+                    total={300}
+                  />
+                )}
+              </div>
+              <div className="sm:w-1/2 sm:ml-4 grid">
+                <div className=" w-3/4 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow transform transition-all mb-4 sm:my-8 ">
+                  <div className="bg-white p-5">
+                    <div className="sm:flex sm:items-start">
+                      <div className="text-center sm:mt-0 sm:ml-2 sm:text-left">
+                        <h3 className="text-sm leading-6 font-medium text-gray-400">
+                          Available Buying Power
+                        </h3>
+                        <p className="text-3xl font-bold text-black">
+                          ${job?.buying_power}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className=" w-3/4 inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow transform transition-all mb-4 sm:my-8">
+                  <div className="bg-white p-5">
+                    <div className="sm:flex sm:items-start">
+                      <div className="text-center sm:mt-0 sm:ml-2 sm:text-left">
+                        <h3 className="text-sm leading-6 font-medium text-gray-400">
+                          Money Invested
+                        </h3>
+                        <p className="text-3xl font-bold text-black">
+                          ${job?.holdings}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="flex justify-between items-center mb-4">
             <p className="text-green font-bold text-5xl">Recent Trades</p>
           </div>
           {isLoading ? (
@@ -424,7 +501,7 @@ const JobViewPage = () => {
                 Next
               </button>
             )}
-            <p className="text-md font-light text-center text-light-gray mt-5">
+            <p className="text-md font-light text-center text-light-gray mt-2">
               {"Page " + page}
             </p>
           </div>
