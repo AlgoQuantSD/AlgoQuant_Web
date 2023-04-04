@@ -132,14 +132,17 @@ const InvestorViewPage = () => {
               >
                 Create New Job
               </button>
-              <button
-                className="px-4 py-3 text-green font-medium hover:bg-smokewhite rounded-lg border-2 border-green ml-4"
-                onClick={() => {
-                  startBacktest(investor);
-                }}
-              >
-                Start a Backtest
-              </button>
+
+              {investor?.type === "I" && (
+                <button
+                  className="px-4 py-3 text-green font-medium hover:bg-smokewhite rounded-lg border-2 border-green ml-4"
+                  onClick={() => {
+                    startBacktest(investor);
+                  }}
+                >
+                  Start a Backtest
+                </button>
+              )}
 
               <div className="flex h-2/5">
                 <div className="flex justify-center w-1/2">
