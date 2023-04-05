@@ -54,6 +54,26 @@ const InvestorViewPage = () => {
       : setButtonStatus(tabFilters.JOB);
   };
 
+  // set text of the frequency of the investor based on the response value of the investors data from the endpoint
+  const setFrequencyText = (frequency) => {
+    switch (frequency) {
+      case "1_day":
+        return "Daily";
+      case "30_min":
+        return "Half-hourly";
+      case "1_hr":
+        return "Hourly";
+      case "1_wk":
+        return "Weekly";
+      case "1_mo":
+        return "Monthly";
+      case "4_hr":
+        return "Every 4 hours";
+      default:
+        return "Unknown Frequency";
+    }
+  };
+
   useEffect(() => {
     console.log("investorview useeffect");
     getInvestor();
@@ -191,7 +211,7 @@ const InvestorViewPage = () => {
                           Frequency:
                         </td>
                         <td className="px-4 py-2 text-lg text-white pb">
-                          {investor?.frequency}
+                          {setFrequencyText(investor?.frequency)}
                         </td>
                       </tr>
                     </tbody>
