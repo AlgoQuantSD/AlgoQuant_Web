@@ -17,9 +17,11 @@ const GraphStats = ({ stockData, selectedFilter }) => {
         %)
         <p className="inline text-light-gray font-light">
           {" "}
-          {selectedFilter ? (stockData[0].marketClosed
-            ? selectedFilter + " - Closed on " + stockData[0].dateClosed
-            : selectedFilter + " - Market Open") : ""}
+          {selectedFilter
+            ? stockData[0].marketClosed
+              ? selectedFilter + " - Closed on " + stockData[0].dateClosed
+              : selectedFilter + " - Market Open"
+            : ""}
         </p>
       </p>
     </div>
