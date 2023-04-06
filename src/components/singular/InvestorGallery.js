@@ -95,6 +95,7 @@ const InvestorGallery = () => {
           wipeable={false}
           draggable={false}
           arrows={true}
+          keyBoardControl={false}
           // centerMode={true}
         >
           {investorList.map((investor, i) => (
