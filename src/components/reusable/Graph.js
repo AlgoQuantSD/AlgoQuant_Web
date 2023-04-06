@@ -45,7 +45,7 @@ const getGraphLines = (lines, isTrendingUp) => {
           )
         }
       )
-      let lineData = {'series':series, 'topColor': lineColor, 'bottomColor': bottomColor}
+      let lineData = {'series':series, 'topColor': lineColor, 'bottomColor': bottomColor, name: line.name}
       graphLines.push(lineData)
     })
 
@@ -112,18 +112,43 @@ const Graph = ({ stockData, getData, lines, selectedFilter }) => {
         // Get the actual series data for the graph
         let graphLines = getGraphLines(lines, stockData[0]?.priceChange >= 0)
          
+        // Have a legend available for grabs that have a name
+        const legend = document.createElement('div');
+        legend.style = `position: absolute; left: 8px; top: 6px; z-index: 1; font-size: 18px; line-height: 24px; font-weight: 300;`;
+        chartContainerRef.current.appendChild(legend);
+
         graphLines.forEach(    
-          function(line){
+          function(line) {
+
             let newSeries = chart.addAreaSeries({
               lineColor: line.topColor,
               topColor: line.topColor,
               bottomColor: line.bottomColor,
               lineWidth: 2
             });
+
             newSeries.setData(line.series)
-          }
+            
+            // If there is a name then we must add to the legend
+            if(line.name) {
+              const firstRow = document.createElement('div');
+              firstRow.innerHTML = `${line.name} ${line.series[0].value} `;
+              firstRow.style.color = line.topColor;
+              legend.appendChild(firstRow);
+
+              // Allows the data to update when hovering over
+              chart.subscribeCrosshairMove(param => {
+                let priceFormatted = '';
+                if (param.time) {
+                  const data = param.seriesData.get(newSeries);
+                  const price = data.value
+                  priceFormatted = price.toFixed(2);
+                }
+                firstRow.innerHTML = `${line.name} <strong> ${priceFormatted} </strong>`;
+              });
+          }}
         )
-        
+       
         // Required event listeners for the scrolling to work properly
         window.addEventListener('resize', handleResize);
         return () => {

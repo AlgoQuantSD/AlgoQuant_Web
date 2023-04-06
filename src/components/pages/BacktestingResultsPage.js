@@ -120,14 +120,17 @@ const BacktestingResultsPage = () => {
                 <Graph
                   stockData={priceChange}
                   lines={[
-                    { x: xValues, y: investorPerformance},
-                    { x: xValues, y: buyHoldPerformance, color: "#A020F0" , bottomColor: "transparent" },
+                    { x: xValues, y: investorPerformance, name: "INVESTOR"},
+                    { x: xValues, y: buyHoldPerformance, color: "#A020F0" , bottomColor: "transparent", name: "BUY/HOLD" },
                   ]}
                   selectedFilter={null}
                 />
+
+
               </div>
+
               <div className="flex items-center pt-10">
-                <h1 className="text-green font-bold sm:text-3xl md:text-4xl pt-3 pr-5">
+                <h1 className="text-green font-bold sm:text-3xl md:text-4xl pt-5 pr-5">
                   Analysis
                 </h1>
                 <Link
