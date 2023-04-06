@@ -44,10 +44,7 @@ const getGraphLines = (lines, isTrendingUp) => {
     return graphLines
   }
 
-const Graph = ({ stockData, getData, lines, yValues, selectedFilter }) => {
-
-  // conditional variable to indicate whether stock searched is trending up or down
-  const isTrendingUp = stockData[0]?.priceChange >= 0;
+const Graph = ({ stockData, getData, lines, selectedFilter }) => {
 
   // String variable containing the style of what fitler is currently active
   const ACTIVE_FILTER_STYLE =
@@ -105,7 +102,7 @@ const Graph = ({ stockData, getData, lines, yValues, selectedFilter }) => {
         chart.timeScale().fitContent();
 
         // Get the actual series data for the graph
-        let graphLines = getGraphLines(lines, isTrendingUp)
+        let graphLines = getGraphLines(lines, stockData[0]?.priceChange >= 0)
          
         graphLines.forEach(    
           function(line){
@@ -126,7 +123,7 @@ const Graph = ({ stockData, getData, lines, yValues, selectedFilter }) => {
           chart.remove();
         };
       },
-      [lines]
+      [lines, stockData]
     );
 
   return (

@@ -19,10 +19,7 @@ const GraphStats = ({ stockData, selectedFilter }) => {
           {" "}
           {selectedFilter
             ? stockData[0].marketClosed
-              ? selectedFilter + " - Closed on " + new Date(parseInt(stockData[0].dateClosed)).toLocaleDateString("en-US", {
-                month: "numeric",
-                day: "numeric",
-              })
+              ? selectedFilter + " - Closed on " + stockData.dateClosed
               : selectedFilter + " - Market Open"
             : ""}
         </p>

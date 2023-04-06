@@ -201,6 +201,17 @@ const JobViewPage = () => {
             setXValues(
               resp.data["timestamp"]
             );
+            setDateClosed(
+              new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
+                "en-US",
+                {
+                  weekday: "long",
+                  month: "numeric",
+                  day: "numeric",
+                }
+              )
+            )
+
             setGraphLoading(false);
           })
           .catch((err) => {
