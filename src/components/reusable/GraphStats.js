@@ -1,6 +1,10 @@
 import React from "react";
 
 const GraphStats = ({ stockData, selectedFilter }) => {
+
+  console.log(stockData)
+  console.log("Market Closed: " + stockData[0].marketClosed)
+
   const isTrendingUp = stockData[0].percentChanged >= 0;
   // Conditional variable to set the color of the text on stats based on if the stock at the timeframe selected is trending up
   const textColor = isTrendingUp ? "text-bright-green" : "text-red";
@@ -19,8 +23,11 @@ const GraphStats = ({ stockData, selectedFilter }) => {
           {" "}
           {selectedFilter
             ? stockData[0].marketClosed
-              ? selectedFilter + " - Closed on " + stockData.dateClosed
-              : selectedFilter + " - Market Open"
+            ? selectedFilter + " - Closed on " + (new Date(parseInt(stockData[0].marketClosed) * 1000).toLocaleDateString("en-US", {
+              month: "numeric",
+              day: "numeric",
+              }))
+              : selectedFilter + " - Market Open" 
             : ""}
         </p>
       </p>

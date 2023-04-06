@@ -48,7 +48,6 @@ const JobViewPage = () => {
   // All state variables for stock related data / statistics
   const [percentChanged, setPercentChanged] = useState(null);
   const [priceChange, setPriceChange] = useState(null);
-  const [dateClosed, setDateClosed] = useState(null);
   const [marketClosed, setMarketClosed] = useState(false);
   const [recentPrice, setRecentPrice] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
@@ -76,7 +75,6 @@ const JobViewPage = () => {
       priceChange: priceChange,
       percentChanged: percentChanged,
       marketClosed: marketClosed,
-      dateClosed: dateClosed,
     },
   ];
 
@@ -197,20 +195,10 @@ const JobViewPage = () => {
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
             );
             setRecentPrice(resp.data["recent_price"].toFixed(2));
-            setMarketClosed(resp.data["is_market_closed"]);       
+            setMarketClosed(resp.data["market_closed"]);       
             setXValues(
               resp.data["timestamp"]
             );
-            setDateClosed(
-              new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
-                "en-US",
-                {
-                  weekday: "long",
-                  month: "numeric",
-                  day: "numeric",
-                }
-              )
-            )
 
             setGraphLoading(false);
           })

@@ -27,7 +27,6 @@ const SearchResultsPage = () => {
   // All state variables for stock related data / statistics
   const [percentChanged, setPercentChanged] = useState(null);
   const [priceChange, setPriceChange] = useState(null);
-  const [dateClosed, setDateClosed] = useState(null);
   const [marketClosed, setMarketClosed] = useState(false);
   const [high52w, setHigh52w] = useState(null);
   const [low52w, setLow52w] = useState(null);
@@ -64,7 +63,6 @@ const SearchResultsPage = () => {
       priceChange: priceChange,
       percentChanged: percentChanged,
       marketClosed: marketClosed,
-      dateClosed: dateClosed,
     },
   ];
 
@@ -103,12 +101,13 @@ const SearchResultsPage = () => {
         algoquantApi
           .getGraphData(location.state.value, timeframe)
           .then((resp) => {
+            console.log(resp)
             setYValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
             );
-            setMarketClosed(resp.data["is_market_closed"]);
+            setMarketClosed(resp.data["market_closed"]);
             setXValues(
               resp.data["timestamp"]
             );
@@ -136,7 +135,6 @@ const SearchResultsPage = () => {
     setPriceChange(null);
     setPercentChanged(null);
     setMarketClosed(null);
-    setDateClosed(null);
   };
 
   // Should initially get all the graphdata for the day time frame and the stock data info for the table and when the search value change

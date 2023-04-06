@@ -8,7 +8,7 @@ This will build the different graph lines to pass to the graph
 const getGraphLines = (lines, isTrendingUp) => {
 
   // Determine if the graph should be red or green dependeont on the trend
-  let lineColor = "rgba(76, 175, 80, 1)";
+  let lineColor = "#4CAF50";
   if (!isTrendingUp) {
     lineColor = "#FF0000";
   }
