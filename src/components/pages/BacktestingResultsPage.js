@@ -116,12 +116,12 @@ const BacktestingResultsPage = () => {
                   {/* of 1,150 days. */}
                 </p>
               </div>
-              <div className="w-10/12 mx-auto">
+              <div className="w-11/12 mx-auto">
                 <Graph
                   stockData={priceChange}
                   lines={[
                     { x: xValues, y: investorPerformance},
-                    { x: xValues, y: buyHoldPerformance, color: "#00008B" },
+                    { x: xValues, y: buyHoldPerformance, color: "#A020F0" , bottomColor: "transparent" },
                   ]}
                   selectedFilter={null}
                 />

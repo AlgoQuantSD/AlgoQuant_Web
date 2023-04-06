@@ -24,6 +24,14 @@ const getGraphLines = (lines, isTrendingUp) => {
         lineColor = line.color
       }
 
+      // See if the is a specific bottom color otherwise use white
+      var bottomColor;
+      if (line.bottomColor){
+        bottomColor = line.bottomColor
+      } else {
+        bottomColor = "#FFFFFF"
+      }
+
       let series = []
       let i = 0
 
@@ -37,7 +45,7 @@ const getGraphLines = (lines, isTrendingUp) => {
           )
         }
       )
-      let lineData = {'series':series, 'topColor': lineColor, 'bottomColor': "transparent"}
+      let lineData = {'series':series, 'topColor': lineColor, 'bottomColor': bottomColor}
       graphLines.push(lineData)
     })
 
