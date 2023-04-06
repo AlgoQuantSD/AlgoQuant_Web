@@ -37,10 +37,7 @@ const BacktestingResultsPage = () => {
           console.log(resp.data);
           setInvestorPerformance(resp.data["portfolio_value_history"]);
           setBuyHoldPerformance(resp.data["portfolio_value_history_hold"]);
-          setXValues(
-            resp.data["value_timestamps"].map((timestamp) =>
-              parseInt(timestamp * 1000)
-          ));
+          setXValues(resp.data["value_timestamps"]);
 
           let startTimeDate = new Date(parseInt(resp.data.start_time) * 1000);
           let endTimeDate = new Date(parseInt(resp.data.end_time) * 1000);
@@ -84,7 +81,7 @@ const BacktestingResultsPage = () => {
       backtestDataObject?.initial_investment) /
       backtestDataObject?.initial_investment) *
     100;
-  if (profitLoss < 0) {
+  if (profitLoss <= 0) {
     statement = "poorly";
   } else if (profitLoss > 0 && profitLoss < 20) {
     statement = "okay";
@@ -114,7 +111,7 @@ const BacktestingResultsPage = () => {
                   {backtestDataObject?.backtest_name} performed {statement}{" "}
                   according to AlgoQuant metrics, yielding a{" "}
                   {profitLoss.toFixed(3)}%{" "}
-                  {profitLoss.toFixed(3) > 0 ? "profit" : "loss"}.
+                  {profitLoss.toFixed(3) >= 0 ? "profit" : "loss"}.
                   {/* over the course */}
                   {/* of 1,150 days. */}
                 </p>

@@ -191,20 +191,16 @@ const JobViewPage = () => {
         algoquantApi
           .getPerformance(timeframe, location.state.value)
           .then((resp) => {
-            setXValues(resp.data["close"]);
+            setYValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
             );
             setRecentPrice(resp.data["recent_price"].toFixed(2));
-            setMarketClosed(resp.data["is_market_closed"]);
-           
-            setYValues(
-              resp.data["timestamp"].map((timestamp) =>
-                parseInt(timestamp * 1000)
-              )
+            setMarketClosed(resp.data["is_market_closed"]);       
+            setXValues(
+              resp.data["timestamp"]
             );
-
             setGraphLoading(false);
           })
           .catch((err) => {

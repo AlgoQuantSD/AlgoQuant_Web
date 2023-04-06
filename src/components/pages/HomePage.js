@@ -73,11 +73,7 @@ const HomePage = () => {
             setRecentPrice(resp.data["recent_price"].toFixed(2));
             setMarketClosed(resp.data["is_market_closed"]);
 
-            setXValues(
-              resp.data["timestamp"].map((timestamp) =>
-                parseInt(timestamp * 1000)
-              )
-            );
+            setXValues(resp.data["timestamp"]);
 
             setGraphLoading(false);
           })
