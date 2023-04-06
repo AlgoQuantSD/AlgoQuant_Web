@@ -16,7 +16,7 @@ const BacktestingResultsPage = () => {
   const [investorPerformance, setInvestorPerformance] = useState([]);
   const [buyHoldPerformance, setBuyHoldPerformance] = useState([]);
 
-  const [yValues, setYValues] = useState([]);
+  const [xValues, setXValues] = useState([]);
   const [priceChange, setPriceChange] = useState([]);
   // store the backtest data
   const [backtestDataObject, setBacktestDataObject] = useState(null);
@@ -37,14 +37,10 @@ const BacktestingResultsPage = () => {
           console.log(resp.data);
           setInvestorPerformance(resp.data["portfolio_value_history"]);
           setBuyHoldPerformance(resp.data["portfolio_value_history_hold"]);
-          setYValues(
+          setXValues(
             resp.data["value_timestamps"].map((timestamp) =>
-              new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                month: "numeric",
-                day: "numeric",
-              })
-            )
-          );
+              parseInt(timestamp * 1000)
+          ));
 
           let startTimeDate = new Date(parseInt(resp.data.start_time) * 1000);
           let endTimeDate = new Date(parseInt(resp.data.end_time) * 1000);
@@ -127,14 +123,9 @@ const BacktestingResultsPage = () => {
                 <Graph
                   stockData={priceChange}
                   lines={[
-                    { data: investorPerformance, name: "Investor Performance" },
-                    {
-                      data: buyHoldPerformance,
-                      name: "Buy/Hold Performance",
-                      color: "#0000FF",
-                    },
+                    { x: xValues, y: investorPerformance},
+                    { x: xValues, y: buyHoldPerformance, color: "#00008B" },
                   ]}
-                  yValues={yValues}
                   selectedFilter={null}
                 />
               </div>

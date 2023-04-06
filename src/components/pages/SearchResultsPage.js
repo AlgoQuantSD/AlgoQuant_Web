@@ -110,65 +110,12 @@ const SearchResultsPage = () => {
             );
             setMarketClosed(resp.data["is_market_closed"]);
 
-            // based on the timeframe selected (filter) set the timeframe (yData) from response to appropriate date format
-            switch (timeframe) {
-              case "D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleTimeString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  )
-                );
-
-                // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
-                // DateClosed variable will then used to show the date the market is closed, if it is.
-                setDateClosed(
-                  new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
-                    "en-US",
-                    {
-                      weekday: "long",
-                      month: "numeric",
-                      day: "numeric",
-                    }
-                  )
-                );
-                break;
-              case "5D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
-                break;
-              case "M":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
-                break;
-              case "Y":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      year: "numeric",
-                    })
-                  )
-                );
-                break;
-              default:
-                break;
-            }
-
+            
+            setYValues(
+              resp.data["timestamp"].map((timestamp) =>
+                parseInt(timestamp * 1000)
+              )
+            );
             setGraphLoading(false);
           })
           .catch((err) => {
@@ -249,7 +196,7 @@ const SearchResultsPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedStockData}
-                lines={[{ data: xValues, name: "$" }]}
+                lines={[{ x: xValues, y: yValues }]}
                 yValues={yValues}
                 getData={getData}
                 selectedFilter={selectedFilter}
@@ -261,7 +208,7 @@ const SearchResultsPage = () => {
                 <SaveSpinner />
               </div>
             ) : (
-              <div className="mt-20 w-full">
+              <div className="mt-32 w-full">
                 <Table data={aggregatedStockData} header={header} />
               </div>
             )}

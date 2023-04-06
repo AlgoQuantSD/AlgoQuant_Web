@@ -65,7 +65,7 @@ const HomePage = () => {
         algoquantApi
           .getPerformance(timeframe)
           .then((resp) => {
-            setXValues(resp.data["close"]);
+            setYValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
@@ -73,64 +73,11 @@ const HomePage = () => {
             setRecentPrice(resp.data["recent_price"].toFixed(2));
             setMarketClosed(resp.data["is_market_closed"]);
 
-            // based on the timeframe selected (filter) set the timeframe (yData) from response to appropriate date format
-            switch (timeframe) {
-              case "D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleTimeString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  )
-                );
-
-                // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
-                // DateClosed variable will then used to show the date the market is closed, if it is.
-                setDateClosed(
-                  new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
-                    "en-US",
-                    {
-                      weekday: "long",
-                      month: "numeric",
-                      day: "numeric",
-                    }
-                  )
-                );
-                break;
-              case "5D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
-                break;
-              case "M":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
-                break;
-              case "Y":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      year: "numeric",
-                    })
-                  )
-                );
-                break;
-              default:
-                break;
-            }
+            setXValues(
+              resp.data["timestamp"].map((timestamp) =>
+                parseInt(timestamp * 1000)
+              )
+            );
 
             setGraphLoading(false);
           })
@@ -175,7 +122,6 @@ const HomePage = () => {
 
   // Useeffect that is called to render the days performance
   useEffect(() => {
-    console.log("poop: 1");
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);
     // eslint-disable-next-line
@@ -208,11 +154,10 @@ const HomePage = () => {
           {graphLoading ? (
             <GraphSpinner />
           ) : (
-            <div className="w-11/12 mx-auto my-10 mb-28">
+            <div className="w-12/12 mx-auto my-10 mb-28">
               <Graph
                 stockData={aggregatedPerformanceData}
-                lines={[{ data: xValues, name: "$" }]}
-                yValues={yValues}
+                lines={[{ x: xValues, y: yValues }]}
                 getData={getData}
                 selectedFilter={selectedFilter}
               />
