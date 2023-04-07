@@ -36,7 +36,7 @@ const HomePage = () => {
   const [marketClosed, setMarketClosed] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [recentPrice, setRecentPrice] = useState(0);
-  const [graphLoading, setGraphLoading] = useState(true);
+  const [graphLoading, setGraphLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   // Aggregated JSON object containing all the related performance stats of the user
@@ -76,6 +76,8 @@ const HomePage = () => {
             setGraphLoading(false);
           })
           .catch((err) => {
+            setXValues([]);
+            setYValues([]);
             setGraphLoading(false);
             setErrorMsg(err.toString());
           });
@@ -205,7 +207,7 @@ const HomePage = () => {
                         Create Investor
                       </Link>
                       <div>
-                        <InvestorGallery />
+                        <InvestorGallery type={selectedTabFilter} />
                       </div>
                     </div>
                   );
