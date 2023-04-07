@@ -48,7 +48,6 @@ const JobViewPage = () => {
   // All state variables for stock related data / statistics
   const [percentChanged, setPercentChanged] = useState(null);
   const [priceChange, setPriceChange] = useState(null);
-  const [dateClosed, setDateClosed] = useState(null);
   const [marketClosed, setMarketClosed] = useState(false);
   const [recentPrice, setRecentPrice] = useState(0);
   const [graphLoading, setGraphLoading] = useState(true);
@@ -76,7 +75,6 @@ const JobViewPage = () => {
       priceChange: priceChange,
       percentChanged: percentChanged,
       marketClosed: marketClosed,
-      dateClosed: dateClosed,
     },
   ];
 
@@ -191,73 +189,16 @@ const JobViewPage = () => {
         algoquantApi
           .getPerformance(timeframe, location.state.value)
           .then((resp) => {
-            setXValues(resp.data["close"]);
+            setYValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
             );
             setRecentPrice(resp.data["recent_price"].toFixed(2));
-            setMarketClosed(resp.data["is_market_closed"]);
-
-            // based on the timeframe selected (filter) set the timeframe (yData) from response to appropriate date format
-            switch (timeframe) {
-              case "D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleTimeString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  )
-                );
-
-                // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
-                // DateClosed variable will then used to show the date the market is closed, if it is.
-                setDateClosed(
-                  new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
-                    "en-US",
-                    {
-                      weekday: "long",
-                      month: "numeric",
-                      day: "numeric",
-                    }
-                  )
-                );
-                break;
-              case "5D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
-                break;
-              case "M":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
-                break;
-              case "Y":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      year: "numeric",
-                    })
-                  )
-                );
-                break;
-
-              default:
-                break;
-            }
+            setMarketClosed(resp.data["market_closed"]);       
+            setXValues(
+              resp.data["timestamp"]
+            );
 
             setGraphLoading(false);
           })
@@ -401,7 +342,7 @@ const JobViewPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedPerformanceData}
-                lines={[{ data: xValues, name: "$" }]}
+                lines={[{ x: xValues, y: yValues }]}
                 yValues={yValues}
                 getData={getData}
                 selectedFilter={

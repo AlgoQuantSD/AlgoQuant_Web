@@ -16,7 +16,7 @@ const BacktestingResultsPage = () => {
   const [investorPerformance, setInvestorPerformance] = useState([]);
   const [buyHoldPerformance, setBuyHoldPerformance] = useState([]);
 
-  const [yValues, setYValues] = useState([]);
+  const [xValues, setXValues] = useState([]);
   const [priceChange, setPriceChange] = useState([]);
   // store the backtest data
   const [backtestDataObject, setBacktestDataObject] = useState(null);
@@ -37,14 +37,7 @@ const BacktestingResultsPage = () => {
           console.log(resp.data);
           setInvestorPerformance(resp.data["portfolio_value_history"]);
           setBuyHoldPerformance(resp.data["portfolio_value_history_hold"]);
-          setYValues(
-            resp.data["value_timestamps"].map((timestamp) =>
-              new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                month: "numeric",
-                day: "numeric",
-              })
-            )
-          );
+          setXValues(resp.data["value_timestamps"]);
 
           let startTimeDate = new Date(parseInt(resp.data.start_time) * 1000);
           let endTimeDate = new Date(parseInt(resp.data.end_time) * 1000);
@@ -88,7 +81,7 @@ const BacktestingResultsPage = () => {
       backtestDataObject?.initial_investment) /
       backtestDataObject?.initial_investment) *
     100;
-  if (profitLoss < 0) {
+  if (profitLoss <= 0) {
     statement = "poorly";
   } else if (profitLoss > 0 && profitLoss < 20) {
     statement = "okay";
@@ -118,28 +111,26 @@ const BacktestingResultsPage = () => {
                   {backtestDataObject?.backtest_name} performed {statement}{" "}
                   according to AlgoQuant metrics, yielding a{" "}
                   {profitLoss.toFixed(3)}%{" "}
-                  {profitLoss.toFixed(3) > 0 ? "profit" : "loss"}.
+                  {profitLoss.toFixed(3) >= 0 ? "profit" : "loss"}.
                   {/* over the course */}
                   {/* of 1,150 days. */}
                 </p>
               </div>
-              <div className="w-10/12 mx-auto">
+              <div className="w-11/12 mx-auto">
                 <Graph
                   stockData={priceChange}
                   lines={[
-                    { data: investorPerformance, name: "Investor Performance" },
-                    {
-                      data: buyHoldPerformance,
-                      name: "Buy/Hold Performance",
-                      color: "#0000FF",
-                    },
+                    { x: xValues, y: investorPerformance, name: "INVESTOR"},
+                    { x: xValues, y: buyHoldPerformance, color: "#A020F0" , bottomColor: "transparent", name: "BUY/HOLD" },
                   ]}
-                  yValues={yValues}
                   selectedFilter={null}
                 />
+
+
               </div>
+
               <div className="flex items-center pt-10">
-                <h1 className="text-green font-bold sm:text-3xl md:text-4xl pt-3 pr-5">
+                <h1 className="text-green font-bold sm:text-3xl md:text-4xl pt-5 pr-5">
                   Analysis
                 </h1>
                 <Link

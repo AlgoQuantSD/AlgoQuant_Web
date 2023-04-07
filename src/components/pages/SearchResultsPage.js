@@ -27,7 +27,6 @@ const SearchResultsPage = () => {
   // All state variables for stock related data / statistics
   const [percentChanged, setPercentChanged] = useState(null);
   const [priceChange, setPriceChange] = useState(null);
-  const [dateClosed, setDateClosed] = useState(null);
   const [marketClosed, setMarketClosed] = useState(false);
   const [high52w, setHigh52w] = useState(null);
   const [low52w, setLow52w] = useState(null);
@@ -64,7 +63,6 @@ const SearchResultsPage = () => {
       priceChange: priceChange,
       percentChanged: percentChanged,
       marketClosed: marketClosed,
-      dateClosed: dateClosed,
     },
   ];
 
@@ -103,76 +101,19 @@ const SearchResultsPage = () => {
         algoquantApi
           .getGraphData(location.state.value, timeframe)
           .then((resp) => {
-            setXValues(resp.data["close"]);
+            console.log(resp)
+            setYValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
             );
-            setMarketClosed(resp.data["is_market_closed"]);
-
-            // based on the timeframe selected (filter) set the timeframe (yData) from response to appropriate date format
-            switch (timeframe) {
-              case "D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleTimeString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  )
-                );
-
-                // If the timeframe selected was day, store the first timeframe (yVal) to keep track of the day the market was open,
-                // DateClosed variable will then used to show the date the market is closed, if it is.
-                setDateClosed(
-                  new Date(resp.data["timestamp"][0] * 1000).toLocaleDateString(
-                    "en-US",
-                    {
-                      weekday: "long",
-                      month: "numeric",
-                      day: "numeric",
-                    }
-                  )
-                );
-                break;
-              case "5D":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
-                break;
-              case "M":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      day: "numeric",
-                    })
-                  )
-                );
-                break;
-              case "Y":
-                setYValues(
-                  resp.data["timestamp"].map((timestamp) =>
-                    new Date(timestamp * 1000).toLocaleDateString("en-US", {
-                      month: "numeric",
-                      year: "numeric",
-                    })
-                  )
-                );
-                break;
-              default:
-                break;
-            }
-
+            setMarketClosed(resp.data["market_closed"]);
+            setXValues(
+              resp.data["timestamp"]
+            );
             setGraphLoading(false);
           })
           .catch((err) => {
-            console.log(err);
             setErrorMsg(err.toString());
           });
       }
@@ -194,7 +135,6 @@ const SearchResultsPage = () => {
     setPriceChange(null);
     setPercentChanged(null);
     setMarketClosed(null);
-    setDateClosed(null);
   };
 
   // Should initially get all the graphdata for the day time frame and the stock data info for the table and when the search value change
@@ -249,7 +189,7 @@ const SearchResultsPage = () => {
             ) : (
               <Graph
                 stockData={aggregatedStockData}
-                lines={[{ data: xValues, name: "$" }]}
+                lines={[{ x: xValues, y: yValues }]}
                 yValues={yValues}
                 getData={getData}
                 selectedFilter={selectedFilter}
@@ -261,7 +201,7 @@ const SearchResultsPage = () => {
                 <SaveSpinner />
               </div>
             ) : (
-              <div className="mt-20 w-full">
+              <div className="mt-32 w-full">
                 <Table data={aggregatedStockData} header={header} />
               </div>
             )}
