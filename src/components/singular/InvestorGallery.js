@@ -8,7 +8,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import { SaveSpinner } from "../reusable/LoadSpinner";
 import { ToastContext } from "../reusable/ToastContext";
 
-const InvestorGallery = () => {
+const InvestorGallery = ({ type }) => {
   const navigate = useNavigate();
   // State variables used to access algoquant SDK API and display/ keep state of user data from database
   const algoquantApi = useContext(AlgoquantApiContext);
@@ -19,19 +19,22 @@ const InvestorGallery = () => {
   // State variable to store an array of investor objects
   const [investorList, setInvestorList] = useState([]);
   const [investorListLoading, setInvestorListLoading] = useState(true);
-
+  const [investorRetrieved, setInvestorRetrieved] = useState(false);
   // variable to determine if rerender / fetching the api is needed when deletion is sucessful
   // so we can grab new list of investors to not show the deleted one on screen anymore
   const [successfulDelete, setSuccessfulDelete] = useState(false);
   // CallBack function to get list of investors in bulk
   const getInvestorList = useCallback(() => {
+    console.log("poop");
     if (algoquantApi.token) {
       setInvestorListLoading(true);
+      console.log("poop 2");
       algoquantApi
         .getInvestorList()
         .then((resp) => {
           setInvestorList(resp.data["investors"]);
           setInvestorListLoading(false);
+          setInvestorRetrieved(true);
         })
         .catch((err) => {
           setInvestorListLoading(false);
@@ -39,15 +42,28 @@ const InvestorGallery = () => {
           console.log(err);
         });
     }
-    // eslint-disable-next-line
-  }, [setInvestorList, algoquantApi]);
+  }, [algoquantApi, showToast]);
 
   // if a investor is deleted through the home screen, this will trigger the investor gallery component to reload to show the investor is gone
   useEffect(() => {
-    getInvestorList();
-    setSuccessfulDelete(false);
+    if (successfulDelete) {
+      console.log("effect 1");
+      getInvestorList();
+      setSuccessfulDelete(false);
+    }
     // eslint-disable-next-line
   }, [successfulDelete]);
+
+  // load when investorGallery is used
+  useEffect(() => {
+    if (!investorRetrieved) {
+      console.log("effect 2");
+
+      getInvestorList();
+    }
+    console.log(algoquantApi.token);
+    // eslint-disable-next-line
+  }, [algoquantApi, investorRetrieved]);
 
   /* 
   Function called anytime a user selects View Investor in the dropdown. Will navigate 
