@@ -53,7 +53,6 @@ const JobModal = ({
           setSuccessfulStartJob(false);
           setIsLoading(false);
           showToast(err.toString(), "error");
-          console.log("Create-Job:", err);
           setJobModal(null);
         });
     }

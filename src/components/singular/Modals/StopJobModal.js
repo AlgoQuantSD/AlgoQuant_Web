@@ -28,7 +28,6 @@ const StopJobModal = ({ setStopJobModal, stopJobModal, jobObj }) => {
       algoquantApi
         .stopJob(jobObj.job_id)
         .then((resp) => {
-          console.log(resp.data);
           navigate("/home");
           setStopJobModal(null);
           setIsLoading(false);

@@ -121,7 +121,7 @@ const HomePage = () => {
     setSelectedFilter(filters.DAY);
     getData(selectedFilter);
     // eslint-disable-next-line
-  }, [selectedFilter]);
+  }, [selectedFilter, algoquantApi]);
 
   return (
     <div className="bg-cokewhite overflow-x-auto overflow-y-auto">

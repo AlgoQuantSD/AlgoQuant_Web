@@ -47,7 +47,6 @@ const InvestorViewPage = () => {
         .getInvestor(location.state.value)
         .then((resp) => {
           setIsLoading(false);
-          console.log(resp.data);
           setInvestor(resp.data);
         })
         .catch((err) => {
@@ -59,7 +58,6 @@ const InvestorViewPage = () => {
 
   // if button is clicked switch between active or past jobs
   const handleTradeButton = () => {
-    console.log("pressed");
     buttonStatus === tabFilters.JOB
       ? setButtonStatus(tabFilters.HISTORY)
       : setButtonStatus(tabFilters.JOB);
@@ -86,7 +84,6 @@ const InvestorViewPage = () => {
   };
 
   useEffect(() => {
-    console.log("investorview useeffect");
     getInvestor();
   }, [getInvestor]);
 

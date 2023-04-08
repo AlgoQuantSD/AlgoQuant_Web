@@ -85,13 +85,11 @@ const AccountModal = ({
           setMessage(resp.data.message);
           handleAccountModals();
           setSuccessfulBalanceReset(true);
-          console.log(resp);
         })
         .catch((err) => {
           setIsLoading(false);
           setSuccessfulBalanceReset(false);
           setError("Keys provided are invalid. try again.");
-          console.log(err);
         });
     }
   };

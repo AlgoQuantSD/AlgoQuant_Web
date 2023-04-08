@@ -25,10 +25,8 @@ const InvestorGallery = ({ type }) => {
   const [successfulDelete, setSuccessfulDelete] = useState(false);
   // CallBack function to get list of investors in bulk
   const getInvestorList = useCallback(() => {
-    console.log("poop");
     if (algoquantApi.token) {
       setInvestorListLoading(true);
-      console.log("poop 2");
       algoquantApi
         .getInvestorList()
         .then((resp) => {
@@ -39,7 +37,6 @@ const InvestorGallery = ({ type }) => {
         .catch((err) => {
           setInvestorListLoading(false);
           showToast(err.toString(), "error");
-          console.log(err);
         });
     }
   }, [algoquantApi, showToast]);
@@ -47,7 +44,6 @@ const InvestorGallery = ({ type }) => {
   // if a investor is deleted through the home screen, this will trigger the investor gallery component to reload to show the investor is gone
   useEffect(() => {
     if (successfulDelete) {
-      console.log("effect 1");
       getInvestorList();
       setSuccessfulDelete(false);
     }
@@ -57,11 +53,8 @@ const InvestorGallery = ({ type }) => {
   // load when investorGallery is used
   useEffect(() => {
     if (!investorRetrieved) {
-      console.log("effect 2");
-
       getInvestorList();
     }
-    console.log(algoquantApi.token);
     // eslint-disable-next-line
   }, [algoquantApi, investorRetrieved]);
 

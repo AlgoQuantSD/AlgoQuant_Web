@@ -101,16 +101,13 @@ const SearchResultsPage = () => {
         algoquantApi
           .getGraphData(location.state.value, timeframe)
           .then((resp) => {
-            console.log(resp)
             setYValues(resp.data["close"]);
             setPercentChanged(resp.data["percent_change"].toFixed(2));
             setPriceChange(
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
             );
             setMarketClosed(resp.data["market_closed"]);
-            setXValues(
-              resp.data["timestamp"]
-            );
+            setXValues(resp.data["timestamp"]);
             setGraphLoading(false);
           })
           .catch((err) => {
@@ -157,7 +154,6 @@ const SearchResultsPage = () => {
         })
         .catch((err) => {
           setErrorMsg(err.toString());
-          console.log(err);
         });
     }
     // eslint-disable-next-line
