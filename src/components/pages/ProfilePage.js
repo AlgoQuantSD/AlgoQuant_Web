@@ -111,7 +111,6 @@ const ProfilePage = () => {
   }, [algoquantApi]);
 
   useEffect(() => {
-    console.log("here");
     if (successfulBalanceReset) {
       getUser();
       setSuccessfulBalanceReset(false);

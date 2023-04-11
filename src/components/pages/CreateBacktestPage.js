@@ -58,10 +58,6 @@ const CreateBacktestPage = () => {
     return date.toLocaleDateString(undefined, options);
   };
 
-  // console.log("date: ", selectedDayRange);
-  console.log(startDate);
-  console.log(endDate);
-
   // Update the selectedDayRangeString state variable whenever the selectedDayRange state variable changes
   useEffect(() => {
     if (selectedDayRange && selectedDayRange.from && selectedDayRange.to) {
@@ -140,7 +136,6 @@ const CreateBacktestPage = () => {
             parseInt(initialInvestment)
           )
           .then((resp) => {
-            console.log(resp.data);
             setSuccess(true);
             setIsLoading(false);
             navigate("/home");
@@ -239,7 +234,6 @@ const CreateBacktestPage = () => {
                 className="text-green font-medium rounded-lg bg-cokewhite hover:bg-smokewhite border-2 border-green px-4 py-2"
                 onClick={() => {
                   saveChanges();
-                  console.log("pressed");
                 }}
               >
                 Start Backtest

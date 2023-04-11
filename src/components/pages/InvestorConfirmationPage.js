@@ -7,7 +7,7 @@ import AlgoquantApiContext from "../../api/ApiContext";
 import Banner from "../reusable/Banner";
 import { LoadSpinner } from "../reusable/LoadSpinner";
 import { ToastContext } from "../reusable/ToastContext";
-import {GetAlgoImage} from "../utils/ImageFactory"
+import { GetAlgoImage } from "../utils/ImageFactory";
 
 const InvestorConfirmationPage = () => {
   const location = useLocation();
@@ -40,7 +40,6 @@ const InvestorConfirmationPage = () => {
           "I"
         )
         .then((resp) => {
-          console.log(resp.data);
           navigate("/home");
           showToast(resp.data.message, "success");
           setIsLoading(false);
