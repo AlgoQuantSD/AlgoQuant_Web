@@ -79,7 +79,7 @@ const InvestorViewPage = () => {
       case "4_hr":
         return "Every 4 hours";
       default:
-        return "Unknown Frequency";
+        return "Daily";
     }
   };
 
