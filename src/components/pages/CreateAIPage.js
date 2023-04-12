@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../reusable/NavBar";
 import Sidebar from "../reusable/SideBar";
 import { useNavigate } from "react-router-dom";
-import {GetAIImage} from "../utils/ImageFactory"
+import { GetAIImage } from "../utils/ImageFactory";
 
 const CreateAIPage = () => {
   const navigate = useNavigate();
@@ -144,12 +144,16 @@ const CreateAIPage = () => {
               />
               <div>
                 <p className="text-left text-another-gray text-md font-light mt-4 w-10/12 mx-auto">
-                The underlying Machine Learning models used by the AI Investor have been taught how to optimally 
-                allocate money across a set of assets through a process known as Deep Reinforcement Learning (DRL).
-                The Investor uses the fundamental daily candle data (Open, High, Low, Close) over the previous 50 days
-                for each asset to determine how much money should be allocated to each asset along with what should be retained as cash. 
-                Each day new predictions will be obtained from the model and all the jobs for this investor will be evaluated to determine
-                if the holdings of the job should be reallocated. 
+                  The underlying Machine Learning models used by the AI Investor
+                  have been taught how to optimally allocate money across a set
+                  of assets through a process known as Deep Reinforcement
+                  Learning (DRL). The Investor uses the fundamental daily candle
+                  data (Open, High, Low, Close) over the previous 50 days for
+                  each asset to determine how much money should be allocated to
+                  each asset along with what should be retained as cash. Each
+                  day new predictions will be obtained from the model and all
+                  the jobs for this investor will be evaluated to determine if
+                  the holdings of the job should be reallocated.
                 </p>
               </div>
             </div>
