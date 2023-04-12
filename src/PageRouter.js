@@ -18,6 +18,7 @@ import CreateAIPage from "./components/pages/CreateAIPage";
 import InvestorConfirmationPage from "./components/pages/InvestorConfirmationPage";
 import AIConfirmationPage from "./components/pages/AIConfirmationPage";
 import CreateBacktestPage from "./components/pages/CreateBacktestPage";
+import MobileLoginPage from "./components/pages/MobileLoginPage";
 import AlgoquantApiContext from "./api/ApiContext";
 import initAlgoQuantApi from "../src/api/ApiUtils";
 import { ToastContext } from "./components/reusable/ToastContext";
@@ -209,6 +210,7 @@ export function PageRouter() {
                 </ProtectLogin>
               }
             />
+            <Route path="/mobileLogin" element={<MobileLoginPage />} />
           </Routes>
         </BrowserRouter>
       </ToastContext.Provider>

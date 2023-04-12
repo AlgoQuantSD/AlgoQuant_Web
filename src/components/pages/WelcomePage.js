@@ -44,7 +44,13 @@ const WelcomePage = () => {
           </div>
           <Link
             to="/login"
-            className="bg-cokewhite rounded-full text-green p-4 font-normal w-32 flex items-center justify-center"
+            className="hidden md:block bg-cokewhite rounded-full text-green p-4 font-normal w-32 flex items-center justify-center"
+          >
+            Get Started
+          </Link>
+          <Link
+            to="/mobileLogin"
+            className="block md:hidden bg-cokewhite rounded-full text-green p-4 font-normal w-32 flex items-center justify-center"
           >
             Get Started
           </Link>
