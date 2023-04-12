@@ -195,10 +195,8 @@ const JobViewPage = () => {
               parseFloat(resp.data["interval_price_change"]).toFixed(2)
             );
             setRecentPrice(resp.data["recent_price"].toFixed(2));
-            setMarketClosed(resp.data["market_closed"]);       
-            setXValues(
-              resp.data["timestamp"]
-            );
+            setMarketClosed(resp.data["market_closed"]);
+            setXValues(resp.data["timestamp"]);
 
             setGraphLoading(false);
           })
@@ -278,7 +276,7 @@ const JobViewPage = () => {
     { key: "buyOrSell", title: "Buy or Sell" },
     { key: "stockTicker", title: "Stock Ticker" },
     { key: "shares", title: "Shares" },
-    { key: "avgPrice", title: "Amount" },
+    { key: "avgPrice", title: "Average Price" },
     { key: "date", title: "Date" },
   ];
 
