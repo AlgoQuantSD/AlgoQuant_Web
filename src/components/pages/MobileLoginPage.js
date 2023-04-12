@@ -13,7 +13,7 @@ const MobileLoginPage = () => {
       </p>
       <Link
         to="/"
-        className="block bg-green rounded-full text-white p-4 font-normal w-32 flex items-center justify-center mb-4"
+        className="block bg-green rounded-full text-white p-2 font-normal w-32 flex items-center justify-center mb-4"
       >
         Back
       </Link>
