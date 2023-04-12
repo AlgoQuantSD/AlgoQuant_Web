@@ -20,8 +20,8 @@ const CreateAlgorithmicPage = () => {
   const [investorName, setInvestorName] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [tradeFrequency, setTradeFrequency] = useState("Select");
-  const [profitStop, setProfitStop] = useState(null);
-  const [lossStop, setLossStop] = useState(null);
+  const [profitStop, setProfitStop] = useState(0);
+  const [lossStop, setLossStop] = useState(0);
   const [selectedIndicators, setSelectedIndicators] = useState([]);
   const [selectedStocks, setSelectedStocks] = useState([]);
 
