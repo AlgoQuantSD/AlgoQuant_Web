@@ -102,28 +102,28 @@ const AccountModal = ({
     case ModalTypes.reset_alpaca:
       return (
         <Modal isVisible={accountModal.visible} onClose={handleClose}>
-          <div className="bg-smokewhite p-2 rounded border border-light-gray">
+          <div className="bg-smokewhite p-2 rounded border-2 border-green">
             <div className="p-6">
-              <h3 className="text-3xl font-bold text-light-gray mb-5">
+              <h3 className="text-3xl font-bold text-green mb-5">
                 Reset Balance
               </h3>
-              <p className="text-light-gray font-medium mb-5 text-xl">
+              <p className="text-green font-medium mb-5 text-xl">
                 Resetting Balance requires new Alpaca Keys
               </p>
-              <p className="text-light-gray font-medium mb-5 text-xl">
+              <p className="text-green font-medium mb-5 text-xl">
                 Please enter Alpaca API Key
               </p>
               <input
-                className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-light-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-green text-green"
                 type="text"
                 placeholder="Alpaca Key"
                 onChange={handleAlpacaKey}
               />
-              <p className="text-light-gray font-medium mb-5 text-xl">
+              <p className="text-green font-medium mb-5 text-xl">
                 Please enter Alpaca Secret Key
               </p>
               <input
-                className="bg-faded-dark-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-white text-white"
+                className="bg-light-gray mb-5 focus:outline-none focus:shadow-outline py-2 px-4 block w-2/3 appearance-none leading-normal shadow-md caret-green text-green"
                 type="text"
                 placeholder="Secret Key"
                 onChange={handleSecretKey}
